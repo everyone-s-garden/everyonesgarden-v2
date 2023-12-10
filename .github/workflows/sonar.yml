@@ -1,0 +1,60 @@
+name: SonarCloud
+on:
+  push:
+    branches:      
+      - '*'      
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build-gradle-and-report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: github 체크아웃
+        uses: actions/checkout@v3
+
+      - name: jdk 세팅
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          java-options: '-Duser.timezone=Asia/Seoul'
+      - name: gradlew 실행 권한 부여
+        run: chmod +x ./gradlew
+
+      # https://github.com/gradle/gradle-build-action
+      - name: gradle 테스트
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean test
+
+      # https://github.com/actions/cache
+      - name: SonarCloud 결과물 캐싱하기
+        uses: actions/cache@v3
+        if: always()
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: gradle SonarCloud 분석 + PR 코멘트 자동 작성
+        uses: gradle/gradle-build-action@v2
+        if: always()
+        with:
+          arguments: sonar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      # https://github.com/EnricoMi/publish-unit-test-result-action
+      - name: 테스트 결과를 'PR 코멘트'로 자동 작성
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()  # 실패 여부 상관없이 항상 실행~
+        with:
+          files: '**/build/test-results/**/*.xml'
+
+      # https://github.com/mikepenz/action-junit-report
+      - name: 테스트 코드 중 테스트 실패한 부분에 'PR check'로 자동 작성
+        uses: mikepenz/action-junit-report@v3
+        if: always()
+        with:
+          report_paths: '**/build/test-results/**/*.xml'
