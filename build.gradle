@@ -48,9 +48,30 @@ subprojects {
     apply plugin: 'java-library' //하위 모듈이 상위 모듈의 라이브러리를 의존할 수 있게 하는 플러그인
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.springframework.boot'
+    apply plugin: 'jacoco'
+    apply plugin: 'org.sonarqube' //하위 모듈에 전부 소나클라우드 적용
+
+    sonar {
+        properties {
+            property "sonar.coverage.jacoco.xmlReportPaths", "build/reports/jacoco/test/jacocoTestReport.xml"
+        }
+    }
 
     test {
         useJUnitPlatform()
+        finalizedBy jacocoTestReport
+    }
+
+    jacocoTestReport {
+        reports {
+            xml.required = true
+        }
+
+        afterEvaluate {
+            classDirectories.setFrom(files(classDirectories.files.collect {
+                fileTree(dir: it, exclude: ['**/*Request.class', '**/*Response.class'])
+            }))
+        }
     }
 
     dependencies {
