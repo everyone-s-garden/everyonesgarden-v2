@@ -8,9 +8,12 @@ plugins {
 //sonar 설정
 sonar {
     properties {
-        property "sonar.projectKey", "everyone-s-garden_back-V2"
-        property "sonar.organization", "everyone-s-garden"
+        property "sonar.projectKey", "joyfulviper_back-V2"
+        property "sonar.organization", "joyfulviper"
         property "sonar.host.url", "https://sonarcloud.io"
+//        property "sonar.projectKey", "everyone-s-garden_back-V2"
+//        property "sonar.organization", "everyone-s-garden"
+//        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
 
