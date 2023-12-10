@@ -2,6 +2,18 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
+    id "org.sonarqube" version "4.4.1.3373"
+}
+
+//sonar 설정
+sonar {
+    properties {
+        property "sonar.projectKey", "everyone-s-garden_back-V2"
+        property "sonar.organization", "everyone-s-garden"
+        property "sonar.host.url", "https://sonarcloud.io"
+        property 'sonar.coverage.exclusions', '**/health/**'
+        property 'sonar.exclusions', '**/*Application*.java'
+    }
 }
 
 group = 'com.graden'
