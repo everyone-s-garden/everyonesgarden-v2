@@ -9,11 +9,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-public class healthChecker {
+public class HealthChecker {
 
     private final Environment environment;
 
-    public healthChecker(Environment environment) {
+    public HealthChecker(Environment environment) {
         this.environment = environment;
     }
 
