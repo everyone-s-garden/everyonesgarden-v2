@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+}
+
+group = 'com.graden'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+// 루트 프로젝트는 jar 파일을 만들 필요가 없기 때문에 false로 설정
+bootJar {
+    enabled = false
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+subprojects {
+    group = 'com.graden'
+    version = '0.0.1-SNAPSHOT'
+
+    java {
+        sourceCompatibility = '17'
+    }
+
+    apply plugin: 'java'
+    apply plugin: 'java-library' //하위 모듈이 상위 모듈의 라이브러리를 의존할 수 있게 하는 플러그인
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    test {
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    //ide에 코틀린 플러그인이 적용되어 있어 설정함
+    tasks.register("prepareKotlinBuildScriptModel") {}
+}
+
+// api 모듈은 core 모듈에 의존
+project(':api') {
+    dependencies {
+        implementation project(':core')
+    }
+}
+
+// batch 모듈은 core 모듈에 의존
+project(':batch') {
+    dependencies {
+        implementation project(':core')
+    }
+}
