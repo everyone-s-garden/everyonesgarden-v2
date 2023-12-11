@@ -1,0 +1,26 @@
+name: 배포자동화
+on:
+  push:
+    branches:      
+      - main   
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: executing remote ssh commands using password
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          echo "Connected to the server"
+          ls
+          cd app
+          echo "build 실행"
+          ./build.sh
+          ehoc "배포 실행"
+          ./deploy.sh
