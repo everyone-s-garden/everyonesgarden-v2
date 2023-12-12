@@ -5,6 +5,9 @@ dependencies {
     implementation platform("software.amazon.awssdk:bom:2.19.1")
     implementation 'software.amazon.awssdk:s3-transfer-manager'
 
+    // spatial type
+    implementation 'org.hibernate:hibernate-spatial:6.3.1.Final'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
