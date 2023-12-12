@@ -1,6 +1,7 @@
 package com.garden.back.garden.service;
 
 import com.garden.back.garden.repository.GardenRepository;
+import com.garden.back.garden.service.dto.GardenByNameParam;
 import com.garden.back.garden.service.dto.GardenByNameResults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +19,10 @@ public class GardenReadService {
     }
 
     @Transactional(readOnly = true)
-    public GardenByNameResults getGardensByName(String gardenName, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, GARDEN_BY_NAME_PAGE_SIZE);
+    public GardenByNameResults getGardensByName(GardenByNameParam gardenByNameParam) {
+        Pageable pageable = PageRequest.of(gardenByNameParam.pageNumber(), GARDEN_BY_NAME_PAGE_SIZE);
 
-        return GardenByNameResults.to(gardenRepository.findGardensByName(gardenName, pageable));
-
+        return GardenByNameResults.to(gardenRepository.findGardensByName(gardenByNameParam.gardenName(), pageable));
     }
 
 }
