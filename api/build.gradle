@@ -6,10 +6,7 @@ plugins {
 }
 
 group = 'com.graden'
-
-def formattedDateTime = LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
-version = "0.0.1-SNAPSHOT-${formattedDateTime}"
-
+version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
 jar.enabled=false
 
 java {
@@ -21,5 +18,7 @@ dependencies {
     //Spring MVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
