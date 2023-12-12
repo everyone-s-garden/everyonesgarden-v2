@@ -3,6 +3,7 @@ package com.garden.back.testutil.garden;
 import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.service.dto.GardenByNameParam;
 import com.garden.back.garden.util.GeometryUtil;
 
 public class GardenFixture {
@@ -21,5 +22,12 @@ public class GardenFixture {
                 "진겸이네 텃밭농장",
                         GardenType.PUBLIC,
                         GardenStatus.ACTIVE);
+    }
+
+    public static GardenByNameParam gardenByNameParam() {
+        return new GardenByNameParam(
+                "진겸이네 텃밭농장",
+                0
+        );
     }
 }

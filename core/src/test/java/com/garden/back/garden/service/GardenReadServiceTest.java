@@ -2,6 +2,7 @@ package com.garden.back.garden.service;
 
 import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.repository.GardenRepository;
+import com.garden.back.garden.service.dto.GardenByNameParam;
 import com.garden.back.garden.service.dto.GardenByNameResults;
 import com.garden.back.testutil.garden.GardenFixture;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,9 +38,12 @@ public class GardenReadServiceTest {
 
     @Test
     @DisplayName("텃밭 이름으로 검색했을 때 해당 텃밭이 검색 목록에 포함되는지 확인한다.")
-    void getGardensByName() {
+    void getGardensByName_gardenName_containsTrue() {
+        // Given
+        GardenByNameParam gardenByNameParam = GardenFixture.gardenByNameParam();
+
         // WHEN
-        GardenByNameResults gardensByName = gardenReadService.getGardensByName(GARDEN_NAME_FOR_SEARCH, INIT_PAGE_NUMBER);
+        GardenByNameResults gardensByName = gardenReadService.getGardensByName(gardenByNameParam);
 
         // THEN
         gardensByName.gardensByName().forEach(
