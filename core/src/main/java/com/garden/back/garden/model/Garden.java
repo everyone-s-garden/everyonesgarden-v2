@@ -8,10 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,14 +25,11 @@ public class Garden {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gardenId;
 
-    @Column(name = "address")
+    @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "latitude")
-    private Double latitude;
-
-    @Column(name = "longitude")
-    private Double longitude;
+    @Column(name = "point", nullable = false)
+    private Point point;
 
     @Column(name = "garden_name", nullable = false)
     private String gardenName;
@@ -47,7 +43,7 @@ public class Garden {
     private GardenStatus gardenStatus;
 
     @Column(name = "link_for_request")
-    private String linkFoRequest;
+    private String linkForRequest;
 
     @Column(name = "price")
     private String price;
@@ -108,6 +104,37 @@ public class Garden {
         if (reportedScore > DELETED_MAX_SCORE) {
             changeDelete();
         }
+    }
+
+    protected Garden(
+            String address,
+            Point point,
+            String gardenName,
+            GardenType gardenType,
+            GardenStatus gardenStatus
+    ) {
+        this.address =address;
+        this.point = point;
+        this.gardenName = gardenName;
+        this.gardenType = gardenType;
+        this.gardenStatus = gardenStatus;
+    }
+
+
+    public static Garden of(
+            String address,
+            Point point,
+            String gardenName,
+            GardenType gardenType,
+            GardenStatus gardenStatus
+    ){
+        return new Garden(
+                address,
+                point,
+                gardenName,
+                gardenType,
+                gardenStatus
+        );
     }
 
 }

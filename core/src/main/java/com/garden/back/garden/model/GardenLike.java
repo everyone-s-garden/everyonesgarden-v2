@@ -25,7 +25,7 @@ public class GardenLike {
     private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @Column(name = "garden_id")
+    @JoinColumn(name = "garden_id")
     private Garden garden;
 
     @CreatedDate
