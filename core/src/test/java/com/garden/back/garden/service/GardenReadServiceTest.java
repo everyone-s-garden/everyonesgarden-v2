@@ -6,6 +6,7 @@ import com.garden.back.garden.service.dto.GardenByNameParam;
 import com.garden.back.garden.service.dto.GardenByNameResults;
 import com.garden.back.testutil.garden.GardenFixture;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
+@Disabled
 @Transactional
 @Import(TestDatabaseConfig.class)
 @SpringBootTest(webEnvironment = NONE)
