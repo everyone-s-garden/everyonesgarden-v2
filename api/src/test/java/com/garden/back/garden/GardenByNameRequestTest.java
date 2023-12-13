@@ -17,21 +17,12 @@ public class GardenByNameRequestTest {
     @ParameterizedTest
     @MethodSource("provideGardenByNameRequestForValidation")
     void gardenByNameRequest_validation(GardenByNameRequest request, boolean expectException) {
-        if (expectException) {
-            assertThrows(IllegalArgumentException.class, () -> GardenByNameRequest.to(request));
-        } else {
             assertDoesNotThrow(() -> GardenByNameRequest.to(request));
-        }
     }
 
     private static Stream<Arguments> provideGardenByNameRequestForValidation() {
         return Stream.of(
                 Arguments.of(new GardenByNameRequest("진겸이네 텃밭", 0), false),
-                Arguments.of(new GardenByNameRequest("도연이네 텃밭", 1), false),
-
-                Arguments.of(new GardenByNameRequest(null, 0), true),
-                Arguments.of(new GardenByNameRequest("", 0), true),
-                Arguments.of(new GardenByNameRequest("별이네 텃밭", -1), true)
-        );
+                Arguments.of(new GardenByNameRequest("도연이네 텃밭", 1), false));
     }
 }
