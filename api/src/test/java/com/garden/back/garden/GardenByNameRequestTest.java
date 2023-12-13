@@ -1,15 +1,12 @@
-package com.garden.back.garden.dto;
+package com.garden.back.garden;
 
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
 import java.util.stream.Stream;
-
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class GardenByNameRequestTest {
 
