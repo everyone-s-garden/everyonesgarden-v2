@@ -1,6 +1,6 @@
 package com.garden.back.garden.dto.response;
 
-import com.garden.back.garden.service.dto.GardenByNameResults;
+import com.garden.back.garden.service.dto.response.GardenByNameResults;
 
 import org.springframework.data.domain.Slice;
 
