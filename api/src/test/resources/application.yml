@@ -1,0 +1,22 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/every?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 7351
+logging:
+  level:
+    org.hibernate:
+      type.descriptor.sql: trace #show parameter binding
+      SQL: DEBUG
+    org.springframework: debug
+    org.springframework.web: debug
