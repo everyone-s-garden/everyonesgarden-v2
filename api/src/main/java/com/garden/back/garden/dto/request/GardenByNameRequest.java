@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public record GardenByNameRequest(
-        @NotBlank(message = "텃밭 이름은 null이거나 빈 값일 수 없습니다." )
+        @NotBlank(message = "텃밭 이름은 null이거나 빈 값일 수 없습니다.")
         String gardenName,
 
         @NotNull(message = "페이지 수는 필수입니다.")

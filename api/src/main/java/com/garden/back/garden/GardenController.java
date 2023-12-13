@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v2/garden")
+@RequestMapping("/v2/gardens")
 public class GardenController {
 
     private final GardenReadService gardenReadService;
@@ -43,8 +43,8 @@ public class GardenController {
         GardenGetAllParam gardenGetAllParam = GardenGetAllRequest.to(gardenGetAllRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
-                        .body(GardenGetAllResponses.to(
-                                gardenReadService.getAllGarden(gardenGetAllParam)));
+                .body(GardenGetAllResponses.to(
+                        gardenReadService.getAllGarden(gardenGetAllParam)));
     }
 
 }

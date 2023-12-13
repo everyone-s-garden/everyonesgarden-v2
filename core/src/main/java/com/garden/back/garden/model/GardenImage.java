@@ -28,7 +28,7 @@ public class GardenImage {
             String imageUrl,
             Garden garden
     ) {
-        Assert.hasLength(imageUrl,"imageUrl은 null이거나 빈 값일 수 없습니다.");
+        Assert.hasLength(imageUrl, "imageUrl은 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(garden, "garden은 null일 수 없습니다.");
 
         this.imageUrl = imageUrl;
@@ -38,7 +38,7 @@ public class GardenImage {
     public static GardenImage of(
             String imageUrl,
             Garden garden
-    ){
+    ) {
         return new GardenImage(
                 imageUrl,
                 garden

@@ -38,7 +38,7 @@ public class GardenLike {
             Garden garden
     ) {
         isNullOrNegativeMemberId(memberId);
-        Assert.notNull(garden,"garden은 null일 수 없습니다.");
+        Assert.notNull(garden, "garden은 null일 수 없습니다.");
 
         this.memberId = memberId;
         this.garden = garden;

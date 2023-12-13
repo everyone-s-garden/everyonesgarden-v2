@@ -39,7 +39,7 @@ public record GardenGetAllResponses(
             GardenFacility gardenFacility,
             boolean isLiked
     ) {
-        public static GardenGetAllResponse to(GardenAllResults.GardenAllResult result){
+        public static GardenGetAllResponse to(GardenAllResults.GardenAllResult result) {
             return new GardenGetAllResponse(
                     result.gardenId(),
                     result.address(),

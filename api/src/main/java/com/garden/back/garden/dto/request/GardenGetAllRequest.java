@@ -19,4 +19,5 @@ public record GardenGetAllRequest(
                 gardenGetAllRequest.memberId()
         );
     }
+
 }
