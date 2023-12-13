@@ -18,7 +18,7 @@ public class GardenFixture {
     }
 
     public static Garden privateGarden() {
-        return new Garden(
+        return Garden.of(
                 "인천광역시 서구 만수동 200",
                 LATITUDE,
                 LONGITUDE,
@@ -27,10 +27,10 @@ public class GardenFixture {
                 GardenType.PRIVATE,
                 GardenStatus.ACTIVE,
                 "www.everygarden.me",
-                "100.00",
+                "100",
                 "000-000-000",
-                "200",
-                "화장실이 깨끗해요",
+                "200.23",
+                "화장실이 깨끗하고 농기구를 빌려줍니다.",
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(30),
                 LocalDateTime.now().plusDays(31),
@@ -45,7 +45,7 @@ public class GardenFixture {
     }
 
     public static Garden publicGarden() {
-        return new Garden(
+        return Garden.of(
                 "인천광역시 서구 만수동 200",
                 LATITUDE,
                 LONGITUDE,
