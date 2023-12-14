@@ -24,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @Transactional
-@Import(TestDatabaseConfig.class)
 @SpringBootTest(webEnvironment = NONE)
 public class GardenReadServiceTest {
 
