@@ -1,6 +1,6 @@
-package com.garden.back.garden.service.dto;
+package com.garden.back.garden.service.dto.response;
 
-import com.garden.back.garden.repository.dto.GardenByName;
+import com.garden.back.garden.repository.garden.dto.GardenByName;
 import org.springframework.data.domain.Slice;
 
 public record GardenByNameResults(

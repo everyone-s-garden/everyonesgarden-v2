@@ -1,4 +1,4 @@
-package com.garden.back.garden.repository.dto;
+package com.garden.back.garden.repository.garden.dto;
 
 public interface GardenByName {
 
