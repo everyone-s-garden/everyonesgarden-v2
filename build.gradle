@@ -36,8 +36,10 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+compileJava.options.encoding = 'UTF-8'
+
 subprojects {
-    group = 'com.graden'
+    group = 'com.garden'
     version = '0.0.1-SNAPSHOT'
 
     java {
