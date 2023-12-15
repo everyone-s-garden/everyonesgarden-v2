@@ -1,12 +1,21 @@
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
+    //webflux
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
     // AWS
     implementation platform("software.amazon.awssdk:bom:2.19.1")
     implementation 'software.amazon.awssdk:s3-transfer-manager'
 
     // spatial type
     implementation 'org.hibernate:hibernate-spatial:6.3.1.Final'
+
+    //Fixture monkey
+    implementation 'com.navercorp.fixturemonkey:fixture-monkey:1.0.5'
 
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'

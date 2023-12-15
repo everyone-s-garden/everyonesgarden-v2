@@ -1,8 +1,13 @@
 spring:
   profiles:
     active: local
-
+    include: credential, feign
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: none
+
+forecast:
+  weekly:
+    publish:
+      time: "0600"
