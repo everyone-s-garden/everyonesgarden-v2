@@ -58,12 +58,14 @@ public class OpenAPIAndNaverWeatherFetcher implements WeatherFetcher {
      */
     @Override
     public List<AllRegionsWeatherInfo> getAllRegionsWeatherInfo() {
-        String baseDate = naverAndOpenAPISupport.getBaseDate();
-        String baseTime = naverAndOpenAPISupport.getNearestHour();
+        String forecastDateTime = naverAndOpenAPISupport.getNearestForecastDateTime(LocalDateTime.now());
+
+        String baseDate = forecastDateTime.substring(0, 8); // "20231214"
+        String baseTime = forecastDateTime.substring(8);    // "0200"
 
         List<Pair<Region, WeatherForecastResponse>> pairs = regionProvider.findAll()
             .parallelStream()
-            .map(reg -> Pair.of(reg, openAPIClient.getWeatherForecast(secretKey, 1, 1000, "JSON", baseDate, baseTime, reg.nx(), reg.ny())))
+            .map(region -> Pair.of(region, openAPIClient.getWeatherForecast(secretKey, 1, 1000, "JSON", baseDate, baseTime, region.nx(), region.ny())))
             .toList();
 
         return pairs.stream()
@@ -78,6 +80,7 @@ public class OpenAPIAndNaverWeatherFetcher implements WeatherFetcher {
     public WeekWeatherInfo getWeekWeatherInfo(String longitude, String latitude) {
         //주간 예보 발표 시간에 맞춰 baseDate를 오늘로 할지 내일로 할지 결정
         String baseDate = naverAndOpenAPISupport.getBaseDateForWeeklyForecast();
+
         String regionName = naverGeoClient.getGeoInfoByLongitudeAndLatitude(longitude + "," + latitude, "JSON", naverApiId, naverApiSecret).results().get(0).region().area1().name();
 
         Region region = regionProvider.findRegionByName(regionName).orElseThrow();

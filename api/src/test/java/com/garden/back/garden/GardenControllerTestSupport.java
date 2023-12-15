@@ -3,7 +3,7 @@ package com.garden.back.garden;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.garden.back.ControllerTest;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import com.garden.back.garden.dto.request.GardenGetAllRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class GardenControllerTest extends ControllerTest {
+public class GardenControllerTestSupport extends ControllerTestSupport {
 
     @DisplayName("학원 이름 검색에 요청값에 대해 검증한다.")
     @ParameterizedTest

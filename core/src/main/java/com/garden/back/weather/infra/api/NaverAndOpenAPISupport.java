@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -22,20 +21,8 @@ import java.util.stream.Collectors;
 @Component
 public class NaverAndOpenAPISupport {
 
-    public String getBaseDate() {
-        LocalDateTime now = LocalDateTime.now();
-        return now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-    }
-
-    public String getNearestHour() {
-        LocalDateTime twoHoursAgo = LocalDateTime.now().minusHours(2);
-        LocalDateTime nearestHour = twoHoursAgo.truncatedTo(ChronoUnit.HOURS);
-        return nearestHour.format(DateTimeFormatter.ofPattern("HHmm"));
-    }
-
     public AllRegionsWeatherInfo parseWeatherForecastResponse(Region region, WeatherForecastResponse response) {
         Map<String, String> skyConditionMap = getSkyConditionMap();
-
         String skyValue = "";
         String temperatureValue = "";
         for (var item : response.response().body().items().item()) {

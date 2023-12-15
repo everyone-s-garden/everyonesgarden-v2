@@ -24,25 +24,6 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @InjectMocks
     NaverAndOpenAPISupport naverAndOpenAPISupport;
 
-    @DisplayName("LocalDateTime을 yyMMdd 형식으로 반환한다.")
-    @Test
-    void getBaseDate() {
-        String expected = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String actual = naverAndOpenAPISupport.getBaseDate();
-        assertThat(expected).isEqualTo(actual);
-    }
-
-    @DisplayName("2시간 전 시간과 가까운 정시를 반환한다.")
-    @Test
-    void getNearestHour() {
-        LocalDateTime twoHoursAgoRounded = LocalDateTime.now().minusHours(2).truncatedTo(ChronoUnit.HOURS);
-        String expected = twoHoursAgoRounded.format(DateTimeFormatter.ofPattern("HHmm"));
-
-        String actual = naverAndOpenAPISupport.getNearestHour();
-
-        assertThat(actual).isEqualTo(expected);
-    }
-
     @DisplayName("기상청으로 부터 받은 응답 중 PTY, T1H 만을 필터링 해서 하늘 상태, 온도를 얻을 수 있다.")
     @Test
     void parseWeatherForecastResponse() {
@@ -83,18 +64,21 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @Test
     @DisplayName("현재 시간에 따라 오늘 새벽 6시 또는 어제 새벽 6시의 주간예보 기준일 반환한다.")
     void testGetBaseDateForWeeklyForecast() {
-        // 현재 시간을 가져온다
+        // given 현재 시간을 가져온다
         LocalDateTime now = LocalDateTime.now();
         String actual = naverAndOpenAPISupport.getBaseDateForWeeklyForecast();
 
-        // 현재 시간이 오전 6시 이전인 경우
+        // when
         if (now.getHour() < 6) {
             // 예상되는 결과는 전날의 날짜
             String expected = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+            // then
             assertThat(actual).isEqualTo(expected);
         } else {
             // 현재 시간이 오전 6시 이후인 경우
             // 예상되는 결과는 현재 날짜
+            //then
             String expected = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             assertThat(actual).isEqualTo(expected);
         }
@@ -103,13 +87,13 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @Test
     @DisplayName("가장 가까운 과거의 예보 시간을 반환한다.")
     void getNearestForecastDateTime() {
-        // Arrange: Define a specific time
+        // given
         LocalDateTime testTime = LocalDateTime.of(2023, 12, 15, 9, 30); // Example date and time
 
-        // Act
+        // when
         String actual = naverAndOpenAPISupport.getNearestForecastDateTime(testTime);
 
-        // Assert
+        // then
         LocalDateTime expectedTime = LocalDateTime.of(2023, 12, 15, 8, 0); // The expected nearest time
         String expected = expectedTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         assertThat(actual).isEqualTo(expected);

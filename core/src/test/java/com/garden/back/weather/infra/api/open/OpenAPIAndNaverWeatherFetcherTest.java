@@ -60,9 +60,9 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
 
         // then
         AllRegionsWeatherInfo expectedWeatherInfo = sut.giveMeBuilder(AllRegionsWeatherInfo.class)
-            .set("regionName", "광주광역시") // Set the expected region name
-            .set("skyValue", "맑음") // Set the expected sky value, matching with "0" for "PTY" category in your mock response
-            .set("temperatureValue", "20") // Set the expected temperature value
+            .set("regionName", "광주광역시")
+            .set("skyValue", "맑음")
+            .set("temperatureValue", "20")
             .sample();
         assertThat(result).contains(expectedWeatherInfo)
             .hasSize(17);

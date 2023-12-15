@@ -1,0 +1,31 @@
+[[overview-http-status-code]]
+== HTTP Status Code
+
+모두의 텃밭에서 사용하는 HTTP Status Code는 다음과 같습니다.
+|===
+| 상태 코드 | 용례
+
+| `200 OK`
+| 요청을 성공적으로 처리함
+
+| `201 Created`
+| 새로운 리소스를 생성함. 응답의 `Location` 헤더에 해당 리소스의 URI가 담긴다.
+
+| `204 No Content`
+| 요청을 성공적으로 처리함 (응답이 필요하지 않는 경우)
+
+| `400 Bad Request`
+| 잘못된 요청일 경우.
+
+| `401 No Authentication`
+| 로그인을 하지 않은 사용자가 요청을 할 경우.
+
+| `403 Forbidden`
+| 로그인은 했으나 해당 리소스에 대한 접근 권한이 없는 경우.
+
+
+| `500 Internal Server Error`
+| 서버에서 요청에 대해 제대로 수행할 수 없을 경우.
+|===
+
+400 이상의 Status Code에 대해서는 body에 관련 오류 메세지가 들어 있습니다.
