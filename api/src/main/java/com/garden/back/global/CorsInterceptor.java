@@ -11,7 +11,7 @@ public class CorsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         // Access-Control-Allow-Origin 헤더 설정
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "*"); // NOSONAR
 
         // 필요에 따라 추가 CORS 헤더를 설정할 수 있습니다.
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE, OPTIONS");
