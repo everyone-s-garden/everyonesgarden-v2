@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+
+application-credential.yml
+
+# FixtureMonkey가 생성하는 의문의 파일
+*.jqwik-database

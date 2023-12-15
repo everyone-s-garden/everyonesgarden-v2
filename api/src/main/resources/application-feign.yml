@@ -1,0 +1,26 @@
+spring:
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: false
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      openAPI_getWeatherForecast:
+        minimumNumberOfCalls: 69
+      openAPI_getMidLandForecast:
+        minimumNumberOfCalls: 69
+      openAPI_getWeekWeatherForecast:
+        minimumNumberOfCalls: 69
+
+  timelimiter:
+    instances:
+      openAPI_getWeatherForecast:
+        timeoutDuration: 20s
+      openAPI_getMidLandForecast:
+        timeoutDuration: 20s
+      openAPI_getWeekWeatherForecast:
+        timeoutDuration: 20s

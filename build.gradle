@@ -11,7 +11,7 @@ sonar {
         property "sonar.projectKey", "everyone-s-garden_back-V2"
         property "sonar.organization", "everyone-s-garden"
         property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.exclusions', '**/health/**'
+        property 'sonar.coverage.exclusions', '**/health/**, **/*Request.java, **/*Response.java, **/*Config*.java, **/*Exception*.java, **/*Info.java, **/*Client.java'
         property 'sonar.exclusions', '**/*Application*.java'
     }
 }
@@ -74,13 +74,30 @@ subprojects {
         }
     }
 
+    ext {
+        set('springCloudVersion', "2023.0.0")
+    }
+
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter'
+
+        //feign
+        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+        //circuitbreaker
+        implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
         // Lombok
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
     }
 
     configurations {
