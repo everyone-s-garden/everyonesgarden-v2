@@ -12,7 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class GardenControllerTestSupport extends ControllerTestSupport {
+class GardenControllerTest extends ControllerTestSupport {
 
     @DisplayName("학원 이름 검색에 요청값에 대해 검증한다.")
     @ParameterizedTest

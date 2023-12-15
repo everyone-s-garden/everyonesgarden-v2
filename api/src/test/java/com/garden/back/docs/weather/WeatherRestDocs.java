@@ -215,8 +215,8 @@ class WeatherRestDocs extends RestDocsSupport {
                 .andDo(print())
                 .andDo(document("get-tomorrow-weather-and-five-weather-after-current-time",
                         queryParameters(
-                                parameterWithName("lat").description("위도"),
-                                parameterWithName("long").description("경도")
+                                parameterWithName("latitude").description("위도"),
+                                parameterWithName("longitude").description("경도")
                         ),
                         responseFields(
                                 fieldWithPath("weatherTimeResponses").description("날씨 시간별 응답 목록"),
@@ -288,8 +288,8 @@ class WeatherRestDocs extends RestDocsSupport {
                 .andDo(print())
                 .andDo(document("get-week-weather",
                         queryParameters(
-                                parameterWithName("lat").description("위도"),
-                                parameterWithName("long").description("경도")
+                                parameterWithName("latitude").description("위도"),
+                                parameterWithName("longitude").description("경도")
                         ),
                         responseFields(
                                 fieldWithPath("skyStatusTwoDaysAfter").type(JsonFieldType.STRING).description("이틀 후 하늘 상태"),
