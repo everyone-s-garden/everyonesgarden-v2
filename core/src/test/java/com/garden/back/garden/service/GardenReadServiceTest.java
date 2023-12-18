@@ -5,16 +5,18 @@ import com.garden.back.garden.model.GardenImage;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
+import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
@@ -84,6 +86,49 @@ public class GardenReadServiceTest {
                             assertThat(gardenAllResult.useStartDate()).isEqualTo(savedPrivateGarden.getUseStartDate().format(TIME_FORMATTER));
                         }
                 );
+    }
+
+    @DisplayName("사용자 위치에 따른 화면 내에 존재하는 텃밭 목록을 올바르게 반환하는지 확인한다.")
+    @Test
+    void getGardenByComplexes_withinRegions() {
+        // Given
+        GardenByComplexesParam publicGardenByComplexesParam = GardenFixture.publicGardenByComplexesParam();
+
+        List<Point> points = RandomPointGenerator.generateRandomPoint(publicGardenByComplexesParam);
+        points.forEach(
+                point -> gardenRepository.save(GardenFixture.randomPublicGardenWithinComplexes(point)));
+
+        // When
+        GardenByComplexesResults gardensByComplexes = gardenReadService.getGardensByComplexes(publicGardenByComplexesParam);
+
+        // Then
+        assertThat(gardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
+    }
+
+    @DisplayName("텃밭 타입에 맞게 올바르게 조회되는지 확인한다.")
+    @Test
+    void getGardenByComplexes_gardenType() {
+        // Given
+        GardenByComplexesParam publicGardenByComplexesParam = GardenFixture.publicGardenByComplexesParam();
+        GardenByComplexesParam allGardenByComplexesParam = GardenFixture.allGardenByComplexesParam();
+        GardenByComplexesParam privateGardenByComplexesParam = GardenFixture.privateGardenByComplexesParam();
+
+        List<Point> points = RandomPointGenerator.generateRandomPoint(publicGardenByComplexesParam);
+        points.forEach(
+                point -> gardenRepository.save(GardenFixture.randomPublicGardenWithinComplexes(point)));
+
+        // When
+        GardenByComplexesResults publicGardensByComplexes
+                = gardenReadService.getGardensByComplexes(publicGardenByComplexesParam);
+        GardenByComplexesResults allGardensByComplexes
+                = gardenReadService.getGardensByComplexes(allGardenByComplexesParam);
+        GardenByComplexesResults privateGardensByComplexes
+                = gardenReadService.getGardensByComplexes(privateGardenByComplexesParam);
+
+        // Then
+        assertThat(privateGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(0);
+        assertThat(allGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
+        assertThat(publicGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
     }
 
 }
