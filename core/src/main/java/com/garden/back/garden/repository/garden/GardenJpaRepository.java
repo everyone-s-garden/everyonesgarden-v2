@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-
-public interface GardenJpaRepository extends JpaRepository<Garden, Long> {
+public interface GardenJpaRepository extends JpaRepository<Garden, Long>, GardenCustomRepository, GardenRepository {
 
     @Query(value = "select " +
             "g.garden_id as gardenId, " +
