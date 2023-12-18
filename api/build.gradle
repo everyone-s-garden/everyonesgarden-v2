@@ -5,9 +5,9 @@ plugins {
     id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
-group = 'com.graden'
-version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
-jar.enabled=false
+group = 'com.garden'
+version '1.0.1-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
+jar.enabled = false
 
 java {
     sourceCompatibility = '17'
