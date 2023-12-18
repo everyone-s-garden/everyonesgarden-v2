@@ -1,10 +1,17 @@
 package com.garden.back.garden.model.vo;
 
-public enum GardenType {
-    PUBLIC, PRIVATE;
+import java.util.Objects;
 
-    public void isValidGardenType(String gardenType){
-        GardenType.valueOf(gardenType);
+public enum GardenType {
+    All, PUBLIC, PRIVATE;
+
+    public static String isAllType(String gardenType) {
+        Objects.requireNonNull(gardenType, "garden type이 null 값일 수 없습니다.");
+
+        if (gardenType.equals(GardenType.All.name())) {
+            return String.format("'%s','%s'", GardenType.PUBLIC, GardenType.PRIVATE);
+        }
+        return String.format("'%s'", GardenType.valueOf(gardenType));
     }
 
 }
