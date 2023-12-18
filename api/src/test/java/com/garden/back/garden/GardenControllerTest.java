@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.garden.back.ControllerTest;
+import com.garden.back.garden.dto.request.GardenByComplexesRequest;
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import com.garden.back.garden.dto.request.GardenGetAllRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +19,7 @@ public class GardenControllerTest extends ControllerTest {
     @ParameterizedTest
     @MethodSource("provideInvalidGardenByNameRequest")
     void getGardensByName_invalidRequest(GardenByNameRequest gardenByNameRequest) throws Exception {
-        mockMvc.perform(get("/v2/garden")
+        mockMvc.perform(get("/v2/gardens")
                         .content(objectMapper.writeValueAsString(gardenByNameRequest)))
                 .andExpect(status().is4xxClientError());
     }
@@ -27,8 +28,17 @@ public class GardenControllerTest extends ControllerTest {
     @ParameterizedTest
     @MethodSource("provideInvalidGardenGetAllRequest")
     void getAllGardens_invalidRequest(GardenGetAllRequest gardenGetAllRequest) throws Exception {
-        mockMvc.perform(get("/v2/garden/all")
+        mockMvc.perform(get("/v2/gardens/all")
                         .content(objectMapper.writeValueAsString(gardenGetAllRequest)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("텃밭 위치에 따른 검색 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidGardenByComplexesRequest")
+    void getGardensByComplexes_invalidRequest(GardenByComplexesRequest request) throws Exception {
+        mockMvc.perform(get("/v2/gardens/by-complexes")
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is4xxClientError());
     }
 
@@ -70,6 +80,51 @@ public class GardenControllerTest extends ControllerTest {
                 new GardenGetAllRequest(
                         0,
                         null
+                )
+        );
+    }
+
+    private static Stream<GardenByComplexesRequest> provideInvalidGardenByComplexesRequest() {
+        return Stream.of(
+                new GardenByComplexesRequest(
+                        "",
+                        0,
+                        37.444917,
+                        127.138868,
+                        39.444917,
+                        129.138868
+                ),
+                new GardenByComplexesRequest(
+                        null,
+                        0,
+                        37.444917,
+                        127.138868,
+                        39.444917,
+                        129.138868
+                ),
+                new GardenByComplexesRequest(
+                        "ALL",
+                        -1,
+                        37.444917,
+                        127.138868,
+                        39.444917,
+                        129.138868
+                ),
+                new GardenByComplexesRequest(
+                        "ALL",
+                        1,
+                        137.444917,
+                        127.138868,
+                        39.444917,
+                        129.138868
+                ),
+                new GardenByComplexesRequest(
+                        "ALL",
+                        1,
+                        37.444917,
+                        1127.138868,
+                        39.444917,
+                        129.138868
                 )
         );
     }
