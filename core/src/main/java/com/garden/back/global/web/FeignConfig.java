@@ -1,4 +1,4 @@
-package com.garden.back.global;
+package com.garden.back.global.web;
 
 import feign.Logger;
 import feign.Target;

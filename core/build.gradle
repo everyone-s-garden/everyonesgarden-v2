@@ -12,6 +12,13 @@ dependencies {
     // spatial type
     implementation 'org.hibernate:hibernate-spatial:6.3.1.Final'
 
+    // apache common
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    // fly way
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
