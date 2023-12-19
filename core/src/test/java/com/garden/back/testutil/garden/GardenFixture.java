@@ -4,16 +4,21 @@ import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.request.GardenGetAllParam;
+import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.garden.util.GeometryUtil;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class GardenFixture {
 
     private static final double LATITUDE = 37.4449168;
     private static final double LONGITUDE = 127.1388684;
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
@@ -45,6 +50,7 @@ public class GardenFixture {
                 0
         );
     }
+
     public static GardenGetAllParam gardenGetAllParam() {
         return new GardenGetAllParam(
                 0,
@@ -59,7 +65,7 @@ public class GardenFixture {
                 LATITUDE,
                 LONGITUDE,
                 LATITUDE + 2,
-                LONGITUDE+ 2
+                LONGITUDE + 2
         );
     }
 
@@ -70,7 +76,7 @@ public class GardenFixture {
                 LATITUDE,
                 LONGITUDE,
                 LATITUDE + 2,
-                LONGITUDE+ 2
+                LONGITUDE + 2
         );
     }
 
@@ -81,7 +87,7 @@ public class GardenFixture {
                 LATITUDE,
                 LONGITUDE,
                 LATITUDE + 2,
-                LONGITUDE+ 2
+                LONGITUDE + 2
         );
     }
 
@@ -109,6 +115,13 @@ public class GardenFixture {
                 null,
                 false,
                 0
+        );
+    }
+
+    public static GardenDetailParam gardenDetailParam() {
+        return new GardenDetailParam(
+                1L,
+                1L
         );
     }
 

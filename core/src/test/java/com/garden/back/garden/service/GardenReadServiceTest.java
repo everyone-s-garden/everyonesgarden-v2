@@ -6,8 +6,13 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
+import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.service.recentview.GardenHistoryManager;
+import com.garden.back.garden.service.recentview.RecentViewGarden;
+import com.garden.back.garden.service.recentview.RecentViewGardens;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
@@ -18,10 +23,8 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
@@ -41,6 +44,9 @@ public class GardenReadServiceTest {
 
     @Autowired
     private GardenReadService gardenReadService;
+
+    @Autowired
+    private GardenHistoryManager gardenHistoryManager;
 
     private Garden savedPrivateGarden;
 
@@ -129,6 +135,34 @@ public class GardenReadServiceTest {
         assertThat(privateGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(0);
         assertThat(allGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
         assertThat(publicGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
+    }
+
+    @DisplayName("텃밭을 조회할 때 텃밭 상세 내용을 확인할 수 있고 동시에 최근 본 텃밭 내역에 포함되어 그 이력을 조회할 수 있다.")
+    @Test
+    void getGardenDetail() {
+        // Given
+        GardenDetailParam gardenDetailParam = GardenFixture.gardenDetailParam();
+        gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+
+        // When
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(gardenDetailParam);
+        RecentViewGardens recentViewGardens = gardenHistoryManager.getRecentViewGarden(gardenDetailParam.memberId());
+        RecentViewGarden latestViewGarden = recentViewGardens.getRecentViewGardens().recentViewGardens().getFirst();
+
+        // Then
+        assertThat(gardenDetail.gardenId()).isEqualTo(savedPrivateGarden.getGardenId());
+        assertThat(gardenDetail.gardenDescription()).isEqualTo(savedPrivateGarden.getGardenDescription());
+        assertThat(gardenDetail.gardenName()).isEqualTo(savedPrivateGarden.getGardenName());
+        assertThat(gardenDetail.gardenStatus()).isEqualTo(savedPrivateGarden.getGardenStatus().name());
+        assertThat(gardenDetail.gardenType()).isEqualTo(savedPrivateGarden.getGardenType().name());
+        assertThat(gardenDetail.address()).isEqualTo(savedPrivateGarden.getAddress());
+
+        assertThat(RecentViewGarden.to(gardenDetail).gardenId()).isEqualTo(latestViewGarden.gardenId());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenName()).isEqualTo(latestViewGarden.gardenName());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenStatus()).isEqualTo(latestViewGarden.gardenStatus());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenType()).isEqualTo(latestViewGarden.gardenType());
+        assertThat(RecentViewGarden.to(gardenDetail).size()).isEqualTo(latestViewGarden.size());
+        assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
     }
 
 }
