@@ -13,7 +13,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -32,7 +31,6 @@ public class NCPImageUploader implements ImageUploader {
 
         String originalFilename = multipartFile.getOriginalFilename();
         String contentType = Objects.requireNonNull(multipartFile.getContentType());
-        //String fileFormatName = contentType.substring(contentType.lastIndexOf("/") + 1);
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
@@ -42,9 +40,7 @@ public class NCPImageUploader implements ImageUploader {
             String path = ncpProperties.getBaseDirectory() + directory + originalFilename; //ncp 버킷 내에 baseDirectory에 있는 directory 경로에 originalFilename이라는 이름으로 저장 예: /asd/fgh/efg.jpg 와 같이 저장 됨
             PutObjectRequest putObjectRequest = new PutObjectRequest(ncpProperties.getBucket(), path, multipartFile.getInputStream(), objectMetadata);
             ncpUploader.putObject(putObjectRequest.withCannedAcl(CannedAccessControlList.PublicRead));
-            String url = ncpUploader.getUrl(ncpProperties.getBucket(), path).toString();
-            System.out.println(url);
-            return url;
+            return ncpUploader.getUrl(ncpProperties.getBucket(), path).toString();
         } catch (Exception e) {
             throw new AmazonS3Exception("이미지 업로드 중 오류 발생");
         }

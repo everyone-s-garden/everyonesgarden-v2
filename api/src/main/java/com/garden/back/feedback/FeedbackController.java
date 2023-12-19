@@ -1,11 +1,13 @@
 package com.garden.back.feedback;
 
 import com.garden.back.feedback.request.FeedbackCreateRequest;
-import com.garden.back.global.image.ImageUploader;
+import com.garden.back.feedback.service.FeedbackService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,10 +31,11 @@ public class FeedbackController {
         @RequestPart(value = "images", required = false) List<MultipartFile> multipartFiles,
         @RequestPart(value = "texts", required = true) @Valid FeedbackCreateRequest feedbackCreateRequest
     ) {
+        Long memberId = 1L;
         URI location = ServletUriComponentsBuilder
             .fromCurrentRequest()
             .path("/{id}")
-            .buildAndExpand(feedbackService.createFeedback(feedbackCreateRequest.toServiceRequest(multipartFiles)))
+            .buildAndExpand(feedbackService.createFeedback(feedbackCreateRequest.toServiceRequest(multipartFiles, memberId)))
             .toUri();
         return ResponseEntity.created(location).build();
     }

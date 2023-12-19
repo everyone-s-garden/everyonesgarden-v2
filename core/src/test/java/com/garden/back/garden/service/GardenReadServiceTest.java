@@ -6,12 +6,16 @@ import com.garden.back.garden.model.GardenLike;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+<<<<<<< HEAD
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
+=======
+import com.garden.back.garden.service.dto.response.GardenAllResults;
+>>>>>>> f642a83 (feat: 피드백 기능 추가)
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
