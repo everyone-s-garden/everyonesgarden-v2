@@ -4,10 +4,7 @@ import com.garden.back.garden.dto.request.GardenByNameRequest;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;
 import com.garden.back.garden.dto.request.GardenDetailRequest;
 import com.garden.back.garden.dto.request.GardenGetAllRequest;
-import com.garden.back.garden.dto.response.GardenByComplexesResponses;
-import com.garden.back.garden.dto.response.GardenByNameResponses;
-import com.garden.back.garden.dto.response.GardenDetailResponse;
-import com.garden.back.garden.dto.response.GardenGetAllResponses;
+import com.garden.back.garden.dto.response.*;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenGetAllParam;
@@ -31,8 +28,7 @@ public class GardenController {
     }
 
     @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByNameResponses> getGardenNames(
             @Valid @ModelAttribute GardenByNameRequest gardenByNameRequest) {
         GardenByNameParam gardenByNameParam = GardenByNameRequest.to(gardenByNameRequest);
@@ -43,8 +39,7 @@ public class GardenController {
 
     @GetMapping(
             path = "/all",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
             @Valid @ModelAttribute GardenGetAllRequest gardenGetAllRequest) {
         GardenGetAllParam gardenGetAllParam = GardenGetAllRequest.to(gardenGetAllRequest);
@@ -56,8 +51,7 @@ public class GardenController {
 
     @GetMapping(
             path = "/by-complexes",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByComplexesResponses> getGardensByComplexes(
             @Valid @ModelAttribute GardenByComplexesRequest request) {
         GardenByComplexesResults gardensByComplexes
@@ -70,16 +64,25 @@ public class GardenController {
 
     @GetMapping(
             path = "{gardenId}",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
           @PositiveOrZero @PathVariable Long gardenId,
-          Long memberId
-    ) {
+          Long memberId) {
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenDetailResponse.to(gardenDetail));
     }
+
+    @GetMapping(
+            path = "/recent",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecentGardenResponses> getRecentGardens(
+            Long memberId){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
+    }
+
+
 
 }
