@@ -2,15 +2,19 @@ package com.garden.back.garden;
 
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;
+import com.garden.back.garden.dto.request.GardenDetailRequest;
 import com.garden.back.garden.dto.request.GardenGetAllRequest;
 import com.garden.back.garden.dto.response.GardenByComplexesResponses;
 import com.garden.back.garden.dto.response.GardenByNameResponses;
+import com.garden.back.garden.dto.response.GardenDetailResponse;
 import com.garden.back.garden.dto.response.GardenGetAllResponses;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenGetAllParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
+import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -62,6 +66,20 @@ public class GardenController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenByComplexesResponses.to(gardensByComplexes));
 
+    }
+
+    @GetMapping(
+            path = "{gardenId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GardenDetailResponse> getGardenDetail(
+          @PositiveOrZero @PathVariable Long gardenId,
+          Long memberId
+    ) {
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenDetailResponse.to(gardenDetail));
     }
 
 }
