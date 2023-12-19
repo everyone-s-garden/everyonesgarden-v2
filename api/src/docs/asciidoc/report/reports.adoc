@@ -12,3 +12,4 @@ include::{snippets}/report-garden/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/report-garden/http-response.adoc[]
+include::{snippets}/report-garden/response-headers.adoc[]

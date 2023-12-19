@@ -1,0 +1,15 @@
+[[feedback-create]]
+=== 피드백 받기
+
+피드백을 받는 기능입니다.
+
+==== Request
+include::{snippets}/create-feedback/http-request.adoc[]
+include::{snippets}/create-feedback/request-part-texts-fields.adoc[]
+include::{snippets}/create-feedback/request-parts.adoc[]
+
+
+==== Response (Success)
+include::{snippets}/create-feedback/http-response.adoc[]
+include::{snippets}/create-feedback/response-headers.adoc[]
+
