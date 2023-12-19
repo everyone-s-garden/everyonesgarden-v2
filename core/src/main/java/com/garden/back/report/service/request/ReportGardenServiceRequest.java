@@ -7,7 +7,6 @@ public record ReportGardenServiceRequest(
     String content,
     GardenReportType reportType
 ) {
-
     public GardenReport toEntity(Long reporterId, Long gardenId) {
         return GardenReport.create(reporterId, content, reportType, gardenId);
     }

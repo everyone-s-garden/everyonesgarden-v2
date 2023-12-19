@@ -1,6 +1,8 @@
 package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.garden.back.feedback.FeedbackController;
+import com.garden.back.feedback.FeedbackService;
 import com.garden.back.garden.GardenController;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
@@ -19,7 +21,8 @@ import org.springframework.web.context.WebApplicationContext;
     controllers = {
         GardenController.class,
         WeatherController.class,
-        ReportController.class
+        ReportController.class,
+        FeedbackController.class
     }
 )
 public class ControllerTestSupport extends FixtureSupport {
@@ -44,5 +47,8 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected ReportService reportService;
+
+    @MockBean
+    protected FeedbackService feedbackService;
 
 }

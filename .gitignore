@@ -37,6 +37,6 @@ out/
 .vscode/
 
 application-credential.yml
-
+대한민국행정구역.geojson
 # FixtureMonkey가 생성하는 의문의 파일
 *.jqwik-database
