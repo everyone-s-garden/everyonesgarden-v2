@@ -1,10 +1,10 @@
 package com.garden.back.global;
 
+import com.garden.back.global.image.ImageUploader;
 import com.garden.back.weather.infra.api.naver.NaverGeoClient;
 import com.garden.back.weather.infra.api.open.OpenAPIClient;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
@@ -20,5 +20,6 @@ public abstract class IntegrationTestSupport extends FixtureSupport {
     protected NaverGeoClient naverGeoClient;
 
     @MockBean
-    protected ApplicationEventPublisher eventPublisher;
+    protected ImageUploader imageUploader;
+
 }

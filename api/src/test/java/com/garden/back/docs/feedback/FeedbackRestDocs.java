@@ -2,7 +2,7 @@ package com.garden.back.docs.feedback;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.feedback.FeedbackController;
-import com.garden.back.feedback.FeedbackService;
+import com.garden.back.feedback.service.FeedbackService;
 import com.garden.back.feedback.request.FeedbackCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

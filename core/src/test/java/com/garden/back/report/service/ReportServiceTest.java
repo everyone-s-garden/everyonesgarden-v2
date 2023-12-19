@@ -1,9 +1,7 @@
 package com.garden.back.report.service;
 
 import com.garden.back.global.IntegrationTestSupport;
-import com.garden.back.global.event.Events;
 import com.garden.back.report.model.GardenReport;
-import com.garden.back.report.model.GardenReportCreatedEvent;
 import com.garden.back.report.model.GardenReportType;
 import com.garden.back.report.repository.ReportRepository;
 import com.garden.back.report.service.request.ReportGardenServiceRequest;
@@ -14,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 
 @Transactional
 class ReportServiceTest extends IntegrationTestSupport {

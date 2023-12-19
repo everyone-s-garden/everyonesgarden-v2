@@ -2,7 +2,7 @@ package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.back.feedback.FeedbackController;
-import com.garden.back.feedback.FeedbackService;
+import com.garden.back.feedback.service.FeedbackService;
 import com.garden.back.garden.GardenController;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
