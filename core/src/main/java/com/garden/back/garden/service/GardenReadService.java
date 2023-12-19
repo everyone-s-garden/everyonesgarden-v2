@@ -5,12 +5,10 @@ import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.service.dto.request.*;
-import com.garden.back.garden.service.dto.response.GardenAllResults;
-import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
-import com.garden.back.garden.service.dto.response.GardenByNameResults;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
+import com.garden.back.garden.service.recentview.RecentViewGardens;
 import com.garden.back.garden.util.PageMaker;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -59,6 +57,10 @@ public class GardenReadService {
                 RecentViewGarden.to(gardenDetailResult));
 
         return gardenDetailResult;
+    }
+
+    public RecentGardenResults getRecentGardens(Long memberId) {
+        return RecentGardenResults.to(gardenHistoryManager.getRecentViewGarden(memberId));
     }
 
 }
