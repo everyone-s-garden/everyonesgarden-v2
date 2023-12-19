@@ -6,13 +6,12 @@ import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.request.GardenGetAllParam;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.util.GeometryUtil;
 import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class GardenFixture {
 
@@ -118,10 +117,34 @@ public class GardenFixture {
         );
     }
 
-    public static GardenDetailParam gardenDetailParam() {
+    public static GardenDetailParam gardenDetailParam(Long gardenId) {
         return new GardenDetailParam(
                 1L,
-                1L
+                gardenId
+        );
+    }
+
+    public static RecentViewGarden publicRecentViewGarden() {
+        return new RecentViewGarden(
+                1L,
+                "100",
+                "도연이네",
+                "www.everyGarden.com",
+                "10000",
+                GardenStatus.ACTIVE.name(),
+                GardenType.PUBLIC.name()
+        );
+    }
+
+    public static RecentViewGarden privateRecentViewGarden() {
+        return new RecentViewGarden(
+                1L,
+                "100",
+                "도연이네",
+                "www.everyGarden.com",
+                "10000",
+                GardenStatus.ACTIVE.name(),
+                GardenType.PRIVATE.name()
         );
     }
 

@@ -10,6 +10,7 @@ import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.service.dto.response.RecentGardenResults;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
@@ -137,11 +138,11 @@ public class GardenReadServiceTest {
         assertThat(publicGardensByComplexes.gardenByComplexesResults().size()).isEqualTo(points.size());
     }
 
-    @DisplayName("텃밭을 조회할 때 텃밭 상세 내용을 확인할 수 있고 동시에 최근 본 텃밭 내역에 포함되어 그 이력을 조회할 수 있다.")
+    @DisplayName("텃밭을 조회할 때 텃밭 상세 내용을 확인할 수 있고 동시에 최근 본 텃밭 내역에 포함된다.")
     @Test
     void getGardenDetail() {
         // Given
-        GardenDetailParam gardenDetailParam = GardenFixture.gardenDetailParam();
+        GardenDetailParam gardenDetailParam = GardenFixture.gardenDetailParam(savedPrivateGarden.getGardenId());
         gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
 
         // When
@@ -164,5 +165,29 @@ public class GardenReadServiceTest {
         assertThat(RecentViewGarden.to(gardenDetail).size()).isEqualTo(latestViewGarden.size());
         assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
     }
+
+    @DisplayName("최근 본 텃밭 조회 내력을 확인할 수 있다.")
+    @Test
+    void getRecentGardens() {
+        // Given
+        GardenDetailParam gardenDetailParam = GardenFixture.gardenDetailParam(savedPrivateGarden.getGardenId());
+        gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(gardenDetailParam);
+
+        // When
+        RecentGardenResults recentGardens = gardenReadService.getRecentGardens(gardenDetailParam.memberId());
+        RecentGardenResults.RecentGardenResult latestViewGarden = recentGardens.recentGardenResults().get(0);
+
+        // Then
+        assertThat(RecentViewGarden.to(gardenDetail).gardenId()).isEqualTo(latestViewGarden.gardenId());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenName()).isEqualTo(latestViewGarden.gardenName());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenStatus()).isEqualTo(latestViewGarden.gardenStatus());
+        assertThat(RecentViewGarden.to(gardenDetail).gardenType()).isEqualTo(latestViewGarden.gardenType());
+        assertThat(RecentViewGarden.to(gardenDetail).size()).isEqualTo(latestViewGarden.size());
+        assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
+    }
+
+
 
 }
