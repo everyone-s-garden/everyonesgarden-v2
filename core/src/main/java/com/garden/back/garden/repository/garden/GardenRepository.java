@@ -6,8 +6,10 @@ import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+
 import java.util.List;
 
 public interface GardenRepository {
@@ -27,5 +29,7 @@ public interface GardenRepository {
     Garden getById(Long gardenId);
 
     void deleteById(Long gardenId);
+
+    List<GardenMineRepositoryResponse> findByWriterId(Long writerId);
 
 }

@@ -4,11 +4,13 @@ import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 public interface GardenJpaRepository extends JpaRepository<Garden, Long>, GardenCustomRepository, GardenRepository {
@@ -98,6 +100,20 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
 
     Garden getById(Long gardenId);
 
-
     void deleteById(Long gardenId);
+
+    @Query("""
+            select
+             g.gardenId as gardenId,
+             g.size as size,
+             g.gardenName as gardenName,
+             gi.imageUrl as imageUrl,
+             g.gardenStatus as gardenStatus
+            from Garden g
+            left join
+             GardenImage as gi on g.gardenId = gi.garden.gardenId
+            where g.writerId=:writerId
+            """)
+    List<GardenMineRepositoryResponse> findByWriterId(@Param("writerId") Long writerId);
+
 }
