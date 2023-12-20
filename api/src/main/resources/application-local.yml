@@ -1,6 +1,7 @@
 spring:
   flyway:
-    enabled: false
+    enabled: true
+    baseline-on-migrate: true
   jpa:
     open-in-view: false
     properties:
@@ -9,7 +10,7 @@ spring:
         format_sql: true
         use_sql_comments: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
   datasource:
     hikari:
       jdbc-url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;

@@ -104,6 +104,7 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     void testFilterForecastData() {
         // given: 1시간 전, 1시간 이후의 데이터를 받음
         String todayDate = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        String yesterdayDate = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
         String futureTimeFormatted = LocalTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
         String pastTimeFormatted = LocalTime.now().minusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
 
@@ -123,7 +124,7 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
             .set("response.body.items.item[2].fcstTime", futureTimeFormatted)
             .set("response.body.items.item[2].fcstValue", "20") // 20도
             .set("response.body.items.item[3].category", "TMP")
-            .set("response.body.items.item[3].fcstDate", todayDate)
+            .set("response.body.items.item[3].fcstDate", yesterdayDate)
             .set("response.body.items.item[3].fcstTime", pastTimeFormatted) //1시간 이전, 필터링 해야 함
             .set("response.body.items.item[3].fcstValue", "20") // 20도
             .sample();

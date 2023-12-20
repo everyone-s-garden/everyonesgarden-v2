@@ -1,5 +1,6 @@
 package com.garden.back.feedback;
 
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "feedbacks")
 @Getter
-public class Feedback {
+public class Feedback extends BaseTimeEntity {
 
     protected Feedback() {}
 
@@ -25,10 +26,6 @@ public class Feedback {
 
     @Embedded
     private FeedbackImages feedbackImages;
-
-    @Column(name = "created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     private Feedback(String content, Long memberId, FeedbackImages feedbackImages) {
         this.content = content;

@@ -1,14 +1,13 @@
 package com.garden.back.feedback;
 
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "feedback_images")
 @Getter
-@ToString
-public class FeedbackImage {
+public class FeedbackImage extends BaseTimeEntity {
 
     protected FeedbackImage() {}
 

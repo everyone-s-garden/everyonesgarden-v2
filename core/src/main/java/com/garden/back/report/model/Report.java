@@ -1,5 +1,6 @@
 package com.garden.back.report.model;
 
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "report_type", discriminatorType = DiscriminatorType.STRING)
 @Getter
-public abstract class Report {
+public abstract class Report extends BaseTimeEntity {
 
     protected Report() {}
 
@@ -25,10 +26,6 @@ public abstract class Report {
 
     @Column(name = "content")
     private String content;
-
-    @CreatedDate
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     protected Report(Long reporterId, String content) {
         if (StringUtils.length(content) > 255) throw new IllegalArgumentException("255글자를 초과한 내용은 입력이 불가능 합니다.");
