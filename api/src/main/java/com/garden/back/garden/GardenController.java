@@ -126,5 +126,18 @@ public class GardenController {
                 .body(new GardenLikeCreateResponse(true));
     }
 
+    @DeleteMapping(
+            path = "/likes",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenLikeDeleteResponse> deleteGardenLike(
+            Long memberId,
+            @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest) {
+        gardenCommandService.deleteGardenLike(
+                GardenLikeDeleteRequest.of(memberId, gardenLikeDeleteRequest));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new GardenLikeDeleteResponse(true));
+    }
 
 }
