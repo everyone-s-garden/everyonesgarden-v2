@@ -54,6 +54,9 @@ public class GardenReadServiceTest {
     private GardenReadService gardenReadService;
 
     @Autowired
+    private GardenCommandService gardenCommandService;
+
+    @Autowired
     private GardenHistoryManager gardenHistoryManager;
 
     private Garden savedPrivateGarden;
@@ -204,7 +207,7 @@ public class GardenReadServiceTest {
                 savedPrivateGarden.getGardenId() + 100L);
 
         // When_Then
-        assertThatThrownBy(() -> gardenReadService.deleteGarden(notExistedGardenDetailParam))
+        assertThatThrownBy(() -> gardenCommandService.deleteGarden(notExistedGardenDetailParam))
                 .isInstanceOf(EntityNotFoundException.class);
     }
 
@@ -217,7 +220,7 @@ public class GardenReadServiceTest {
                 savedPrivateGarden.getGardenId());
 
         // When_Then
-        assertThatThrownBy(() -> gardenReadService.deleteGarden(notWriterGardenDetailParam))
+        assertThatThrownBy(() -> gardenCommandService.deleteGarden(notWriterGardenDetailParam))
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
@@ -230,7 +233,7 @@ public class GardenReadServiceTest {
                 savedPrivateGarden.getGardenId());
 
         // When
-        gardenReadService.deleteGarden(gardenDeleteParam);
+        gardenCommandService.deleteGarden(gardenDeleteParam);
 
         // Then
         assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
