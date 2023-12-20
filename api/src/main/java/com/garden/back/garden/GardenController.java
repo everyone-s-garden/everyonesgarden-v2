@@ -7,6 +7,7 @@ import com.garden.back.garden.dto.request.GardenGetAllRequest;
 import com.garden.back.garden.dto.response.*;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
+import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenGetAllParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
@@ -63,7 +64,7 @@ public class GardenController {
     }
 
     @GetMapping(
-            path = "{gardenId}",
+            path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
           @PositiveOrZero @PathVariable Long gardenId,
@@ -83,6 +84,15 @@ public class GardenController {
                 .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
     }
 
+    @DeleteMapping(
+            path = "/{gardenId}")
+    public ResponseEntity<GardenDeleteResponse> deleteGarden(
+            @PositiveOrZero @PathVariable Long gardenId,
+            Long memberId) {
+        gardenReadService.deleteGarden(GardenDeleteParam.of(memberId,gardenId));
 
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new GardenDeleteResponse(true));
+    }
 
 }
