@@ -5,6 +5,7 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
@@ -12,21 +13,18 @@ import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.util.PageMaker;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class GardenReadService {
     private final GardenRepository gardenRepository;
-    private final GardenImageRepository gardenImageRepository;
     private final GardenHistoryManager gardenHistoryManager;
 
-    public GardenReadService(GardenRepository gardenRepository, GardenImageRepository gardenImageRepository, GardenHistoryManager gardenHistoryManager) {
+    public GardenReadService(GardenRepository gardenRepository, GardenHistoryManager gardenHistoryManager) {
         this.gardenRepository = gardenRepository;
-        this.gardenImageRepository = gardenImageRepository;
         this.gardenHistoryManager = gardenHistoryManager;
     }
 
@@ -66,6 +64,10 @@ public class GardenReadService {
 
     public RecentGardenResults getRecentGardens(Long memberId) {
         return RecentGardenResults.to(gardenHistoryManager.getRecentViewGarden(memberId));
+    }
+
+    public GardenMineResults getMyGarden(Long memberId) {
+        return GardenMineResults.to(gardenRepository.findByWriterId(memberId));
     }
 
 }
