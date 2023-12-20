@@ -7,6 +7,7 @@ import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
+import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.testutil.garden.GardenFixture;
 import jakarta.persistence.EntityNotFoundException;
@@ -113,4 +114,21 @@ public class GardenCommandServiceTest {
                         "isLiked")
                 .contains(true);
     }
+
+    @DisplayName("좋아요한 텃밭 게시물의 좋아요를 취소할 수 있다")
+    @Test
+    void deleteGardenLike() {
+        // Then
+        GardenLikeCreateParam gardenLikeCreateParam = new GardenLikeCreateParam(2L, savedPrivateGarden.getGardenId());
+        gardenCommandService.createGardenLike(gardenLikeCreateParam);
+        GardenLikeDeleteParam gardenLikeDeleteParam = new GardenLikeDeleteParam(2L, savedPrivateGarden.getGardenId());
+
+        // When
+        gardenCommandService.deleteGardenLike(gardenLikeDeleteParam);
+
+        // Then
+        assertThat(gardenLikeRepository.findAll().size()).isEqualTo(0);
+    }
+
+
 }
