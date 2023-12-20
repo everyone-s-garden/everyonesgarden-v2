@@ -25,7 +25,7 @@ jobs:
       - name: gradle 테스트
         uses: gradle/gradle-build-action@v2
         with:
-          arguments: clean test
+          arguments: clean test -parallel
 
       # https://github.com/actions/cache
       - name: SonarCloud 결과물 캐싱하기
