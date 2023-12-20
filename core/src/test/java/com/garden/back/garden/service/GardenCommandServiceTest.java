@@ -2,12 +2,15 @@ package com.garden.back.garden.service;
 
 import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.repository.garden.GardenRepository;
+import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
+import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.testutil.garden.GardenFixture;
 import jakarta.persistence.EntityNotFoundException;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -91,5 +95,22 @@ public class GardenCommandServiceTest {
         assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()))
                 .isEqualTo(Optional.empty());
 
+    }
+
+    @DisplayName("원하는 텃밭 게시물에 대해서 좋아요를 할 수 있다.")
+    @Test
+    void createGardenLike() {
+        // Then
+        GardenLikeCreateParam gardenLikeCreateParam = new GardenLikeCreateParam(2L, savedPrivateGarden.getGardenId());
+
+        // When
+        gardenCommandService.createGardenLike(gardenLikeCreateParam);
+        List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(2L, savedPrivateGarden.getGardenId());
+
+        // Then
+        assertThat(gardenDetail)
+                .extracting(
+                        "isLiked")
+                .contains(true);
     }
 }
