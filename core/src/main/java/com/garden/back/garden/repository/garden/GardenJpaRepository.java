@@ -4,7 +4,7 @@ import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
-import com.garden.back.garden.service.dto.request.GardenDetailParam;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GardenJpaRepository extends JpaRepository<Garden, Long>, GardenCustomRepository, GardenRepository {
 
@@ -98,6 +99,8 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
             @Param("gardenId") Long gardenId
     );
 
+    Garden getById(Long gardenId);
 
 
+    void deleteById(Long gardenId);
 }

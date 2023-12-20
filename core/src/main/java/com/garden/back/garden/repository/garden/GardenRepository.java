@@ -8,7 +8,6 @@ import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRep
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-
 import java.util.List;
 
 public interface GardenRepository {
@@ -24,5 +23,9 @@ public interface GardenRepository {
             Long memberId,
             Long gardenId
     );
+
+    Garden getById(Long gardenId);
+
+    void deleteById(Long gardenId);
 
 }
