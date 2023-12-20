@@ -4,6 +4,7 @@ import com.garden.back.garden.model.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -110,11 +111,29 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
              g.price as price,
              gi.imageUrl as imageUrl,
              g.gardenStatus as gardenStatus
-            from Garden g
+            from Garden as g
             left join
              GardenImage as gi on g.gardenId = gi.garden.gardenId
             where g.writerId=:writerId
             """)
     List<GardenMineRepositoryResponse> findByWriterId(@Param("writerId") Long writerId);
+
+    @Query(
+            """
+            select
+             g.gardenId as gardenId,
+             g.size as size,
+             g.gardenName as gardenName,
+             g.price as price,
+             gi.imageUrl as imageUrl,
+             g.gardenStatus as gardenStatus
+            from Garden as g
+            inner join
+             GardenLike as gl on g.gardenId = gl.garden.gardenId and gl.memberId =:memberId
+            left join
+             GardenImage as gi on g.gardenId = gi.garden.gardenId
+            """
+    )
+    List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(@Param("memberId") Long memberId);
 
 }
