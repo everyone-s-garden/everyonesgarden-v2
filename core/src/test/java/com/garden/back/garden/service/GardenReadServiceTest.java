@@ -6,7 +6,6 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
-import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
@@ -18,22 +17,18 @@ import com.garden.back.garden.service.recentview.RecentViewGardens;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @Transactional
@@ -52,9 +47,6 @@ public class GardenReadServiceTest {
 
     @Autowired
     private GardenReadService gardenReadService;
-
-    @Autowired
-    private GardenCommandService gardenCommandService;
 
     @Autowired
     private GardenHistoryManager gardenHistoryManager;
@@ -198,49 +190,5 @@ public class GardenReadServiceTest {
         assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
     }
 
-    @DisplayName("텃밭을 삭제할 때 존재하는 텃밭이 아닌 경우 예외를 던진다.")
-    @Test
-    void deleteGarden_throwException_notExistedGarden() {
-        // Given
-        GardenDeleteParam notExistedGardenDetailParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId(),
-                savedPrivateGarden.getGardenId() + 100L);
-
-        // When_Then
-        assertThatThrownBy(() -> gardenCommandService.deleteGarden(notExistedGardenDetailParam))
-                .isInstanceOf(EntityNotFoundException.class);
-    }
-
-    @DisplayName("내가 작성한 텃밭 게시물이 아닌 경우 예외를 던진다.")
-    @Test
-    void deleteGarden_throwException_notWriter() {
-        // Given
-        GardenDeleteParam notWriterGardenDetailParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId() + 1L,
-                savedPrivateGarden.getGardenId());
-
-        // When_Then
-        assertThatThrownBy(() -> gardenCommandService.deleteGarden(notWriterGardenDetailParam))
-                .isInstanceOf(IllegalArgumentException.class);
-    }
-
-    @DisplayName("내가 작성한 텃밭을 삭제할 수 있으며 삭제할 때 텃밭 이미지도 함께 삭제된다.")
-    @Test
-    void deleteGarden() {
-        // Given
-        GardenDeleteParam gardenDeleteParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId(),
-                savedPrivateGarden.getGardenId());
-
-        // When
-        gardenCommandService.deleteGarden(gardenDeleteParam);
-
-        // Then
-        assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
-                .isInstanceOf(JpaObjectRetrievalFailureException.class);
-        assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()))
-                .isEqualTo(Optional.empty());
-
-    }
 
 }
