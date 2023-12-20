@@ -5,6 +5,7 @@ import com.garden.back.garden.dto.request.GardenByComplexesRequest;
 import com.garden.back.garden.dto.request.GardenDetailRequest;
 import com.garden.back.garden.dto.request.GardenGetAllRequest;
 import com.garden.back.garden.dto.response.*;
+import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class GardenController {
 
     private final GardenReadService gardenReadService;
+    private final GardenCommandService gardenCommandService;
 
-    public GardenController(GardenReadService gardenReadService) {
+    public GardenController(GardenReadService gardenReadService, GardenCommandService gardenCommandService) {
         this.gardenReadService = gardenReadService;
+        this.gardenCommandService = gardenCommandService;
     }
 
     @GetMapping(
@@ -67,8 +70,8 @@ public class GardenController {
             path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-          @PositiveOrZero @PathVariable Long gardenId,
-          Long memberId) {
+            @PositiveOrZero @PathVariable Long gardenId,
+            Long memberId) {
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -79,7 +82,7 @@ public class GardenController {
             path = "/recent",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecentGardenResponses> getRecentGardens(
-            Long memberId){
+            Long memberId) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
     }
@@ -89,10 +92,19 @@ public class GardenController {
     public ResponseEntity<GardenDeleteResponse> deleteGarden(
             @PositiveOrZero @PathVariable Long gardenId,
             Long memberId) {
-        gardenReadService.deleteGarden(GardenDeleteParam.of(memberId,gardenId));
+        gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new GardenDeleteResponse(true));
+    }
+
+    @GetMapping(
+            path = "/mine",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenMineResponses> getMyGarden(Long memberId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenMineResponses.to(gardenReadService.getMyGarden(memberId)));
+
     }
 
 }
