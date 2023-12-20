@@ -23,6 +23,7 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -204,15 +205,15 @@ public class GardenReadServiceTest {
         // Then
         assertThat(myGarden.gardenMineResults())
                 .extracting(
-                        "gardenId", "size", "gardenName", "price","gardenStatus","imageUrls")
+                        "gardenId", "size", "gardenName", "price", "gardenStatus", "imageUrls")
                 .contains(
                         Tuple.tuple(
-                        savedPrivateGarden.getGardenId(),
-                        savedPrivateGarden.getSize(),
-                        savedPrivateGarden.getGardenName(),
-                        savedPrivateGarden.getPrice(),
-                        savedPrivateGarden.getGardenStatus().name(),
-                        gardenImages));
+                                savedPrivateGarden.getGardenId(),
+                                savedPrivateGarden.getSize(),
+                                savedPrivateGarden.getGardenName(),
+                                savedPrivateGarden.getPrice(),
+                                savedPrivateGarden.getGardenStatus().name(),
+                                gardenImages));
     }
 
     @DisplayName("내가 좋아요한 텃밭 게시물을 조회할 수 있다.")
@@ -234,7 +235,7 @@ public class GardenReadServiceTest {
         // Then
         assertThat(likeGardensByMember.gardenLikeByMemberResults())
                 .extracting(
-                        "gardenId", "size", "gardenName", "price","gardenStatus","imageUrls")
+                        "gardenId", "size", "gardenName", "price", "gardenStatus", "imageUrls")
                 .contains(
                         Tuple.tuple(
                                 savedPrivateGarden.getGardenId(),
@@ -243,8 +244,6 @@ public class GardenReadServiceTest {
                                 savedPrivateGarden.getPrice(),
                                 savedPrivateGarden.getGardenStatus().name(),
                                 gardenImages));
-
     }
-
 
 }
