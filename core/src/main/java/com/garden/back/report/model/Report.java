@@ -30,13 +30,13 @@ public abstract class Report {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    public Report(Long reporterId, String content) {
+    protected Report(Long reporterId, String content) {
         if (StringUtils.length(content) > 255) throw new IllegalArgumentException("255글자를 초과한 내용은 입력이 불가능 합니다.");
-        this.reporterId = validateGardenId(reporterId);
+        this.reporterId = validateReporterId(reporterId);
         this.content = content;
     }
 
-    private Long validateGardenId(Long reporterId) {
+    private Long validateReporterId(Long reporterId) {
         if (reporterId == null || reporterId <= 0) throw new IllegalArgumentException("신고자의 아이디는 null 또는 음수가 입력될 수 없습니다.");
         return reporterId;
     }
