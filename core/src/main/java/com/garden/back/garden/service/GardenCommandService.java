@@ -7,6 +7,7 @@ import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
+import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,10 @@ public class GardenCommandService {
     public void createGardenLike(GardenLikeCreateParam param) {
         Garden gardenToLike = gardenRepository.getById(param.gardenId());
         gardenLikeRepository.save(GardenLike.of(param.memberId(),gardenToLike));
+    }
+
+    public void deleteGardenLike(GardenLikeDeleteParam param) {
+        gardenLikeRepository.delete(param.memberId(), param.gardenId());
     }
 
 }
