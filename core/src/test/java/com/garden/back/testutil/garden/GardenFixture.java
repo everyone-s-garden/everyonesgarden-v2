@@ -44,7 +44,7 @@ public class GardenFixture {
                 true,
                 false,
                 true,
-                null,
+                1L,
                 false,
                 0
         );
