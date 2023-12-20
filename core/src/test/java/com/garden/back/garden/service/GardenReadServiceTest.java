@@ -7,16 +7,14 @@ import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
-import com.garden.back.garden.service.dto.response.GardenAllResults;
-import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
-import com.garden.back.garden.service.dto.response.RecentGardenResults;
+import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
@@ -190,5 +189,31 @@ public class GardenReadServiceTest {
         assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
     }
 
+    @DisplayName("내가 작성한 텃밭 게시글을 조회할 수 있다.")
+    @Test
+    void getMyGardens() {
+        //Given
+        gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+        List<String> gardenImages =
+                gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).stream()
+                        .map(GardenImage::getImageUrl)
+                        .toList();
+
+        // When
+        GardenMineResults myGarden = gardenReadService.getMyGarden(savedPrivateGarden.getWriterId());
+
+        // Then
+        assertThat(myGarden.gardenMineResults())
+                .extracting(
+                        "gardenId", "size", "gardenName", "price","gardenStatus","imageUrls")
+                .contains(
+                        Tuple.tuple(
+                        savedPrivateGarden.getGardenId(),
+                        savedPrivateGarden.getSize(),
+                        savedPrivateGarden.getGardenName(),
+                        savedPrivateGarden.getPrice(),
+                        savedPrivateGarden.getGardenStatus().name(),
+                        gardenImages));
+    }
 
 }
