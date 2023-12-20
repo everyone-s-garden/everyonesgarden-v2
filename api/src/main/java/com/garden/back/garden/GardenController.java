@@ -1,9 +1,6 @@
 package com.garden.back.garden;
 
-import com.garden.back.garden.dto.request.GardenByNameRequest;
-import com.garden.back.garden.dto.request.GardenByComplexesRequest;
-import com.garden.back.garden.dto.request.GardenDetailRequest;
-import com.garden.back.garden.dto.request.GardenGetAllRequest;
+import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.dto.response.*;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
@@ -114,5 +111,20 @@ public class GardenController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenLikeByMemberResponses.to(gardenReadService.getLikeGardensByMember(memberId)));
     }
+
+    @PostMapping(
+            path = "/likes",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenLikeCreateResponse> createGardenLike(
+            Long memberId,
+            @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest) {
+        gardenCommandService.createGardenLike(
+                GardenLikeCreateRequest.of(memberId, gardenLikeCreateRequest));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new GardenLikeCreateResponse(true));
+    }
+
 
 }
