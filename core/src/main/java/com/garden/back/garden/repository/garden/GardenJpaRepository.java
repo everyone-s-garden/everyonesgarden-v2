@@ -107,6 +107,7 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
              g.gardenId as gardenId,
              g.size as size,
              g.gardenName as gardenName,
+             g.price as price,
              gi.imageUrl as imageUrl,
              g.gardenStatus as gardenStatus
             from Garden g
