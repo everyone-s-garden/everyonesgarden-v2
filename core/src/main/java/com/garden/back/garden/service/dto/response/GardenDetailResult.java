@@ -1,9 +1,11 @@
 package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import jakarta.persistence.EntityNotFoundException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record GardenDetailResult(
         Long gardenId,
@@ -30,7 +32,9 @@ public record GardenDetailResult(
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public static GardenDetailResult to(List<GardenDetailRepositoryResponse> gardenDetailRepositoryResponses) {
-        GardenDetailRepositoryResponse gardenDetailRepositoryResponse = gardenDetailRepositoryResponses.get(0);
+        GardenDetailRepositoryResponse gardenDetailRepositoryResponse =
+                getDistinctGardenDetailRepositoryResponse(gardenDetailRepositoryResponses);
+
         return new GardenDetailResult(
                 gardenDetailRepositoryResponse.getGardenId(),
                 gardenDetailRepositoryResponse.getAddress(),
@@ -59,6 +63,15 @@ public record GardenDetailResult(
                 ),
                 gardenDetailRepositoryResponse.getIsLiked()
         );
+    }
+
+    private static GardenDetailRepositoryResponse getDistinctGardenDetailRepositoryResponse(
+            List<GardenDetailRepositoryResponse> gardenDetailRepositoryResponses) {
+
+        return gardenDetailRepositoryResponses.stream()
+                .distinct()
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 게시물은 존재하지 않습니다."));
     }
 
     public record GardenFacility(
