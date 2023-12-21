@@ -28,10 +28,7 @@ public class GardenCommandService {
     @Transactional
     public void deleteGarden(GardenDeleteParam param) {
         Garden gardenToDelete = gardenRepository.getById(param.gardenId());
-
-        if (!Objects.equals(gardenToDelete.getWriterId(), param.memberId())) {
-            throw new IllegalArgumentException("텃밭 게시글 작성자만 텃밭을 삭제할 수 있습니다.");
-        }
+        gardenToDelete.validWriterId(param.memberId());
 
         gardenImageRepository.deleteByGardenId(param.gardenId());
         gardenRepository.deleteById(param.gardenId());
