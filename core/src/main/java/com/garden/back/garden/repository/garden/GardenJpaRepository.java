@@ -14,7 +14,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface GardenJpaRepository extends JpaRepository<Garden, Long>, GardenCustomRepository, GardenRepository {
+public interface GardenJpaRepository extends JpaRepository<Garden, Long>, GardenRepository, GardenCustomRepository {
 
     @Query(value = "select " +
             "g.garden_id as gardenId, " +
@@ -120,19 +120,19 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
 
     @Query(
             """
-            select
-             g.gardenId as gardenId,
-             g.size as size,
-             g.gardenName as gardenName,
-             g.price as price,
-             gi.imageUrl as imageUrl,
-             g.gardenStatus as gardenStatus
-            from Garden as g
-            inner join
-             GardenLike as gl on g.gardenId = gl.garden.gardenId and gl.memberId =:memberId
-            left join
-             GardenImage as gi on g.gardenId = gi.garden.gardenId
-            """
+                    select
+                     g.gardenId as gardenId,
+                     g.size as size,
+                     g.gardenName as gardenName,
+                     g.price as price,
+                     gi.imageUrl as imageUrl,
+                     g.gardenStatus as gardenStatus
+                    from Garden as g
+                    inner join
+                     GardenLike as gl on g.gardenId = gl.garden.gardenId and gl.memberId =:memberId
+                    left join
+                     GardenImage as gi on g.gardenId = gi.garden.gardenId
+                    """
     )
     List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(@Param("memberId") Long memberId);
 

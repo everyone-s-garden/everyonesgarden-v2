@@ -10,7 +10,6 @@ import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberR
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
