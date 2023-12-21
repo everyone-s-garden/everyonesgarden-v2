@@ -6,3 +6,23 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
+
+api:
+  mafra:
+    url: asfd
+    secret: asdf
+  weather:
+    url: asdf
+    secret: asdf
+  weatherAll:
+    url: asdf
+  weatherWeek:
+    url: asdf
+  reverseGeo:
+    url: asdf
+    id: asdf
+    secret: asdf
+forecast:
+  weekly:
+    publish:
+      time: 0600
