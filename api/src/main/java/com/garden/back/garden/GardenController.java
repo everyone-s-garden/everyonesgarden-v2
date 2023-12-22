@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 
@@ -91,7 +92,7 @@ public class GardenController {
 
         gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
 
-        URI location = URI.create("/garden/" + gardenId);
+        URI location = URI.create("/v2/gardens/" + gardenId);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .location(location)
@@ -121,14 +122,13 @@ public class GardenController {
             path = "/likes",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenLikeCreateResponse> createGardenLike(
-            Long memberId,
+    public ResponseEntity<Void> createGardenLike(
             @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest) {
-        gardenCommandService.createGardenLike(
+        Long memberId = 1L;
+        Long gardenLikeId = gardenCommandService.createGardenLike(
                 GardenLikeCreateRequest.of(memberId, gardenLikeCreateRequest));
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new GardenLikeCreateResponse(true));
+        return ResponseEntity.created(URI.create("/v2/gardens/"+ gardenLikeId)).build();
     }
 
     @DeleteMapping(
