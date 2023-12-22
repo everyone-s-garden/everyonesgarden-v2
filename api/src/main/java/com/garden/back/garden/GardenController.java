@@ -15,6 +15,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 @RestController
 @RequestMapping("/v2/gardens")
 public class GardenController {
@@ -64,7 +66,7 @@ public class GardenController {
             path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-            @PositiveOrZero @PathVariable Long gardenId){
+            @PositiveOrZero @PathVariable Long gardenId) {
         Long memberId = 1L;
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
 
@@ -75,7 +77,7 @@ public class GardenController {
     @GetMapping(
             path = "/recent",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RecentGardenResponses> getRecentGardens( ) {
+    public ResponseEntity<RecentGardenResponses> getRecentGardens() {
         Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
@@ -83,13 +85,17 @@ public class GardenController {
 
     @DeleteMapping(
             path = "/{gardenId}")
-    public ResponseEntity<GardenDeleteResponse> deleteGarden(
-            @PositiveOrZero @PathVariable Long gardenId,
-            Long memberId) {
+    public ResponseEntity<Void> deleteGarden(
+            @PositiveOrZero @PathVariable Long gardenId) {
+        Long memberId = 1L;
+
         gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new GardenDeleteResponse(true));
+        URI location = URI.create("/garden/" + gardenId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .location(location)
+                .build();
     }
 
     @GetMapping(
