@@ -1,0 +1,36 @@
+[[all-weather]]
+=== 모든 지역의 현재 날씨
+
+모든 지역의 현재 날씨를 조회합니다.
+
+==== Request
+include::{snippets}/get-all-weather/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-all-weather/http-response.adoc[]
+include::{snippets}/get-all-weather/response-fields.adoc[]
+
+[[week-weather]]
+=== 주간 날씨 조회
+
+오늘로부터 2일, 3일, 4일, 5일, 6일 뒤의 날씨를 조회합니다.
+
+==== Request
+include::{snippets}/get-week-weather/http-request.adoc[]
+include::{snippets}/get-week-weather/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-week-weather/http-response.adoc[]
+include::{snippets}/get-week-weather/response-fields.adoc[]
+
+[[time-weather]]
+=== 현재시간 이후 5시간의 날씨와 내일 날씨 조회하기
+현재시간 이후의 매 정각 가준 매 1시간마다의 5시간 만큼의 날씨를 제공합니다. 또한 마지막 응답으로 내일의 날씨도 제공합니다.
+
+==== Request
+include::{snippets}/get-tomorrow-weather-and-five-weather-after-current-time/http-request.adoc[]
+include::{snippets}/get-tomorrow-weather-and-five-weather-after-current-time/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-tomorrow-weather-and-five-weather-after-current-time/http-response.adoc[]
+include::{snippets}/get-tomorrow-weather-and-five-weather-after-current-time/response-fields.adoc[]

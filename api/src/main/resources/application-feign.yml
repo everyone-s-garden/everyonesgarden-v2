@@ -1,0 +1,38 @@
+spring:
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+        alphanumeric-ids:
+          enabled: false
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      openAPI_getWeatherForecast:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
+      openAPI_getMidLandForecast:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
+      openAPI_getWeekWeatherForecast:
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
+
+  timelimiter:
+    instances:
+      openAPI_getWeatherForecast:
+        timeoutDuration: 3s
+      openAPI_getMidLandForecast:
+        timeoutDuration: 3s
+      openAPI_getWeekWeatherForecast:
+        timeoutDuration: 10s

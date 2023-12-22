@@ -1,0 +1,37 @@
+= EVERY-GARDEN API Document
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+= 모두의 텃밭 REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[overview]]
+= 개요
+
+include::global/http-verbs.adoc[]
+include::global/http-status-code.adoc[]
+
+[[Weather]]
+== Weather
+날씨 API 입니다.
+include::weather/weathers.adoc[]
+
+[[Crop]]
+== Crop
+작물 API 입니다.
+include::crop/crops.adoc[]
+
+[[Report]]
+== Report
+신고 API 입니다.
+include::report/reports.adoc[]
+
+[[Garden]]
+== Garden
+텃밭 API 입니다.
+include::garden/gardens.adoc[]

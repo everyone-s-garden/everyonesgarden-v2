@@ -1,0 +1,58 @@
+api:
+  mafra:
+    url: asfd
+    secret: asdf
+  weather:
+    url: asdf
+    secret: asdf
+  weatherAll:
+    url: asdf
+  weatherWeek:
+    url: asdf
+  reverseGeo:
+    url: asdf
+    id: asdf
+    secret: asdf
+forecast:
+  weekly:
+    publish:
+      time: 0600
+cloud:
+  ncp:
+    url: "asdf"
+    region: "asdf"
+    accessKey: "asdf"
+    secretKey: "asdf"
+    bucket: "asdf"
+    baseDirectory: "asdf"
+async:
+  image:
+    corePoolSize: 10
+    maxPoolSize: 13
+    queCapacity: 10000
+    keepAliveSeconds: 60
+    threadName: "image-executor"
+
+spring:
+  flyway:
+    enabled: false
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+region:
+  geo:
+    csv:
+      path: "classpath:region/koreanGeo.csv"
+    json:
+      path: "classpath:region/\uB300\uD55C\uBBFC\uAD6D\uD589\uC815\uAD6C\uC5ED.geojson"

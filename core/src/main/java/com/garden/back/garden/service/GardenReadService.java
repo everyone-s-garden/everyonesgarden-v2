@@ -2,58 +2,72 @@ package com.garden.back.garden.service;
 
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
-import com.garden.back.garden.service.dto.request.GardenGetAllParam;
-import com.garden.back.garden.service.dto.response.GardenAllResults;
-import com.garden.back.garden.service.dto.request.GardenByNameParam;
-import com.garden.back.garden.service.dto.response.GardenByNameResults;
+import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
+import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.service.dto.request.*;
+import com.garden.back.garden.service.dto.response.*;
+import com.garden.back.garden.service.recentview.GardenHistoryManager;
+import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.util.PageMaker;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class GardenReadService {
-
-    private static final int GARDEN_BY_NAME_PAGE_SIZE = 10;
     private final GardenRepository gardenRepository;
+    private final GardenHistoryManager gardenHistoryManager;
 
-    public GardenReadService(GardenRepository gardenRepository) {
+    public GardenReadService(GardenRepository gardenRepository, GardenHistoryManager gardenHistoryManager) {
         this.gardenRepository = gardenRepository;
+        this.gardenHistoryManager = gardenHistoryManager;
     }
 
-    @Transactional(readOnly = true)
     public GardenByNameResults getGardensByName(GardenByNameParam gardenByNameParam) {
-
-
         return GardenByNameResults.to(gardenRepository.findGardensByName(
                 gardenByNameParam.gardenName(),
                 PageMaker.makePage(gardenByNameParam.pageNumber())));
     }
 
-    @Transactional(readOnly = true)
-    public GardenAllResults getAllGarden(GardenGetAllParam param) {
+    public GardenAllResults getAllGarden(Integer pageNumber) {
         Slice<GardenGetAll> gardens = gardenRepository.getAllGardens(
-                PageMaker.makePage(param.pageNumber()),
-                param.memberId());
+                PageMaker.makePage(pageNumber));
 
-        return GardenAllResults.of(gardens, parseGardenAndImage(gardens));
+        return GardenAllResults.of(gardens);
     }
 
-    private Map<Long, List<String>> parseGardenAndImage(Slice<GardenGetAll> gardensGetAll) {
-        Map<Long, List<String>> gardenAndImages = new HashMap<>();
+    public GardenByComplexesResults getGardensByComplexes(GardenByComplexesParam param) {
+        GardensByComplexes gardensByComplexes
+                = gardenRepository.getGardensByComplexes(GardenByComplexesParam.to(param));
 
-        gardensGetAll.forEach(gardenGetAll ->
-                gardenAndImages
-                        .computeIfAbsent(gardenGetAll.getGardenId(), k -> new ArrayList<>())
-                        .add(gardenGetAll.getImageUrl())
-        );
+        return GardenByComplexesResults.of(gardensByComplexes);
+    }
 
-        return gardenAndImages;
+    public GardenDetailResult getGardenDetail(GardenDetailParam param) {
+        List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(
+                param.memberId(),
+                param.gardenId());
+        GardenDetailResult gardenDetailResult = GardenDetailResult.to(gardenDetail);
+
+        gardenHistoryManager.addRecentViewGarden(
+                param.memberId(),
+                RecentViewGarden.to(gardenDetailResult));
+
+        return gardenDetailResult;
+    }
+
+    public RecentGardenResults getRecentGardens(Long memberId) {
+        return RecentGardenResults.to(gardenHistoryManager.getRecentViewGarden(memberId));
+    }
+
+    public GardenMineResults getMyGarden(Long memberId) {
+        return GardenMineResults.to(gardenRepository.findByWriterId(memberId));
+    }
+
+    public GardenLikeByMemberResults getLikeGardensByMember(Long memberId) {
+        return GardenLikeByMemberResults.to(
+                gardenRepository.getLikeGardenByMember(memberId));
     }
 
 }

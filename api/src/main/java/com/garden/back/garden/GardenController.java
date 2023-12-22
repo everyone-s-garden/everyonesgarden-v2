@@ -1,31 +1,36 @@
 package com.garden.back.garden;
 
-import com.garden.back.garden.dto.request.GardenByNameRequest;
-import com.garden.back.garden.dto.request.GardenGetAllRequest;
-import com.garden.back.garden.dto.response.GardenByNameResponses;
-import com.garden.back.garden.dto.response.GardenGetAllResponses;
+import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.dto.response.*;
+import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
-import com.garden.back.garden.service.dto.request.GardenGetAllParam;
+import com.garden.back.garden.service.dto.request.GardenDeleteParam;
+import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
+import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/v2/gardens")
 public class GardenController {
 
     private final GardenReadService gardenReadService;
+    private final GardenCommandService gardenCommandService;
 
-    public GardenController(GardenReadService gardenReadService) {
+    public GardenController(GardenReadService gardenReadService, GardenCommandService gardenCommandService) {
         this.gardenReadService = gardenReadService;
+        this.gardenCommandService = gardenCommandService;
     }
 
     @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByNameResponses> getGardenNames(
             @Valid @ModelAttribute GardenByNameRequest gardenByNameRequest) {
         GardenByNameParam gardenByNameParam = GardenByNameRequest.to(gardenByNameRequest);
@@ -36,15 +41,106 @@ public class GardenController {
 
     @GetMapping(
             path = "/all",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
+            produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
-            @Valid @ModelAttribute GardenGetAllRequest gardenGetAllRequest) {
-        GardenGetAllParam gardenGetAllParam = GardenGetAllRequest.to(gardenGetAllRequest);
-
+            @PositiveOrZero @RequestParam Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenGetAllResponses.to(
-                        gardenReadService.getAllGarden(gardenGetAllParam)));
+                        gardenReadService.getAllGarden(pageNumber)));
+    }
+
+    @GetMapping(
+            path = "/by-complexes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenByComplexesResponses> getGardensByComplexes(
+            @Valid @ModelAttribute GardenByComplexesRequest request) {
+        GardenByComplexesResults gardensByComplexes
+                = gardenReadService.getGardensByComplexes(GardenByComplexesRequest.to(request));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenByComplexesResponses.to(gardensByComplexes));
+
+    }
+
+    @GetMapping(
+            path = "/{gardenId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenDetailResponse> getGardenDetail(
+            @PositiveOrZero @PathVariable Long gardenId) {
+        Long memberId = 1L;
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenDetailResponse.to(gardenDetail));
+    }
+
+    @GetMapping(
+            path = "/recent",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecentGardenResponses> getRecentGardens() {
+        Long memberId = 1L;
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
+    }
+
+    @DeleteMapping(
+            path = "/{gardenId}")
+    public ResponseEntity<Void> deleteGarden(
+            @PositiveOrZero @PathVariable Long gardenId) {
+        Long memberId = 1L;
+
+        gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
+
+        URI location = URI.create("/v2/gardens/" + gardenId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .location(location)
+                .build();
+    }
+
+    @GetMapping(
+            path = "/mine",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenMineResponses> getMyGarden() {
+        Long memberId = 1L;
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenMineResponses.to(gardenReadService.getMyGarden(memberId)));
+
+    }
+
+    @GetMapping(
+            path = "/likes",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember() {
+        Long memberId = 1L;
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(GardenLikeByMemberResponses.to(gardenReadService.getLikeGardensByMember(memberId)));
+    }
+
+    @PostMapping(
+            path = "/likes",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> createGardenLike(
+            @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest) {
+        Long memberId = 1L;
+        Long gardenLikeId = gardenCommandService.createGardenLike(
+                GardenLikeCreateRequest.of(memberId, gardenLikeCreateRequest));
+
+        return ResponseEntity.created(URI.create("/v2/gardens/"+ gardenLikeId)).build();
+    }
+
+    @DeleteMapping(
+            path = "/likes",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> deleteGardenLike(
+            @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest) {
+        Long memberId = 1L;
+        gardenCommandService.deleteGardenLike(
+                GardenLikeDeleteRequest.of(memberId, gardenLikeDeleteRequest));
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
