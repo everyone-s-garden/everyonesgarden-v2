@@ -3,8 +3,6 @@ package com.garden.back.garden.repository.garden.dto;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 
-import java.time.LocalDateTime;
-
 public interface GardenGetAll {
 
     Long getGardenId();

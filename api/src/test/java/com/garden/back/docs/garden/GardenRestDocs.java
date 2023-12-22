@@ -1,16 +1,12 @@
 package com.garden.back.docs.garden;
 
-import com.garden.back.crop.service.response.MonthlyRecommendedCropsResponse;
 import com.garden.back.docs.RestDocsSupport;
-import com.garden.back.docs.crop.CropFixture;
 import com.garden.back.garden.GardenController;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
-import com.garden.back.garden.dto.response.GardenByNameResponses;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.*;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -25,13 +21,12 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GardenRestDocs extends RestDocsSupport {
+class GardenRestDocs extends RestDocsSupport {
 
     GardenReadService gardenReadService = mock(GardenReadService.class);
     GardenCommandService gardenCommandService = mock(GardenCommandService.class);
