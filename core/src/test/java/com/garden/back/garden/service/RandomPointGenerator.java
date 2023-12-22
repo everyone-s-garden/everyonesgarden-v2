@@ -1,7 +1,7 @@
 package com.garden.back.garden.service;
 
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
-import com.garden.back.garden.util.GeometryUtil;
+import com.garden.back.global.GeometryUtil;
 import org.locationtech.jts.geom.Point;
 
 import java.util.ArrayList;
