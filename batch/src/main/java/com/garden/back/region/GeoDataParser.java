@@ -42,7 +42,6 @@ public class GeoDataParser {
         List<List<String>> list = readToList();
         saveMultipolygon();
         List<Region> regions = new ArrayList<>();
-        int cnt = 0;
         for (int i = 0; i < list.size(); i++) {
 
             List<String> line = list.get(i);
@@ -86,17 +85,7 @@ public class GeoDataParser {
 
                 Region region = new Region(code, address, point, multiPolygon);
                 regions.add(region);
-                if (시도.equals("강원특별자치도")) {
-                    cnt++;
-
-                }
-                if (multiPolygon == null) {
-                    System.out.println(code);
-                    System.out.println(시도 + 시군구 + 읍면동);
-                    System.out.println("비어있음!!!");
-                }
             }
-            //System.out.println(cnt+"!!!!!!1");
         }
         regionRepository.saveAll(regions);
     }
