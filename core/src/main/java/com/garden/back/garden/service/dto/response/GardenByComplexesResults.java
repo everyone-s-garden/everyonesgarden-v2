@@ -42,7 +42,7 @@ public record GardenByComplexesResults(
             String gardenStatus,
             String gardenType,
             Double latitude,
-            Double Longitude
+            Double longitude
 
     ) {
         public static GardenByComplexesResult to(GardensByComplexes.GardenByComplexes garden, List<String> gardenImages) {

@@ -27,7 +27,7 @@ public record GardenByComplexesResponses(
             String gardenStatus,
             String gardenType,
             Double latitude,
-            Double Longitude
+            Double longitude
 
     ) {
         public static GardenByComplexesResponse to(GardenByComplexesResults.GardenByComplexesResult result) {
@@ -40,7 +40,7 @@ public record GardenByComplexesResponses(
                     result.gardenStatus(),
                     result.gardenType(),
                     result.latitude(),
-                    result.Longitude()
+                    result.longitude()
             );
         }
 
