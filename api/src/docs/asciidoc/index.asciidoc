@@ -35,3 +35,8 @@ include::weather/weathers.adoc[]
 == Report
 신고 API 입니다.
 include::report/reports.adoc[]
+
+[[Garden]]
+== Garden
+텃밭 API 입니다.
+include::report/gardens.adoc[]
