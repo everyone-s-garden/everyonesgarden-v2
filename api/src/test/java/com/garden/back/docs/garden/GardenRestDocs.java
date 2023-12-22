@@ -7,6 +7,7 @@ import com.garden.back.garden.GardenController;
 import com.garden.back.garden.dto.response.GardenByNameResponses;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
+import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByNameResults;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -62,6 +63,36 @@ public class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
                         )));
 
+    }
+
+    @DisplayName("모든 텃밭을 조회한다.")
+    @Test
+    void getAllGardens() throws Exception {
+        GardenAllResults gardenAllResults = GardenFixture.gardenAllResults();
+        given(gardenReadService.getAllGarden(any())).willReturn(gardenAllResults);
+
+        mockMvc.perform(get("/v2/gardens/all")
+                .param("pageNumber","0")
+                .characterEncoding(StandardCharsets.UTF_8))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("get-all-gardens",
+                        queryParameters(
+                                parameterWithName("pageNumber").description("요구하는 페이짓 수")
+                        ),
+                        responseFields(
+                                fieldWithPath("gardenGetAllResponses").type(JsonFieldType.ARRAY).description("텃밭 전체 검색 결과"),
+                                fieldWithPath("gardenGetAllResponses[].gardenId").type(JsonFieldType.NUMBER).description("텃밭 아이디"),
+                                fieldWithPath("gardenGetAllResponses[].latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                                fieldWithPath("gardenGetAllResponses[].longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
+                                fieldWithPath("gardenGetAllResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
+                                fieldWithPath("gardenGetAllResponses[].gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)"),
+                                fieldWithPath("gardenGetAllResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
+                                fieldWithPath("gardenGetAllResponses[].size").type(JsonFieldType.STRING).description("텃밭 크기"),
+                                fieldWithPath("gardenGetAllResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
+                                fieldWithPath("gardenGetAllResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 이미지"),
+                                fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
+                        )));
     }
 
 

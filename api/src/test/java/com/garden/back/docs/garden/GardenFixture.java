@@ -1,6 +1,9 @@
 package com.garden.back.docs.garden;
 
+import com.garden.back.garden.model.vo.GardenStatus;
+import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
+import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByNameResults;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -8,9 +11,6 @@ import org.springframework.data.domain.SliceImpl;
 import java.util.List;
 
 public class GardenFixture {
-    public static GardenByNameParam gardenByNameParam() {
-        return new GardenByNameParam("도연",0);
-    }
     public static GardenByNameResults gardenByNameResults() {
         List<GardenByNameResults.GardenByNameResult> gardensByName = List.of(
                 new GardenByNameResults.GardenByNameResult(1L, "도연이네 텃밭", "제주도 서귀포"),
@@ -18,5 +18,23 @@ public class GardenFixture {
         );
 
         return new GardenByNameResults(gardensByName,false);
+    }
+
+    public static GardenAllResults gardenAllResults() {
+        List<GardenAllResults.GardenAllResult> gardenAllResults = List.of(
+                new GardenAllResults.GardenAllResult(
+                        1L,
+                        37.4449168,
+                        127.1388684,
+                        "별이네 텃밭",
+                        GardenType.PUBLIC.name(),
+                        "100000",
+                        "100",
+                        GardenStatus.ACTIVE.name(),
+                        List.of("www.garden.com")
+                )
+        );
+
+        return new GardenAllResults(gardenAllResults,false);
     }
 }

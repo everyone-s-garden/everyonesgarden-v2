@@ -1,4 +1,4 @@
-[[gardens-names]]
+[[gardens-by-names]]
 === 텃밭을 등록할 때 이름으로 검색하기
 
 텃밭을 등록할 때 기존에 등록된 텃밭 중에서 이름으로 검색해서 찾는 기능입니다.
@@ -10,3 +10,16 @@ include::{snippets}/get-gardens-by-name/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-gardens-by-name/http-response.adoc[]
+
+[[all-garden]]
+=== 모든 텃밭 정보 조회하기
+
+모든 텃밭에 대해서 조회합니다.
+
+==== Request
+include::{snippets}/get-all-gardens/http-request.adoc[]
+include::{snippets}/get-all-gardens/request-fields.adoc[]
+include::{snippets}/get-all-gardens/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-all-gardens/http-response.adoc[]
