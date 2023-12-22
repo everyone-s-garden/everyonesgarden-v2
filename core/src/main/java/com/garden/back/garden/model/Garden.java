@@ -20,8 +20,8 @@ import java.util.Objects;
 @Table(name = "gardens")
 public class Garden {
 
-    private final int DELETED_MAX_SCORE = 25;
-    private final int MIN_DESCRIPTION_LENGTH = 15;
+    private static final int DELETED_MAX_SCORE = 25;
+    private static final int MIN_DESCRIPTION_LENGTH = 15;
 
     @Id
     @Column(name = "garden_id")
