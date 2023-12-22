@@ -30,10 +30,9 @@ public class GardenReadService {
                 PageMaker.makePage(gardenByNameParam.pageNumber())));
     }
 
-    public GardenAllResults getAllGarden(GardenGetAllParam param) {
+    public GardenAllResults getAllGarden(Integer pageNumber) {
         Slice<GardenGetAll> gardens = gardenRepository.getAllGardens(
-                PageMaker.makePage(param.pageNumber()),
-                param.memberId());
+                PageMaker.makePage(pageNumber));
 
         return GardenAllResults.of(gardens);
     }
