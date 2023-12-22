@@ -6,7 +6,6 @@ import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
-import com.garden.back.garden.service.dto.request.GardenGetAllParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import jakarta.validation.Valid;
@@ -42,12 +41,10 @@ public class GardenController {
             path = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
-            @Valid @ModelAttribute GardenGetAllRequest gardenGetAllRequest) {
-        GardenGetAllParam gardenGetAllParam = GardenGetAllRequest.to(gardenGetAllRequest);
-
+            @PositiveOrZero @RequestParam Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenGetAllResponses.to(
-                        gardenReadService.getAllGarden(gardenGetAllParam)));
+                        gardenReadService.getAllGarden(pageNumber)));
     }
 
     @GetMapping(
