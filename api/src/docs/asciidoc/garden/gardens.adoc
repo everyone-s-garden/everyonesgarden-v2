@@ -23,3 +23,16 @@ include::{snippets}/get-all-gardens/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-all-gardens/http-response.adoc[]
+
+
+[[gardens by complexes and garden type]]
+=== 텃밭 타입과 위치에 따른 조회하기
+화면의 북서쪽과 남동쪽의 위도 및 경도 그리고 텃밭 타입에 따른 결과를 반환합니다.
+
+==== Request
+include::{snippets}/get-gardens-by-complexes/http-request.adoc[]
+include::{snippets}/get-gardens-by-complexes/request-fields.adoc[]
+include::{snippets}/get-gardens-by-complexes/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-gardens-by-complexes/http-response.adoc[]
