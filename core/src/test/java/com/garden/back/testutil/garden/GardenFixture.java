@@ -5,7 +5,6 @@ import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
-import com.garden.back.garden.service.dto.request.GardenGetAllParam;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.util.GeometryUtil;
 import org.locationtech.jts.geom.Point;
@@ -47,13 +46,6 @@ public class GardenFixture {
                 1L,
                 false,
                 0
-        );
-    }
-
-    public static GardenGetAllParam gardenGetAllParam() {
-        return new GardenGetAllParam(
-                0,
-                1L
         );
     }
 
