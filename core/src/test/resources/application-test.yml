@@ -35,8 +35,7 @@ async:
 
 spring:
   flyway:
-    enabled: true
-    locations: migration
+    enabled: false
   datasource:
     hikari:
       jdbc-url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
@@ -49,4 +48,4 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create
