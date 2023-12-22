@@ -5,6 +5,7 @@ import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.docs.crop.CropFixture;
 import com.garden.back.garden.GardenController;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
+import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
 import com.garden.back.garden.dto.response.GardenByNameResponses;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
@@ -272,6 +273,22 @@ public class GardenRestDocs extends RestDocsSupport {
                         ),
                         responseHeaders(
                                 headerWithName("Location").description("생성된 찜한 텃밭의 id를 포함한 url")
+                        )));
+    }
+
+    @DisplayName("텃밭을 삭제할 수 있다.")
+    @Test
+    void deleteLikeGarden() throws Exception {
+        GardenLikeDeleteRequest gardenLikeDeleteRequest = GardenFixture.gardenLikeDeleteRequest();
+
+        mockMvc.perform(delete("/v2/gardens/likes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(gardenLikeDeleteRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("delete-like",
+                        requestFields(
+                                fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("찜하기를 취소하고자 하는 텃밭 아이디")
                         )));
     }
 

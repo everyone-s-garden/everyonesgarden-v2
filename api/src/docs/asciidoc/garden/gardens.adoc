@@ -94,7 +94,7 @@ include::{snippets}/get-like-gardens/response-fields.adoc[]
 
 [[get like gardens]]
 === 텃밭 찜하기
-내가 찜한 텃밭 목록을 조회한다.
+마음에 드는 텃밭을 찜할 수 있다.
 
 ==== Request
 include::{snippets}/create-like-garden/http-request.adoc[]
@@ -103,3 +103,14 @@ include::{snippets}/create-like-garden/request-fields.adoc[]
 ==== Response (Success)
 include::{snippets}/create-like-garden/http-response.adoc[]
 include::{snippets}/create-like-garden/response-fields.adoc[]
+
+[[delete like]]
+=== 찜한 텃밭 취소
+텃밭의 찜하기를 취소할 수 있다.
+==== Request
+include::{snippets}/delete-like/http-request.adoc[]
+include::{snippets}/delete-like/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/delete-like/http-response.adoc[]
+include::{snippets}/delete-like/response-fields.adoc[]

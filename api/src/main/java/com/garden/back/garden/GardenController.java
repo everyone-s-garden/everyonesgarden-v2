@@ -135,14 +135,13 @@ public class GardenController {
             path = "/likes",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenLikeDeleteResponse> deleteGardenLike(
-            Long memberId,
+    public ResponseEntity<Void> deleteGardenLike(
             @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest) {
+        Long memberId = 1L;
         gardenCommandService.deleteGardenLike(
                 GardenLikeDeleteRequest.of(memberId, gardenLikeDeleteRequest));
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new GardenLikeDeleteResponse(true));
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
