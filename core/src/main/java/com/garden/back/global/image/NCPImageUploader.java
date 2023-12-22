@@ -50,7 +50,7 @@ public class NCPImageUploader implements ImageUploader {
     public void delete(String directory, String imageUrl) {
         try {
             URL url = new URL(imageUrl);
-            String path = url.getPath().substring(1); // 맨 앞의 '/'를 제거
+            String path = refineUrl(url.getPath());
             String bucketName = ncpProperties.getBucket();
 
             // 파일명이 한글이면 인코딩 된 파일이 저장되므로 디코딩이 필요함.
@@ -64,6 +64,10 @@ public class NCPImageUploader implements ImageUploader {
         } catch (AmazonS3Exception e) {
             throw new AmazonS3Exception("S3에서 객체 삭제 중 오류 발생");
         }
+    }
+
+    private String refineUrl(String path) {
+        return path.substring(1);
     }
 
 }
