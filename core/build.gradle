@@ -19,6 +19,9 @@ dependencies {
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
+    // S3(NCP의 Object Storage와도 호환이 됨)
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.620'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 

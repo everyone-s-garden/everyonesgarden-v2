@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import static org.mockito.Mockito.mock;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
@@ -48,6 +50,9 @@ class ReportRestDocs extends RestDocsSupport {
                 requestFields(
                     fieldWithPath("content").type(STRING).description("신고 내용"),
                     fieldWithPath("reportType").type(STRING).description("신고 타입(FAKED_SALE,SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, COMMENTS 중 하나만 가능)")
+                ),
+                responseHeaders(
+                    headerWithName("Location").description("생성된 신고의 id를 포함한 url")
                 )
             ));
     }

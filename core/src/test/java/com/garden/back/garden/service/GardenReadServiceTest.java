@@ -12,6 +12,7 @@ import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
+import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;

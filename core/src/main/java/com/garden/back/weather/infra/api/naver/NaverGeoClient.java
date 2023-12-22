@@ -33,7 +33,7 @@ public interface NaverGeoClient {
 
         @Override
         public NaverGeoClient create(Throwable cause) {
-            log.warn("공공데이터 날씨 정보 조회 응답 오류: {}", cause.getMessage());
+            log.warn("네이버 Geo 정보 조회 응답 오류: {}", cause.getMessage());
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, cause.getMessage());
         }
     }
