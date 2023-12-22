@@ -16,8 +16,6 @@ public class GardenFixture {
 
     private static final double LATITUDE = 37.4449168;
     private static final double LONGITUDE = 127.1388684;
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
     }
