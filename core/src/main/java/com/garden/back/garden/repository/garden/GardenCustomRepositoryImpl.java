@@ -37,7 +37,7 @@ public class GardenCustomRepositoryImpl implements GardenCustomRepository {
                 LEFT JOIN
                 garden_images as gi ON g.garden_id = gi.garden_id
                 where g.garden_type in (%s)
-                and MbrContains(ST_LINESTRINGFROMTEXT(%s), g.point)
+                and MBRContains(ST_LINESTRINGFROMTEXT(%s), g.point)
                 """;
 
         String formattedQuery = String.format(nativeQuery, request.gardenTypes(), request.diagonal());
