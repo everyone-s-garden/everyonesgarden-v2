@@ -3,10 +3,7 @@ package com.garden.back.docs.garden;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
-import com.garden.back.garden.service.dto.response.GardenAllResults;
-import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
-import com.garden.back.garden.service.dto.response.GardenByNameResults;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.service.dto.response.*;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
@@ -84,6 +81,22 @@ public class GardenFixture {
                         true
                 ),
                 true
+        );
+    }
+
+    public static RecentGardenResults recentGardenResults() {
+        return new RecentGardenResults(
+                List.of(
+                        new RecentGardenResults.RecentGardenResult(
+                                1L,
+                                "1000",
+                                "영수네 텃밭",
+                                "100000",
+                                "www.garden.com",
+                                GardenStatus.ACTIVE.name(),
+                                GardenType.PUBLIC.name()
+                        )
+                )
         );
     }
 }
