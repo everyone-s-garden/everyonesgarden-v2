@@ -99,4 +99,19 @@ public class GardenFixture {
                 )
         );
     }
+
+    public static GardenMineResults gardenMineResults() {
+        return new GardenMineResults(
+                List.of(
+                        new GardenMineResults.GardenMineResult(
+                                1L,
+                                "1000",
+                                "영수네 텃밭",
+                                "100000",
+                                GardenStatus.ACTIVE.name(),
+                                List.of("www.garden.com")
+                        )
+                )
+        );
+    }
 }
