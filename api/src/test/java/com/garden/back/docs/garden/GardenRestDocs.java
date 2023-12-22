@@ -8,6 +8,7 @@ import com.garden.back.garden.dto.response.GardenByNameResponses;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
+import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenByNameResults;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -91,6 +92,46 @@ public class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("gardenGetAllResponses[].size").type(JsonFieldType.STRING).description("텃밭 크기"),
                                 fieldWithPath("gardenGetAllResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                                 fieldWithPath("gardenGetAllResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 이미지"),
+                                fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
+                        )));
+    }
+
+    @DisplayName("해당 화면에 위치한 텃밭 정보를 반환한다.")
+    @Test
+    void getGardensByComplexes() throws Exception {
+        GardenByComplexesResults gardenByComplexesResults = GardenFixture.gardenByComplexesResults();
+        given(gardenReadService.getGardensByComplexes(any())).willReturn(gardenByComplexesResults);
+
+        mockMvc.perform(get("/v2/gardens/by-complexes")
+                .param("gardenType","PUBLIC")
+                .param("pageNumber","0")
+                .param("startLat","37.2449168")
+                .param("startLong","127.1288684")
+                .param("endLat","37.4449168")
+                .param("endLong","127.1388684")
+                .characterEncoding(StandardCharsets.UTF_8))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("get-gardens-by-complexes",
+                        queryParameters(
+                                parameterWithName("gardenType").description("텃밭 타입 : ALL(모두),PRIVATE(민간), PUBLIC(공공) "),
+                                parameterWithName("pageNumber").description("요청하는 페이지 수"),
+                                parameterWithName("startLat").description("북서쪽 위도"),
+                                parameterWithName("startLong").description("북서쪽 경도"),
+                                parameterWithName("endLat").description("남동쪽 위도"),
+                                parameterWithName("endLong").description("남동쪽 경도")
+                        ),
+                        responseFields(
+                                fieldWithPath("gardenByComplexesResponses").type(JsonFieldType.ARRAY).description("위치 및 타입에 따른 텃밭 검색"),
+                                fieldWithPath("gardenByComplexesResponses[].gardenId").type(JsonFieldType.NUMBER).description("텃밭 아이디"),
+                                fieldWithPath("gardenByComplexesResponses[].size").type(JsonFieldType.STRING).description("텃밭 크기"),
+                                fieldWithPath("gardenByComplexesResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
+                                fieldWithPath("gardenByComplexesResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
+                                fieldWithPath("gardenByComplexesResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 이미지"),
+                                fieldWithPath("gardenByComplexesResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
+                                fieldWithPath("gardenByComplexesResponses[].gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)"),
+                                fieldWithPath("gardenByComplexesResponses[].latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                                fieldWithPath("gardenByComplexesResponses[].longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
                         )));
     }
