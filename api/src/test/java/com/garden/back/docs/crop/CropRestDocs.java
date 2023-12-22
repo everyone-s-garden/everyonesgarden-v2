@@ -32,26 +32,7 @@ public class CropRestDocs extends RestDocsSupport {
     @DisplayName("1월~12월 까지의 작물을 추천하는 API DOCS")
     @Test
     void getMonthlyRecommendedCrops() throws Exception {
-        MonthlyRecommendedCropsResponse response = sut.giveMeBuilder(MonthlyRecommendedCropsResponse.class)
-            .size("cropsResponses", 2)
-            .size("cropInfos[0]", 2)
-            .set("cropsResponses[0].month", 1)
-            .set("cropsResponses[0].cropInfos[0].name", "파")
-            .set("cropsResponses[0].cropInfos[0].description", "파에 대한 설명")
-            .set("cropsResponses[0].cropInfos[0].link", "https://link-to-pa")
-            .set("cropsResponses[0].cropInfos[1].name", "양파")
-            .set("cropsResponses[0].cropInfos[1].description", "양파에 대한 설명")
-            .set("cropsResponses[0].cropInfos[1].link", "https://link-to-yangpa")
-            .size("cropInfos[1]", 2)
-            .set("cropsResponses[1].month", 12)
-            .set("cropsResponses[1].cropInfos[0].name", "고추")
-            .set("cropsResponses[1].cropInfos[0].description", "고추에 대한 설명")
-            .set("cropsResponses[1].cropInfos[0].link", "https://link-to-gochu")
-            .set("cropsResponses[1].cropInfos[1].name", "감자")
-            .set("cropsResponses[1].cropInfos[1].description", "감자에 대한 설명")
-            .set("cropsResponses[1].cropInfos[1].link", "https://link-to-gamja")
-            .sample();
-
+        MonthlyRecommendedCropsResponse response = CropFixture.createMonthlyRecommendedCropsResponse();
         given(cropService.getMonthlyRecommendedCrops()).willReturn(response);
 
         mockMvc.perform(get("/v1/crops")
