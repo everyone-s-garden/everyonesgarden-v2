@@ -64,8 +64,8 @@ public class GardenController {
             path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-            @PositiveOrZero @PathVariable Long gardenId,
-            Long memberId) {
+            @PositiveOrZero @PathVariable Long gardenId){
+        Long memberId = 1L;
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)

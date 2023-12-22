@@ -36,3 +36,14 @@ include::{snippets}/get-gardens-by-complexes/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-gardens-by-complexes/http-response.adoc[]
+
+[[detail garden]]
+=== 텃밭 상세보기
+텃밭 상세 보기입니다.
+==== Request
+include::{snippets}/detail-garden/http-request.adoc[]
+include::{snippets}/detail-garden/request-fields.adoc[]
+include::{snippets}/detail-garden/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/detail-garden/http-response.adoc[]
