@@ -68,3 +68,14 @@ include::{snippets}/delete-garden/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/delete-garden/http-response.adoc[]
 include::{snippets}/delete-garden/response-fields.adoc[]
+
+[[get my gardens]]
+=== 내가 등록한 텃밭 조회
+내가 다른 사람들에게 텃밭을 분양하고자 등록한 텃밭 목록을 확인한다.
+==== Request
+include::{snippets}/get-my-gardens/http-request.adoc[]
+include::{snippets}/get-my-gardens/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-gardens/http-response.adoc[]
+include::{snippets}/get-my-gardens/response-fields.adoc[]

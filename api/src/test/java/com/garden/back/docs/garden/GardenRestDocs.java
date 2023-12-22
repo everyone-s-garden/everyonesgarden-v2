@@ -210,6 +210,29 @@ public class GardenRestDocs extends RestDocsSupport {
                         )));
     }
 
+    @DisplayName("내가 등록한 텃밭들을 모두 조회할 수 있다.")
+    @Test
+    void getMyGardens() throws Exception {
+        GardenMineResults gardenMineResults = GardenFixture.gardenMineResults();
+        given(gardenReadService.getMyGarden(any())).willReturn(gardenMineResults);
+
+        mockMvc.perform(get("/v2/gardens/mine"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("get-my-gardens",
+                        responseFields(
+                                fieldWithPath("gardenMineResponses").type(JsonFieldType.ARRAY).description("내가 등록한 텃밭 목록"),
+                                fieldWithPath("gardenMineResponses[].gardenId").type(JsonFieldType.NUMBER).description("내가 등록한 텃밭 아이디"),
+                                fieldWithPath("gardenMineResponses[].size").type(JsonFieldType.STRING).description("텃밭 크기"),
+                                fieldWithPath("gardenMineResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
+                                fieldWithPath("gardenMineResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
+                                fieldWithPath("gardenMineResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
+                                fieldWithPath("gardenMineResponses[].imageUrls").type(JsonFieldType.ARRAY).description("텃밭 사진")
+                        )));
+    }
+
+
+
 
 }
 

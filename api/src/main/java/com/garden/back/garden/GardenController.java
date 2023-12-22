@@ -101,7 +101,8 @@ public class GardenController {
     @GetMapping(
             path = "/mine",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenMineResponses> getMyGarden(Long memberId) {
+    public ResponseEntity<GardenMineResponses> getMyGarden() {
+        Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenMineResponses.to(gardenReadService.getMyGarden(memberId)));
 
