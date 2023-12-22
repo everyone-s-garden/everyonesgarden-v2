@@ -64,7 +64,7 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
         GardenImage savedGardenImage = gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
 
         // When
-        GardenAllResults allGarden = gardenReadService.getAllGarden(GardenFixture.gardenGetAllParam());
+        GardenAllResults allGarden = gardenReadService.getAllGarden(0);
 
         // Then
         allGarden.gardenAllResults()
@@ -72,25 +72,13 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                         gardenAllResult -> {
                             assertThat(gardenAllResult.gardenId()).isEqualTo(savedPrivateGarden.getGardenId());
                             assertThat(gardenAllResult.gardenName()).isEqualTo(savedPrivateGarden.getGardenName());
-                            assertThat(gardenAllResult.gardenDescription()).isEqualTo(savedPrivateGarden.getGardenDescription());
-                            assertThat(gardenAllResult.gardenFacility().isEquipment()).isEqualTo(savedPrivateGarden.getIsEquipment());
-                            assertThat(gardenAllResult.gardenFacility().isToilet()).isEqualTo(savedPrivateGarden.getIsToilet());
-                            assertThat(gardenAllResult.gardenFacility().isWaterway()).isEqualTo(savedPrivateGarden.getIsWaterway());
                             assertThat(gardenAllResult.gardenStatus()).isEqualTo(savedPrivateGarden.getGardenStatus().name());
                             assertThat(gardenAllResult.gardenType()).isEqualTo(savedPrivateGarden.getGardenType().name());
-                            assertThat(gardenAllResult.address()).isEqualTo(savedPrivateGarden.getAddress());
-                            assertThat(gardenAllResult.contact()).isEqualTo(savedPrivateGarden.getContact());
-                            assertThat(gardenAllResult.isLiked()).isEqualTo(true);
                             assertThat(gardenAllResult.images()).isEqualTo(List.of(savedGardenImage.getImageUrl()));
                             assertThat(gardenAllResult.latitude()).isEqualTo(savedPrivateGarden.getLatitude());
                             assertThat(gardenAllResult.longitude()).isEqualTo(savedPrivateGarden.getLongitude());
                             assertThat(gardenAllResult.size()).isEqualTo(savedPrivateGarden.getSize());
                             assertThat(gardenAllResult.price()).isEqualTo(savedPrivateGarden.getPrice());
-                            assertThat(gardenAllResult.linkForRequest()).isEqualTo(savedPrivateGarden.getLinkForRequest());
-                            assertThat(gardenAllResult.recruitEndDate()).isEqualTo(savedPrivateGarden.getRecruitEndDate().format(TIME_FORMATTER));
-                            assertThat(gardenAllResult.recruitStartDate()).isEqualTo(savedPrivateGarden.getRecruitStartDate().format(TIME_FORMATTER));
-                            assertThat(gardenAllResult.useEndDate()).isEqualTo(savedPrivateGarden.getUseEndDate().format(TIME_FORMATTER));
-                            assertThat(gardenAllResult.useStartDate()).isEqualTo(savedPrivateGarden.getUseStartDate().format(TIME_FORMATTER));
                         }
                 );
     }
