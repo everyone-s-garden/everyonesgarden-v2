@@ -1,4 +1,4 @@
-[[gardens-by-names]]
+== Gardens-by-names
 === 텃밭을 등록할 때 이름으로 검색하기
 
 텃밭을 등록할 때 기존에 등록된 텃밭 중에서 이름으로 검색해서 찾는 기능입니다.
@@ -11,7 +11,7 @@ include::{snippets}/get-gardens-by-name/request-body.adoc[]
 include::{snippets}/get-gardens-by-name/http-response.adoc[]
 include::{snippets}/get-gardens-by-name/response-fields.adoc[]
 
-[[all-garden]]
+== All-garden
 === 모든 텃밭 정보 조회하기
 
 모든 텃밭에 대해서 조회합니다.
@@ -24,7 +24,7 @@ include::{snippets}/get-all-gardens/request-body.adoc[]
 include::{snippets}/get-all-gardens/http-response.adoc[]
 include::{snippets}/get-all-gardens/response-fields.adoc[]
 
-[[gardens by complexes and garden type]]
+== Gardens by complexes and garden type
 === 텃밭 타입과 위치에 따른 조회하기
 화면의 북서쪽과 남동쪽의 위도 및 경도 그리고 텃밭 타입에 따른 결과를 반환합니다.
 
@@ -36,7 +36,7 @@ include::{snippets}/get-gardens-by-complexes/request-body.adoc[]
 include::{snippets}/get-gardens-by-complexes/http-response.adoc[]
 include::{snippets}/get-gardens-by-complexes/response-fields.adoc[]
 
-[[detail garden]]
+== Detail garden
 === 텃밭 상세보기
 텃밭 상세 보기입니다.
 ==== Request
@@ -47,18 +47,18 @@ include::{snippets}/detail-garden/path-parameters.adoc[]
 include::{snippets}/detail-garden/http-response.adoc[]
 include::{snippets}/detail-garden/response-fields.adoc[]
 
-[[recent gardens]]
+== Recent gardens
 === 최근 본 텃밭
 최근 본 텃밭 최대 10개를 반환합니다.
 ==== Request
 include::{snippets}/recent-gardens/http-request.adoc[]
-include::{snippets}/recent-gardens/path-parameters.adoc[]
+
 
 ==== Response (Success)
 include::{snippets}/recent-gardens/http-response.adoc[]
 include::{snippets}/recent-gardens/response-fields.adoc[]
 
-[[delete garden]]
+== Delete garden
 === 텃밭 삭제
 텃밭을 삭제합니다.
 ==== Request
@@ -67,32 +67,32 @@ include::{snippets}/delete-garden/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/delete-garden/http-response.adoc[]
-include::{snippets}/delete-garden/response-fields.adoc[]
 
-[[get my gardens]]
+
+== Get my gardens
 === 내가 등록한 텃밭 조회
 내가 다른 사람들에게 텃밭을 분양하고자 등록한 텃밭 목록을 확인한다.
 ==== Request
 include::{snippets}/get-my-gardens/http-request.adoc[]
-include::{snippets}/get-my-gardens/path-parameters.adoc[]
+
 
 ==== Response (Success)
 include::{snippets}/get-my-gardens/http-response.adoc[]
 include::{snippets}/get-my-gardens/response-fields.adoc[]
 
-[[get like gardens]]
+== Get like gardens
 === 내가 찜한 텃밭 목록 조회
 내가 찜한 텃밭 목록을 조회한다.
 
 ==== Request
 include::{snippets}/get-like-gardens/http-request.adoc[]
-include::{snippets}/get-like-gardens/path-parameters.adoc[]
+
 
 ==== Response (Success)
 include::{snippets}/get-like-gardens/http-response.adoc[]
 include::{snippets}/get-like-gardens/response-fields.adoc[]
 
-[[get like gardens]]
+== Get like gardens
 === 텃밭 찜하기
 마음에 드는 텃밭을 찜할 수 있다.
 
@@ -102,9 +102,9 @@ include::{snippets}/create-like-garden/request-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/create-like-garden/http-response.adoc[]
-include::{snippets}/create-like-garden/response-fields.adoc[]
 
-[[delete like]]
+
+== Delete like
 === 찜한 텃밭 취소
 텃밭의 찜하기를 취소할 수 있다.
 ==== Request
@@ -113,4 +113,3 @@ include::{snippets}/delete-like/request-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/delete-like/http-response.adoc[]
-include::{snippets}/delete-like/response-fields.adoc[]
