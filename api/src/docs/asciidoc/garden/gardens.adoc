@@ -5,11 +5,11 @@
 
 ==== Request
 include::{snippets}/get-gardens-by-name/http-request.adoc[]
-include::{snippets}/get-gardens-by-name/request-fields.adoc[]
-include::{snippets}/get-gardens-by-name/path-parameters.adoc[]
+include::{snippets}/get-gardens-by-name/request-body.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-gardens-by-name/http-response.adoc[]
+include::{snippets}/get-gardens-by-name/response-fields.adoc[]
 
 [[all-garden]]
 === 모든 텃밭 정보 조회하기
@@ -18,12 +18,11 @@ include::{snippets}/get-gardens-by-name/http-response.adoc[]
 
 ==== Request
 include::{snippets}/get-all-gardens/http-request.adoc[]
-include::{snippets}/get-all-gardens/request-fields.adoc[]
-include::{snippets}/get-all-gardens/path-parameters.adoc[]
+include::{snippets}/get-all-gardens/request-body.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-all-gardens/http-response.adoc[]
-
+include::{snippets}/get-all-gardens/response-fields.adoc[]
 
 [[gardens by complexes and garden type]]
 === 텃밭 타입과 위치에 따른 조회하기
@@ -31,30 +30,41 @@ include::{snippets}/get-all-gardens/http-response.adoc[]
 
 ==== Request
 include::{snippets}/get-gardens-by-complexes/http-request.adoc[]
-include::{snippets}/get-gardens-by-complexes/request-fields.adoc[]
-include::{snippets}/get-gardens-by-complexes/path-parameters.adoc[]
+include::{snippets}/get-gardens-by-complexes/request-body.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-gardens-by-complexes/http-response.adoc[]
+include::{snippets}/get-gardens-by-complexes/response-fields.adoc[]
 
 [[detail garden]]
 === 텃밭 상세보기
 텃밭 상세 보기입니다.
 ==== Request
 include::{snippets}/detail-garden/http-request.adoc[]
-include::{snippets}/detail-garden/request-fields.adoc[]
 include::{snippets}/detail-garden/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/detail-garden/http-response.adoc[]
+include::{snippets}/detail-garden/response-fields.adoc[]
 
 [[recent gardens]]
 === 최근 본 텃밭
 최근 본 텃밭 최대 10개를 반환합니다.
 ==== Request
 include::{snippets}/recent-gardens/http-request.adoc[]
-include::{snippets}/recent-gardens/request-fields.adoc[]
 include::{snippets}/recent-gardens/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/recent-gardens/http-response.adoc[]
+include::{snippets}/recent-gardens/response-fields.adoc[]
+
+[[delete garden]]
+=== 텃밭 삭제
+텃밭을 삭제합니다.
+==== Request
+include::{snippets}/delete-garden/http-request.adoc[]
+include::{snippets}/delete-garden/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/delete-garden/http-response.adoc[]
+include::{snippets}/delete-garden/response-fields.adoc[]

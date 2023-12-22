@@ -20,6 +20,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -193,6 +194,19 @@ public class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("recentGardenResponses[].images").type(JsonFieldType.STRING).description("텃밭 이미지"),
                                 fieldWithPath("recentGardenResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                                 fieldWithPath("recentGardenResponses[].gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)")
+                        )));
+    }
+
+    @DisplayName("텃밭을 삭제할 수 있다.")
+    @Test
+    void deleteGarden() throws Exception {
+        Long gardenId = 1L;
+        mockMvc.perform(delete("/v2/gardens/{gardenId}",gardenId))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-garden",
+                        pathParameters(
+                                parameterWithName("gardenId").description("삭제하고자 하는 텃밭 아이디")
                         )));
     }
 
