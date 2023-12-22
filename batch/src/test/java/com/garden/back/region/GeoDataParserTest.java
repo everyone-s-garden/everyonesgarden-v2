@@ -24,4 +24,11 @@ class GeoDataParserTest {
         geoDataParser.saveAllKoreanRegionWithMultipolygonAndBeopjeongdong();
         assertThat(regionRepository.findAll()).hasSize(5054);
     }
+
+    @DisplayName("대한민국의 변경된 법정된 데이터를 추가한다.")
+    @Test
+    @Disabled
+    void saveChangedRegions() {
+        geoDataParser.saveChangedRegions();
+    }
 }

@@ -90,6 +90,63 @@ public class GeoDataParser {
         regionRepository.saveAll(regions);
     }
 
+    public void saveChangedRegions() {
+        saveMultipolygon();
+        Point point = geometryFactory.createPoint(new Coordinate(127.2234, 37.3742));
+        Address address = new Address("경기도", "광주시", "고산동");
+        Long code = 41610114L;
+        MultiPolygon multiPolygon = emdCdToMultiPolygonMap.get(String.valueOf(code));
+        Region region = new Region(code, address, point, multiPolygon);
+
+
+        Point point2 = geometryFactory.createPoint(new Coordinate(127.2065, 37.3494));
+        Address address2 = new Address("경기도", "광주시", "문형동");
+        Long code2 = 41610117L;
+        MultiPolygon multiPolygon2 = emdCdToMultiPolygonMap.get(String.valueOf(code2));
+        Region region2 = new Region(code2, address2, point2, multiPolygon2);
+
+        Point point3 = geometryFactory.createPoint(new Coordinate(127.2238,  37.3623));
+        Address address3 = new Address("경기도", "광주시", "추자동");
+        Long code3 = 41610118L;
+        MultiPolygon multiPolygon3 = emdCdToMultiPolygonMap.get(String.valueOf(code3));
+        Region region3 = new Region(code3, address3, point3, multiPolygon3);
+
+        Point point4 = geometryFactory.createPoint(new Coordinate(127.262164, 37.356157));
+        Address address4 = new Address("경기도", "광주시", "매산동");
+        Long code4 = 41610119L;
+        MultiPolygon multiPolygon4 = emdCdToMultiPolygonMap.get(String.valueOf(code4));
+        Region region4 = new Region(code4, address4, point4, multiPolygon4);
+
+        Point point5 = geometryFactory.createPoint(new Coordinate(127.255048,  37.429431));
+        Address address5 = new Address("경기도", "광주시", "양벌동");
+        Long code5 = 41610120L;
+        MultiPolygon multiPolygon5 = emdCdToMultiPolygonMap.get(String.valueOf(code5));
+        Region region5 = new Region(code5, address5, point5, multiPolygon5);
+
+        Point point6 = geometryFactory.createPoint(new Coordinate(127.260577, 37.38331));
+        Address address6 = new Address("경기도", "광주시", "신현동");
+        Long code6 = 41610115L;
+        MultiPolygon multiPolygon6 = emdCdToMultiPolygonMap.get(String.valueOf(code6));
+        Region region6 = new Region(code6, address6, point6, multiPolygon6);
+
+        Point point7 = geometryFactory.createPoint(new Coordinate(127.155835, 37.351526));
+        Address address7 = new Address("경기도", "광주시", "능평동");
+        Long code7 = 41610116L;
+        MultiPolygon multiPolygon7 = emdCdToMultiPolygonMap.get(String.valueOf(code7));
+        Region region7 = new Region(code7, address7, point7, multiPolygon7);
+
+        List<Region> regions = new ArrayList<>();
+        regions.add(region);
+        regions.add(region2);
+        regions.add(region3);
+        regions.add(region4);
+        regions.add(region5);
+        regions.add(region6);
+        regions.add(region7);
+
+        regionRepository.saveAll(regions);
+    }
+
     private List<List<String>> readToList() {
         List<List<String>> list = new ArrayList<>();
 

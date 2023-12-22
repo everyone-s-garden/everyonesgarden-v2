@@ -1,11 +1,13 @@
 package com.garden.back.region;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 
 @Entity
 @Table(name = "regions")
+@Getter
 public class Region {
 
     protected Region() {}
