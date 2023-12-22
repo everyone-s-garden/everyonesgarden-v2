@@ -5,7 +5,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
 api:
   mafra:

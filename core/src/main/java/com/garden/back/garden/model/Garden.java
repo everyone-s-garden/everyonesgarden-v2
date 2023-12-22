@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -255,5 +256,10 @@ public class Garden {
         }
     }
 
+    public void validWriterId(Long requestMemberId) {
+        if (!Objects.equals(writerId, requestMemberId)) {
+            throw new IllegalArgumentException("텃밭 게시글 작성자만 텃밭을 삭제할 수 있습니다.");
+        }
+    }
 
 }

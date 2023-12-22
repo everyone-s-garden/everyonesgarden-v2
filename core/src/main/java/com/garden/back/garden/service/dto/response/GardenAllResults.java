@@ -4,6 +4,8 @@ import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import org.springframework.data.domain.Slice;
 
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +13,25 @@ public record GardenAllResults(
         Slice<GardenAllResult> gardenAllResults
 ) {
 
-    public static GardenAllResults of(Slice<GardenGetAll> gardens, Map<Long, List<String>> gardenAndImages) {
+    public static GardenAllResults of(Slice<GardenGetAll> gardens) {
+        Map<Long, List<String>> gardenAndImages = parseGardenAndImage(gardens);
         return new GardenAllResults(
                 gardens.map(
                         gardenGetAll -> GardenAllResult.to(gardenGetAll, gardenAndImages.get(gardenGetAll.getGardenId()))
                 )
         );
+    }
+
+    private static Map<Long, List<String>> parseGardenAndImage(Slice<GardenGetAll> gardensGetAll) {
+        Map<Long, List<String>> gardenAndImages = new HashMap<>();
+
+        gardensGetAll.forEach(gardenGetAll ->
+                gardenAndImages
+                        .computeIfAbsent(gardenGetAll.getGardenId(), k -> new ArrayList<>())
+                        .add(gardenGetAll.getImageUrl())
+        );
+
+        return gardenAndImages;
     }
 
     public record GardenAllResult(

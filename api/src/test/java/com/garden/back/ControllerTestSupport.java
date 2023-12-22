@@ -2,6 +2,7 @@ package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.back.garden.GardenController;
+import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.global.FixtureSupport;
 import com.garden.back.report.ReportController;
@@ -34,6 +35,9 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected GardenReadService gardenReadService;
+
+    @MockBean
+    protected GardenCommandService gardenCommandService;
 
     @MockBean
     protected WeatherService weatherService;

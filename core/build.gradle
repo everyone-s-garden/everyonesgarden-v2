@@ -15,7 +15,7 @@ dependencies {
     // apache common
     implementation 'org.apache.commons:commons-lang3:3.14.0'
 
-    // fly way
+    // flyway
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-mysql'
 
