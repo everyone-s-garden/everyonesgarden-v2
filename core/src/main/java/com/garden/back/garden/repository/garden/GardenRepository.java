@@ -16,7 +16,7 @@ import java.util.List;
 public interface GardenRepository {
     Slice<GardenByName> findGardensByName(String gardenName, Pageable pageable);
 
-    Slice<GardenGetAll> getAllGardens(Pageable pageable, Long memberId);
+    Slice<GardenGetAll> getAllGardens(Pageable pageable);
 
     GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request);
 
