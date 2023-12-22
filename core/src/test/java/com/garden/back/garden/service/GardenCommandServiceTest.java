@@ -9,14 +9,13 @@ import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
 import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
+import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import jakarta.persistence.EntityNotFoundException;
-import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +24,9 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @Transactional
-@SpringBootTest(webEnvironment = NONE)
-public class GardenCommandServiceTest {
+public class GardenCommandServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenRepository gardenRepository;
