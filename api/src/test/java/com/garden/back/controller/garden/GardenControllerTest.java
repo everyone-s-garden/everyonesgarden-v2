@@ -1,4 +1,4 @@
-package com.garden.back.garden;
+package com.garden.back.controller.garden;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
