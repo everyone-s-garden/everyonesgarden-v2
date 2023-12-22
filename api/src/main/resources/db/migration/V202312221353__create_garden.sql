@@ -1,4 +1,3 @@
-
 create table garden_images (
         garden_id bigint,
         garden_image_id bigint not null auto_increment,
@@ -44,6 +43,7 @@ create table gardens (
         point geometry not null,
         primary key (garden_id)
     )  ENGINE=InnoDB;
+
 create table tended_gardens (
         latitude float(53),
         longitude float(53),
@@ -66,6 +66,6 @@ create table viewed_gardens (
         primary key (garden_view_id)
 ) ENGINE=InnoDB;
 
---index 추가--
+-- index 추가--
 CREATE FULLTEXT INDEX ft_index ON gardens (garden_name) WITH PARSER ngram;
 create spatial index sp_index on gardens (point);
