@@ -1,4 +1,4 @@
-package com.garden.back.garden.util;
+package com.garden.back.global;
 
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import org.locationtech.jts.geom.Coordinate;
