@@ -114,4 +114,19 @@ public class GardenFixture {
                 )
         );
     }
+
+    public static GardenLikeByMemberResults gardenLikeByMemberResults() {
+        return new GardenLikeByMemberResults(
+                List.of(
+                        new GardenLikeByMemberResults.GardenLikeByMemberResult(
+                                1L,
+                                "1000",
+                                "영수네 텃밭",
+                                "100000",
+                                GardenStatus.ACTIVE.name(),
+                                List.of("www.garden.com")
+                        )
+                )
+        );
+    }
 }

@@ -111,7 +111,8 @@ public class GardenController {
     @GetMapping(
             path = "/likes",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember(Long memberId) {
+    public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember() {
+        Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenLikeByMemberResponses.to(gardenReadService.getLikeGardensByMember(memberId)));
     }
