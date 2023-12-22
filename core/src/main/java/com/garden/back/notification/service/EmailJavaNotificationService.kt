@@ -19,7 +19,7 @@ class EmailJavaNotificationService(
     // TODO : Guarantee at least once delivery by retry
     @Async
     override fun send(notification: Notification) {
-        if (!EmailUtils.isEmailAddress(notification.recipient)) {
+        if (!EmailUtils.isValid(notification.recipient)) {
             throw IllegalStateException("Recipient must be an email address")
         }
 
