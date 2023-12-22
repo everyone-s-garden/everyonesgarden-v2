@@ -1,0 +1,11 @@
+[[all-recommended-crops]]
+=== 1월부터 12월까지 추천 작물 조회
+
+1월부터 12월까지 추천 작물을 조회합니다. (위키 기준)
+
+==== Request
+include::{snippets}/get-all-months-recommended-crops/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-all-months-recommended-crops/http-response.adoc[]
+include::{snippets}/get-all-months-recommended-crops/response-fields.adoc[]
