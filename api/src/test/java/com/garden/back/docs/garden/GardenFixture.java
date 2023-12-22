@@ -6,6 +6,7 @@ import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenByNameResults;
+import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 
@@ -54,7 +55,35 @@ public class GardenFixture {
                         )
                 );
 
-        return new GardenByComplexesResults(gardenByComplexesResults,false);
+        return new GardenByComplexesResults(gardenByComplexesResults, false);
+    }
 
+    public static GardenDetailResult gardenDetailResult() {
+        return new GardenDetailResult(
+                1L,
+                "인천광역시 서구 신현동 222-22",
+                37.4449168,
+                127.1388684,
+                "진겸이네 주말농장",
+                GardenType.PUBLIC.name(),
+                "www.studay.me",
+                "100000",
+                "000-0000-0000",
+                "1000",
+                GardenStatus.ACTIVE.name(),
+                1L,
+                "2023.12.01",
+                "2023.12.25",
+                "2024.01.01",
+                "2024.12.25",
+                "농기구를 빌릴 수 있는 자판기가 있습니다. 작물 키우는 법도 알려드려요",
+                List.of("www.garden.com"),
+                new GardenDetailResult.GardenFacility(
+                        false,
+                        true,
+                        true
+                ),
+                true
+        );
     }
 }
