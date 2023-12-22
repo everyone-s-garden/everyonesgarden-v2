@@ -1,5 +1,6 @@
 package com.garden.back.docs.garden;
 
+import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
@@ -128,5 +129,9 @@ public class GardenFixture {
                         )
                 )
         );
+    }
+
+    public static GardenLikeCreateRequest gardenLikeCreateRequest() {
+        return new GardenLikeCreateRequest(1L);
     }
 }

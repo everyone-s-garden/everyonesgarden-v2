@@ -4,6 +4,7 @@ import com.garden.back.crop.service.response.MonthlyRecommendedCropsResponse;
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.docs.crop.CropFixture;
 import com.garden.back.garden.GardenController;
+import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.response.GardenByNameResponses;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
@@ -19,9 +20,11 @@ import java.nio.charset.StandardCharsets;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -249,6 +252,26 @@ public class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("gardenLikeByMemberResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
                                 fieldWithPath("gardenLikeByMemberResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                                 fieldWithPath("gardenLikeByMemberResponses[].imageUrls").type(JsonFieldType.ARRAY).description("텃밭 사진")
+                        )));
+    }
+
+    @DisplayName("텃밭을 찜할 수 있다.")
+    @Test
+    void createLikeGarden() throws  Exception {
+        GardenLikeCreateRequest gardenLikeCreateRequest = GardenFixture.gardenLikeCreateRequest();
+        given(gardenCommandService.createGardenLike(any())).willReturn(1L);
+
+        mockMvc.perform(post("/v2/gardens/likes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(gardenLikeCreateRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andDo(document("create-like-garden",
+                        requestFields(
+                                fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("찜하고자 하는 텃밭 아이디")
+                        ),
+                        responseHeaders(
+                                headerWithName("Location").description("생성된 찜한 텃밭의 id를 포함한 url")
                         )));
     }
 

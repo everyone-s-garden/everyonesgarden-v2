@@ -91,3 +91,15 @@ include::{snippets}/get-like-gardens/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-like-gardens/http-response.adoc[]
 include::{snippets}/get-like-gardens/response-fields.adoc[]
+
+[[get like gardens]]
+=== 텃밭 찜하기
+내가 찜한 텃밭 목록을 조회한다.
+
+==== Request
+include::{snippets}/create-like-garden/http-request.adoc[]
+include::{snippets}/create-like-garden/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-like-garden/http-response.adoc[]
+include::{snippets}/create-like-garden/response-fields.adoc[]
