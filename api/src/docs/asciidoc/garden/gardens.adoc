@@ -47,3 +47,14 @@ include::{snippets}/detail-garden/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/detail-garden/http-response.adoc[]
+
+[[recent gardens]]
+=== 최근 본 텃밭
+최근 본 텃밭 최대 10개를 반환합니다.
+==== Request
+include::{snippets}/recent-gardens/http-request.adoc[]
+include::{snippets}/recent-gardens/request-fields.adoc[]
+include::{snippets}/recent-gardens/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/recent-gardens/http-response.adoc[]

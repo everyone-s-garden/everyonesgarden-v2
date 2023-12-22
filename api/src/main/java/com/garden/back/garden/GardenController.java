@@ -75,8 +75,8 @@ public class GardenController {
     @GetMapping(
             path = "/recent",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RecentGardenResponses> getRecentGardens(
-            Long memberId) {
+    public ResponseEntity<RecentGardenResponses> getRecentGardens( ) {
+        Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
     }
