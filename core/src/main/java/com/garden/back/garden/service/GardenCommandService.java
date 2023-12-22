@@ -35,9 +35,11 @@ public class GardenCommandService {
     }
 
     @Transactional
-    public void createGardenLike(GardenLikeCreateParam param) {
+    public Long createGardenLike(GardenLikeCreateParam param) {
         Garden gardenToLike = gardenRepository.getById(param.gardenId());
-        gardenLikeRepository.save(GardenLike.of(param.memberId(),gardenToLike));
+        GardenLike savedGardenLike = gardenLikeRepository.save(GardenLike.of(param.memberId(), gardenToLike));
+
+        return savedGardenLike.getGardenLikeId();
     }
 
     public void deleteGardenLike(GardenLikeDeleteParam param) {
