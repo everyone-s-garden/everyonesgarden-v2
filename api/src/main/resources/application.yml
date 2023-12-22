@@ -1,0 +1,9 @@
+spring:
+  profiles:
+    active: local
+    include: credential, feign
+
+forecast:
+  weekly:
+    publish:
+      time: "0600"
