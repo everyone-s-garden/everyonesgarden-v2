@@ -24,7 +24,7 @@ open class SlackNotificationService(
         }
 
         val body = mapOf(
-            "text" to "${notification.title} ${notification.content}",
+            "text" to notification.content,
         )
 
         try {
