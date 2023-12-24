@@ -4,4 +4,5 @@ enum class NotificationType {
     EMAIL,
     SMS,
     SMARTPHONE_PUSH,
+    SLACK,
 }
