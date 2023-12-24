@@ -1,6 +1,5 @@
 package com.garden.back.notification;
 
-import com.garden.back.notification.NotificationApplication;
 import com.garden.back.notification.domain.slack.SlackChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("test")
 @RestController
-public class TestController {
+public class NotificationTestController {
 
     private final NotificationApplication notificationApplication;
 
