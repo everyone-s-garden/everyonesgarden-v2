@@ -1,15 +1,19 @@
 api:
   mafra:
+    name: ""
     url: asfd
     secret: asdf
   weather:
     url: asdf
+    baseUrl: "http://apis.data.go.kr/1360000"
+    name: "openAPI"
     secret: asdf
   weatherAll:
     url: asdf
   weatherWeek:
     url: asdf
   reverseGeo:
+    name: "naverGeo"
     url: asdf
     id: asdf
     secret: asdf

@@ -1,12 +1,9 @@
-package com.garden.back.report.model;
+package com.garden.back.report.domain;
 
 import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Table(name = "reports")
 @Entity

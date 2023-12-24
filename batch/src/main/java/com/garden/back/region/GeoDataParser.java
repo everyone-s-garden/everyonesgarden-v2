@@ -45,10 +45,9 @@ public class GeoDataParser {
         List<List<String>> list = readToList();
         saveMultipolygon();
         List<Region> regions = new ArrayList<>();
+
         for (int i = 0; i < list.size(); i++) {
-
             List<String> line = list.get(i);
-
             //csv를 읽을 때 한줄한줄 읽는데, 현재 엑셀 파일에는 시도 전체 정보,해당 시의 시군구 전체정보, 읍면동 전체정보, 리 전체 정보
             //가 가장 위엣줄에 존재한다. 해당 시도의 시군구, 읍면동, 리의 정보가 많아지면 줄바뀜이 일어나는데, 프로젝트에서 원하는 데이터는
             //특정 읍면동의 emd_cd라는 고유 코드와 중심좌표다. 따라서 각 시도의 시군구 정보를 표시하는 줄을 제거하고, 각 시군구에서 읍면동

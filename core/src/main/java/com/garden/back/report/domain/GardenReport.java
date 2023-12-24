@@ -1,4 +1,4 @@
-package com.garden.back.report.model;
+package com.garden.back.report.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
