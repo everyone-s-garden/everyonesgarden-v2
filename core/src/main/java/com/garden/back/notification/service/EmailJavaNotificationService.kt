@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
 @Service
-class EmailJavaNotificationService(
+open class EmailJavaNotificationService(
     @Value("example@gmail.com")
     private var OFFICIAL_EMAIL: String,
 
