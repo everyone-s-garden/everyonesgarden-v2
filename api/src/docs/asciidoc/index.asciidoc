@@ -20,3 +20,18 @@ include::global/http-status-code.adoc[]
 == Weather
 날씨 API 입니다.
 include::weather/weathers.adoc[]
+
+[[Crop]]
+== Crop
+작물 API 입니다.
+include::crop/crops.adoc[]
+
+[[Report]]
+== Report
+신고 API 입니다.
+include::report/reports.adoc[]
+
+[[Garden]]
+== Garden
+텃밭 API 입니다.
+include::garden/gardens.adoc[]

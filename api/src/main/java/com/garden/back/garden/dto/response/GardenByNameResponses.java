@@ -1,17 +1,20 @@
 package com.garden.back.garden.dto.response;
 
 import com.garden.back.garden.service.dto.response.GardenByNameResults;
-
-import org.springframework.data.domain.Slice;
+import java.util.List;
 
 public record GardenByNameResponses(
-        Slice<GardenSearchResponse> gardenSearchResponses
+        List<GardenSearchResponse> gardenSearchResponses,
+        boolean hasNext
 ) {
 
     public static GardenByNameResponses to(GardenByNameResults gardenByNameResults) {
         return new GardenByNameResponses(
                 gardenByNameResults.gardensByName()
+                        .stream()
                         .map(GardenSearchResponse::to)
+                        .toList(),
+                gardenByNameResults.hasNext()
         );
     }
 

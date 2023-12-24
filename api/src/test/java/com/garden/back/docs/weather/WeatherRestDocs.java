@@ -34,7 +34,7 @@ class WeatherRestDocs extends RestDocsSupport {
         return new WeatherController(weatherService);
     }
 
-    @DisplayName("")
+    @DisplayName("모든 지역의 날씨를 조회하는 API DOCS")
     @Test
     void getAllWeather() throws Exception {
         AllWeatherResponse allWeatherResponse = sut.giveMeBuilder(AllWeatherResponse.class)
@@ -104,63 +104,13 @@ class WeatherRestDocs extends RestDocsSupport {
                                 fieldWithPath("weatherApiResult").description("날씨 API 결과 목록"),
                                 fieldWithPath("weatherApiResult[].regionName").type(JsonFieldType.STRING).description("지역 이름"),
                                 fieldWithPath("weatherApiResult[].skyValue").type(JsonFieldType.STRING).description("하늘 상태"),
-                                fieldWithPath("weatherApiResult[].temperatureValue").type(JsonFieldType.STRING).description("온도 값"),
-                                fieldWithPath("weatherApiResult[0].regionName").description("강원도 지역 이름"),
-                                fieldWithPath("weatherApiResult[0].skyValue").description("강원도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[0].temperatureValue").description("강원도 온도 값"),
-                                fieldWithPath("weatherApiResult[1].regionName").description("서울특별시 지역 이름"),
-                                fieldWithPath("weatherApiResult[1].skyValue").description("서울특별시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[1].temperatureValue").description("서울특별시 온도 값"),
-                                fieldWithPath("weatherApiResult[2].regionName").description("경기도 지역 이름"),
-                                fieldWithPath("weatherApiResult[2].skyValue").description("경기도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[2].temperatureValue").description("경기도 온도 값"),
-                                fieldWithPath("weatherApiResult[3].regionName").description("경상남도 지역 이름"),
-                                fieldWithPath("weatherApiResult[3].skyValue").description("경상남도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[3].temperatureValue").description("경상남도 온도 값"),
-                                fieldWithPath("weatherApiResult[4].regionName").description("경상북도 지역 이름"),
-                                fieldWithPath("weatherApiResult[4].skyValue").description("경상북도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[4].temperatureValue").description("경상북도 온도 값"),
-                                fieldWithPath("weatherApiResult[5].regionName").description("광주광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[5].skyValue").description("광주광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[5].temperatureValue").description("광주광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[6].regionName").description("대구광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[6].skyValue").description("대구광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[6].temperatureValue").description("대구광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[7].regionName").description("대전광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[7].skyValue").description("대전광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[7].temperatureValue").description("대전광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[8].regionName").description("부산광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[8].skyValue").description("부산광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[8].temperatureValue").description("부산광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[9].regionName").description("세종특별자치시 지역 이름"),
-                                fieldWithPath("weatherApiResult[9].skyValue").description("세종특별자치시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[9].temperatureValue").description("세종특별자치시 온도 값"),
-                                fieldWithPath("weatherApiResult[10].regionName").description("울산광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[10].skyValue").description("울산광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[10].temperatureValue").description("울산광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[11].regionName").description("인천광역시 지역 이름"),
-                                fieldWithPath("weatherApiResult[11].skyValue").description("인천광역시 하늘 상태"),
-                                fieldWithPath("weatherApiResult[11].temperatureValue").description("인천광역시 온도 값"),
-                                fieldWithPath("weatherApiResult[12].regionName").description("전라남도 지역 이름"),
-                                fieldWithPath("weatherApiResult[12].skyValue").description("전라남도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[12].temperatureValue").description("전라남도 온도 값"),
-                                fieldWithPath("weatherApiResult[13].regionName").description("전라북도 지역 이름"),
-                                fieldWithPath("weatherApiResult[13].skyValue").description("전라북도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[13].temperatureValue").description("전라북도 온도 값"),
-                                fieldWithPath("weatherApiResult[14].regionName").description("제주특별자치도 지역 이름"),
-                                fieldWithPath("weatherApiResult[14].skyValue").description("제주특별자치도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[14].temperatureValue").description("제주특별자치도 온도 값"),
-                                fieldWithPath("weatherApiResult[15].regionName").description("충청남도 지역 이름"),
-                                fieldWithPath("weatherApiResult[15].skyValue").description("충청남도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[15].temperatureValue").description("충청남도 온도 값"),
-                                fieldWithPath("weatherApiResult[16].regionName").description("충청북도 지역 이름"),
-                                fieldWithPath("weatherApiResult[16].skyValue").description("충청북도 하늘 상태"),
-                                fieldWithPath("weatherApiResult[16].temperatureValue").description("충청북도 온도 값")
+                                fieldWithPath("weatherApiResult[].temperatureValue").type(JsonFieldType.STRING).description("온도 값")
                         )
                 ));
 
     }
 
+    @DisplayName("현재 지역의 시간별 날씨와 내일의 날씨를 조회하는 API DOCS")
     @Test
     void getWeatherByTime() throws Exception {
         WeatherTimeApiResponse weatherTimeApiResponse = sut.giveMeBuilder(WeatherTimeApiResponse.class)
@@ -224,38 +174,8 @@ class WeatherRestDocs extends RestDocsSupport {
                                 fieldWithPath("weatherTimeResponses[].temperature").type(JsonFieldType.STRING).description("온도"),
                                 fieldWithPath("weatherTimeResponses[].skyStatus").type(JsonFieldType.STRING).description("하늘 상태"),
                                 fieldWithPath("weatherTimeResponses[].fsctDate").type(JsonFieldType.STRING).description("예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[].fsctTime").type(JsonFieldType.STRING).description("예측 시간"),
+                                fieldWithPath("weatherTimeResponses[].fsctTime").type(JsonFieldType.STRING).description("예측 시간(1시간 단위, 마지막은 다음 날의 날씨 정보)"),
                                 fieldWithPath("regionName").type(JsonFieldType.STRING).description("지역 이름"),
-
-                                fieldWithPath("weatherTimeResponses[0].baseDate").description("첫 번째 예측의 기준 날짜"),
-                                fieldWithPath("weatherTimeResponses[0].temperature").description("첫 번째 예측의 온도"),
-                                fieldWithPath("weatherTimeResponses[0].skyStatus").description("첫 번째 예측의 하늘 상태"),
-                                fieldWithPath("weatherTimeResponses[0].fsctDate").description("첫 번째 예측의 예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[0].fsctTime").description("첫 번째 예측의 예측 시간"),
-
-                                fieldWithPath("weatherTimeResponses[1].baseDate").description("두 번째 예측의 기준 날짜"),
-                                fieldWithPath("weatherTimeResponses[1].temperature").description("두 번째 예측의 온도"),
-                                fieldWithPath("weatherTimeResponses[1].skyStatus").description("두 번째 예측의 하늘 상태"),
-                                fieldWithPath("weatherTimeResponses[1].fsctDate").description("두 번째 예측의 예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[1].fsctTime").description("두 번째 예측의 예측 시간"),
-
-                                fieldWithPath("weatherTimeResponses[2].baseDate").description("세 번째 예측의 기준 날짜"),
-                                fieldWithPath("weatherTimeResponses[2].temperature").description("세 번째 예측의 온도"),
-                                fieldWithPath("weatherTimeResponses[2].skyStatus").description("세 번째 예측의 하늘 상태"),
-                                fieldWithPath("weatherTimeResponses[2].fsctDate").description("세 번째 예측의 예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[2].fsctTime").description("세 번째 예측의 예측 시간"),
-
-                                fieldWithPath("weatherTimeResponses[3].baseDate").description("네 번째 예측의 기준 날짜"),
-                                fieldWithPath("weatherTimeResponses[3].temperature").description("네 번째 예측의 온도"),
-                                fieldWithPath("weatherTimeResponses[3].skyStatus").description("네 번째 예측의 하늘 상태"),
-                                fieldWithPath("weatherTimeResponses[3].fsctDate").description("네 번째 예측의 예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[3].fsctTime").description("네 번째 예측의 예측 시간"),
-
-                                fieldWithPath("weatherTimeResponses[4].baseDate").description("다섯 번째 예측의 기준 날짜"),
-                                fieldWithPath("weatherTimeResponses[4].temperature").description("다섯 번째 예측의 온도"),
-                                fieldWithPath("weatherTimeResponses[4].skyStatus").description("다섯 번째 예측의 하늘 상태"),
-                                fieldWithPath("weatherTimeResponses[4].fsctDate").description("다섯 번째 예측의 예측 날짜"),
-                                fieldWithPath("weatherTimeResponses[4].fsctTime").description("다섯 번째 예측의 예측 시간"),
 
                                 fieldWithPath("weatherTimeResponses[5].baseDate").description("다음 날의 예측의 기준 날짜"),
                                 fieldWithPath("weatherTimeResponses[5].temperature").description("다음 날의 예측의 온도"),
@@ -265,7 +185,7 @@ class WeatherRestDocs extends RestDocsSupport {
                         )
                 ));
     }
-
+    @DisplayName("현재 지역의 2일 뒤 부터 5개의 날씨를 조회하는 API DOCS")
     @Test
     void getWeekWeatherByDate() throws Exception {
         WeekWeatherApiResponse weekWeatherApiResponse = sut.giveMeBuilder(WeekWeatherApiResponse.class)

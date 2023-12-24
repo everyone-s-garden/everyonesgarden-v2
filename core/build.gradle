@@ -20,6 +20,16 @@ dependencies {
     // spatial type
     implementation 'org.hibernate:hibernate-spatial:6.3.1.Final'
 
+    // apache common
+    implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    // flyway
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+
+    // S3(NCP의 Object Storage와도 호환이 됨)
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.620'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 

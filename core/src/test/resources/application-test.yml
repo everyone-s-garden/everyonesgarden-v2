@@ -17,3 +17,35 @@ forecast:
   weekly:
     publish:
       time: 0600
+cloud:
+  ncp:
+    url: "asdf"
+    region: "asdf"
+    accessKey: "asdf"
+    secretKey: "asdf"
+    bucket: "asdf"
+    baseDirectory: "asdf"
+async:
+  image:
+    corePoolSize: 10       # 스레드 풀의 기본 스레드 수
+    maxPoolSize: 13        # 스레드 풀의 최대 스레드 수
+    queCapacity: 10000     # 작업 큐의 용량
+    keepAliveSeconds: 60    # 최대 스레드 수가 기본 스레드 수를 초과할 때, 초과한 스레드가 유휴 상태로 있을 수 있는 최대 시간(초)
+    threadName: "image-executor"  # 생성되는 스레드의 이름 접두사
+
+spring:
+  flyway:
+    enabled: false
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create

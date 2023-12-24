@@ -11,8 +11,8 @@ sonar {
         property "sonar.projectKey", "everyone-s-garden_back-V2"
         property "sonar.organization", "everyone-s-garden"
         property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.exclusions', '**/health/**, **/*Request.java, **/*Response.java, **/*Config*.java, **/*Exception*.java, **/*Info.java, **/*Client.java'
-        property 'sonar.exclusions', '**/*Application*.java'
+        property 'sonar.coverage.exclusions', '**/health/**, **/*Request.java, **/*Response.java, **/*Result*.java, **/*Param*.java,  **/*Config*.java, **/*Exception*.java, **/*Info.java, **/*Client.java, **/*Parser.java'
+        property 'sonar.exclusions', '**/*Application*.java, , **/*Parser.java'
     }
 }
 
@@ -110,6 +110,7 @@ subprojects {
     }
 
     repositories {
+        maven { url "https://repo.osgeo.org/repository/release/" }
         mavenCentral()
     }
 

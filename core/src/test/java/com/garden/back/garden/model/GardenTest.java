@@ -2,7 +2,7 @@ package com.garden.back.garden.model;
 
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
-import com.garden.back.garden.util.GeometryUtil;
+import com.garden.back.global.GeometryUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;

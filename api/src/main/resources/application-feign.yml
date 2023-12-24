@@ -10,17 +10,29 @@ resilience4j:
   circuitbreaker:
     instances:
       openAPI_getWeatherForecast:
-        minimumNumberOfCalls: 69
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
       openAPI_getMidLandForecast:
-        minimumNumberOfCalls: 69
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
       openAPI_getWeekWeatherForecast:
-        minimumNumberOfCalls: 69
+        minimumNumberOfCalls: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 1m
+        slidingWindowSize: 10
+        slidingWindowType: TIME_BASED
 
   timelimiter:
     instances:
       openAPI_getWeatherForecast:
-        timeoutDuration: 20s
+        timeoutDuration: 3s
       openAPI_getMidLandForecast:
-        timeoutDuration: 20s
+        timeoutDuration: 3s
       openAPI_getWeekWeatherForecast:
-        timeoutDuration: 20s
+        timeoutDuration: 10s
