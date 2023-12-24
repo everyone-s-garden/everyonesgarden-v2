@@ -1,22 +1,43 @@
 package com.garden.back.notification
 
 import com.garden.back.notification.domain.Notification
-import com.garden.back.notification.domain.NotificationType
-import com.garden.back.notification.service.EmailJavaNotificationService
-import com.garden.back.notification.service.SlackNotificationService
+import com.garden.back.notification.domain.slack.SlackChannel
+import com.garden.back.notification.service.NotificationService
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 
 @Component
 class NotificationApplication(
-    private val javaMailService: EmailJavaNotificationService,
-    private val slackService: SlackNotificationService,
+    @Qualifier("email")
+    private val javaMailService: NotificationService,
+
+    @Qualifier("slack")
+    private val slackService: NotificationService,
 ) {
-    fun send(notification: Notification, type: NotificationType) {
-        when (type) {
-            NotificationType.EMAIL -> javaMailService.send(notification)
-            NotificationType.SMS -> TODO("SMS Notification Not Yet Implemented")
-            NotificationType.SMARTPHONE_PUSH -> TODO("Smartphone Push Notification Not Yet Implemented")
-            NotificationType.SLACK -> slackService.send(notification)
-        }
+
+    fun toEmail(
+        recipient: String,
+        title: String,
+        content: String,
+    ) {
+        val notification = Notification(
+            title = title,
+            content = content,
+            recipient = recipient,
+        )
+
+        javaMailService.send(notification)
+    }
+
+    fun toSlack(
+        recipient: SlackChannel,
+        message: String,
+    ) {
+        val notification = Notification(
+            content = message,
+            recipient = recipient,
+        )
+
+        slackService.send(notification)
     }
 }

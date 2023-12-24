@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
-@Service
+@Service("email")
 open class EmailJavaNotificationService(
     @Value("example@gmail.com")
     private var OFFICIAL_EMAIL: String,
