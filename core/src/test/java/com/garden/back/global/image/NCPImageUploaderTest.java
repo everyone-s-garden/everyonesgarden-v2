@@ -1,6 +1,7 @@
 package com.garden.back.global.image;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.garden.back.global.MockTestSupport;
@@ -11,17 +12,16 @@ import org.mockito.Mock;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
-import java.net.URI;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 
@@ -78,5 +78,52 @@ class NCPImageUploaderTest extends MockTestSupport {
 
         // Then
         then(amazonS3).should().deleteObject(bucket, objectKey);
+    }
+
+    @DisplayName("이미지 업로드 중 예외가 발생한다.")
+    @Test
+    void upload_throwsException() throws IOException {
+        // Given
+        MultipartFile mockFile = mock(MultipartFile.class);
+        given(mockFile.getOriginalFilename()).willReturn("test.jpg");
+        given(mockFile.getContentType()).willReturn("image/jpeg");
+        given(mockFile.getSize()).willReturn(1024L);
+        given(mockFile.getInputStream()).willReturn(new ByteArrayInputStream(new byte[1024]));
+        given(ncpProperties.getBaseDirectory()).willReturn("/base/dir/");
+        given(ncpProperties.getBucket()).willReturn("bucketName");
+        given(amazonS3.putObject(any(PutObjectRequest.class))).willThrow(new AmazonS3Exception("Upload failed"));
+
+        // When & Then
+        assertThrows(AmazonS3Exception.class, () -> {
+            ncpImageUploader.upload("dir/", mockFile);
+        });
+    }
+
+    @DisplayName("잘못된 URL 형식으로 인한 삭제 중 예외가 발생한다.")
+    @Test
+    void delete_throwsMalformedURLException() {
+        // Given
+        String invalidUrl = "htps://not.a.valid.url";
+
+        // When & Then
+        assertThrows(AmazonS3Exception.class, () -> {
+            ncpImageUploader.delete("dir/", invalidUrl);
+        });
+    }
+
+    @DisplayName("S3에서 객체 삭제 중 예외가 발생한다.")
+    @Test
+    void delete_throwsAmazonS3Exception() {
+        // Given
+        String imageUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
+        String bucket = "bucket";
+
+        given(ncpProperties.getBucket()).willReturn(bucket);
+        willThrow(new AmazonS3Exception("Delete failed")).given(amazonS3).deleteObject(anyString(), anyString());
+
+        // When & Then
+        assertThrows(AmazonS3Exception.class, () -> {
+            ncpImageUploader.delete("dir/", imageUrl);
+        });
     }
 }

@@ -3,9 +3,6 @@ package com.garden.back.feedback;
 import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "feedbacks")

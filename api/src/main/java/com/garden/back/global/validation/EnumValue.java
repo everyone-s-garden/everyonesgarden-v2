@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Documented
 @Constraint(validatedBy = EnumValueValidator.class)
 public @interface EnumValue {
-    Class<? extends Enum<?>> enumClass();
+    Class<? extends Enum> enumClass();
     String message() default "유효하지 않은 Enum 입니다.";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
