@@ -5,6 +5,7 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.service.dto.request.GardenCreateParam;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
 import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
@@ -24,6 +25,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 
 @Transactional
 public class GardenCommandServiceTest extends IntegrationTestSupport {
@@ -127,5 +130,27 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(gardenLikeRepository.findAll().size()).isEqualTo(0);
     }
 
+    @DisplayName("내가 분양하고자 하는 텃밭을 등록할 수 있다.")
+    @Test
+    void createGarden() {
+        //Given
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
+        GardenCreateParam gardenCreateParam = GardenFixture.gardenCreateParam(expectedUrl);
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+
+        //When
+        Long savedGardenId = gardenCommandService.createGarden(gardenCreateParam);
+        Garden garden = gardenRepository.getById(savedGardenId);
+
+        //Then
+        assertThat(garden.getAddress()).isEqualTo(gardenCreateParam.address());
+        assertThat(garden.getLatitude()).isEqualTo(gardenCreateParam.latitude());
+        assertThat(garden.getLongitude()).isEqualTo(gardenCreateParam.longitude());
+        assertThat(garden.getGardenStatus()).isEqualTo(gardenCreateParam.gardenStatus());
+        assertThat(garden.getGardenDescription()).isEqualTo(gardenCreateParam.gardenDescription());
+        assertThat(garden.getSize()).isEqualTo(gardenCreateParam.size());
+        assertThat(garden.getGardenName()).isEqualTo(gardenCreateParam.gardenName());
+        assertThat(garden.getPrice()).isEqualTo(gardenCreateParam.price());
+    }
 
 }
