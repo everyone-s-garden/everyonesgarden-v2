@@ -1,5 +1,6 @@
 package com.garden.back.garden.model;
 
+import com.garden.back.garden.model.dto.GardenUpdateDomainRequest;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 import jakarta.persistence.*;
@@ -308,8 +309,34 @@ public class Garden {
 
     public void validWriterId(Long requestMemberId) {
         if (!Objects.equals(writerId, requestMemberId)) {
-            throw new IllegalArgumentException("텃밭 게시글 작성자만 텃밭을 삭제할 수 있습니다.");
+            throw new IllegalArgumentException("텃밭 작성자가 아닙니다.");
         }
+    }
+
+    public void updateGarden(GardenUpdateDomainRequest request) {
+        isNegativePrice(request.price());
+        isNegativeSize(request.size());
+        hasDefaultDescriptionLength(request.gardenDescription());
+        validWriterId(request.writerId());
+
+        gardenName = request.gardenName();
+        price = request.price();
+        size = request.size();
+        gardenStatus = request.gardenStatus();
+        gardenType = request.gardenType();
+        linkForRequest = request.linkForRequest();
+        contact = request.contact();
+        address = request.address();
+        latitude = request.latitude();
+        longitude = request.longitude();
+        isToilet = request.isToilet();
+        isWaterway = request.isWaterway();
+        isEquipment = request.isEquipment();
+        gardenDescription = request.gardenDescription();
+        recruitStartDate = request.recruitStartDate();
+        recruitEndDate = request.recruitEndDate();
+        useStartDate = request.useStartDate();
+        useEndDate = request.useEndDate();
     }
 
 }
