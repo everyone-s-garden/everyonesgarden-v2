@@ -147,8 +147,8 @@ public class GardenController {
     }
 
     @PostMapping(
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Void> uploadImages(
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Void> createGarden(
             @RequestPart(value = "gardenImages", required = false) List<MultipartFile> gardenImages,
             @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest
     ) {
@@ -161,6 +161,29 @@ public class GardenController {
                 .toUri();
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping(
+            value = "/{gardenId}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Void> updateGarden(
+            @PathVariable @PositiveOrZero Long gardenId,
+            @RequestPart(value = "newGardenImages", required = false) List<MultipartFile> newGardenImages,
+            @RequestPart(value = "gardenUpdateRequest") @Valid GardenUpdateRequest gardenUpdateRequest
+    ) {
+        Long memberId = 1L;
+        gardenCommandService.updateGarden(GardenUpdateRequest.to(
+                gardenId,
+                newGardenImages,
+                gardenUpdateRequest,
+                memberId));
+
+        URI location = URI.create("/v2/gardens/" + gardenId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .location(location)
+                .build();
+
     }
 
 }
