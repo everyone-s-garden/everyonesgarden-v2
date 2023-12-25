@@ -4,14 +4,15 @@ import com.garden.back.ControllerTestSupport;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import com.garden.back.garden.dto.request.GardenCreateRequest;
+import com.garden.back.garden.dto.request.GardenUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class GardenControllerTest extends ControllerTestSupport {
@@ -43,6 +44,15 @@ class GardenControllerTest extends ControllerTestSupport {
                 .andExpect(status().is4xxClientError());
     }
 
+    @DisplayName("분양하고자 하는 텃밭을 수정할 때 요청값에 대해서 검증한다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidGardenUpdateRequest")
+    void updateGarden_invalidRequest(GardenUpdateRequest request) throws Exception {
+        Long gardenId = 1L;
+        mockMvc.perform(put("/v2/gardens/{gardenId}",gardenId)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
 
     private static Stream<GardenByNameRequest> provideInvalidGardenByNameRequest() {
         return Stream.of(
@@ -228,42 +238,135 @@ class GardenControllerTest extends ControllerTestSupport {
         );
     }
 
+    private static Stream<GardenUpdateRequest> provideInvalidGardenUpdateRequest() {
+        return Stream.of(
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "aactive",
+                        "private",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 흙이 좋아요",
+                        "2023.12.01",
+                        "2023.12.23",
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "PRIVATE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        100.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 흙이 좋아요",
+                        "2023.12.01",
+                        "2023.12.23",
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "PRIVATE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        190.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 흙이 좋아요",
+                        "2023.12.01",
+                        "2023.12.23",
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "PRIVATE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하",
+                        "2023.12.01",
+                        "2023.12.23",
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "PRIVATE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 흙이 좋아요",
+                        "2023-12-01",
+                        "2023-12-23",
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new GardenUpdateRequest(
+                        List.of("background.png"),
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "PRIVATE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 흙이 좋아요",
+                        "2023.12.01",
+                        "2023.11.23",
+                        "2023.12.01",
+                        "2023.12.31"
+                )
+        );
+    }
+
 }
-//@NotBlank
-//String gardenName,
-//@NotBlank
-//String price,
-//@NotBlank
-//String size,
-//@NotBlank
-//@EnumValue(enumClass = GardenStatus.class)
-//String gardenStatus,
-//String linkForRequest,
-//String contact,
-//@NotBlank
-//String address,
-//@NotBlank
-//@DecimalMin(value = "-90.0", message = "위도는 -90.0 보다 크거나 같아야 한다.")
-//@DecimalMax(value = "90.0", message = "위도는 90.0보다 같거나 작아야 한다.")
-//Double latitude,
-//@NotBlank
-//@DecimalMin(value = "-180.0", message = "경도는 -180.0 보다 크거나 같아야 한다.")
-//@DecimalMax(value = "180.0", message = "경도는 180.0 보다 같거나 작아야 한다.")
-//Double longitude,
-//@NotNull
-//Boolean isToilet,
-//@NotNull
-//Boolean isWaterway,
-//@NotNull
-//Boolean isEquipment,
-//@NotBlank
-//@Length(min = 10, message = "텃밭 설명은 최소 10글자입니다.")
-//String gardenDescription,
-//@ValidDate
-//String recruitStartDate,
-//@ValidDate
-//String recruitEndDate,
-//@ValidDate
-//String useStartDate,
-//@ValidDate
-//String useEndDate
