@@ -14,8 +14,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v2/gardens")
@@ -127,7 +130,7 @@ public class GardenController {
         Long gardenLikeId = gardenCommandService.createGardenLike(
                 GardenLikeCreateRequest.of(memberId, gardenLikeCreateRequest));
 
-        return ResponseEntity.created(URI.create("/v2/gardens/"+ gardenLikeId)).build();
+        return ResponseEntity.created(URI.create("/v2/gardens/" + gardenLikeId)).build();
     }
 
     @DeleteMapping(
@@ -141,6 +144,23 @@ public class GardenController {
                 GardenLikeDeleteRequest.of(memberId, gardenLikeDeleteRequest));
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PostMapping(
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Void> uploadImages(
+            @RequestPart(value = "gardenImages", required = false) List<MultipartFile> gardenImages,
+            @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest
+    ) {
+        Long memberId = 1L;
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(gardenCommandService.createGarden(
+                        GardenCreateRequest.to(gardenImages, gardenCreateRequest, memberId)))
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 
 }
