@@ -1,9 +1,9 @@
 package com.garden.back.testutil.garden;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.GardenImage;
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenCreateParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;

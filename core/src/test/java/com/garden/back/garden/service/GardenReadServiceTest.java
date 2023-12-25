@@ -1,8 +1,8 @@
 package com.garden.back.garden.service;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.GardenImage;
-import com.garden.back.garden.model.GardenLike;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.GardenLike;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;

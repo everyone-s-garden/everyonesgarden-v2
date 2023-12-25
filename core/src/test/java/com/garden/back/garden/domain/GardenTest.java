@@ -1,7 +1,7 @@
-package com.garden.back.garden.model;
+package com.garden.back.garden.domain;
 
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.global.GeometryUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

@@ -4,8 +4,8 @@ import com.garden.back.garden.dto.request.GardenCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
 import com.garden.back.garden.dto.request.GardenUpdateRequest;
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;

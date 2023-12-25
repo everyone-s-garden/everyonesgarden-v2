@@ -1,6 +1,6 @@
 package com.garden.back.garden.repository.garden;
 
-import com.garden.back.garden.model.Garden;
+import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;

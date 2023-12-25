@@ -1,8 +1,8 @@
 package com.garden.back.garden.service.dto.request;
 
-import com.garden.back.garden.model.dto.GardenUpdateDomainRequest;
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.dto.GardenUpdateDomainRequest;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;

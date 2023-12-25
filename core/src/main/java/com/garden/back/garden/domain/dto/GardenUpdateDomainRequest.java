@@ -1,7 +1,7 @@
-package com.garden.back.garden.model.dto;
+package com.garden.back.garden.domain.dto;
 
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 
 import java.time.LocalDate;
 

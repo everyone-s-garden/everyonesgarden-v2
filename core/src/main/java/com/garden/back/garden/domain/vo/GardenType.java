@@ -1,4 +1,4 @@
-package com.garden.back.garden.model.vo;
+package com.garden.back.garden.domain.vo;
 
 import java.util.Objects;
 

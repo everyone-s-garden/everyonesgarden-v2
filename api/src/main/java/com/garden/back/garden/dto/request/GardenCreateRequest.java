@@ -1,7 +1,7 @@
 package com.garden.back.garden.dto.request;
 
 import com.garden.back.garden.dto.request.validation.ValidDate;
-import com.garden.back.garden.model.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.service.dto.request.GardenCreateParam;
 import com.garden.back.global.validation.EnumValue;
 import jakarta.validation.constraints.AssertTrue;

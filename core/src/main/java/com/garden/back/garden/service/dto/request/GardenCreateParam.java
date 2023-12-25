@@ -1,7 +1,7 @@
 package com.garden.back.garden.service.dto.request;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.vo.GardenStatus;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.global.GeometryUtil;
 import org.springframework.web.multipart.MultipartFile;
 
