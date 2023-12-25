@@ -5,6 +5,7 @@ import com.garden.back.garden.GardenController;
 import com.garden.back.garden.dto.request.GardenCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
+import com.garden.back.garden.dto.request.GardenUpdateRequest;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.*;
@@ -12,7 +13,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 
 import java.nio.charset.StandardCharsets;
 
@@ -311,7 +314,8 @@ class GardenRestDocs extends RestDocsSupport {
         mockMvc.perform(multipart("/v2/gardens")
                         .file(gardenImage)
                         .file(gardenCreateRequestAboutMultipart)
-                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .content(objectMapper.writeValueAsString(gardenCreateRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
@@ -346,5 +350,75 @@ class GardenRestDocs extends RestDocsSupport {
                 );
     }
 
-}
+    @DisplayName("게시한 텃밭을 수정할 수 있다.")
+    @Test
+    void updateGardens() throws Exception {
+        Long gardenId = 1L;
+        GardenUpdateRequest gardenUpdateRequest = GardenFixture.gardenUpdateRequest();
+        MockMultipartFile gardenImage = new MockMultipartFile(
+                "newGardenImages",
+                "image1.png",
+                "image/png",
+                "image-files".getBytes()
+        );
+        MockMultipartFile gardenUpdateRequestAboutMultipart = new MockMultipartFile(
+                "gardenUpdateRequest",
+                "gardenUpdateRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(gardenUpdateRequest).getBytes(StandardCharsets.UTF_8)
+        );
 
+        MockMultipartHttpServletRequestBuilder requestBuilder = RestDocumentationRequestBuilders.multipart("/v2/gardens/{gardenId}", gardenId);
+
+        requestBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        given(gardenCommandService.updateGarden(any())).willReturn(gardenId);
+
+        mockMvc.perform(requestBuilder
+                        .file(gardenImage)
+                        .file(gardenUpdateRequestAboutMultipart)
+                        .characterEncoding("UTF-8")
+                        .content(objectMapper.writeValueAsString(gardenUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(header().exists("Location"))
+                .andDo(document("update-garden",
+                        pathParameters(
+                                parameterWithName("gardenId").description("수정하고자 하는 텃밭 아이디")
+                        ),
+                        requestParts(
+                                partWithName("newGardenImages").description("추가로 등록하는 텃밭 이미지 파일"),
+                                partWithName("gardenUpdateRequest").description("텃밭 수정 요청 값")
+                        ),
+                        requestPartFields("gardenUpdateRequest",
+                                fieldWithPath("remainGardenImageUrls").type(JsonFieldType.ARRAY).description("남아있는 이미지 url들"),
+                                fieldWithPath("gardenName").type(JsonFieldType.STRING).description("등록하는 텃밭 이름"),
+                                fieldWithPath("price").type(JsonFieldType.STRING).description("텃밭 분양 가격"),
+                                fieldWithPath("size").type(JsonFieldType.STRING).description("텃밭 분양 크기"),
+                                fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
+                                fieldWithPath("gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)"),
+                                fieldWithPath("linkForRequest").type(JsonFieldType.STRING).description("텃밭 신청 사이트"),
+                                fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처"),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("텃밭 주소"),
+                                fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                                fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
+                                fieldWithPath("isToilet").type(JsonFieldType.BOOLEAN).description("화장실 제공 여부"),
+                                fieldWithPath("isWaterway").type(JsonFieldType.BOOLEAN).description("수로 제공 여부"),
+                                fieldWithPath("isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
+                                fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명, 최소 10글 이상"),
+                                fieldWithPath("recruitStartDate").type(JsonFieldType.STRING).description("모집 시작일 yyyy.MM.dd"),
+                                fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd"),
+                                fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
+                                fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                        ),
+                        responseHeaders(
+                                headerWithName("Location").description("수정된 텃밭의 id를 포함한 URL")
+                        )
+                ));
+    }
+
+
+}

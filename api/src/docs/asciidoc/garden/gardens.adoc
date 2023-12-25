@@ -124,7 +124,29 @@ include::{snippets}/delete-like/http-response.adoc[]
 ==== Request
 include::{snippets}/create-garden/http-request.adoc[]
 include::{snippets}/create-garden/request-parts.adoc[]
+
+##### gardenCreateRequest에 대한 필드들
 include::{snippets}/create-garden/request-part-gardenCreateRequest-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/create-garden/http-response.adoc[]
+
+== Update garden
+=== 텃밭 수정
+내가 올린 텃밭 분양 정보를 수정한다. +
+수정하며 새롭게 추가하는 사진들은 Multipart로, +
+Url로 존재하는 사진들 Url 자체로 주시기 바랍니다.
+
+이미지 예시 +
+- 기존 : A(url), B(url), C(url) +
+- 수정 : A(url), D(Multipart)
+
+==== Request
+include::{snippets}/update-garden/http-request.adoc[]
+include::{snippets}/update-garden/request-parts.adoc[]
+
+##### gardenUpdateRequest에 대한 필드들
+include::{snippets}/update-garden/request-part-gardenUpdateRequest-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/update-garden/http-response.adoc[]
