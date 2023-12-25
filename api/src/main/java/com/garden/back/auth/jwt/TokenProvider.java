@@ -1,11 +1,15 @@
 package com.garden.back.auth.jwt;
 
+import com.garden.back.auth.jwt.repository.CollectionRefreshTokenRepository;
+import com.garden.back.auth.jwt.repository.RefreshToken;
+import com.garden.back.auth.jwt.repository.RefreshTokenRepository;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.member.Member;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -33,7 +37,7 @@ public class TokenProvider {
 
         Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
         String accessToken = Jwts.builder()
-            .setSubject(member.getEmail())
+            .setSubject(String.valueOf(member.getId()))
             .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
             .setExpiration(accessTokenExpiredDate)
             .signWith(key, SignatureAlgorithm.HS256)
@@ -54,5 +58,20 @@ public class TokenProvider {
             refreshToken,
             accessTokenExpiredDate.getTime(),
             refreshTokenExpiredDate.getTime());
+    }
+
+    @SneakyThrows
+    public String generateAccessToken(String refreshTokenKey) {
+        long now = (new Date().getTime());
+        RefreshToken refreshToken = (RefreshToken) refreshTokenRepository.findByKey(refreshTokenKey)
+            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰 입니다."));
+        Member member = refreshToken.member();
+
+        return Jwts.builder()
+            .setSubject(String.valueOf(member.getId()))
+            .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
+            .setExpiration(new Date(now + jwtProperties.getAccessTokenExpireTime()))
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
     }
 }

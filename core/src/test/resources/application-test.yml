@@ -68,3 +68,4 @@ oauth2:
     bearer-prefix: "asdf"
     authority-key: "asdf"
     refresh-token-expire-time: 1
+    access-token-header: "access_token"

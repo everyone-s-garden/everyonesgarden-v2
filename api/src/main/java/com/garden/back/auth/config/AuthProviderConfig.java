@@ -1,5 +1,6 @@
-package com.garden.back.auth;
+package com.garden.back.auth.config;
 
+import com.garden.back.auth.AuthProvider;
 import com.garden.back.auth.client.MemberProvider;
 import com.garden.back.auth.client.kakao.KakaoMemberProvider;
 import org.springframework.context.annotation.Bean;

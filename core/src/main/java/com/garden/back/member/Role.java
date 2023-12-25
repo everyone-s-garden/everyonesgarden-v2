@@ -1,5 +1,8 @@
 package com.garden.back.member;
 
+import lombok.Getter;
+
+@Getter
 public enum Role {
 
     USER("ROLE_USER", "일반 사용자");

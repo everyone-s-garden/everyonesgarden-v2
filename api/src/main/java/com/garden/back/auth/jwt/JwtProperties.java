@@ -15,6 +15,7 @@ public class JwtProperties {
     private String authorityKey;
     private String bearerPrefix;
     private String tokenSecret;
+    private String accessTokenHeader;
 
     public int getAccessTokenExpireTime() {
         return dayToMilliSec(accessTokenExpireTime);
