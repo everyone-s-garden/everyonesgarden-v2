@@ -3,7 +3,7 @@ package com.garden.back.controller.garden;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;
-import com.garden.back.ControllerTestSupport;
+import com.garden.back.controller.ControllerTestSupport;
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
