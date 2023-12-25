@@ -1,13 +1,11 @@
 package com.garden.back.docs.garden;
 
+import com.garden.back.garden.dto.request.GardenCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
-import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.response.*;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
 
@@ -141,4 +139,27 @@ public class GardenFixture {
                 1L
         );
     }
+
+    public static GardenCreateRequest gardenCreateRequest() {
+        return new GardenCreateRequest(
+                        "별이네 텃밭",
+                        "100",
+                        "200",
+                        "ACTIVE",
+                        "www.everygarden.me",
+                        "000-000-0000",
+                        "인천광역시 서구 만수동 200",
+                        37.444917,
+                        127.138868,
+                        true,
+                        true,
+                        true,
+                        "화장실이 깨끗하고 토양의 질이 좋습니다. 모두 놀러오세요",
+                        "2023.12.01",
+                        "2023.12.23",
+                        "2023.12.01",
+                        "2023.12.31"
+        );
+    }
+
 }

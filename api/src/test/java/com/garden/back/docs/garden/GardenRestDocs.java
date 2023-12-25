@@ -2,6 +2,7 @@ package com.garden.back.docs.garden;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.garden.GardenController;
+import com.garden.back.garden.dto.request.GardenCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
 import com.garden.back.garden.service.GardenCommandService;
@@ -10,6 +11,7 @@ import com.garden.back.garden.service.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.nio.charset.StandardCharsets;
@@ -24,6 +26,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class GardenRestDocs extends RestDocsSupport {
@@ -140,7 +143,7 @@ class GardenRestDocs extends RestDocsSupport {
         GardenDetailResult gardenDetailResult = GardenFixture.gardenDetailResult();
         given(gardenReadService.getGardenDetail(any())).willReturn(gardenDetailResult);
 
-        mockMvc.perform(get("/v2/gardens/{gardenId}",gardenId))
+        mockMvc.perform(get("/v2/gardens/{gardenId}", gardenId))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("detail-garden",
@@ -200,7 +203,7 @@ class GardenRestDocs extends RestDocsSupport {
     @Test
     void deleteGarden() throws Exception {
         Long gardenId = 1L;
-        mockMvc.perform(delete("/v2/gardens/{gardenId}",gardenId))
+        mockMvc.perform(delete("/v2/gardens/{gardenId}", gardenId))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document("delete-garden",
@@ -253,7 +256,7 @@ class GardenRestDocs extends RestDocsSupport {
 
     @DisplayName("텃밭을 찜할 수 있다.")
     @Test
-    void createLikeGarden() throws  Exception {
+    void createLikeGarden() throws Exception {
         GardenLikeCreateRequest gardenLikeCreateRequest = GardenFixture.gardenLikeCreateRequest();
         given(gardenCommandService.createGardenLike(any())).willReturn(1L);
 
@@ -277,8 +280,8 @@ class GardenRestDocs extends RestDocsSupport {
         GardenLikeDeleteRequest gardenLikeDeleteRequest = GardenFixture.gardenLikeDeleteRequest();
 
         mockMvc.perform(delete("/v2/gardens/likes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(gardenLikeDeleteRequest)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(gardenLikeDeleteRequest)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andDo(document("delete-like",
@@ -287,8 +290,61 @@ class GardenRestDocs extends RestDocsSupport {
                         )));
     }
 
+    @DisplayName("분양하고자 하는 텃밭을 등록할 수 있다.")
+    @Test
+    void createGarden() throws Exception {
+        GardenCreateRequest gardenCreateRequest = GardenFixture.gardenCreateRequest();
+        MockMultipartFile gardenImage = new MockMultipartFile(
+                "gardenImages",
+                "image1.png",
+                "image/png",
+                "image-files".getBytes()
+        );
+        MockMultipartFile gardenCreateRequestAboutMultipart = new MockMultipartFile(
+                "gardenCreateRequest",
+                "gardenCreateRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(gardenCreateRequest).getBytes(StandardCharsets.UTF_8)
+        );
+        given(gardenCommandService.createGarden(any())).willReturn(1L);
 
-
+        mockMvc.perform(multipart("/v2/gardens")
+                        .file(gardenImage)
+                        .file(gardenCreateRequestAboutMultipart)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andDo(document("create-garden",
+                                requestParts(
+                                        partWithName("gardenImages").description("텃밭 이미지 파일"),
+                                        partWithName("gardenCreateRequest").description("텃밭 생성 요청 값")
+                                ),
+                                requestPartFields("gardenCreateRequest",
+                                        fieldWithPath("gardenName").type(JsonFieldType.STRING).description("등록하는 텃밭 이름"),
+                                        fieldWithPath("price").type(JsonFieldType.STRING).description("텃밭 분양 가격"),
+                                        fieldWithPath("size").type(JsonFieldType.STRING).description("텃밭 분양 크기"),
+                                        fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
+                                        fieldWithPath("linkForRequest").type(JsonFieldType.STRING).description("텃밭 신청 사이트"),
+                                        fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처"),
+                                        fieldWithPath("address").type(JsonFieldType.STRING).description("텃밭 주소"),
+                                        fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                                        fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
+                                        fieldWithPath("isToilet").type(JsonFieldType.BOOLEAN).description("화장실 제공 여부"),
+                                        fieldWithPath("isWaterway").type(JsonFieldType.BOOLEAN).description("수로 제공 여부"),
+                                        fieldWithPath("isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
+                                        fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명, 최소 10글이상"),
+                                        fieldWithPath("recruitStartDate").type(JsonFieldType.STRING).description("모집 시작일 yyyy.MM.dd"),
+                                        fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd"),
+                                        fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
+                                        fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                                ),
+                                responseHeaders(
+                                        headerWithName("Location").description("생성된 텃밭의 id를 포함한 url")
+                                )
+                        )
+                );
+    }
 
 }
 
