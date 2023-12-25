@@ -1,5 +1,7 @@
 package com.garden.back.auth.jwt;
 
+import com.garden.back.auth.jwt.repository.CollectionRefreshTokenRepository;
+import com.garden.back.auth.jwt.repository.RefreshToken;
 import com.garden.back.global.FixtureSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
