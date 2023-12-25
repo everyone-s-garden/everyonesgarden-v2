@@ -6,12 +6,12 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.locationtech.jts.geom.Point;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -20,6 +20,7 @@ import java.util.Objects;
 @Table(name = "gardens")
 public class Garden {
 
+    private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
     private static final int MIN_DESCRIPTION_LENGTH = 15;
 
@@ -67,24 +68,24 @@ public class Garden {
     private String gardenDescription;
 
     @Column(name = "recruit_start_date")
-    private LocalDateTime recruitStartDate;
+    private LocalDate recruitStartDate;
 
     @Column(name = "recruit_end_date")
-    private LocalDateTime recruitEndDate;
+    private LocalDate recruitEndDate;
 
     @Column(name = "use_start_date")
-    private LocalDateTime useStartDate;
+    private LocalDate useStartDate;
 
     @Column(name = "use_end_date")
-    private LocalDateTime useEndDate;
+    private LocalDate useEndDate;
 
     @CreatedDate
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    private LocalDateTime lastModifiedDate;
+    private LocalDate lastModifiedDate;
 
     @Column(name = "is_toilet")
     private Boolean isToilet;
@@ -128,10 +129,10 @@ public class Garden {
             String contact,
             String size,
             String gardenDescription,
-            LocalDateTime recruitStartDate,
-            LocalDateTime recruitEndDate,
-            LocalDateTime useStartDate,
-            LocalDateTime useEndDate,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
             Boolean isToilet,
             Boolean isWaterway,
             Boolean isEquipment,
@@ -192,10 +193,10 @@ public class Garden {
             String contact,
             String size,
             String gardenDescription,
-            LocalDateTime recruitStartDate,
-            LocalDateTime recruitEndDate,
-            LocalDateTime useStartDate,
-            LocalDateTime useEndDate,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
             Boolean isToilet,
             Boolean isWaterway,
             Boolean isEquipment,
@@ -227,6 +228,55 @@ public class Garden {
                 isDeleted,
                 reportedScore
         );
+    }
+
+    public static Garden createPrivateGarden(
+            String address,
+            Double latitude,
+            Double longitude,
+            Point point,
+            String gardenName,
+            GardenStatus gardenStatus,
+            String linkForRequest,
+            String price,
+            String contact,
+            String size,
+            String gardenDescription,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Boolean isToilet,
+            Boolean isWaterway,
+            Boolean isEquipment,
+            Long writerId
+
+    ){
+        return new Garden(
+                address,
+                latitude,
+                longitude,
+                point,
+                gardenName,
+                GardenType.PRIVATE,
+                gardenStatus,
+                linkForRequest,
+                price,
+                contact,
+                size,
+                gardenDescription,
+                recruitStartDate,
+                recruitEndDate,
+                useStartDate,
+                useEndDate,
+                isToilet,
+                isWaterway,
+                isEquipment,
+                writerId,
+                false,
+                DEFAULT_REPORTED_SCORE
+        );
+
     }
 
     private void isNegativeReportedScore(int reportedScore) {

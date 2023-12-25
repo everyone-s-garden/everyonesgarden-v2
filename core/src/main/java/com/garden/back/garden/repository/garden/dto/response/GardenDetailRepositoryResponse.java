@@ -3,7 +3,7 @@ package com.garden.back.garden.repository.garden.dto.response;
 import com.garden.back.garden.model.vo.GardenStatus;
 import com.garden.back.garden.model.vo.GardenType;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public interface GardenDetailRepositoryResponse {
     Long getGardenId();
@@ -18,10 +18,10 @@ public interface GardenDetailRepositoryResponse {
     String getSize();
     GardenStatus getGardenStatus();
     Long getWriterId();
-    LocalDateTime getRecruitStartDate();
-    LocalDateTime getRecruitEndDate();
-    LocalDateTime getUseStartDate();
-    LocalDateTime getUseEndDate();
+    LocalDate getRecruitStartDate();
+    LocalDate getRecruitEndDate();
+    LocalDate getUseStartDate();
+    LocalDate getUseEndDate();
     String getGardenDescription();
     String getImageUrl();
     boolean getIsToilet();
