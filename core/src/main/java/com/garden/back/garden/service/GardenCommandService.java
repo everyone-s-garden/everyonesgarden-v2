@@ -6,13 +6,11 @@ import com.garden.back.garden.model.GardenLike;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
-import com.garden.back.garden.service.dto.request.GardenCreateParam;
-import com.garden.back.garden.service.dto.request.GardenDeleteParam;
-import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
-import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.global.image.ParallelImageUploader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -52,6 +50,7 @@ public class GardenCommandService {
         gardenLikeRepository.delete(param.memberId(), param.gardenId());
     }
 
+    @Transactional
     public Long createGarden(GardenCreateParam param) {
         Garden savedGarden = gardenRepository.save(GardenCreateParam.toEntity(param));
 
@@ -59,6 +58,29 @@ public class GardenCommandService {
         uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, savedGarden)));
 
         return savedGarden.getGardenId();
+    }
+
+    @Transactional
+    public Long updateGarden(GardenUpdateParam param) {
+        Garden gardenToUpdate = gardenRepository.getById(param.gardenId());
+        gardenToUpdate.updateGarden(GardenUpdateParam.of(param));
+
+        deleteGardenImages(param.gardenId(), param.remainGardenImageUrls());
+        saveNewGardenImages(gardenToUpdate, param.newGardenImages());
+
+        return gardenToUpdate.getGardenId();
+    }
+
+    private void deleteGardenImages(Long gardenId, List<String> remainGardenImageUrls) {
+        List<GardenImage> gardenImages = gardenImageRepository.findByGardenId(gardenId);
+        gardenImages.stream()
+                .filter(gardenImage -> !remainGardenImageUrls.contains(gardenImage.getImageUrl()))
+                .forEach(gardenImageRepository::delete);
+    }
+
+    private void saveNewGardenImages(Garden garden, List<MultipartFile> newImageUrls) {
+        List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImageUrls);
+        uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
     }
 
 }
