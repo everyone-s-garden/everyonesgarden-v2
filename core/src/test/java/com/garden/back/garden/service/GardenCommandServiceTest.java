@@ -1,14 +1,12 @@
 package com.garden.back.garden.service;
 
 import com.garden.back.garden.model.Garden;
+import com.garden.back.garden.model.GardenImage;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
-import com.garden.back.garden.service.dto.request.GardenCreateParam;
-import com.garden.back.garden.service.dto.request.GardenDeleteParam;
-import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
-import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
@@ -21,7 +19,6 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -93,8 +90,8 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         // Then
         assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
                 .isInstanceOf(JpaObjectRetrievalFailureException.class);
-        assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()))
-                .isEqualTo(Optional.empty());
+        assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).size())
+                .isEqualTo(0);
 
     }
 
@@ -151,6 +148,48 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(garden.getSize()).isEqualTo(gardenCreateParam.size());
         assertThat(garden.getGardenName()).isEqualTo(gardenCreateParam.gardenName());
         assertThat(garden.getPrice()).isEqualTo(gardenCreateParam.price());
+    }
+
+    @DisplayName("텃밭을 수정할 수 있다.")
+    @Test
+    void updateGarden() {
+        //Given
+        Garden gardenToSave = GardenFixture.privateGarden();
+        Garden savedGarden = gardenRepository.save(gardenToSave);
+
+        GardenImage firstGardenImage = GardenFixture.firstGardenImage(savedGarden);
+        GardenImage secondGardenImage = GardenFixture.secondGardenImage(savedGarden);
+        gardenImageRepository.save(firstGardenImage);
+        gardenImageRepository.save(secondGardenImage);
+
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+        GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParam(expectedUrl, savedGarden.getGardenId());
+
+        //When
+        Long updatedGardenId = gardenCommandService.updateGarden(gardenUpdateParam);
+        Garden updatedGarden = gardenRepository.getById(updatedGardenId);
+        List<GardenImage> updatedGardenImages = gardenImageRepository.findByGardenId(updatedGardenId);
+
+        //Then
+        assertThat(updatedGarden.getGardenId()).isEqualTo(gardenUpdateParam.gardenId());
+        assertThat(updatedGarden.getGardenStatus()).isEqualTo(gardenUpdateParam.gardenStatus());
+        assertThat(updatedGarden.getGardenType()).isEqualTo(gardenUpdateParam.gardenType());
+        assertThat(updatedGarden.getGardenDescription()).isEqualTo(gardenUpdateParam.gardenDescription());
+        assertThat(updatedGarden.getGardenName()).isEqualTo(gardenUpdateParam.gardenName());
+        assertThat(updatedGarden.getContact()).isEqualTo(gardenUpdateParam.contact());
+        assertThat(updatedGarden.getAddress()).isEqualTo(gardenUpdateParam.address());
+        assertThat(updatedGarden.getRecruitStartDate()).isEqualTo(gardenUpdateParam.recruitStartDate());
+        assertThat(updatedGarden.getRecruitEndDate()).isEqualTo(gardenUpdateParam.recruitEndDate());
+        assertThat(updatedGarden.getUseStartDate()).isEqualTo(gardenUpdateParam.useStartDate());
+        assertThat(updatedGarden.getUseEndDate()).isEqualTo(gardenUpdateParam.useEndDate());
+        assertThat(updatedGarden.getIsToilet()).isEqualTo(gardenUpdateParam.gardenFacility().isToilet());
+        assertThat(updatedGarden.getIsWaterway()).isEqualTo(gardenUpdateParam.gardenFacility().isWaterway());
+        assertThat(updatedGarden.getIsEquipment()).isEqualTo(gardenUpdateParam.gardenFacility().isEquipment());
+
+        assertThat(updatedGardenImages).extracting("imageUrl")
+                .contains(expectedUrl)
+                .contains(gardenUpdateParam.remainGardenImageUrls().toArray());
     }
 
 }
