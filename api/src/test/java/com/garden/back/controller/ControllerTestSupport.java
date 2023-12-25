@@ -1,4 +1,4 @@
-package com.garden.back;
+package com.garden.back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.back.feedback.FeedbackController;

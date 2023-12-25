@@ -1,0 +1,12 @@
+[[login]]
+=== 카카오로 로그인
+
+카카오로 로그인 합니다.
+
+==== Request
+include::{snippets}/login-with-kakao/http-request.adoc[]
+include::{snippets}/login-with-kakao/request-headers.adoc[]
+
+==== Response (Success)
+include::{snippets}/login-with-kakao/http-response.adoc[]
+include::{snippets}/login-with-kakao/response-fields.adoc[]
