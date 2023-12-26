@@ -1,10 +1,7 @@
 package com.garden.back.controller.garden;
 
 import com.garden.back.ControllerTestSupport;
-import com.garden.back.garden.dto.request.GardenByComplexesRequest;
-import com.garden.back.garden.dto.request.GardenByNameRequest;
-import com.garden.back.garden.dto.request.GardenCreateRequest;
-import com.garden.back.garden.dto.request.GardenUpdateRequest;
+import com.garden.back.garden.dto.request.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,10 +46,20 @@ class GardenControllerTest extends ControllerTestSupport {
     @MethodSource("provideInvalidGardenUpdateRequest")
     void updateGarden_invalidRequest(GardenUpdateRequest request) throws Exception {
         Long gardenId = 1L;
-        mockMvc.perform(put("/v2/gardens/{gardenId}",gardenId)
+        mockMvc.perform(put("/v2/gardens/{gardenId}", gardenId)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is4xxClientError());
     }
+
+    @DisplayName("내가 가꾸는 텃밭을 등록할 수 있다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidMyManagedGardenCreateRequest")
+    void createMyManagedGarden_invalidRequest(MyManagedGardenCreateRequest request) throws Exception {
+        mockMvc.perform(put("/v2/gardens/my-managed")
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
+
 
     private static Stream<GardenByNameRequest> provideInvalidGardenByNameRequest() {
         return Stream.of(
@@ -74,6 +81,7 @@ class GardenControllerTest extends ControllerTestSupport {
                 )
         );
     }
+
     private static Stream<GardenByComplexesRequest> provideInvalidGardenByComplexesRequest() {
         return Stream.of(
                 new GardenByComplexesRequest(
@@ -131,9 +139,9 @@ class GardenControllerTest extends ControllerTestSupport {
                         "인천광역시 서구 만수동 200",
                         37.444917,
                         127.138868,
-                                true,
-                                true,
-                                true,
+                        true,
+                        true,
+                        true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
                         "2023.12.23",
@@ -365,6 +373,26 @@ class GardenControllerTest extends ControllerTestSupport {
                         "2023.11.23",
                         "2023.12.01",
                         "2023.12.31"
+                )
+        );
+    }
+
+    private static Stream<MyManagedGardenCreateRequest> provideInvalidMyManagedGardenCreateRequest() {
+        return Stream.of(
+                new MyManagedGardenCreateRequest(
+                        -1L,
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new MyManagedGardenCreateRequest(
+                        1L,
+                        "2023.12.01",
+                        "2023.11.23"
+                        ),
+                new MyManagedGardenCreateRequest(
+                        1L,
+                        "2023-12-01",
+                        "2023-12-31"
                 )
         );
     }
