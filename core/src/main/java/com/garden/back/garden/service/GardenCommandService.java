@@ -3,6 +3,8 @@ package com.garden.back.garden.service;
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
 import com.garden.back.garden.domain.GardenLike;
+import com.garden.back.garden.domain.MyManagedGarden;
+import com.garden.back.garden.domain.dto.MyManagedGardenCreateDomainRequest;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
@@ -18,6 +20,7 @@ import java.util.List;
 @Service
 public class GardenCommandService {
     private static final String GARDEN_IMAGE_DIRECTORY = "garden/";
+    private static final int MY_MANAGED_GARDEN_IMAGE_INDEX = 0;
     private final GardenRepository gardenRepository;
     private final GardenImageRepository gardenImageRepository;
     private final GardenLikeRepository gardenLikeRepository;
@@ -86,13 +89,27 @@ public class GardenCommandService {
                 .forEach(gardenImageRepository::delete);
     }
 
-    private void saveNewGardenImages(Garden garden, List<MultipartFile> newImageUrls) {
-        List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImageUrls);
+    private void saveNewGardenImages(Garden garden, List<MultipartFile> newImage) {
+        List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImage);
         uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
     }
 
     public void deleteMyManagedGarden(MyManagedGardenDeleteParam param) {
         myManagedGardenRepository.delete(param.myManagedGardenId(), param.memberId());
+    }
+
+    public Long createMyManagedGarden(MyManagedGardenCreateParam param) {
+        List<String> uploadImageUrls
+                = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, List.of(param.myManagedGardenImage()));
+
+        MyManagedGardenCreateDomainRequest myManagedGardenCreateDomainRequest
+                = MyManagedGardenCreateParam.to(
+                param,
+                uploadImageUrls.get(MY_MANAGED_GARDEN_IMAGE_INDEX));
+        MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(
+                MyManagedGarden.to(myManagedGardenCreateDomainRequest));
+
+        return savedMyManagedGarden.getMyManagedGardenId();
     }
 
 }
