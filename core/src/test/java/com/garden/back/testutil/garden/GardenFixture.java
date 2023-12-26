@@ -209,4 +209,16 @@ public class GardenFixture {
         );
     }
 
+    public static MyManagedGardenCreateParam myManagedGardenCreateParam(String expectedUrl) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new MyManagedGardenCreateParam(
+                multipartFile,
+                1L,
+                LocalDate.now(),
+                LocalDate.now().plusDays(30),
+                1L
+        );
+    }
+
 }
