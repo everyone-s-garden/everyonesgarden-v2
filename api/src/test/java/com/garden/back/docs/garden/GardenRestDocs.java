@@ -440,4 +440,18 @@ class GardenRestDocs extends RestDocsSupport {
                          )));
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 삭제할 수 있다.")
+    @Test
+    void deleteMyManagedGarden() throws Exception {
+        Long myManagedGardenId = 1L;
+
+        mockMvc.perform(delete("/v2/gardens/my-managed/{myManagedGardenId}",myManagedGardenId))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-my-managed-garden",
+                        pathParameters(
+                                parameterWithName("myManagedGardenId").description("삭제하고자 하는 가꾸는 텃밭 아이디")
+                        )));
+    }
+
 }

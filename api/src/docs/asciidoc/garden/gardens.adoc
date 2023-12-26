@@ -162,3 +162,14 @@ include::{snippets}/get-my-managed-gardens/http-request.adoc[]
 ==== Response (Success)
 include::{snippets}/get-my-managed-gardens/http-response.adoc[]
 include::{snippets}/get-my-managed-gardens/response-fields.adoc[]
+
+== Delete my managed garden
+=== 내가 가꾸는 텃밭 삭제
+내가 가꾸는 텃밭 삭제할 수 있다.
+
+==== Request
+include::{snippets}/delete-my-managed-garden/http-request.adoc[]
+include::{snippets}/delete-my-managed-garden/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/delete-my-managed-garden/http-response.adoc[]
