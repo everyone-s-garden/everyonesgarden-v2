@@ -1,12 +1,14 @@
 package com.garden.back.garden.domain;
 
 import com.garden.back.garden.domain.dto.MyManagedGardenCreateDomainRequest;
+import com.garden.back.garden.domain.dto.MyManagedGardenUpdateDomainRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -74,6 +76,29 @@ public class MyManagedGarden {
                 request.myManagedGardenImageUrl(),
                 request.memberId()
         );
+    }
+
+    public void update(MyManagedGardenUpdateDomainRequest request) {
+        validWriterId(request.memberId());
+        validateDate(request.useStartDate(), request.useEndDate());
+
+        useStartDate = request.useStartDate();
+        useEndDate = request.useEndDate();
+        imageUrl = request.myManagedGardenImageUrl();
+        gardenId = request.gardenId();
+
+    }
+
+    private void validWriterId(Long requestMemberId) {
+        if (!Objects.equals(memberId, requestMemberId)) {
+            throw new IllegalArgumentException("텃밭 작성자가 아닙니다.");
+        }
+    }
+
+    private void validateDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("종료일은 시작일보다 이전일 수 없습니다.");
+        }
     }
 
 }
