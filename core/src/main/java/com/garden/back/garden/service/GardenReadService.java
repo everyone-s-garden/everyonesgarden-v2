@@ -79,4 +79,9 @@ public class GardenReadService {
         return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(memberId));
     }
 
+    public MyManagedGardenDetailResult getDetailMyManagedGarden(Long myManagedGardenId) {
+        return MyManagedGardenDetailResult.to(
+                myManagedGardenRepository.getDetailById(myManagedGardenId));
+    }
+
 }
