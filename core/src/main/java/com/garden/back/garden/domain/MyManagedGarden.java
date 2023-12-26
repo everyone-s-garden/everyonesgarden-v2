@@ -1,5 +1,6 @@
 package com.garden.back.garden.domain;
 
+import com.garden.back.garden.domain.dto.MyManagedGardenCreateDomainRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -55,11 +56,23 @@ public class MyManagedGarden {
             Long gardenId
     ) {
         return new MyManagedGarden(
-          useStartDate,
-          useEndDate,
-          memberId,
-          imageUrl,
-          gardenId
+                useStartDate,
+                useEndDate,
+                memberId,
+                imageUrl,
+                gardenId
+        );
+    }
+
+    public static MyManagedGarden to(
+            MyManagedGardenCreateDomainRequest request
+    ) {
+        return new MyManagedGarden(
+                request.useStartDate(),
+                request.useEndDate(),
+                request.memberId(),
+                request.myManagedGardenImageUrl(),
+                request.memberId()
         );
     }
 
