@@ -156,6 +156,8 @@ public class Garden {
         isNegativePrice(price);
         isNegativeSize(size);
         hasDefaultDescriptionLength(gardenDescription);
+        validateDate(useStartDate, useEndDate);
+        validateDate(recruitStartDate, recruitEndDate);
 
         this.address = address;
         this.latitude = latitude;
@@ -313,11 +315,24 @@ public class Garden {
         }
     }
 
+    private void validateDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("종료일은 시작일보다 이전일 수 없습니다.");
+        }
+    }
+
     public void updateGarden(GardenUpdateDomainRequest request) {
+        Assert.hasLength(request.address(), "address는 null이거나 빈 값일 수 없습니다.");
+        Assert.notNull(request.latitude(), "latitude는 null일 수 없습니다.");
+        Assert.notNull(request.longitude(), "longitude는 null일 수 없습니다.");
+        Assert.hasLength(request.gardenName(), "gardenName는 null이거나 빈 값일 수 없습니다.");
+
         isNegativePrice(request.price());
         isNegativeSize(request.size());
         hasDefaultDescriptionLength(request.gardenDescription());
         validWriterId(request.writerId());
+        validateDate(request.useStartDate(), request.useEndDate());
+        validateDate(request.recruitStartDate(), request.recruitEndDate());
 
         gardenName = request.gardenName();
         price = request.price();
