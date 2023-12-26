@@ -75,7 +75,7 @@ public class GardenFixture {
 
     public static GardenByComplexesParam allGardenByComplexesParam() {
         return new GardenByComplexesParam(
-                GardenType.All.name(),
+                GardenType.ALL.name(),
                 0,
                 LATITUDE,
                 LONGITUDE,
