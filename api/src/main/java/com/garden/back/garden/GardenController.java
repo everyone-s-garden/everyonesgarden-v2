@@ -9,6 +9,7 @@ import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.global.LocationBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
@@ -154,12 +154,9 @@ public class GardenController {
             @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest
     ) {
         Long memberId = 1L;
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(gardenCommandService.createGarden(
-                        GardenCreateRequest.to(gardenImages, gardenCreateRequest, memberId)))
-                .toUri();
+        Long gardenId = gardenCommandService.createGarden(
+                GardenCreateRequest.to(gardenImages, gardenCreateRequest, memberId));
+        URI location = LocationBuilder.buildLocation(gardenId);
 
         return ResponseEntity.created(location).build();
     }
@@ -209,6 +206,22 @@ public class GardenController {
                 memberId));
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping(
+            value = "/my-managed",
+            consumes ={MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Void> createMyManagedGarden(
+            @RequestPart(value = "gardenImage", required = false) MultipartFile gardenImages,
+            @RequestPart(value = "myManagedGardenCreateRequest") @Valid MyManagedGardenCreateRequest request
+    ) {
+        Long memberId = 1L;
+        Long myManagedGardenId = gardenCommandService.createMyManagedGarden(
+                MyManagedGardenCreateRequest.of(gardenImages, request, memberId));
+        URI location = LocationBuilder.buildLocation(myManagedGardenId);
+
+        return ResponseEntity.created(location).build();
     }
 
 }
