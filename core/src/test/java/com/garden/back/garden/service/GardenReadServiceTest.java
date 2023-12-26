@@ -3,9 +3,11 @@ package com.garden.back.garden.service;
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
 import com.garden.back.garden.domain.GardenLike;
+import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.*;
@@ -17,6 +19,7 @@ import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
+import com.garden.back.testutil.garden.MyManagedGardenFixture;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -25,6 +28,7 @@ import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -33,9 +37,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class GardenReadServiceTest extends IntegrationTestSupport {
 
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     @Autowired
     private GardenRepository gardenRepository;
+
+    @Autowired
+    private MyManagedGardenRepository myManagedGardenRepository;
 
     @Autowired
     private GardenLikeRepository gardenLikeRepository;
@@ -233,6 +240,29 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                                 savedPrivateGarden.getPrice(),
                                 savedPrivateGarden.getGardenStatus().name(),
                                 gardenImages));
+    }
+
+    @DisplayName("내가 가꾸는 텃밭에 대한 목록을 조회할 수 있다.")
+    @Test
+    void getMyManagedGardens() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+                MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        MyManagedGardenGetResults myManagedGardenGetResults = gardenReadService.getMyManagedGarden(1L);
+
+        // Then
+        assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
+                .extracting("gardenName", "useStartDate", "useEndDate", "imageUrl")
+                .contains(
+                        Tuple.tuple(
+                                savedPrivateGarden.getGardenName(),
+                                myManagedGarden.getUseStartDate().format(DATE_FORMATTER),
+                                myManagedGarden.getUseEndDate().format(DATE_FORMATTER),
+                                myManagedGarden.getImageUrl()
+                        )
+                );
     }
 
 }
