@@ -1,7 +1,7 @@
 package com.garden.back.garden.repository.mymanagedgarden;
 
 import com.garden.back.garden.domain.MyManagedGarden;
-import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenGetRepositoryResponse;
+import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,7 +24,7 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
                     where mmg.memberId =:memberId
                     """
     )
-    List<MyManagedGardenGetRepositoryResponse> getByMemberId(@Param("memberId") Long memberId);
+    List<MyManagedGardensGetRepositoryResponse> getByMemberId(@Param("memberId") Long memberId);
 
     @Modifying(clearAutomatically = true)
     @Query(

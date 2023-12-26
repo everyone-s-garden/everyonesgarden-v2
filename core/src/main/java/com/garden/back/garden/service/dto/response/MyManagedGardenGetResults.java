@@ -1,6 +1,6 @@
 package com.garden.back.garden.service.dto.response;
 
-import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenGetRepositoryResponse;
+import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.List;
 public record MyManagedGardenGetResults(
         List<MyManagedGardenGetResult> myManagedGardenGetRespons
 ) {
-    public static MyManagedGardenGetResults to(List<MyManagedGardenGetRepositoryResponse> responses) {
+    public static MyManagedGardenGetResults to(List<MyManagedGardensGetRepositoryResponse> responses) {
         return new MyManagedGardenGetResults(
                 responses.stream()
                         .map(MyManagedGardenGetResult::to)
@@ -25,7 +25,7 @@ public record MyManagedGardenGetResults(
     ) {
         private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        public static MyManagedGardenGetResult to(MyManagedGardenGetRepositoryResponse response) {
+        public static MyManagedGardenGetResult to(MyManagedGardensGetRepositoryResponse response) {
             return new MyManagedGardenGetResult(
                     response.getMyManagedGardenId(),
                     response.getGardenName(),

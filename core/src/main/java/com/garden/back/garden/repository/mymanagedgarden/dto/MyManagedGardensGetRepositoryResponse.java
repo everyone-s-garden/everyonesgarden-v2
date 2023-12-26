@@ -2,7 +2,7 @@ package com.garden.back.garden.repository.mymanagedgarden.dto;
 
 import java.time.LocalDate;
 
-public interface MyManagedGardenGetRepositoryResponse {
+public interface MyManagedGardensGetRepositoryResponse {
 
     Long getMyManagedGardenId();
     String getGardenName();
