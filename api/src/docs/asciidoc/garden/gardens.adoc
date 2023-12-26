@@ -173,3 +173,17 @@ include::{snippets}/delete-my-managed-garden/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/delete-my-managed-garden/http-response.adoc[]
+
+== Create my managed garden
+=== 내가 가꾸는 텃밭 등록
+내가 가꾸는 텃밭 등록할 수 있다.
+
+==== Request
+include::{snippets}/create-my-managed-garden/http-request.adoc[]
+include::{snippets}/create-my-managed-garden/request-parts.adoc[]
+
+##### myManagedGardenCreateRequest에 대한 필드들
+include::{snippets}/create-my-managed-garden/request-part-myManagedGardenCreateRequest-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-my-managed-garden/http-response.adoc[]

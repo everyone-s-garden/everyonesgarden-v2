@@ -2,10 +2,7 @@ package com.garden.back.docs.garden;
 
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
-import com.garden.back.garden.dto.request.GardenCreateRequest;
-import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
-import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
-import com.garden.back.garden.dto.request.GardenUpdateRequest;
+import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;
@@ -198,6 +195,14 @@ public class GardenFixture {
                                 "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
                         )
                 )
+        );
+    }
+
+    public static MyManagedGardenCreateRequest myManagedGardenCreateRequest() {
+        return new MyManagedGardenCreateRequest(
+                1L,
+                "2023.12.01",
+                "2023.12.31"
         );
     }
 

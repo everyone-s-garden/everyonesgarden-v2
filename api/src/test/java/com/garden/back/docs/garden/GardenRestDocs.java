@@ -2,10 +2,7 @@ package com.garden.back.docs.garden;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.garden.GardenController;
-import com.garden.back.garden.dto.request.GardenCreateRequest;
-import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
-import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
-import com.garden.back.garden.dto.request.GardenUpdateRequest;
+import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.*;
@@ -452,6 +449,49 @@ class GardenRestDocs extends RestDocsSupport {
                         pathParameters(
                                 parameterWithName("myManagedGardenId").description("삭제하고자 하는 가꾸는 텃밭 아이디")
                         )));
+    }
+
+    @DisplayName("가꾸고자 하는 텃밭을 등록할 수 있다.")
+    @Test
+    void createMyManagedGarden() throws Exception {
+        MyManagedGardenCreateRequest myManagedGardenCreateRequest = GardenFixture.myManagedGardenCreateRequest();
+        MockMultipartFile gardenImage = new MockMultipartFile(
+                "gardenImage",
+                "image1.png",
+                "image/png",
+                "image-files".getBytes()
+        );
+        MockMultipartFile myMangedGardenCreateRequestAboutMultipart = new MockMultipartFile(
+                "myManagedGardenCreateRequest",
+                "myManagedGardenCreateRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(myManagedGardenCreateRequest).getBytes(StandardCharsets.UTF_8)
+        );
+        given(gardenCommandService.createMyManagedGarden(any())).willReturn(1L);
+
+        mockMvc.perform(multipart("/v2/gardens/my-managed")
+                        .file(gardenImage)
+                        .file(myMangedGardenCreateRequestAboutMultipart)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .content(objectMapper.writeValueAsString(myManagedGardenCreateRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"))
+                .andDo(document("create-my-managed-garden",
+                                requestParts(
+                                        partWithName("gardenImage").description("텃밭 이미지 파일"),
+                                        partWithName("myManagedGardenCreateRequest").description("내가 가꾸는 텃밭 생성 요청 값")
+                                ),
+                                requestPartFields("myManagedGardenCreateRequest",
+                                        fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("분양받은 텃밭의 아이디"),
+                                        fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
+                                        fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                                ),
+                                responseHeaders(
+                                        headerWithName("Location").description("생성된 내가 가꾸는 텃밭의 id를 포함한 url")
+                                )
+                        )
+                );
     }
 
 }
