@@ -494,4 +494,59 @@ class GardenRestDocs extends RestDocsSupport {
                 );
     }
 
+    @DisplayName("가꾸고자 하는 텃밭을 수정할 수 있다.")
+    @Test
+    void updateMyManagedGarden() throws Exception {
+        Long myManagedGardenId = 1L;
+        MyManagedGardenUpdateRequest myManagedGardenUpdateRequest = GardenFixture.myManagedGardenUpdateRequest();
+        MockMultipartFile gardenImage = new MockMultipartFile(
+                "gardenImage",
+                "image1.png",
+                "image/png",
+                "image-files".getBytes()
+        );
+        MockMultipartFile gardenUpdateRequestAboutMultipart = new MockMultipartFile(
+                "myManagedGardenUpdateRequest",
+                "myManagedGardenUpdateRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(myManagedGardenUpdateRequest).getBytes(StandardCharsets.UTF_8)
+        );
+
+        MockMultipartHttpServletRequestBuilder requestBuilder
+                = RestDocumentationRequestBuilders.multipart("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId);
+
+        requestBuilder.with(request -> {
+            request.setMethod("PUT");
+            return request;
+        });
+
+        given(gardenCommandService.updateGarden(any())).willReturn(myManagedGardenId);
+
+        mockMvc.perform(requestBuilder
+                        .file(gardenImage)
+                        .file(gardenUpdateRequestAboutMultipart)
+                        .characterEncoding("UTF-8")
+                        .content(objectMapper.writeValueAsString(myManagedGardenUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andExpect(header().exists("Location"))
+                .andDo(document("update-my-managed-garden",
+                        pathParameters(
+                                parameterWithName("myManagedGardenId").description("수정하는 내가 가꾸는 텃밭 아이디")
+                        ),
+                        requestParts(
+                                partWithName("gardenImage").description("수정한 텃밭 사진"),
+                                partWithName("myManagedGardenUpdateRequest").description("가꾸는 텃밭 수정 요청 값")
+                        ),
+                        requestPartFields("myManagedGardenUpdateRequest",
+                                fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("분양받은 텃밭의 아이디"),
+                                fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
+                                fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                        ),
+                        responseHeaders(
+                                headerWithName("Location").description("수정된 텃밭의 id를 포함한 URL")
+                        )
+                ));
+    }
+
 }

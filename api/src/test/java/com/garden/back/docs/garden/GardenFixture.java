@@ -206,4 +206,12 @@ public class GardenFixture {
         );
     }
 
+    public static MyManagedGardenUpdateRequest myManagedGardenUpdateRequest() {
+        return new MyManagedGardenUpdateRequest(
+                1L,
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
 }

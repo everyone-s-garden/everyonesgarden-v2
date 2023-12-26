@@ -187,3 +187,19 @@ include::{snippets}/create-my-managed-garden/request-part-myManagedGardenCreateR
 
 ==== Response (Success)
 include::{snippets}/create-my-managed-garden/http-response.adoc[]
+
+== Update my managed garden
+=== 내가 가꾸는 텃밭 수정
+내가 가꾸는 텃밭 정보를 수정한다. +
+수정하며 새롭게 추가하는 사진는 Multipart로 주시기 바랍니다.
+
+==== Request
+include::{snippets}/update-my-managed-garden/http-request.adoc[]
+include::{snippets}/update-my-managed-garden/path-parameters.adoc[]
+include::{snippets}/update-my-managed-garden/request-parts.adoc[]
+
+##### myManagedGardenUpdateRequest에 대한 필드들
+include::{snippets}/update-my-managed-garden/request-part-myManagedGardenUpdateRequest-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/update-my-managed-garden/http-response.adoc[]
