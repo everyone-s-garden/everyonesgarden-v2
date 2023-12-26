@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name="tended_gardens")
-public class TendedGarden {
+@Table(name="my_managed_gardens")
+public class MyManagedGarden {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
