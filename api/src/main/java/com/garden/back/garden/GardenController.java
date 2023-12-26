@@ -213,15 +213,37 @@ public class GardenController {
             consumes ={MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> createMyManagedGarden(
-            @RequestPart(value = "gardenImage", required = false) MultipartFile gardenImages,
+            @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
             @RequestPart(value = "myManagedGardenCreateRequest") @Valid MyManagedGardenCreateRequest request
     ) {
         Long memberId = 1L;
         Long myManagedGardenId = gardenCommandService.createMyManagedGarden(
-                MyManagedGardenCreateRequest.of(gardenImages, request, memberId));
+                MyManagedGardenCreateRequest.of(newGardenImage, request, memberId));
         URI location = LocationBuilder.buildLocation(myManagedGardenId);
 
         return ResponseEntity.created(location).build();
+    }
+
+    @PutMapping(
+            value = "/my-managed/{myManagedGardenId}",
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
+    )
+    public ResponseEntity<Void> updateMyManagedGarden(
+            @PathVariable @PositiveOrZero Long myManagedGardenId,
+            @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
+            @RequestPart(value = "myManagedGardenUpdateRequest") @Valid MyManagedGardenUpdateRequest request
+    ){
+        Long memberId = 1L;
+        Long updatedMyManagedGardenId = gardenCommandService.updateMyManagedGarden(
+                MyManagedGardenUpdateRequest.to(
+                        myManagedGardenId,
+                        newGardenImage,
+                        request,
+                        memberId
+                ));
+        URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId) ;
+
+        return ResponseEntity.noContent().location(location).build();
     }
 
 }
