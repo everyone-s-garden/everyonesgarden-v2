@@ -39,7 +39,7 @@ public class Garden {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
-    @Column(name = "point", columnDefinition = "point SRID 4326")
+    @Column(name = "point" , nullable = false)
     private Point point;
 
     @Column(name = "garden_name", nullable = false)
