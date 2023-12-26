@@ -98,6 +98,7 @@ public class GardenCommandService {
         myManagedGardenRepository.delete(param.myManagedGardenId(), param.memberId());
     }
 
+    @Transactional
     public Long createMyManagedGarden(MyManagedGardenCreateParam param) {
         List<String> uploadImageUrls
                 = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, List.of(param.myManagedGardenImage()));
@@ -110,6 +111,17 @@ public class GardenCommandService {
                 MyManagedGarden.to(myManagedGardenCreateDomainRequest));
 
         return savedMyManagedGarden.getMyManagedGardenId();
+    }
+
+    @Transactional
+    public Long updateMyManagedGarden(MyManagedGardenUpdateParam param) {
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.getById(param.myManagedGardenId());
+        parallelImageUploader.delete(GARDEN_IMAGE_DIRECTORY, List.of(myManagedGarden.getImageUrl()));
+
+        List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, List.of(param.myManagedGardenImage()));
+        myManagedGarden.update(MyManagedGardenUpdateParam.to(param, uploadImageUrls.get(MY_MANAGED_GARDEN_IMAGE_INDEX)));
+
+        return myManagedGarden.getMyManagedGardenId();
     }
 
 }
