@@ -5,6 +5,7 @@ import com.garden.back.garden.dto.request.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -51,15 +52,33 @@ class GardenControllerTest extends ControllerTestSupport {
                 .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("내가 가꾸는 텃밭을 등록할 수 있다.")
+    @DisplayName("내가 가꾸는 텃밭을 등록할 때 요청값에 대해서 검증한다.")
     @ParameterizedTest
     @MethodSource("provideInvalidMyManagedGardenCreateRequest")
     void createMyManagedGarden_invalidRequest(MyManagedGardenCreateRequest request) throws Exception {
         mockMvc.perform(put("/v2/gardens/my-managed")
-                .content(objectMapper.writeValueAsString(request)))
+                        .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().is4xxClientError());
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 수정할 때 myManagedGardenId path variable에 대해 음수와 0에 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L, 0L})
+    void updateMyManagedGarden_invalidPathVariable(Long myManagedGardenId) throws Exception {
+        mockMvc.perform(put("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId)
+                        .content(objectMapper.writeValueAsString(myManagedGardenUpdateRequest())))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("내가 가꾸는 텃밭을 수정할 때 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidMyManagedGardenUpdateRequest")
+    void updated_invalidRequest(MyManagedGardenUpdateRequest request) throws Exception {
+        Long myManagedGardenId = 1L;
+        mockMvc.perform(put("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is4xxClientError());
+    }
 
     private static Stream<GardenByNameRequest> provideInvalidGardenByNameRequest() {
         return Stream.of(
@@ -388,11 +407,39 @@ class GardenControllerTest extends ControllerTestSupport {
                         1L,
                         "2023.12.01",
                         "2023.11.23"
-                        ),
+                ),
                 new MyManagedGardenCreateRequest(
                         1L,
                         "2023-12-01",
                         "2023-12-31"
+                )
+        );
+    }
+
+    private static MyManagedGardenUpdateRequest myManagedGardenUpdateRequest() {
+        return new MyManagedGardenUpdateRequest(
+                1L,
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
+    private static Stream<MyManagedGardenUpdateRequest> provideInvalidMyManagedGardenUpdateRequest() {
+        return Stream.of(
+                new MyManagedGardenUpdateRequest(
+                        -1L,
+                        "2023.12.01",
+                        "2023.12.31"
+                ),
+                new MyManagedGardenUpdateRequest(
+                        1L,
+                        "2023-12-01",
+                        "2023-12-31"
+                ),
+                new MyManagedGardenUpdateRequest(
+                        1L,
+                        "2023.12.01",
+                        "2023.11-30"
                 )
         );
     }
