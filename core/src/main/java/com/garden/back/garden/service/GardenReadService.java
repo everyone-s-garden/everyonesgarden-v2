@@ -4,7 +4,10 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
-import com.garden.back.garden.service.dto.request.*;
+import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
+import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenByNameParam;
+import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
@@ -17,10 +20,12 @@ import java.util.List;
 @Service
 public class GardenReadService {
     private final GardenRepository gardenRepository;
+    private final MyManagedGardenRepository myManagedGardenRepository;
     private final GardenHistoryManager gardenHistoryManager;
 
-    public GardenReadService(GardenRepository gardenRepository, GardenHistoryManager gardenHistoryManager) {
+    public GardenReadService(GardenRepository gardenRepository, MyManagedGardenRepository myManagedGardenRepository, GardenHistoryManager gardenHistoryManager) {
         this.gardenRepository = gardenRepository;
+        this.myManagedGardenRepository = myManagedGardenRepository;
         this.gardenHistoryManager = gardenHistoryManager;
     }
 
@@ -68,6 +73,10 @@ public class GardenReadService {
     public GardenLikeByMemberResults getLikeGardensByMember(Long memberId) {
         return GardenLikeByMemberResults.to(
                 gardenRepository.getLikeGardenByMember(memberId));
+    }
+
+    public MyManagedGardenGetResults getMyManagedGarden(Long memberId) {
+        return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(memberId));
     }
 
 }
