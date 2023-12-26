@@ -265,4 +265,26 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                 );
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 상세하게 볼 수 있다.")
+    @Test
+    void getDetailMyManagedGarden() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+                MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        MyManagedGardenDetailResult myManagedGardenDetailResult
+                = gardenReadService.getDetailMyManagedGarden(myManagedGarden.getMyManagedGardenId());
+        Garden garden = gardenRepository.getById(myManagedGarden.getGardenId());
+
+        // Then
+        assertThat(myManagedGardenDetailResult.gardenName()).isEqualTo(garden.getGardenName());
+        assertThat(myManagedGardenDetailResult.address()).isEqualTo(garden.getAddress());
+        assertThat(myManagedGardenDetailResult.useStartDate())
+                .isEqualTo(myManagedGarden.getUseStartDate().format(DATE_FORMATTER));
+        assertThat(myManagedGardenDetailResult.useEndDate())
+                .isEqualTo(myManagedGarden.getUseEndDate().format(DATE_FORMATTER));
+        assertThat(myManagedGardenDetailResult.imageUrl()).isEqualTo(myManagedGarden.getImageUrl());
+    }
+
 }
