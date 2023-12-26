@@ -186,4 +186,14 @@ public class GardenController {
 
     }
 
+    @GetMapping(
+            value = "/my-managed",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<MyManagedGardenGetResponses> getMyManagedGardens() {
+        Long memberId = 1L;
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGarden(memberId)));
+    }
+
 }
