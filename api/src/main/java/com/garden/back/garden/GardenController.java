@@ -190,7 +190,7 @@ public class GardenController {
     public ResponseEntity<MyManagedGardenGetResponses> getMyManagedGardens() {
         Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
-                .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGarden(memberId)));
+                .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGardens(memberId)));
     }
 
     @DeleteMapping(

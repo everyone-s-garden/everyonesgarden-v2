@@ -421,7 +421,7 @@ class GardenRestDocs extends RestDocsSupport {
     @Test
     void getMyManagedGardens() throws Exception {
         MyManagedGardenGetResults myManagedGardenGetResults = GardenFixture.myManagedGardenGetResults();
-        given(gardenReadService.getMyManagedGarden(any())).willReturn(myManagedGardenGetResults);
+        given(gardenReadService.getMyManagedGardens(any())).willReturn(myManagedGardenGetResults);
 
          mockMvc.perform(get("/v2/gardens/my-managed"))
                  .andDo(print())

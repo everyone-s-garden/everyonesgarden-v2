@@ -250,7 +250,7 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                 MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
 
         // When
-        MyManagedGardenGetResults myManagedGardenGetResults = gardenReadService.getMyManagedGarden(1L);
+        MyManagedGardenGetResults myManagedGardenGetResults = gardenReadService.getMyManagedGardens(1L);
 
         // Then
         assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
