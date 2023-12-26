@@ -15,19 +15,8 @@ public class MyManagedGarden {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "garden_name")
-    private String gardenName;
-
-    @Column(name="address")
-    private String address;
-
-    @Column(name="latitude")
-    private Double latitude;
-
-    @Column(name="longitude")
-    private Double longitude;
+    @Column(name = "my_managed_garden_id")
+    private Long myManagedGardenId;
 
     @Column(name="use_start_date")
     private LocalDate useStartDate;
@@ -43,5 +32,35 @@ public class MyManagedGarden {
 
     @Column(name = "garden_id")
     private Long gardenId;
+
+    protected MyManagedGarden(
+        LocalDate useStartDate,
+        LocalDate useEndDate,
+        Long memberId,
+        String imageUrl,
+        Long gardenId
+    ){
+        this.useStartDate = useStartDate;
+        this.useEndDate = useEndDate;
+        this.memberId = memberId;
+        this.imageUrl = imageUrl;
+        this.gardenId =gardenId;
+    }
+
+    public static MyManagedGarden of(
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Long memberId,
+            String imageUrl,
+            Long gardenId
+    ) {
+        return new MyManagedGarden(
+          useStartDate,
+          useEndDate,
+          memberId,
+          imageUrl,
+          gardenId
+        );
+    }
 
 }
