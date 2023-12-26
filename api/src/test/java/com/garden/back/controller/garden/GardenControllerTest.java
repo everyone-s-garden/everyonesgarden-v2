@@ -80,6 +80,14 @@ class GardenControllerTest extends ControllerTestSupport {
                 .andExpect(status().is4xxClientError());
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 상세 보기할 때 path variable이 음수 또는 0에 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L, 0L})
+    void getDetail_invalidPathVariable(Long myManagedGardenId) throws Exception {
+        mockMvc.perform(get("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId))
+                .andExpect(status().is4xxClientError());
+    }
+
     private static Stream<GardenByNameRequest> provideInvalidGardenByNameRequest() {
         return Stream.of(
                 new GardenByNameRequest(
