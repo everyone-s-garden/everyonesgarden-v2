@@ -181,7 +181,6 @@ public class GardenController {
                 .status(HttpStatus.NO_CONTENT)
                 .location(location)
                 .build();
-
     }
 
     @GetMapping(
@@ -210,7 +209,7 @@ public class GardenController {
 
     @PostMapping(
             value = "/my-managed",
-            consumes ={MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
+            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> createMyManagedGarden(
             @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
@@ -232,7 +231,7 @@ public class GardenController {
             @PathVariable @PositiveOrZero Long myManagedGardenId,
             @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
             @RequestPart(value = "myManagedGardenUpdateRequest") @Valid MyManagedGardenUpdateRequest request
-    ){
+    ) {
         Long memberId = 1L;
         Long updatedMyManagedGardenId = gardenCommandService.updateMyManagedGarden(
                 MyManagedGardenUpdateRequest.to(
@@ -241,7 +240,7 @@ public class GardenController {
                         request,
                         memberId
                 ));
-        URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId) ;
+        URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId);
 
         return ResponseEntity.noContent().location(location).build();
     }
