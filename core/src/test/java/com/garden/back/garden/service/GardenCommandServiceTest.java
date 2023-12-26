@@ -2,14 +2,17 @@ package com.garden.back.garden.service;
 
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
+import com.garden.back.testutil.garden.MyManagedGardenFixture;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +22,7 @@ import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,6 +40,9 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenImageRepository gardenImageRepository;
+
+    @Autowired
+    private MyManagedGardenRepository myManagedGardenRepository;
 
     @Autowired
     private GardenCommandService gardenCommandService;
@@ -190,6 +197,24 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(updatedGardenImages).extracting("imageUrl")
                 .contains(expectedUrl)
                 .contains(gardenUpdateParam.remainGardenImageUrls().toArray());
+    }
+
+    @DisplayName("내가 가꾸는 텃밭을 삭제할 수 있다.")
+    @Test
+    void deleteMyManagedGarden() {
+        // Given
+        MyManagedGarden myManagedGarden = MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
+        MyManagedGardenDeleteParam myManagedGardenDeleteParam
+                = new MyManagedGardenDeleteParam(
+                savedMyManagedGarden.getMyManagedGardenId(),
+                savedMyManagedGarden.getMemberId());
+
+        // When
+        gardenCommandService.deleteMyManagedGarden(myManagedGardenDeleteParam);
+
+        // Then
+        assertThat(myManagedGardenRepository.findById(myManagedGardenDeleteParam.myManagedGardenId())).isEqualTo(Optional.empty());
     }
 
 }
