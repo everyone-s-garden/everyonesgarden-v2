@@ -11,6 +11,7 @@ import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.global.LocationBuilder;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -228,7 +229,7 @@ public class GardenController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<Void> updateMyManagedGarden(
-            @PathVariable @PositiveOrZero Long myManagedGardenId,
+            @PathVariable @Positive Long myManagedGardenId,
             @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
             @RequestPart(value = "myManagedGardenUpdateRequest") @Valid MyManagedGardenUpdateRequest request
     ) {
@@ -243,6 +244,19 @@ public class GardenController {
         URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId);
 
         return ResponseEntity.noContent().location(location).build();
+    }
+
+    @GetMapping(
+            value = "/my-managed/{myManagedGardenId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<MyManagedGardenDetailResponse> getDetailMyManagedGarden(
+            @PathVariable @Positive Long myManagedGardenId
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(MyManagedGardenDetailResponse.to(
+                        gardenReadService.getDetailMyManagedGarden(myManagedGardenId)));
     }
 
 }
