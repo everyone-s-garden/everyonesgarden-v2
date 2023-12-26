@@ -420,5 +420,24 @@ class GardenRestDocs extends RestDocsSupport {
                 ));
     }
 
+    @DisplayName("내가 가꾸는 텃밭 목록을 조회할 수 있다.")
+    @Test
+    void getMyManagedGardens() throws Exception {
+        MyManagedGardenGetResults myManagedGardenGetResults = GardenFixture.myManagedGardenGetResults();
+        given(gardenReadService.getMyManagedGarden(any())).willReturn(myManagedGardenGetResults);
+
+         mockMvc.perform(get("/v2/gardens/my-managed"))
+                 .andDo(print())
+                 .andExpect(status().isOk())
+                 .andDo(document("get-my-managed-gardens",
+                         responseFields(
+                                 fieldWithPath("myManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("내가 가꾸는 텃밭 목록"),
+                                 fieldWithPath("myManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
+                                 fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
+                                 fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
+                                 fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                                 fieldWithPath("myManagedGardenGetResponses[].imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
+                         )));
+    }
 
 }

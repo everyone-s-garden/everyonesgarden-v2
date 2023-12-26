@@ -150,3 +150,15 @@ include::{snippets}/update-garden/request-part-gardenUpdateRequest-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/update-garden/http-response.adoc[]
+
+
+== Get my managed gardens
+=== 내가 가꾸는 텃밭 목록 조회
+내가 가꾸는 텃밭 목록 조회한다.
+
+==== Request
+include::{snippets}/get-my-managed-gardens/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-managed-gardens/http-response.adoc[]
+include::{snippets}/get-my-managed-gardens/response-fields.adoc[]

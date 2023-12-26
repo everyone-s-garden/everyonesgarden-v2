@@ -1,11 +1,11 @@
 package com.garden.back.docs.garden;
 
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.dto.request.GardenCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
 import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
 import com.garden.back.garden.dto.request.GardenUpdateRequest;
-import com.garden.back.garden.domain.vo.GardenStatus;
-import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;
@@ -184,6 +184,20 @@ public class GardenFixture {
                 "2023.12.23",
                 "2023.12.01",
                 "2023.12.31"
+        );
+    }
+
+    public static MyManagedGardenGetResults myManagedGardenGetResults() {
+        return new MyManagedGardenGetResults(
+                List.of(
+                        new MyManagedGardenGetResults.MyManagedGardenGetResult(
+                                1L,
+                                "별이네 주말농장",
+                                "2023.12.01",
+                                "2023.12.31",
+                                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+                        )
+                )
         );
     }
 
