@@ -6,6 +6,7 @@ import com.garden.back.garden.domain.GardenLike;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.global.image.ParallelImageUploader;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,19 @@ public class GardenCommandService {
     private final GardenRepository gardenRepository;
     private final GardenImageRepository gardenImageRepository;
     private final GardenLikeRepository gardenLikeRepository;
+    private final MyManagedGardenRepository myManagedGardenRepository;
     private final ParallelImageUploader parallelImageUploader;
 
-    public GardenCommandService(GardenRepository gardenRepository, GardenImageRepository gardenImageRepository, GardenLikeRepository gardenLikeRepository, ParallelImageUploader parallelImageUploader) {
+    public GardenCommandService(
+            GardenRepository gardenRepository,
+            GardenImageRepository gardenImageRepository,
+            GardenLikeRepository gardenLikeRepository,
+            MyManagedGardenRepository myManagedGardenRepository,
+            ParallelImageUploader parallelImageUploader) {
         this.gardenRepository = gardenRepository;
         this.gardenImageRepository = gardenImageRepository;
         this.gardenLikeRepository = gardenLikeRepository;
+        this.myManagedGardenRepository = myManagedGardenRepository;
         this.parallelImageUploader = parallelImageUploader;
     }
 
@@ -81,6 +89,10 @@ public class GardenCommandService {
     private void saveNewGardenImages(Garden garden, List<MultipartFile> newImageUrls) {
         List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImageUrls);
         uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
+    }
+
+    public void deleteMyManagedGarden(MyManagedGardenDeleteParam param) {
+        myManagedGardenRepository.delete(param.myManagedGardenId(), param.memberId());
     }
 
 }
