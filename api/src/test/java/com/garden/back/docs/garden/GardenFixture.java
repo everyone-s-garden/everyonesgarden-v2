@@ -214,4 +214,15 @@ public class GardenFixture {
         );
     }
 
+    public static MyManagedGardenDetailResult myManagedGardenDetailResult() {
+        return new MyManagedGardenDetailResult(
+                1L,
+                "금쪽이네 텃밭",
+                "인천 계양구 계산동 22",
+                "2023.12.01",
+                "2023.12.31",
+                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+        );
+    }
+
 }

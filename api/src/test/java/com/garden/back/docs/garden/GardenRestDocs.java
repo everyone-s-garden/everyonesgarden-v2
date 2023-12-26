@@ -423,18 +423,18 @@ class GardenRestDocs extends RestDocsSupport {
         MyManagedGardenGetResults myManagedGardenGetResults = GardenFixture.myManagedGardenGetResults();
         given(gardenReadService.getMyManagedGardens(any())).willReturn(myManagedGardenGetResults);
 
-         mockMvc.perform(get("/v2/gardens/my-managed"))
-                 .andDo(print())
-                 .andExpect(status().isOk())
-                 .andDo(document("get-my-managed-gardens",
-                         responseFields(
-                                 fieldWithPath("myManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("내가 가꾸는 텃밭 목록"),
-                                 fieldWithPath("myManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
-                                 fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
-                                 fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
-                                 fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                                 fieldWithPath("myManagedGardenGetResponses[].imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
-                         )));
+        mockMvc.perform(get("/v2/gardens/my-managed"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("get-my-managed-gardens",
+                        responseFields(
+                                fieldWithPath("myManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("내가 가꾸는 텃밭 목록"),
+                                fieldWithPath("myManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
+                                fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
+                                fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
+                                fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                                fieldWithPath("myManagedGardenGetResponses[].imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
+                        )));
     }
 
     @DisplayName("내가 가꾸는 텃밭을 삭제할 수 있다.")
@@ -442,7 +442,7 @@ class GardenRestDocs extends RestDocsSupport {
     void deleteMyManagedGarden() throws Exception {
         Long myManagedGardenId = 1L;
 
-        mockMvc.perform(delete("/v2/gardens/my-managed/{myManagedGardenId}",myManagedGardenId))
+        mockMvc.perform(delete("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId))
                 .andDo(print())
                 .andExpect(status().isNoContent())
                 .andDo(document("delete-my-managed-garden",
@@ -547,6 +547,30 @@ class GardenRestDocs extends RestDocsSupport {
                                 headerWithName("Location").description("수정된 텃밭의 id를 포함한 URL")
                         )
                 ));
+    }
+
+    @DisplayName("내가 가꾸는 텃밭 상세 보기할 수 있다.")
+    @Test
+    void getDetailMyManagedGarden() throws Exception {
+        Long myManagedGardenId = 1L;
+        MyManagedGardenDetailResult myManagedGardenDetailResult = GardenFixture.myManagedGardenDetailResult();
+        given(gardenReadService.getDetailMyManagedGarden(any())).willReturn(myManagedGardenDetailResult);
+
+        mockMvc.perform(get("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andDo(document("get-detail-my-managed-garden",
+                        pathParameters(
+                                parameterWithName("myManagedGardenId").description("상세보기를 할 내가 가꾸는 텃밭 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
+                                fieldWithPath("gardenName").type(JsonFieldType.STRING).description("분양받은 텃밭의 이름"),
+                                fieldWithPath("address").type(JsonFieldType.STRING).description("분양받은 텃밭의 주소"),
+                                fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
+                                fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
+                        )));
     }
 
 }
