@@ -51,6 +51,33 @@ public class GardenFixture {
         );
     }
 
+    public static Garden publicGarden() {
+        return Garden.of(
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                GeometryUtil.createPoint(LATITUDE, LONGITUDE),
+                "김별이네 텃밭",
+                GardenType.PUBLIC,
+                GardenStatus.ACTIVE,
+                "www.everygarden.me",
+                "100",
+                "000-000-000",
+                "200.23",
+                "화장실이 깨끗하고 농기구를 빌려줍니다.",
+                LocalDate.now(),
+                LocalDate.now().plusDays(30),
+                LocalDate.now().plusDays(31),
+                LocalDate.now().plusMonths(6),
+                true,
+                false,
+                true,
+                1L,
+                false,
+                0
+        );
+    }
+
     public static GardenImage firstGardenImage(Garden garden) {
         return GardenImage.of(FIRST_GARDEN_IMAGE_URL, garden);
     }
@@ -217,6 +244,21 @@ public class GardenFixture {
                 1L,
                 LocalDate.now(),
                 LocalDate.now().plusDays(30),
+                1L
+        );
+    }
+
+    public static MyManagedGardenUpdateParam myManagedGardenUpdateParam(
+            String expectedUrl,
+            Long gardenId) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new MyManagedGardenUpdateParam(
+                multipartFile,
+                1L,
+                gardenId,
+                LocalDate.now(),
+                LocalDate.now().plusDays(50),
                 1L
         );
     }

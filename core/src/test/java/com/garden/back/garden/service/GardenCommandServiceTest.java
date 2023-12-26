@@ -238,4 +238,32 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(savedMyManagedGarden.getUseEndDate()).isEqualTo(myManagedGardenCreateParam.useEndDate());
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 수정할 수 있다.")
+    @Test
+    void updateMyManagedGarden() {
+        // Given
+        Garden garden = GardenFixture.publicGarden();
+        Garden savedPublicGarden = gardenRepository.save(garden);
+
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+
+        MyManagedGarden myManagedGarden = MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        myManagedGardenRepository.save(myManagedGarden);
+        MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
+                expectedUrl,
+                savedPublicGarden.getGardenId()
+        );
+
+        // When
+        Long updateMyManagedGardenId = gardenCommandService.updateMyManagedGarden(myManagedGardenUpdateParam);
+        MyManagedGarden updatedMyManagedGarden = myManagedGardenRepository.getById(updateMyManagedGardenId);
+
+        // Then
+        assertThat(updatedMyManagedGarden.getUseEndDate()).isEqualTo(myManagedGardenUpdateParam.useEndDate());
+        assertThat(updatedMyManagedGarden.getUseStartDate()).isEqualTo(myManagedGardenUpdateParam.useStartDate());
+        assertThat(updatedMyManagedGarden.getGardenId()).isEqualTo(myManagedGardenUpdateParam.gardenId());
+        assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
+    }
+
 }
