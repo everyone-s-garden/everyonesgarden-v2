@@ -6,6 +6,7 @@ import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
+import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import jakarta.validation.Valid;
@@ -194,6 +195,20 @@ public class GardenController {
         Long memberId = 1L;
         return ResponseEntity.status(HttpStatus.OK)
                 .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGarden(memberId)));
+    }
+
+    @DeleteMapping(
+            value = "/my-managed/{myManagedGardenId}"
+    )
+    public ResponseEntity<Void> deletedMyManagedGarden(
+            @PathVariable @PositiveOrZero Long myManagedGardenId
+    ) {
+        Long memberId = 1L;
+        gardenCommandService.deleteMyManagedGarden(MyManagedGardenDeleteParam.of(
+                myManagedGardenId,
+                memberId));
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
