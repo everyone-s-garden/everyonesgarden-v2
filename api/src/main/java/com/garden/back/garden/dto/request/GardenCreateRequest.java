@@ -32,7 +32,6 @@ public record GardenCreateRequest(
         String linkForRequest,
         String contact,
         @NotBlank
-
         String address,
 
         @NotBlank

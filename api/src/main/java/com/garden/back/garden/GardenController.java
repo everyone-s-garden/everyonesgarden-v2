@@ -12,7 +12,6 @@ import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.global.LocationBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +36,7 @@ public class GardenController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByNameResponses> getGardenNames(
-            @Valid @ModelAttribute GardenByNameRequest gardenByNameRequest) {
+            @ModelAttribute @Valid GardenByNameRequest gardenByNameRequest) {
         GardenByNameParam gardenByNameParam = GardenByNameRequest.to(gardenByNameRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
@@ -48,7 +47,7 @@ public class GardenController {
             path = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
-            @PositiveOrZero @RequestParam Integer pageNumber) {
+            @RequestParam @Positive Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenGetAllResponses.to(
                         gardenReadService.getAllGarden(pageNumber)));
@@ -58,7 +57,7 @@ public class GardenController {
             path = "/by-complexes",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByComplexesResponses> getGardensByComplexes(
-            @Valid @ModelAttribute GardenByComplexesRequest request) {
+            @ModelAttribute @Valid GardenByComplexesRequest request) {
         GardenByComplexesResults gardensByComplexes
                 = gardenReadService.getGardensByComplexes(GardenByComplexesRequest.to(request));
 
@@ -71,7 +70,7 @@ public class GardenController {
             path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-            @PositiveOrZero @PathVariable Long gardenId) {
+            @PathVariable @Positive Long gardenId) {
         Long memberId = 1L;
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
 
@@ -91,7 +90,7 @@ public class GardenController {
     @DeleteMapping(
             path = "/{gardenId}")
     public ResponseEntity<Void> deleteGarden(
-            @PositiveOrZero @PathVariable Long gardenId) {
+            @PathVariable @Positive Long gardenId) {
         Long memberId = 1L;
 
         gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
@@ -166,7 +165,7 @@ public class GardenController {
             value = "/{gardenId}",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateGarden(
-            @PathVariable @PositiveOrZero Long gardenId,
+            @PathVariable @Positive Long gardenId,
             @RequestPart(value = "newGardenImages", required = false) List<MultipartFile> newGardenImages,
             @RequestPart(value = "gardenUpdateRequest") @Valid GardenUpdateRequest gardenUpdateRequest
     ) {
@@ -198,7 +197,7 @@ public class GardenController {
             value = "/my-managed/{myManagedGardenId}"
     )
     public ResponseEntity<Void> deletedMyManagedGarden(
-            @PathVariable @PositiveOrZero Long myManagedGardenId
+            @PathVariable @Positive Long myManagedGardenId
     ) {
         Long memberId = 1L;
         gardenCommandService.deleteMyManagedGarden(MyManagedGardenDeleteParam.of(

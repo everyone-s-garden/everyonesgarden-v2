@@ -3,14 +3,14 @@ package com.garden.back.garden.dto.request;
 import com.garden.back.garden.dto.request.validation.ValidDate;
 import com.garden.back.garden.service.dto.request.MyManagedGardenCreateParam;
 import jakarta.validation.constraints.AssertTrue;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public record MyManagedGardenCreateRequest(
-        @PositiveOrZero
+        @Positive
         Long gardenId,
 
         @ValidDate
