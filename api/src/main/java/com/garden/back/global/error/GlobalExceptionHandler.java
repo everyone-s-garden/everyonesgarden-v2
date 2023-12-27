@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleAllException(Exception e, HttpServletRequest request) {
         ProblemDetail problemDetail = ProblemDetailCreator.create(e, request, HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.internalServerError().body(problemDetail);
+        return ResponseEntity.badRequest().body(problemDetail);
     }
 
 }

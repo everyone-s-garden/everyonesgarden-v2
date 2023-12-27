@@ -32,8 +32,8 @@ class AuthServiceTest extends IntegrationTestSupport {
             .set("role", Role.USER)
             .sample();
         given(tokenProvider.generateTokenDto(any(Member.class))).willReturn(token);
-        given(authRegistrations.get(any(AuthProvider.class))).willReturn(memberProvider);
-        given(memberProvider.getMember(anyString())).willReturn(expected);
+        given(authRegistrations.get(any(AuthProvider.class))).willReturn(kakaoMemberProvider);
+        given(kakaoMemberProvider.getMember(anyString())).willReturn(expected);
 
         //when
         authService.login(AuthProvider.KAKAO, "asdfasdf");

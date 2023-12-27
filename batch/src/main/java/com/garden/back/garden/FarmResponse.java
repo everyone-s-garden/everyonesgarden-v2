@@ -5,9 +5,9 @@ import com.garden.back.garden.model.PublicDataGarden;
 import java.util.List;
 
 public record FarmResponse(
-    wrapper Grid_20171122000000000552_1
+    Wrapper Grid_20171122000000000552_1
 ) {
-    public record wrapper(List<FarmInfo> row) {}
+    public record Wrapper(List<FarmInfo> row) {}
 
     public record FarmInfo(
         int ROW_NUM,

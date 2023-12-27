@@ -1,7 +1,6 @@
 package com.garden.back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.garden.back.auth.config.SecurityConfig;
 import com.garden.back.feedback.FeedbackController;
 import com.garden.back.feedback.service.FeedbackService;
 import com.garden.back.garden.GardenController;
@@ -56,8 +55,5 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected FeedbackService feedbackService;
-
-    @MockBean
-    SecurityConfig securityConfig;
 
 }

@@ -25,7 +25,7 @@ class OpenAPIGardenInfoClientTest {
     @DisplayName("공공데이터에 등록된 텃밭 정보를 저장한다.")
     @Test
     @Disabled("현재 틀만 구축해놓은 상태입니다.")
-    void setUp() {
+    void savePublicRegisteredGardens() {
         var result = client.getFarmFromOpnAPI().Grid_20171122000000000552_1().row();
         List<PublicDataGarden> publicDataGardenList = new ArrayList<>();
         for (var row : result) {
