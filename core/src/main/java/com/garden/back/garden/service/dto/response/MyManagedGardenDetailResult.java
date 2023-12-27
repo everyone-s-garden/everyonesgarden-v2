@@ -3,6 +3,7 @@ package com.garden.back.garden.service.dto.response;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenDetailRepositoryResponse;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public record MyManagedGardenDetailResult(
         Long myManagedGardenId,
@@ -12,7 +13,7 @@ public record MyManagedGardenDetailResult(
         String useEndDate,
         String imageUrl
 ) {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd", Locale.KOREA);
 
     public static MyManagedGardenDetailResult to(MyManagedGardenDetailRepositoryResponse response) {
         return new MyManagedGardenDetailResult(

@@ -4,6 +4,7 @@ import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGet
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 public record MyManagedGardenGetResults(
         List<MyManagedGardenGetResult> myManagedGardenGetRespons
@@ -23,7 +24,7 @@ public record MyManagedGardenGetResults(
             String useEndDate,
             String imageUrl
     ) {
-        private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd", Locale.KOREA);
 
         public static MyManagedGardenGetResult to(MyManagedGardensGetRepositoryResponse response) {
             return new MyManagedGardenGetResult(

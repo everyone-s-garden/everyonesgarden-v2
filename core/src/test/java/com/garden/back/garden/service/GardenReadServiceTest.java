@@ -252,7 +252,6 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
         MyManagedGardenGetResults myManagedGardenGetResults
                 = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
 
-
         // Then
         assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
                 .extracting("gardenName", "useStartDate", "useEndDate", "imageUrl")
