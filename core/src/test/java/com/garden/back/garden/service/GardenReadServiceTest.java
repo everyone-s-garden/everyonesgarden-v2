@@ -252,8 +252,6 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
         MyManagedGardenGetResults myManagedGardenGetResults
                 = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
 
-        System.out.println(myManagedGardenGetResults.myManagedGardenGetRespons().size());
-        System.out.println("날짜:"+myManagedGardenGetResults.myManagedGardenGetRespons().get(0).useStartDate());
 
         // Then
         assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
