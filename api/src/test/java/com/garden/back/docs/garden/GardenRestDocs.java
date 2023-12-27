@@ -79,7 +79,7 @@ class GardenRestDocs extends RestDocsSupport {
                 .andExpect(status().isOk())
                 .andDo(document("get-all-gardens",
                         queryParameters(
-                                parameterWithName("pageNumber").description("요구하는 페이짓 수")
+                                parameterWithName("pageNumber").description("요구하는 페이지 수")
                         ),
                         responseFields(
                                 fieldWithPath("gardenGetAllResponses").type(JsonFieldType.ARRAY).description("텃밭 전체 검색 결과"),

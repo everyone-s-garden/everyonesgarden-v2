@@ -12,6 +12,7 @@ import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.global.LocationBuilder;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class GardenController {
             path = "/all",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
-            @RequestParam @Positive Integer pageNumber) {
+            @RequestParam @PositiveOrZero Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenGetAllResponses.to(
                         gardenReadService.getAllGarden(pageNumber)));
