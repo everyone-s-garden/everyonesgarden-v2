@@ -1,18 +1,19 @@
 package com.garden.back.garden.service;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.GardenImage;
-import com.garden.back.garden.model.GardenLike;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.GardenLike;
+import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
+import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
-import com.garden.back.garden.service.dto.response.GardenAllResults;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
@@ -25,6 +26,7 @@ import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -33,9 +35,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class GardenReadServiceTest extends IntegrationTestSupport {
 
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     @Autowired
     private GardenRepository gardenRepository;
+
+    @Autowired
+    private MyManagedGardenRepository myManagedGardenRepository;
 
     @Autowired
     private GardenLikeRepository gardenLikeRepository;
@@ -233,6 +238,46 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                                 savedPrivateGarden.getPrice(),
                                 savedPrivateGarden.getGardenStatus().name(),
                                 gardenImages));
+    }
+
+    @DisplayName("내가 가꾸는 텃밭에 대한 목록을 조회할 수 있다.")
+    @Test
+    void getMyManagedGardens() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+                GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        MyManagedGardenGetResults myManagedGardenGetResults
+                = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
+
+        // Then
+        assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
+                .extracting("gardenName", "imageUrl")
+                .contains(
+                        Tuple.tuple(
+                                savedPrivateGarden.getGardenName(),
+                                myManagedGarden.getImageUrl()
+                        )
+                );
+    }
+
+    @DisplayName("내가 가꾸는 텃밭을 상세하게 볼 수 있다.")
+    @Test
+    void getDetailMyManagedGarden() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+                GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        MyManagedGardenDetailResult myManagedGardenDetailResult
+                = gardenReadService.getDetailMyManagedGarden(myManagedGarden.getMyManagedGardenId());
+        Garden garden = gardenRepository.getById(myManagedGarden.getGardenId());
+
+        // Then
+        assertThat(myManagedGardenDetailResult.gardenName()).isEqualTo(garden.getGardenName());
+        assertThat(myManagedGardenDetailResult.address()).isEqualTo(garden.getAddress());
+        assertThat(myManagedGardenDetailResult.imageUrl()).isEqualTo(myManagedGarden.getImageUrl());
     }
 
 }

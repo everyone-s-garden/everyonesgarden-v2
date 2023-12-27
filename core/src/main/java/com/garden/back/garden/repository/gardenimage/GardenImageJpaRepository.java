@@ -1,12 +1,12 @@
 package com.garden.back.garden.repository.gardenimage;
 
-import com.garden.back.garden.model.GardenImage;
+import com.garden.back.garden.domain.GardenImage;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.Optional;
+import java.util.List;
 
 public interface GardenImageJpaRepository extends JpaRepository<GardenImage, Long> {
 
@@ -19,5 +19,5 @@ public interface GardenImageJpaRepository extends JpaRepository<GardenImage, Lon
     @Query(
             "select gi from GardenImage as gi where gi.garden.gardenId =:gardenId"
     )
-    Optional<GardenImage> findByGardenId(@Param("gardenId") Long gardenId);
+    List<GardenImage> findByGardenId(@Param("gardenId") Long gardenId);
 }

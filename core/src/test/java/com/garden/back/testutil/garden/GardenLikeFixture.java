@@ -1,7 +1,7 @@
 package com.garden.back.testutil.garden;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.GardenLike;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.GardenLike;
 
 public class GardenLikeFixture {
 

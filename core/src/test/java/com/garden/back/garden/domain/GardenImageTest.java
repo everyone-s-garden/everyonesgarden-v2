@@ -1,4 +1,4 @@
-package com.garden.back.garden.model;
+package com.garden.back.garden.domain;
 
 import com.garden.back.testutil.garden.GardenFixture;
 import org.junit.jupiter.api.DisplayName;

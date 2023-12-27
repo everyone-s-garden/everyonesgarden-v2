@@ -1,7 +1,7 @@
 package com.garden.back.garden.dto.request;
 
-import com.garden.back.garden.dto.request.validation.ValidEnum;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.global.validation.EnumValue;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 
 public record GardenByComplexesRequest(
         @NotBlank
-        @ValidEnum(enumClass = GardenType.class)
+        @EnumValue(enumClass = GardenType.class)
         String gardenType,
 
         @PositiveOrZero

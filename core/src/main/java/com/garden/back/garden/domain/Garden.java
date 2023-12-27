@@ -1,17 +1,18 @@
-package com.garden.back.garden.model;
+package com.garden.back.garden.domain;
 
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
+import com.garden.back.garden.domain.dto.GardenUpdateDomainRequest;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.locationtech.jts.geom.Point;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.locationtech.jts.geom.Point;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -20,6 +21,7 @@ import java.util.Objects;
 @Table(name = "gardens")
 public class Garden {
 
+    private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
     private static final int MIN_DESCRIPTION_LENGTH = 15;
 
@@ -37,7 +39,7 @@ public class Garden {
     @Column(name = "longitude", nullable = false)
     private Double longitude;
 
-    @Column(name = "point", nullable = false)
+    @Column(name = "point" , nullable = false)
     private Point point;
 
     @Column(name = "garden_name", nullable = false)
@@ -67,24 +69,24 @@ public class Garden {
     private String gardenDescription;
 
     @Column(name = "recruit_start_date")
-    private LocalDateTime recruitStartDate;
+    private LocalDate recruitStartDate;
 
     @Column(name = "recruit_end_date")
-    private LocalDateTime recruitEndDate;
+    private LocalDate recruitEndDate;
 
     @Column(name = "use_start_date")
-    private LocalDateTime useStartDate;
+    private LocalDate useStartDate;
 
     @Column(name = "use_end_date")
-    private LocalDateTime useEndDate;
+    private LocalDate useEndDate;
 
     @CreatedDate
     @Column(name = "created_date")
-    private LocalDateTime createdDate;
+    private LocalDate createdDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    private LocalDateTime lastModifiedDate;
+    private LocalDate lastModifiedDate;
 
     @Column(name = "is_toilet")
     private Boolean isToilet;
@@ -128,10 +130,10 @@ public class Garden {
             String contact,
             String size,
             String gardenDescription,
-            LocalDateTime recruitStartDate,
-            LocalDateTime recruitEndDate,
-            LocalDateTime useStartDate,
-            LocalDateTime useEndDate,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
             Boolean isToilet,
             Boolean isWaterway,
             Boolean isEquipment,
@@ -154,6 +156,8 @@ public class Garden {
         isNegativePrice(price);
         isNegativeSize(size);
         hasDefaultDescriptionLength(gardenDescription);
+        validateDate(useStartDate, useEndDate);
+        validateDate(recruitStartDate, recruitEndDate);
 
         this.address = address;
         this.latitude = latitude;
@@ -192,10 +196,10 @@ public class Garden {
             String contact,
             String size,
             String gardenDescription,
-            LocalDateTime recruitStartDate,
-            LocalDateTime recruitEndDate,
-            LocalDateTime useStartDate,
-            LocalDateTime useEndDate,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
             Boolean isToilet,
             Boolean isWaterway,
             Boolean isEquipment,
@@ -229,6 +233,55 @@ public class Garden {
         );
     }
 
+    public static Garden createPrivateGarden(
+            String address,
+            Double latitude,
+            Double longitude,
+            Point point,
+            String gardenName,
+            GardenStatus gardenStatus,
+            String linkForRequest,
+            String price,
+            String contact,
+            String size,
+            String gardenDescription,
+            LocalDate recruitStartDate,
+            LocalDate recruitEndDate,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Boolean isToilet,
+            Boolean isWaterway,
+            Boolean isEquipment,
+            Long writerId
+
+    ){
+        return new Garden(
+                address,
+                latitude,
+                longitude,
+                point,
+                gardenName,
+                GardenType.PRIVATE,
+                gardenStatus,
+                linkForRequest,
+                price,
+                contact,
+                size,
+                gardenDescription,
+                recruitStartDate,
+                recruitEndDate,
+                useStartDate,
+                useEndDate,
+                isToilet,
+                isWaterway,
+                isEquipment,
+                writerId,
+                false,
+                DEFAULT_REPORTED_SCORE
+        );
+
+    }
+
     private void isNegativeReportedScore(int reportedScore) {
         if (reportedScore < 0) {
             throw new IllegalArgumentException("reportedScore는 음수일 수 없습니다.");
@@ -258,8 +311,47 @@ public class Garden {
 
     public void validWriterId(Long requestMemberId) {
         if (!Objects.equals(writerId, requestMemberId)) {
-            throw new IllegalArgumentException("텃밭 게시글 작성자만 텃밭을 삭제할 수 있습니다.");
+            throw new IllegalArgumentException("텃밭 작성자가 아닙니다.");
         }
+    }
+
+    private void validateDate(LocalDate startDate, LocalDate endDate) {
+        if (endDate.isBefore(startDate)) {
+            throw new IllegalArgumentException("종료일은 시작일보다 이전일 수 없습니다.");
+        }
+    }
+
+    public void updateGarden(GardenUpdateDomainRequest request) {
+        Assert.hasLength(request.address(), "address는 null이거나 빈 값일 수 없습니다.");
+        Assert.notNull(request.latitude(), "latitude는 null일 수 없습니다.");
+        Assert.notNull(request.longitude(), "longitude는 null일 수 없습니다.");
+        Assert.hasLength(request.gardenName(), "gardenName는 null이거나 빈 값일 수 없습니다.");
+
+        isNegativePrice(request.price());
+        isNegativeSize(request.size());
+        hasDefaultDescriptionLength(request.gardenDescription());
+        validWriterId(request.writerId());
+        validateDate(request.useStartDate(), request.useEndDate());
+        validateDate(request.recruitStartDate(), request.recruitEndDate());
+
+        gardenName = request.gardenName();
+        price = request.price();
+        size = request.size();
+        gardenStatus = request.gardenStatus();
+        gardenType = request.gardenType();
+        linkForRequest = request.linkForRequest();
+        contact = request.contact();
+        address = request.address();
+        latitude = request.latitude();
+        longitude = request.longitude();
+        isToilet = request.isToilet();
+        isWaterway = request.isWaterway();
+        isEquipment = request.isEquipment();
+        gardenDescription = request.gardenDescription();
+        recruitStartDate = request.recruitStartDate();
+        recruitEndDate = request.recruitEndDate();
+        useStartDate = request.useStartDate();
+        useEndDate = request.useEndDate();
     }
 
 }
