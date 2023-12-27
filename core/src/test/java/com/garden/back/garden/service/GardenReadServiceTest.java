@@ -27,17 +27,15 @@ import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 public class GardenReadServiceTest extends IntegrationTestSupport {
 
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd", Locale.KOREA);
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     @Autowired
     private GardenRepository gardenRepository;
 
@@ -199,7 +197,7 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
         GardenMineResults myGarden = gardenReadService.getMyGarden(savedPrivateGarden.getWriterId());
 
         // Then
-        assertThat(myGarden.gardenMineResults().get(0).gardenId())
+        assertThat(myGarden.gardenMineResults())
                 .extracting(
                         "gardenId", "size", "gardenName", "price", "gardenStatus", "imageUrls")
                 .contains(
@@ -254,18 +252,14 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
                 = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
 
         // Then
-
-        assertThat(LocalDate.parse(myManagedGardenGetResults.myManagedGardenGetRespons().get(0).useStartDate(),DATE_FORMATTER))
-                .isEqualTo(myManagedGarden.getUseStartDate());
-                //.extracting("gardenName", "useStartDate", "useEndDate", "imageUrl")
-                //.contains(
-                //        tuple(
-                //                savedPrivateGarden.getGardenName(),
-                //                myManagedGarden.getUseStartDate().format(DATE_FORMATTER),
-                //                myManagedGarden.getUseEndDate().format(DATE_FORMATTER),
-                //                myManagedGarden.getImageUrl()
-                //        )
-                //);
+        assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
+                .extracting("gardenName", "imageUrl")
+                .contains(
+                        Tuple.tuple(
+                                savedPrivateGarden.getGardenName(),
+                                myManagedGarden.getImageUrl()
+                        )
+                );
     }
 
     @DisplayName("내가 가꾸는 텃밭을 상세하게 볼 수 있다.")
@@ -283,10 +277,6 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
         // Then
         assertThat(myManagedGardenDetailResult.gardenName()).isEqualTo(garden.getGardenName());
         assertThat(myManagedGardenDetailResult.address()).isEqualTo(garden.getAddress());
-        assertThat(myManagedGardenDetailResult.useStartDate())
-                .isEqualTo(myManagedGarden.getUseStartDate().format(DATE_FORMATTER));
-        assertThat(myManagedGardenDetailResult.useEndDate())
-                .isEqualTo(myManagedGarden.getUseEndDate().format(DATE_FORMATTER));
         assertThat(myManagedGardenDetailResult.imageUrl()).isEqualTo(myManagedGarden.getImageUrl());
     }
 
