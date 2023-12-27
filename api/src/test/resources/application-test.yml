@@ -56,16 +56,3 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
-
----
-oauth2:
-  kakao:
-    name: "kakaoOAuth"
-    url: "https://kapi.kakao.com/v2/user/me"
-  jwt:
-    token-secret: "asdf"
-    access-token-expire-time: 1
-    bearer-prefix: "asdf"
-    authority-key: "asdf"
-    refresh-token-expire-time: 1
-    access-token-header: "access_token"

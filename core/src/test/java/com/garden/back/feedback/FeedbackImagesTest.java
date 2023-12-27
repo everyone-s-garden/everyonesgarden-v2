@@ -7,10 +7,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class FeedbackImagesTest extends FixtureSupport {
+class FeedbackImagesTest extends FixtureSupport {
 
     @Test
-    public void shouldThrowExceptionWhenMoreThan10Images() {
+    void shouldThrowExceptionWhenMoreThan10Images() {
         // given
         List<FeedbackImage> images = sut.giveMeBuilder(FeedbackImage.class).sampleList(11);
 

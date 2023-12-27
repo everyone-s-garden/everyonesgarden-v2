@@ -11,6 +11,19 @@ include::{snippets}/login-with-kakao/request-headers.adoc[]
 include::{snippets}/login-with-kakao/http-response.adoc[]
 include::{snippets}/login-with-kakao/response-fields.adoc[]
 
+=== 네이버로 로그인
+
+네이버로 로그인 합니다.
+
+==== Request
+include::{snippets}/login-with-naver/http-request.adoc[]
+include::{snippets}/login-with-naver/request-headers.adoc[]
+
+==== Response (Success)
+include::{snippets}/login-with-naver/http-response.adoc[]
+include::{snippets}/login-with-naver/response-fields.adoc[]
+
+
 === 리프레시 토큰으로 엑세스 토큰 발급
 
 리프레시 토큰을 이용해 엑세스 토큰을 발급 받습니다.
