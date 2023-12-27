@@ -21,10 +21,9 @@ public class GardenFixture {
     private static final double LATITUDE = 37.4449168;
     private static final double LONGITUDE = 127.1388684;
     private static final LocalDate RECRUIT_START_DATE = LocalDate.of(2023,11,1);
-    private static final LocalDate RECRUIT_END_DATE = RECRUIT_START_DATE.plusDays(10);
+    private static final LocalDate RECRUIT_END_DATE = LocalDate.of(2023,12,7);
     private static final LocalDate USE_START_DATE = LocalDate.of(2023,11,7);
-    private static final LocalDate USE_END_DATE = USE_START_DATE.plusDays(30);
-
+    private static final LocalDate USE_END_DATE = LocalDate.of(2023,12,7);
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
     }
