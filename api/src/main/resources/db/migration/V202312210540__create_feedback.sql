@@ -13,3 +13,4 @@ CREATE TABLE feedback_images (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_feedback_id(feedback_id)
 ) ENGINE=InnoDB;
+
