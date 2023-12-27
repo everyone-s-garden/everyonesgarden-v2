@@ -12,7 +12,6 @@ import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
-import com.garden.back.testutil.garden.MyManagedGardenFixture;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -203,7 +202,7 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
     @Test
     void deleteMyManagedGarden() {
         // Given
-        MyManagedGarden myManagedGarden = MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenDeleteParam myManagedGardenDeleteParam
                 = new MyManagedGardenDeleteParam(
@@ -248,7 +247,7 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
-        MyManagedGarden myManagedGarden = MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
         myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
                 expectedUrl,

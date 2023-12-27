@@ -19,7 +19,6 @@ import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
 import com.garden.back.testutil.garden.GardenImageFixture;
 import com.garden.back.testutil.garden.GardenLikeFixture;
-import com.garden.back.testutil.garden.MyManagedGardenFixture;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -247,7 +246,7 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
     void getMyManagedGardens() {
         // Given
         MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
-                MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+                GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
 
         // When
         MyManagedGardenGetResults myManagedGardenGetResults = gardenReadService.getMyManagedGardens(1L);
@@ -270,7 +269,7 @@ public class GardenReadServiceTest extends IntegrationTestSupport {
     void getDetailMyManagedGarden() {
         // Given
         MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
-                MyManagedGardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+                GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
 
         // When
         MyManagedGardenDetailResult myManagedGardenDetailResult

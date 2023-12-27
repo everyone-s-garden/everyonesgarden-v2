@@ -2,6 +2,7 @@ package com.garden.back.testutil.garden;
 
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.service.dto.request.*;
@@ -265,6 +266,16 @@ public class GardenFixture {
                 USE_START_DATE,
                 USE_END_DATE,
                 1L
+        );
+    }
+
+    public static MyManagedGarden myManagedGarden(Long gardenId) {
+        return MyManagedGarden.of(
+                USE_START_DATE,
+                USE_END_DATE,
+                1L,
+                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
+                gardenId
         );
     }
 
