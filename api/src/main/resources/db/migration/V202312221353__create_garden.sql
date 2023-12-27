@@ -66,10 +66,10 @@ create table viewed_gardens (
         primary key (garden_view_id)
 ) ENGINE=InnoDB;
 
---report 관련 컬럼 수정--
+-- report 관련 컬럼 수정--
 ALTER TABLE reports
 MODIFY COLUMN garden_report_type ENUM('FAKED_SALE','SPAMMING','SWEAR_WORD','SENSATIONAL','PERSONAL_INFORMATION_EXPOSURE','COMMENTS');
 
---index 추가--
+-- index 추가--
 CREATE FULLTEXT INDEX ft_index ON gardens (garden_name) WITH PARSER ngram;
 create spatial index sp_index on gardens (point);
