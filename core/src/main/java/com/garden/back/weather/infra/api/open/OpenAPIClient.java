@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 @FeignClient(
-    name = "openAPI",
-    url = "http://apis.data.go.kr/1360000",
+    name = "${api.weather.name}",
+    url = "${api.weather.baseUrl}",
     fallbackFactory = OpenAPIClient.WeatherClientFallback.class
 )
 public interface OpenAPIClient {

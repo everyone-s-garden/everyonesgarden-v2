@@ -35,3 +35,8 @@ include::report/reports.adoc[]
 == Garden
 텃밭 API 입니다.
 include::garden/gardens.adoc[]
+
+[[Login]]
+== Login
+로그인 API 입니다.
+include::login/login.adoc[]

@@ -1,15 +1,19 @@
 api:
   mafra:
-    url: asfd
+    name: "publicDataGardenFetcher"
+    url: "asfd"
     secret: asdf
   weather:
     url: asdf
+    baseUrl: "http://apis.data.go.kr/1360000"
+    name: "openAPI"
     secret: asdf
   weatherAll:
     url: asdf
   weatherWeek:
     url: asdf
   reverseGeo:
+    name: "naverGeo"
     url: asdf
     id: asdf
     secret: asdf
@@ -56,3 +60,4 @@ region:
       path: "classpath:region/koreanGeo.csv"
     json:
       path: "classpath:region/\uB300\uD55C\uBBFC\uAD6D\uD589\uC815\uAD6C\uC5ED.geojson"
+

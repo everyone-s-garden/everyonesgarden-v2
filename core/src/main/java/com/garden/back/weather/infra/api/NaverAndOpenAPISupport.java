@@ -4,7 +4,6 @@ import com.garden.back.weather.infra.api.open.Region;
 import com.garden.back.weather.infra.api.open.response.WeatherForecastResponse;
 import com.garden.back.weather.infra.api.open.response.WeekWeatherResponse;
 import com.garden.back.weather.infra.response.AllRegionsWeatherInfo;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,10 +15,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /*
-* getAllRegionsWeatherInfo의 흐름을 하나씩 담은 확장 불가능한 클래스 (가독성을 위해서 만든 클래스)
-* */
-@Component
-public class NaverAndOpenAPISupport {
+ * getAllRegionsWeatherInfo의 흐름을 하나씩 담은 확장 불가능한 클래스 (가독성을 위해서 만든 클래스)
+ * */
+public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher {
 
     public AllRegionsWeatherInfo parseWeatherForecastResponse(Region region, WeatherForecastResponse response) {
         Map<String, String> skyConditionMap = getSkyConditionMap();
@@ -58,6 +56,7 @@ public class NaverAndOpenAPISupport {
 
     public String getNearestForecastDateTime(LocalDateTime currentTime) {
         int[] forecastHours = {23, 20, 17, 14, 11, 8, 5, 2};
+        currentTime = currentTime.minusHours(3);
         LocalDateTime baseTime = LocalDateTime.of(currentTime.getYear(), currentTime.getMonth(), currentTime.getDayOfMonth(), 2, 0);
 
         for (int hour : forecastHours) {

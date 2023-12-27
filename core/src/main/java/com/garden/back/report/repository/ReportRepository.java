@@ -1,7 +1,7 @@
 package com.garden.back.report.repository;
 
-import com.garden.back.report.model.GardenReport;
-import com.garden.back.report.model.Report;
+import com.garden.back.report.domain.GardenReport;
+import com.garden.back.report.domain.Report;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

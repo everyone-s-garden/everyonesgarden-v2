@@ -12,4 +12,4 @@ CREATE TABLE feedback_images (
     feedback_id BIGINT,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     INDEX idx_feedback_id(feedback_id)
-)ENGINE=InnoDB;
+) ENGINE=InnoDB;

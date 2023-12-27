@@ -6,9 +6,9 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestController
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ProblemDetail> handleAllException(Exception e, HttpServletRequest request) {
         ProblemDetail problemDetail = ProblemDetailCreator.create(e, request, HttpStatus.BAD_REQUEST);
 
-        return ResponseEntity.internalServerError().body(problemDetail);
+        return ResponseEntity.badRequest().body(problemDetail);
     }
 
 }

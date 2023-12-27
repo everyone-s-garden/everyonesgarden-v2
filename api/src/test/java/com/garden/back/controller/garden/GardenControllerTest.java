@@ -1,18 +1,19 @@
 package com.garden.back.controller.garden;
 
-import com.garden.back.ControllerTestSupport;
 import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.dto.request.GardenByComplexesRequest;
+import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.garden.dto.request.GardenByNameRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 class GardenControllerTest extends ControllerTestSupport {
 
     @DisplayName("학원 이름 검색에 요청값에 대해 검증한다.")

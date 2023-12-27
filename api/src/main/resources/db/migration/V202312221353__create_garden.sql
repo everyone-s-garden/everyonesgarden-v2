@@ -1,4 +1,3 @@
-
 create table garden_images (
         garden_id bigint,
         garden_image_id bigint not null auto_increment,
@@ -44,6 +43,7 @@ create table gardens (
         point geometry not null,
         primary key (garden_id)
     )  ENGINE=InnoDB;
+
 create table tended_gardens (
         latitude float(53),
         longitude float(53),
@@ -65,10 +65,6 @@ create table viewed_gardens (
         member_id bigint,
         primary key (garden_view_id)
 ) ENGINE=InnoDB;
-
--- report 관련 컬럼 수정--
-ALTER TABLE reports
-MODIFY COLUMN garden_report_type ENUM('FAKED_SALE','SPAMMING','SWEAR_WORD','SENSATIONAL','PERSONAL_INFORMATION_EXPOSURE','COMMENTS');
 
 -- index 추가--
 CREATE FULLTEXT INDEX ft_index ON gardens (garden_name) WITH PARSER ngram;

@@ -1,6 +1,6 @@
 package com.garden.back.garden.event;
 
-import com.garden.back.report.model.GardenReportCreatedEvent;
+import com.garden.back.report.domain.GardenReportCreatedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
