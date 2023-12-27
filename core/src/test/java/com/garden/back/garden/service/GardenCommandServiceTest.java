@@ -252,7 +252,8 @@ public class GardenCommandServiceTest extends IntegrationTestSupport {
         myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
                 expectedUrl,
-                savedPublicGarden.getGardenId()
+                savedPublicGarden.getGardenId(),
+                myManagedGarden.getMyManagedGardenId()
         );
 
         // When

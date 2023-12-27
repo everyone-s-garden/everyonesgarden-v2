@@ -19,6 +19,10 @@ public class GardenFixture {
     private static final String SECOND_GARDEN_IMAGE_URL = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
     private static final double LATITUDE = 37.4449168;
     private static final double LONGITUDE = 127.1388684;
+    private static final LocalDate RECRUIT_START_DATE = LocalDate.of(2023,11,1);
+    private static final LocalDate RECRUIT_END_DATE = RECRUIT_START_DATE.plusDays(10);
+    private static final LocalDate USE_START_DATE = LocalDate.of(2023,11,7);
+    private static final LocalDate USE_END_DATE = USE_START_DATE.plusDays(30);
 
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
@@ -38,10 +42,10 @@ public class GardenFixture {
                 "000-000-000",
                 "200.23",
                 "화장실이 깨끗하고 농기구를 빌려줍니다.",
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
-                LocalDate.now().plusDays(31),
-                LocalDate.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 true,
                 false,
                 true,
@@ -65,10 +69,10 @@ public class GardenFixture {
                 "000-000-000",
                 "200.23",
                 "화장실이 깨끗하고 농기구를 빌려줍니다.",
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
-                LocalDate.now().plusDays(31),
-                LocalDate.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 true,
                 false,
                 true,
@@ -133,10 +137,10 @@ public class GardenFixture {
                 "000-000-000",
                 "200",
                 "화장실이 깨끗해요 그리고 시설이 최신식입니다.",
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
-                LocalDate.now().plusDays(31),
-                LocalDate.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 true,
                 false,
                 true,
@@ -197,10 +201,10 @@ public class GardenFixture {
                         true
                 ),
                 "화장실이 깨끗하고 흙이 좋아요",
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
-                LocalDate.now().plusDays(31),
-                LocalDate.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 1L
         );
     }
@@ -228,10 +232,10 @@ public class GardenFixture {
                         true
                 ),
                 "화장실이 깨끗하고 흙이 좋아요",
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
-                LocalDate.now().plusDays(31),
-                LocalDate.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 1L
         );
     }
@@ -242,23 +246,24 @@ public class GardenFixture {
         return new MyManagedGardenCreateParam(
                 multipartFile,
                 1L,
-                LocalDate.now(),
-                LocalDate.now().plusDays(30),
+                USE_START_DATE,
+                USE_END_DATE,
                 1L
         );
     }
 
     public static MyManagedGardenUpdateParam myManagedGardenUpdateParam(
             String expectedUrl,
-            Long gardenId) {
+            Long gardenId,
+            Long myManagedGardenId) {
         MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
 
         return new MyManagedGardenUpdateParam(
                 multipartFile,
-                1L,
+                myManagedGardenId,
                 gardenId,
-                LocalDate.now(),
-                LocalDate.now().plusDays(50),
+                USE_START_DATE,
+                USE_END_DATE,
                 1L
         );
     }
