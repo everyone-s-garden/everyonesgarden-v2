@@ -60,7 +60,6 @@
 ## 코드
 [🔗 거미줄 같이 얽혀있는 코드를 리팩토링 하기1](https://joyfulviper.tistory.com/100)</br>
 [🔗 거미줄 같이 얽혀있는 코드를 리팩토링 하기2](https://velog.io/@byeolhaha/%EB%A0%88%EA%B1%B0%EC%8B%9C-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%A0%9C%EA%B1%B0%ED%95%98%EB%A9%B0)
-<br />
 
 # ERD
 ![image](https://github.com/everyone-s-garden/everyonesgarden-v2/assets/108210958/56b198d3-9ed2-4395-92cf-ac078e804118)
@@ -78,6 +77,9 @@
 - 전국의 날씨 정보를 얻기 위해 17개의 시도에 api 호출해야 하는 상황에서 기존의 동기로 호출하는 방식을 비동기 방식으로 변경 (16초 -> 1초) 성능개선
 - 인프라 변경 aws -> ncp
 - CI 액션(SonarCloud)을 추가하여 매번 pr을 올렸을 때 코드 스멜, 보안 위배 요소, 중복 코드, 테스트 커버리지를 분석 받아 코드 품질 관리
+
+# 운영중인 사이트
+<a href=https://everyonesgarden.vercel.app/>모두의 텃밭</a>
 
 # 농림축산 식품부 창업 경진대회 우수상
 농림축산 식품부에서 주최한 창업 경진대회에서 우수상을 수상하여 광고비 지원, `경농` 이라는 중견기업에서 연락 제의를 받았습니다. 
