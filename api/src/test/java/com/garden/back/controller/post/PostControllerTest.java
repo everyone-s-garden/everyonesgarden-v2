@@ -117,15 +117,22 @@ class PostControllerTest extends ControllerTestSupport {
 
     @DisplayName("댓글 생성 유효하지 않은 내용 테스트")
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "    ", "a"}) // 잘못된 content 값 (빈 문자열, 공백 등)
-    void createCommentInvalidContent(String content) throws Exception {
-        content.repeat(256);
-        CommentCreateRequest request = new CommentCreateRequest(content);
-
+    @MethodSource("invalidCommentCreateRequest")
+    void createCommentInvalidContent(CommentCreateRequest request) throws Exception {
         mockMvc.perform(post("/v1/posts/{postId}/comments", 1L)
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<CommentCreateRequest> invalidCommentCreateRequest() {
+        return Stream.of(
+            new CommentCreateRequest("", 1L),
+            new CommentCreateRequest(" ", 1L),
+            new CommentCreateRequest("   ", 1L),
+            new CommentCreateRequest("a".repeat(256), 1L),
+            new CommentCreateRequest("asdf", -1L)
+        );
     }
 
     @DisplayName("댓글 수정 유효하지 않은 내용 테스트")
@@ -139,5 +146,26 @@ class PostControllerTest extends ControllerTestSupport {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest());
+    }
+
+    @DisplayName("댓글 전체 조회 유효하지 않은 파라미터 테스트")
+    @ParameterizedTest
+    @MethodSource("invalidFindAllCommentsParameters")
+    void findAllPostsCommentsInvalidParameters(String offset, String limit, String orderBy) throws Exception {
+        mockMvc.perform(get("/v1/posts/{postId}/comments", 1L)
+                .param("offset", offset)
+                .param("limit", limit)
+                .param("orderBy", orderBy)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<String[]> invalidFindAllCommentsParameters() {
+        return Stream.of(
+            new String[]{"-1", "5", "LIKE_COUNT"}, // 잘못된 offset
+            new String[]{"0", "-5", "RECENT_DATE"},  // 잘못된 limit
+            new String[]{"0", "5", "INVALID_SORT"}   // 잘못된 orderBy
+            // 추가적인 유효하지 않은 파라미터 조합을 여기에 포함시킬 수 있습니다.
+        );
     }
 }
