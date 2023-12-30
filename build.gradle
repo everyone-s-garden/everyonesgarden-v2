@@ -131,3 +131,10 @@ project(':batch') {
         implementation project(':core')
     }
 }
+
+// chat 모듈은 core 모듈에 의존
+project(':chat') {
+    dependencies {
+        implementation project(':core')
+    }
+}

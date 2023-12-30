@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @Transactional
-public class GardenCommandServiceTest extends IntegrationTestSupport {
+class GardenCommandServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenRepository gardenRepository;

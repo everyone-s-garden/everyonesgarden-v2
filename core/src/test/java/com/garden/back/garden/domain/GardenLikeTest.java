@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GardenLikeTest {
+class GardenLikeTest {
 
     @DisplayName("memberId가 음수이면 예외를 던진다.")
     @Test

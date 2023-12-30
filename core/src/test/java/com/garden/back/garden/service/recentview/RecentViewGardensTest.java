@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RecentViewGardensTest {
+class RecentViewGardensTest {
 
     @DisplayName("최근 본 텃밭의 개수는 항상 "+RecentViewGardens.MAX_RECENT_VIEW_COUNT+"보다 작거나 같다.")
     @Test

@@ -8,7 +8,7 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GardenImageTest {
+class GardenImageTest {
 
     @DisplayName("garden이 null이면 예외를 던진다.")
     @Test
