@@ -3,6 +3,7 @@ package com.garden.back.post.request;
 import com.garden.back.post.service.request.PostUpdateServiceRequest;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record PostUpdateRequest(
@@ -12,6 +13,10 @@ public record PostUpdateRequest(
 ) {
 
     public PostUpdateServiceRequest toServiceDto(List<MultipartFile> images) {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+
         return new PostUpdateServiceRequest(images, title, content, deleteImages);
     }
 }

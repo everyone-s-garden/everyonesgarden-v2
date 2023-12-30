@@ -3,6 +3,9 @@ package com.garden.back.post;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
+import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
+import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
 import com.garden.back.post.request.*;
 import com.garden.back.post.service.PostCommandService;
 import com.garden.back.post.service.PostQueryService;
@@ -42,16 +45,17 @@ public class PostController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindAllPostsResponse> findAllPosts(
         @ModelAttribute @Valid FindAllPostParamRequest request
-        ) {
-        return ResponseEntity.ok(postQueryService.findAllPosts(request.toServiceDto()));
+    ) {
+        return ResponseEntity.ok(postQueryService.findAllPosts(request.toRepositoryDto()));
     }
 
     //게시글 댓글 조회
     @GetMapping(value = "/{postId}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindPostsAllCommentResponse> findPostsAllComment(
-        @PathVariable("postId") Long postId
+        @PathVariable("postId") Long postId,
+        @ModelAttribute @Valid FindAllCommentsParamRequest request
     ) {
-        return ResponseEntity.ok(postQueryService.findAllCommentsByPostId(postId));
+        return ResponseEntity.ok(postQueryService.findAllCommentsByPostId(postId, request.toRepositoryDto()));
     }
 
     //게시글 생성

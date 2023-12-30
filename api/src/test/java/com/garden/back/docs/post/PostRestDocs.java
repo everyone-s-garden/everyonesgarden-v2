@@ -1,9 +1,9 @@
 package com.garden.back.docs.post;
 
 import com.garden.back.docs.RestDocsSupport;
-import com.garden.back.post.FindAllPostsResponse;
-import com.garden.back.post.FindPostDetailsResponse;
-import com.garden.back.post.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
+import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
+import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
 import com.garden.back.post.PostController;
 import com.garden.back.post.request.*;
 import com.garden.back.post.service.PostCommandService;
@@ -43,7 +43,7 @@ class PostRestDocs extends RestDocsSupport {
     void findAllPosts() throws Exception {
         FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L)));
         FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "RECENT_DATE");
-        given(postQueryService.findAllPosts(request.toServiceDto())).willReturn(response);
+        given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts")
                 .param("offset", String.valueOf(request.offset()))
@@ -72,7 +72,7 @@ class PostRestDocs extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(1L, "작성자", "내용", "제목");
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목");
         given(postQueryService.findPostById(any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
@@ -85,10 +85,11 @@ class PostRestDocs extends RestDocsSupport {
                     parameterWithName("postId").description("게시글 id")
                 ),
                 responseFields(
-                    fieldWithPath("likeCount").description("좋아요 수"),
-                    fieldWithPath("author").description("작성자"),
-                    fieldWithPath("content").description("내용"),
-                    fieldWithPath("title").description("제목")
+                    fieldWithPath("commentCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("likeCount").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("author").type(STRING).description("작성자"),
+                    fieldWithPath("content").type(STRING).description("내용"),
+                    fieldWithPath("title").type(STRING).description("제목")
                 )
             ));
     }
@@ -97,14 +98,23 @@ class PostRestDocs extends RestDocsSupport {
     @Test
     void findPostsComments() throws Exception {
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", "작성자2"), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", "작성자1")));
-        given(postQueryService.findAllCommentsByPostId(any())).willReturn(response);
+        FindAllCommentsParamRequest request = new FindAllCommentsParamRequest(0, 10, "RECENT_DATE");
+        given(postQueryService.findAllCommentsByPostId(any(), any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}/comments", 1L)
+                .param("offset", String.valueOf(request.offset()))
+                .param("limit", String.valueOf(request.limit()))
+                .param("orderBy", request.orderBy())
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
             .andExpect(status().isOk())
             .andDo(print())
             .andDo(document("get-posts-comments",
+                queryParameters(
+                    parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
+                    parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
+                    parameterWithName("orderBy").description("정렬 조건(RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요)")
+                ),
                 pathParameters(
                     parameterWithName("postId").description("게시글 id")
                 ),
@@ -254,6 +264,7 @@ class PostRestDocs extends RestDocsSupport {
     void createComment() throws Exception {
         CommentCreateRequest request = sut.giveMeBuilder(CommentCreateRequest.class)
             .set("content", "댓글 내용")
+            .set("parentCommentId", 1L)
             .sample();
         mockMvc.perform(post("/v1/posts/{postId}/comments", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -264,7 +275,8 @@ class PostRestDocs extends RestDocsSupport {
                     parameterWithName("postId").description("댓글을 달 게시글의 id")
                 ),
                 requestFields(
-                    fieldWithPath("content").description("댓글 내용")
+                    fieldWithPath("content").description("댓글 내용"),
+                    fieldWithPath("parentCommentId").description("대댓글인 경우(상위 댓글 id)").optional()
                 ),
                 responseHeaders(
                     headerWithName("Location").description("생성된 댓글의 id")

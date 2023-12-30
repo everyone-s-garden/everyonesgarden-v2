@@ -1,26 +1,32 @@
 package com.garden.back.post.service;
 
-import com.garden.back.post.FindAllPostsResponse;
-import com.garden.back.post.FindPostDetailsResponse;
-import com.garden.back.post.FindPostsAllCommentResponse;
-import com.garden.back.post.service.request.FindAllPostParamServiceRequest;
+import com.garden.back.post.domain.repository.PostQueryRepository;
+import com.garden.back.post.domain.repository.request.FindAllPostCommentsParamRepositoryRequest;
+import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
+import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
+import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
+import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class PostQueryService {
 
+    private final PostQueryRepository postQueryRepository;
+
+    public PostQueryService(PostQueryRepository postQueryRepository) {
+        this.postQueryRepository = postQueryRepository;
+    }
+
     public FindPostDetailsResponse findPostById(Long id) {
-        return new FindPostDetailsResponse(1L, "작성자", "내용", "제목");
+        return postQueryRepository.findPostDetails(id);
     }
 
-    public FindAllPostsResponse findAllPosts(FindAllPostParamServiceRequest request) {
-        return new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L)));
+    public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
+        return postQueryRepository.findAllPosts(request);
     }
 
-    public FindPostsAllCommentResponse findAllCommentsByPostId(Long id) {
-        return new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", "작성자2"), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", "작성자1")));
+    public FindPostsAllCommentResponse findAllCommentsByPostId(Long id, FindAllPostCommentsParamRepositoryRequest request) {
+        return postQueryRepository.findPostsAllComments(id, request);
     }
 
 }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record PostCreateRequest(
@@ -15,9 +16,15 @@ public record PostCreateRequest(
     String content
 ) {
     public PostCreateServiceRequest toServiceRequest(List<MultipartFile> images) {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+
         if (images.size() > 10) {
             throw new IllegalArgumentException("게시글 한개당 10장의 이미지만 등록할 수 있습니다.");
         }
+
         return new PostCreateServiceRequest(title, content, images);
     }
+
 }

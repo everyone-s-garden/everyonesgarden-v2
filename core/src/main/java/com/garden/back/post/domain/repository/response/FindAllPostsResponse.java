@@ -1,4 +1,4 @@
-package com.garden.back.post;
+package com.garden.back.post.domain.repository.response;
 
 import java.util.List;
 

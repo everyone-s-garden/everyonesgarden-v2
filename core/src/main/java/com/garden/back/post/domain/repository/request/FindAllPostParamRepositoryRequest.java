@@ -1,6 +1,6 @@
-package com.garden.back.post.service.request;
+package com.garden.back.post.domain.repository.request;
 
-public record FindAllPostParamServiceRequest(
+public record FindAllPostParamRepositoryRequest(
     Integer offset,
     Integer limit,
     OrderBy orderBy

@@ -21,6 +21,7 @@ include::{snippets}/create-posts/response-headers.adoc[]
 ==== Request
 include::{snippets}/get-all-posts/http-request.adoc[]
 include::{snippets}/get-all-posts/query-parameters.adoc[]
+
 ==== Response (Success)
 include::{snippets}/get-all-posts/http-response.adoc[]
 include::{snippets}/get-all-posts/response-fields.adoc[]
@@ -46,7 +47,7 @@ include::{snippets}/get-details-posts/response-fields.adoc[]
 ==== Request
 include::{snippets}/get-posts-comments/http-request.adoc[]
 include::{snippets}/get-posts-comments/path-parameters.adoc[]
-
+include::{snippets}/get-posts-comments/query-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-posts-comments/http-response.adoc[]
 include::{snippets}/get-posts-comments/response-fields.adoc[]
