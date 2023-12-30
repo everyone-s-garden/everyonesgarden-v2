@@ -1,8 +1,7 @@
 api:
   mafra:
-    name: "publicDataGardenFetcher"
-    url: "asfd"
-    secret: asdf
+    name: "openAPIGarden"
+    url: "url"
   weather:
     url: asdf
     baseUrl: "http://apis.data.go.kr/1360000"
