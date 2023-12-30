@@ -33,7 +33,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
-public class GardenReadServiceTest extends IntegrationTestSupport {
+class GardenReadServiceTest extends IntegrationTestSupport {
 
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     @Autowired

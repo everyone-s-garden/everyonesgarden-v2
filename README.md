@@ -8,6 +8,7 @@
 소규모 텃밭을 가꾸고자 하는 사람들의 수요가 높아지면서, 텃밭 분양 정보의 분산으로 어려움을 겪는 사람들을 위해 기획한 어플리케이션입니다.
 <br />
 텃밭 분양의 임대인, 임차인을 연결지어 서비스 이용자에게 텃밭 분양에 있어 좋은 경험을 제공하는 목표를 갖고 시작했습니다.
+
 <br />
 ## 제공하는 기능
 
@@ -61,8 +62,12 @@
 [🔗 거미줄 같이 얽혀있는 코드를 리팩토링 하기1](https://joyfulviper.tistory.com/100)</br>
 [🔗 거미줄 같이 얽혀있는 코드를 리팩토링 하기2](https://velog.io/@byeolhaha/%EB%A0%88%EA%B1%B0%EC%8B%9C-%EC%BD%94%EB%93%9C%EB%A5%BC-%EC%A0%9C%EA%B1%B0%ED%95%98%EB%A9%B0)
 
+<br />
+
 # ERD
-![image](https://github.com/everyone-s-garden/everyonesgarden-v2/assets/108210958/56b198d3-9ed2-4395-92cf-ac078e804118)
+![img_1.png](img_1.png)
+<br />
+
 
 # 이전 버전에 비해 개선된 점
 - 공공 텃밭 데이터 100개 -> 공공 텃밭 데이터 800개

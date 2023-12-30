@@ -1,23 +1,17 @@
-drop table garden_images;
-drop table garden_likes ;
-drop table gardens;
-drop table tended_gardens;
-drop table viewed_gardens;
-DROP INDEX ft_index ON gardens;
-DROP INDEX sp_index ON gardens;
+
     create table garden_images (
         garden_id bigint,
         garden_image_id bigint not null auto_increment,
         image_url varchar(255),
         primary key (garden_image_id)
-    ) engine=InnoDB
+    ) engine=InnoDB;
     create table garden_likes (
         created_date datetime(6),
         garden_id bigint,
         garden_like_id bigint not null auto_increment,
         member_id bigint,
         primary key (garden_like_id)
-    ) engine=InnoDB
+    ) engine=InnoDB;
     create table gardens (
         created_date date,
         is_deleted bit,
@@ -45,7 +39,7 @@ DROP INDEX sp_index ON gardens;
         garden_type enum ('ALL','PUBLIC','PRIVATE') not null,
         point point not null srid 4326,
         primary key (garden_id)
-    ) engine=InnoDB
+    ) engine=InnoDB;
     create table my_managed_gardens (
         use_end_date date,
         use_start_date date,
@@ -54,7 +48,7 @@ DROP INDEX sp_index ON gardens;
         my_managed_garden_id bigint not null auto_increment,
         image_url varchar(255),
         primary key (my_managed_garden_id)
-    ) engine=InnoDB
+    ) engine=InnoDB;
 
 CREATE FULLTEXT INDEX ft_index ON gardens (garden_name) WITH PARSER ngram;
 create spatial index sp_index on gardens (point);

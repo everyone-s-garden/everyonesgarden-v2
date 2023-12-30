@@ -1,0 +1,14 @@
+version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+
+jar.enabled=false
+
+dependencies {
+    // JPA
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
