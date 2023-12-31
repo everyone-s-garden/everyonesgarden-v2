@@ -38,4 +38,30 @@ public class ChatRoomInfo {
         chatRoom.addChatRoomInfos(this);
     }
 
+    private ChatRoomInfo(
+            boolean isWriter,
+            Long postId,
+            ChatType chatType,
+            Long memberId
+    ) {
+        this.isWriter = isWriter;
+        this.postId = postId;
+        this.chatType = chatType;
+        this.memberId = memberId;
+    }
+
+    public static ChatRoomInfo of(
+            boolean isWriter,
+            Long postId,
+            ChatType chatType,
+            Long memberId
+    ) {
+        return new ChatRoomInfo(
+                isWriter,
+                postId,
+                chatType,
+                memberId
+        );
+    }
+
 }

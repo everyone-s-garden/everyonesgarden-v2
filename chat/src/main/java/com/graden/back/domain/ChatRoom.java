@@ -25,4 +25,8 @@ public class ChatRoom {
     public void addChatRoomInfos(ChatRoomInfo chatRoomInfo) {
         chatRoomInfos.add(chatRoomInfo);
     }
+
+    public static ChatRoom to() {
+        return new ChatRoom();
+    }
 }
