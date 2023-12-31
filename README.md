@@ -85,5 +85,6 @@
 <a href=https://everyonesgarden.vercel.app/>모두의 텃밭</a>
 
 # 농림축산 식품부 창업 경진대회 우수상
-농림축산 식품부에서 주최한 창업 경진대회에서 우수상을 수상하여 광고비 지원, `경농` 이라는 중견기업에서 연락 제의를 받았습니다. 
+농림축산 식품부에서 주최한 창업 경진대회에서 우수상을 수상하여 광고비 지원, `경농` 이라는 중견기업에서 연락 제의를 받았습니다.
+</br>
 <img width="487" alt="image" src="https://github.com/everyone-s-garden/everyone-garden-back/assets/79970349/9520c40c-04a6-435a-aad7-949c143f9230">
