@@ -63,7 +63,7 @@ class ChatRoomServiceTest {
                 );
     }
 
-    @DisplayName("해당 게시글에 대한 채팅방을 생성할 수 있다.")
+    @DisplayName("해당 게시글에 대한 채팅방을 중복 생성하면 예외를 던진다.")
     @Test
     void createChatRoom_existedChatRoom_throwException() {
         // Given
