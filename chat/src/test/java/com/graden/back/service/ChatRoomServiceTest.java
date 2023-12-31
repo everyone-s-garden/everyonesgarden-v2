@@ -13,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.NONE;
 
 @ActiveProfiles("test")
@@ -60,6 +61,20 @@ class ChatRoomServiceTest {
                             assertThat(chatRoomInfo.getChatRoom().getChatRoomId()).isEqualTo(chatRoomId);
                         }
                 );
+    }
+
+    @DisplayName("해당 게시글에 대한 채팅방을 생성할 수 있다.")
+    @Test
+    void createChatRoom_existedChatRoom_throwException() {
+        // Given
+        ChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+
+        // When
+        chatRoomService.createChatRoom(chatRoomCreateParam);
+
+        // Then
+        assertThatThrownBy(()->chatRoomService.createChatRoom(chatRoomCreateParam))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 }
