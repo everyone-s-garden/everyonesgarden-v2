@@ -1,5 +1,5 @@
 package com.graden.back.domain;
 
 public enum ChatType {
-    GARDEN, TRADE
+    GARDEN, HARVEST
 }
