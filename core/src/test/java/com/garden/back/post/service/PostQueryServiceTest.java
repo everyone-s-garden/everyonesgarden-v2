@@ -192,18 +192,18 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
-        Long savedCommentId1 = postCommentRepository.save(postComment).getId();
+        Long olderCommentId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
         postComment2.increaseLikeCount();
-        Long savedCommentId2 = postCommentRepository.save(postComment2).getId(); // 좋아요 더 많음
+        Long recentCommentId = postCommentRepository.save(postComment2).getId();
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.RECENT_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId2, null, postComment2.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId1, null, postComment.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname),
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
@@ -222,18 +222,18 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
-        Long savedCommentId1 = postCommentRepository.save(postComment).getId();
+        Long haveLessCommentLikeId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
         postComment2.increaseLikeCount();
-        Long savedCommentId2 = postCommentRepository.save(postComment2).getId(); // 좋아요 더 많음
+        Long havMoreLikeCommentId = postCommentRepository.save(postComment2).getId(); // 좋아요 더 많음
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.LIKE_COUNT);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId2, null, postComment2.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId1, null, postComment.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, nickname),
+                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, nickname)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
@@ -252,18 +252,18 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
-        Long savedCommentId1 = postCommentRepository.save(postComment).getId();
+        Long olderCommentId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
         postComment2.increaseLikeCount();
-        Long savedCommentId2 = postCommentRepository.save(postComment2).getId();
+        Long recentCommentId = postCommentRepository.save(postComment2).getId();
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.OLDER_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId1, null, postComment.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(savedCommentId2, null, postComment2.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname),
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
