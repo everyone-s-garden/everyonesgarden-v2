@@ -1,0 +1,10 @@
+== Create chatroom
+=== 채팅방 만들기
+텃밭 분양과 농작물 거래에서 채팅방을 만들 수 있다.
+
+==== Request
+include::{snippets}/create-chat-room/http-request.adoc[]
+include::{snippets}/create-chat-room/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-chat-room/http-response.adoc[]
