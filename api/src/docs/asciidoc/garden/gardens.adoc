@@ -94,7 +94,7 @@ include::{snippets}/get-like-gardens/http-request.adoc[]
 include::{snippets}/get-like-gardens/http-response.adoc[]
 include::{snippets}/get-like-gardens/response-fields.adoc[]
 
-== Get like gardens
+== Create like gardens
 === 텃밭 찜하기
 마음에 드는 텃밭을 찜할 수 있다.
 
