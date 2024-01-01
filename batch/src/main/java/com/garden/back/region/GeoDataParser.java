@@ -6,7 +6,6 @@ import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.geojson.feature.FeatureJSON;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +29,6 @@ public class GeoDataParser {
     @Value("${region.geo.json.path}")
     private Resource jsonResource;
 
-    private static final GeometryFactory geometryFactory = new GeometryFactory();
     private static final Map<String, MultiPolygon> emdCdToMultiPolygonMap = new HashMap<>();
 
     private static final String NUMBER_REGX = "[1-9]\\d*|0";

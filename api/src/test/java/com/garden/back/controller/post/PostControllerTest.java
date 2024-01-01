@@ -135,9 +135,9 @@ class PostControllerTest extends ControllerTestSupport {
         );
     }
 
-    @DisplayName("댓글 수정 유효하지 않은 내용 테스트")
+    @DisplayName("댓글 수정 유효하지 않은 내용 테스트잘못된 content 값 (빈 문자열, 공백, 256자 초과 문자열)")
     @ParameterizedTest
-    @ValueSource(strings = {"", " ", "    ", "a"}) // 잘못된 content 값 (빈 문자열, 공백, 256자 초과 문자열)
+    @ValueSource(strings = {"", " ", "    ", "a"})
     void updateCommentInvalidContent(String content) throws Exception {
         content.repeat(256);
         CommentUpdateRequest request = new CommentUpdateRequest(content);

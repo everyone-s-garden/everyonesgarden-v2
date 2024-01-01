@@ -60,6 +60,7 @@ public class PostCommandService {
     }
 
     public Long createComment(Long id, Long memberId, CommentCreateServiceRequest request) {
+        postCommandValidator.validateCommentCreatable(request.parentId());
         return postCommandRepository.saveComment(request.toEntity(memberId, id));
     }
 

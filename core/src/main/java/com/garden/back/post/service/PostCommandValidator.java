@@ -13,4 +13,6 @@ public interface PostCommandValidator {
     PostComment validateCommentDeletable(Long id, Long memberId);
 
     void validateCommentLikeCreatable(Long id, Long memberId);
+
+    void validateCommentCreatable(Long parentId);
 }

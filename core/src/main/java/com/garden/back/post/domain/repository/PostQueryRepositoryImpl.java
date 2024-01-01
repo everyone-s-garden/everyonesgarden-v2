@@ -17,7 +17,7 @@ import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
 
 @Repository
-public class PostQueryRepositoryImpl implements PostQueryRepository{
+public class PostQueryRepositoryImpl implements PostQueryRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
@@ -67,6 +67,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository{
             case OLDER_DATE -> post.createAt.asc();
         };
     }
+
     @Override
     public FindPostsAllCommentResponse findPostsAllComments(Long id, FindAllPostCommentsParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getCommentsOrderBy(request.orderBy());
@@ -77,7 +78,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository{
                 postComment.likesCount,
                 postComment.content,
                 member.nickname
-                ))
+            ))
             .from(postComment)
             .where(postComment.postId.eq(id))
             .leftJoin(member).on(postComment.authorId.eq(member.id))

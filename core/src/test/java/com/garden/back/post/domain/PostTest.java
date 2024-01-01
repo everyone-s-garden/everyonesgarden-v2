@@ -63,7 +63,7 @@ class PostTest {
     void testDecreaseLikeCount() {
         post.increaseLikeCount(); // 좋아요 1 증가
         post.decreaseLikeCount(); // 좋아요 1 감소
-        assertThat(post.getLikesCount()).isEqualTo(0);
+        assertThat(post.getLikesCount()).isZero();
     }
 
     @Test
@@ -86,7 +86,7 @@ class PostTest {
     void testDecreaseCommentCount() {
         post.increaseCommentCount(); // 댓글 1 증가
         post.decreaseCommentCount(); // 댓글 1 감소
-        assertThat(post.getCommentsCount()).isEqualTo(0);
+        assertThat(post.getCommentsCount()).isZero();
     }
 
     @Test
@@ -101,7 +101,8 @@ class PostTest {
     @DisplayName("게시물 업데이트 가능 여부 검증")
     void testValidateUpdatable() {
         List<String> addedImages = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        int maximumImageCount = 10;
+        for (int i = 0; i < maximumImageCount; i++) {
             addedImages.add("http://example.com/image" + i + ".jpg");
         }
 
