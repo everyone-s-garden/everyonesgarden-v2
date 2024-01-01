@@ -1,14 +1,66 @@
-version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+plugins {
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+}
 
-jar.enabled=false
+configurations {
+    asciidoctorExt
+}
 
 dependencies {
-    // JPA
-    api 'org.springframework.boot:spring-boot-starter-data-jpa'
-
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    
+    // JPA
+    api 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    //Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
+
+    //JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //Spring MVC
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    //Validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //REST DOCS
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
+
+ext { // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    jvmArgs '-Duser.timezone=Asia/Seoul'
+    outputs.dir snippetsDir
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile()
+    inputs.dir snippetsDir
+    dependsOn test
+    outputDir file('build/docs/asciidoc')
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}") {
+        into "static/docs"
+    }
+}
+
+version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
+
+jar.enabled=false
 
