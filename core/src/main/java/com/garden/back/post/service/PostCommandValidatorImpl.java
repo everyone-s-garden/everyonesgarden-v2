@@ -9,6 +9,8 @@ import com.garden.back.post.domain.repository.PostRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class PostCommandValidatorImpl implements PostCommandValidator {
 
@@ -64,6 +66,22 @@ public class PostCommandValidatorImpl implements PostCommandValidator {
     public void validateCommentLikeCreatable(Long id, Long memberId) {
         if (commentLikeRepository.existsCommentLikeByLikesClickerIdAndCommentId(memberId, id)) {
             throw new IllegalArgumentException("동일한 사용자는 같은 댓글에 좋아요를 누를 수 없습니다.");
+        }
+    }
+
+    @Override
+    public void validateCommentCreatable(Long parentId) {
+        if (parentId == null) {
+            return;
+        }
+
+        Optional<PostComment> parentCommentOptional = postCommentRepository.findById(parentId);
+        if (parentCommentOptional.isPresent()) {
+            PostComment parentComment = parentCommentOptional.get();
+
+            if (parentComment.getParentCommentId() != null) {
+                throw new IllegalArgumentException("대댓글 에는 대댓글을 작성할 수 없습니다.");
+            }
         }
     }
 }

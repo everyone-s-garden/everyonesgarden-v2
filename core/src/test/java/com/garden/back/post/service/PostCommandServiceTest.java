@@ -204,6 +204,30 @@ class PostCommandServiceTest extends IntegrationTestSupport {
             .containsExactly(savedParentId, expectedCommentContent);
     }
 
+    @DisplayName("대댓글에는 댓글을 작성할 수 없다.")
+    @Test
+    void createCommentInvalid() {
+        //given
+        Long memberId = 1L;
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Long savedPostId = postRepository.save(post).getId();
+        PostComment postComment = PostComment.create(null, memberId, "댓글내용", savedPostId);
+        Long savedParentId = postCommentRepository.save(postComment).getId();
+        String expectedCommentContent = "자식 댓글";
+        CommentCreateServiceRequest request = new CommentCreateServiceRequest(expectedCommentContent, savedParentId);
+
+        //when & then
+        Long childCommentId = postCommandService.createComment(savedPostId, memberId, request);
+        request = new CommentCreateServiceRequest(expectedCommentContent, childCommentId);
+        CommentCreateServiceRequest finalRequest = request;
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            postCommandService.createComment(savedPostId, memberId, finalRequest);
+        }, "대댓글에는 대댓글을 작성할 수 없습니다.");
+
+    }
+
     @DisplayName("댓글을 수정한다.")
     @Test
     void updateComment() {

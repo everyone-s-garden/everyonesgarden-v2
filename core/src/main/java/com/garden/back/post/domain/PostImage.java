@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.validator.routines.UrlValidator;
+import org.springframework.util.Assert;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,9 +31,8 @@ public class PostImage {
 
 
     private void validatePostImage() {
-        if (this.post == null) {
-            throw new IllegalArgumentException("Post는 null일 수 없습니다.");
-        }
+        Assert.notNull(this.post, "Post는 null일 수 없습니다.");
+
         if (this.imageUrl == null || this.imageUrl.length() > 255) {
             throw new IllegalArgumentException("imageUrl은 255자를 초과할 수 없으며 null 허용이 안됩니다.");
         }
