@@ -14,6 +14,7 @@ import java.util.stream.Stream;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 class GardenControllerTest extends ControllerTestSupport {
 
     @DisplayName("학원 이름 검색에 요청값에 대해 검증한다.")
