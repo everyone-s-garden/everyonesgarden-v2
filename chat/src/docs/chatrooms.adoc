@@ -8,3 +8,13 @@ include::{snippets}/create-garden-chat-room/request-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/create-garden-chat-room/http-response.adoc[]
+
+=== 작물거래 채팅방 만들기
+작물 거래 채팅방을 만들 수 있다.
+
+==== Request
+include::{snippets}/create-crop-chat-room/http-request.adoc[]
+include::{snippets}/create-crop-chat-room/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-crop-chat-room/http-response.adoc[]
