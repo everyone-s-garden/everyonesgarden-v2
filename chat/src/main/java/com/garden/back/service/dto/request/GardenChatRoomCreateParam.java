@@ -1,6 +1,5 @@
 package com.garden.back.service.dto.request;
 
-import com.garden.back.domain.ChatType;
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
 import com.garden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
@@ -8,8 +7,7 @@ import com.garden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
 public record GardenChatRoomCreateParam(
         Long writerId,
         Long viewerId,
-        Long postId,
-        ChatType chatType
+        Long postId
 ) {
     public GardenChatRoom toChatRoom() {
         return GardenChatRoom.of();
