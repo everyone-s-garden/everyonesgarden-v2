@@ -1,4 +1,4 @@
-package com.graden.back.service;
+package com.garden.back.service;
 
 import com.garden.back.domain.ChatType;
 import com.garden.back.domain.MessageType;

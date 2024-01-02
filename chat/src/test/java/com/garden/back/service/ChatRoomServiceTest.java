@@ -1,19 +1,20 @@
-package com.graden.back.service;
+package com.garden.back.service;
 
 import com.garden.back.domain.garden.GardenChatRoomInfo;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
-import com.garden.back.service.ChatRoomService;
 import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+@Transactional
 class ChatRoomServiceTest extends IntegrationTestSupport{
 
     @Autowired
