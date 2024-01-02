@@ -1,10 +1,7 @@
-package com.graden.back.repository.chatroom.dto;
-
-import com.graden.back.domain.ChatType;
+package com.garden.back.repository.chatroom.dto;
 
 public record ChatRoomCreateRepositoryParam(
         Long postId,
-        Long writerId,
-        ChatType chatType
+        Long writerId
 ) {
 }
