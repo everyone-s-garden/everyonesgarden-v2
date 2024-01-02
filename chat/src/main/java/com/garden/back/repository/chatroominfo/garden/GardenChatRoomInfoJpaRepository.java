@@ -1,7 +1,7 @@
-package com.graden.back.repository.chatroominfo.garden;
+package com.garden.back.repository.chatroominfo.garden;
 
-import com.graden.back.domain.garden.GardenChatRoomInfo;
-import com.graden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
+import com.garden.back.domain.garden.GardenChatRoomInfo;
+import com.garden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
