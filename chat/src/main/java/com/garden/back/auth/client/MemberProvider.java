@@ -1,4 +1,4 @@
-package com.graden.back.auth.client;
+package com.garden.back.auth.client;
 
 import com.garden.back.member.Member;
 

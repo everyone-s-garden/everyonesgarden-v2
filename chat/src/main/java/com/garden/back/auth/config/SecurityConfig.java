@@ -1,7 +1,7 @@
-package com.graden.back.auth.config;
+package com.garden.back.auth.config;
 
 
-import com.graden.back.auth.jwt.JwtAuthenticationFilter;
+import com.garden.back.auth.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

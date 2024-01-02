@@ -1,10 +1,10 @@
-package com.graden.back.auth.jwt;
+package com.garden.back.auth.jwt;
 
+import com.garden.back.auth.jwt.repository.CollectionRefreshTokenRepository;
 import com.garden.back.member.Member;
-import com.graden.back.auth.jwt.repository.CollectionRefreshTokenRepository;
-import com.graden.back.auth.jwt.repository.RefreshToken;
-import com.graden.back.auth.jwt.repository.RefreshTokenRepository;
-import com.graden.back.auth.jwt.response.TokenResponse;
+import com.garden.back.auth.jwt.repository.RefreshToken;
+import com.garden.back.auth.jwt.repository.RefreshTokenRepository;
+import com.garden.back.auth.jwt.response.TokenResponse;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;

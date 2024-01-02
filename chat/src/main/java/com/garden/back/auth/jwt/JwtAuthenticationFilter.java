@@ -1,4 +1,4 @@
-package com.graden.back.auth.jwt;
+package com.garden.back.auth.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;

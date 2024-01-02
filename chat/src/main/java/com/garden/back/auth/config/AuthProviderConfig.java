@@ -1,9 +1,9 @@
-package com.graden.back.auth.config;
+package com.garden.back.auth.config;
 
-import com.graden.back.auth.AuthProvider;
-import com.graden.back.auth.client.MemberProvider;
-import com.graden.back.auth.client.kakao.KakaoMemberProvider;
-import com.graden.back.auth.client.naver.NaverMemberProvider;
+import com.garden.back.auth.AuthProvider;
+import com.garden.back.auth.client.kakao.KakaoMemberProvider;
+import com.garden.back.auth.client.MemberProvider;
+import com.garden.back.auth.client.naver.NaverMemberProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

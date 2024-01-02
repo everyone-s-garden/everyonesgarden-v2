@@ -1,6 +1,6 @@
-package com.graden.back.auth.client.naver;
+package com.garden.back.auth.client.naver;
 
-import com.graden.back.auth.client.naver.response.NaverOauth2Response;
+import com.garden.back.auth.client.naver.response.NaverOauth2Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

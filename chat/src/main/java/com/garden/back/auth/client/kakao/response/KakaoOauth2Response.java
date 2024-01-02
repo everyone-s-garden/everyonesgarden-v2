@@ -1,4 +1,4 @@
-package com.graden.back.auth.client.kakao.response;
+package com.garden.back.auth.client.kakao.response;
 
 import com.garden.back.member.Member;
 import com.garden.back.member.Role;

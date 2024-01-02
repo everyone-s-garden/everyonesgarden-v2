@@ -1,7 +1,7 @@
-package com.graden.back.auth;
+package com.garden.back.auth;
 
-import com.graden.back.auth.jwt.response.RefreshTokenResponse;
-import com.graden.back.auth.jwt.response.TokenResponse;
+import com.garden.back.auth.jwt.response.TokenResponse;
+import com.garden.back.auth.jwt.response.RefreshTokenResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

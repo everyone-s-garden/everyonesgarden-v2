@@ -1,8 +1,8 @@
-package com.graden.back.auth.client.naver;
+package com.garden.back.auth.client.naver;
 
+import com.garden.back.auth.client.naver.response.NaverOauth2Response;
 import com.garden.back.member.Member;
-import com.graden.back.auth.client.MemberProvider;
-import com.graden.back.auth.client.naver.response.NaverOauth2Response;
+import com.garden.back.auth.client.MemberProvider;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,8 +1,8 @@
-package com.graden.back.auth.client.kakao;
+package com.garden.back.auth.client.kakao;
 
 import com.garden.back.member.Member;
-import com.graden.back.auth.client.MemberProvider;
-import com.graden.back.auth.client.kakao.response.KakaoOauth2Response;
+import com.garden.back.auth.client.MemberProvider;
+import com.garden.back.auth.client.kakao.response.KakaoOauth2Response;
 import org.springframework.stereotype.Component;
 
 @Component

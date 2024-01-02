@@ -1,4 +1,4 @@
-package com.graden.back.domain;
+package com.garden.back.domain;
 
 import lombok.Getter;
 

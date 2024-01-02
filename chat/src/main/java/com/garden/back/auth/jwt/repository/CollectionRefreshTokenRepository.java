@@ -1,4 +1,4 @@
-package com.graden.back.auth.jwt.repository;
+package com.garden.back.auth.jwt.repository;
 
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package com.graden.back.auth.jwt.response;
+package com.garden.back.auth.jwt.response;
 
 public record TokenResponse(
     String grantType,

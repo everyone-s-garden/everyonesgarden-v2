@@ -1,6 +1,6 @@
-package com.graden.back.auth.client.kakao;
+package com.garden.back.auth.client.kakao;
 
-import com.graden.back.auth.client.kakao.response.KakaoOauth2Response;
+import com.garden.back.auth.client.kakao.response.KakaoOauth2Response;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;

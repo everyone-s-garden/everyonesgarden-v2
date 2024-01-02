@@ -1,4 +1,4 @@
-package com.garden.back.dto;
+package com.garden.back.controller.dto;
 
 import com.garden.back.domain.ChatType;
 import com.garden.back.global.loginuser.LoginUser;

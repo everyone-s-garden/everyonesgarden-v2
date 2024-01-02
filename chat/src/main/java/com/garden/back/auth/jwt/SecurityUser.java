@@ -1,7 +1,7 @@
-package com.graden.back.auth.jwt;
+package com.garden.back.auth.jwt;
 
 import com.garden.back.member.Role;
-import com.graden.back.global.loginuser.MemberInfo;
+import com.garden.back.global.loginuser.MemberInfo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

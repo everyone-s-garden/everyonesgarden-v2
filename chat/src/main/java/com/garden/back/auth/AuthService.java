@@ -1,11 +1,11 @@
-package com.graden.back.auth;
+package com.garden.back.auth;
 
+import com.garden.back.auth.jwt.TokenProvider;
+import com.garden.back.auth.jwt.response.RefreshTokenResponse;
+import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.member.Member;
 import com.garden.back.member.MemberRepository;
-import com.graden.back.auth.client.MemberProvider;
-import com.graden.back.auth.jwt.TokenProvider;
-import com.graden.back.auth.jwt.response.RefreshTokenResponse;
-import com.graden.back.auth.jwt.response.TokenResponse;
+import com.garden.back.auth.client.MemberProvider;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

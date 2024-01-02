@@ -1,4 +1,4 @@
-package com.graden.back.auth.jwt;
+package com.garden.back.auth.jwt;
 
 import lombok.Getter;
 import lombok.Setter;
