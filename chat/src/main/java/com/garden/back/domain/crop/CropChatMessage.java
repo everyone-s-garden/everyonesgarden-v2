@@ -1,4 +1,4 @@
-package com.garden.back.domain.garden;
+package com.garden.back.domain.crop;
 
 import com.garden.back.domain.MessageType;
 import io.jsonwebtoken.lang.Assert;
@@ -9,11 +9,11 @@ import org.springframework.data.annotation.CreatedDate;
 import java.time.LocalDateTime;
 
 @Getter
-@Table(name = "garden_chat_messages")
+@Table(name = "crop_chat_messages")
 @Entity
-public class GardenChatMessage {
+public class CropChatMessage {
 
-    protected GardenChatMessage() {
+    protected CropChatMessage() {
     }
 
     @Column(name = "chat_message_id", nullable = false)
@@ -23,7 +23,7 @@ public class GardenChatMessage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_room_id", nullable = false)
-    private GardenChatRoom chatRoom;
+    private CropChatRoom chatRoom;
 
     @Column(name = "member_id", nullable = false)
     private Long memberId;
@@ -42,8 +42,8 @@ public class GardenChatMessage {
     @Enumerated(value = EnumType.STRING)
     private MessageType messageType;
 
-    private GardenChatMessage(
-            GardenChatRoom chatRoom,
+    private CropChatMessage(
+            CropChatRoom chatRoom,
             Long memberId,
             String contents,
             boolean readOrNot,
@@ -60,14 +60,14 @@ public class GardenChatMessage {
         this.messageType = messageType;
     }
 
-    public static GardenChatMessage of(
-            GardenChatRoom chatRoom,
+    public static CropChatMessage of(
+            CropChatRoom chatRoom,
             Long memberId,
             String contents,
             boolean readOrNot,
             MessageType messageType
     ) {
-        return new GardenChatMessage(
+        return new CropChatMessage(
                 chatRoom,
                 memberId,
                 contents,

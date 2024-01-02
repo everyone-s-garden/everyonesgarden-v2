@@ -1,14 +1,14 @@
-package com.garden.back.domain.garden;
+package com.garden.back.domain.crop;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
-@Table(name = "garden_chat_images")
+@Table(name = "crop_chat_images")
 @Entity
-public class GardenChatImage {
+public class CropChatImage {
 
-    protected GardenChatImage() {
+    protected CropChatImage() {
     }
 
     @Column(name = "chat_image_id")
@@ -21,6 +21,6 @@ public class GardenChatImage {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_message_id")
-    private GardenChatMessage chatMessage;
+    private CropChatMessage cropChatMessage;
 
 }
