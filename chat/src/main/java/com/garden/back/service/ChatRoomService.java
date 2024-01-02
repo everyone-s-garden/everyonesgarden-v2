@@ -1,21 +1,21 @@
-package com.graden.back.service;
+package com.garden.back.service;
 
-import com.graden.back.domain.ChatType;
-import com.graden.back.domain.garden.GardenChatRoom;
-import com.graden.back.domain.garden.GardenChatRoomInfo;
-import com.graden.back.exception.ChatRoomAccessException;
-import com.graden.back.repository.chatentry.ChatRoomEntryRepository;
-import com.graden.back.repository.chatmessage.garden.GardenChatMessageRepository;
-import com.graden.back.repository.chatroom.garden.GardenChatRoomRepository;
-import com.graden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
-import com.graden.back.service.dto.request.ChatRoomEntryParam;
-import com.graden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.domain.ChatType;
+import com.garden.back.domain.garden.GardenChatRoom;
+import com.garden.back.domain.garden.GardenChatRoomInfo;
+import com.garden.back.exception.ChatRoomAccessException;
+import com.garden.back.repository.chatentry.ChatRoomEntryRepository;
+import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
+import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
+import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
+import com.garden.back.service.dto.request.ChatRoomEntryParam;
+import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.graden.back.global.exception.ErrorCode.CHAT_ROOM_ACCESS_ERROR;
+import static com.garden.back.global.exception.ErrorCode.CHAT_ROOM_ACCESS_ERROR;
 
 @Service
 public class ChatRoomService {
