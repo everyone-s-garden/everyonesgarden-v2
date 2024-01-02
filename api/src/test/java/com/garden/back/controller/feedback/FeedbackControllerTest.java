@@ -1,6 +1,6 @@
-package com.garden.back.controller.feedback;
+package com.garden.back.feedback;
 
-import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.feedback.request.FeedbackCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -1,8 +1,8 @@
-package com.garden.back.controller.garden;
+package com.garden.back.garden;
 
 import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;
-import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.garden.dto.request.GardenByNameRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
