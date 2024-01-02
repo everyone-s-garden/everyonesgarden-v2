@@ -1,4 +1,4 @@
-package com.graden.back.global.loginuser;
+package com.garden.back.global.loginuser;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;

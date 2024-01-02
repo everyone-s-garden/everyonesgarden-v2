@@ -1,4 +1,4 @@
-package com.graden.back.global.validation;
+package com.garden.back.global.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

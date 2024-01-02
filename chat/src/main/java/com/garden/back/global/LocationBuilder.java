@@ -1,4 +1,4 @@
-package com.graden.back.global;
+package com.garden.back.global;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

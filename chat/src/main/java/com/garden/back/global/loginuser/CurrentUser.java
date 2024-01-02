@@ -1,4 +1,4 @@
-package com.graden.back.global.loginuser;
+package com.garden.back.global.loginuser;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
