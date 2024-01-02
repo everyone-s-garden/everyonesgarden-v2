@@ -1,10 +1,10 @@
 package com.garden.back.service;
 
-import com.garden.back.domain.garden.GardenChatRoomInfo;
-import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
-import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
-import com.garden.back.service.garden.GardenChatRoomService;
+import com.garden.back.domain.crop.CropChatRoomInfo;
+import com.garden.back.repository.chatroom.crop.CropChatRoomRepository;
+import com.garden.back.repository.chatroominfo.crop.CropChatRoomInfoRepository;
+import com.garden.back.service.crop.CropChatRoomService;
+import com.garden.back.service.dto.request.CropChatRoomCreateParam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +16,30 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @Transactional
-class GardenChatRoomServiceTest extends IntegrationTestSupport{
+class CropChatRoomServiceTest extends IntegrationTestSupport {
 
     @Autowired
-    private GardenChatRoomService gardenChatRoomService;
+    private CropChatRoomService cropChatRoomService;
 
     @Autowired
-    private GardenChatRoomRepository chatRoomRepository;
+    private CropChatRoomRepository cropChatRoomRepository;
 
     @Autowired
-    private GardenChatRoomInfoRepository chatRoomInfoRepository;
+    private CropChatRoomInfoRepository cropChatRoomInfoRepository;
 
     @DisplayName("해당 게시글에 대한 채팅방을 생성할 수 있다.")
     @Test
     void createGardenChatRoom() {
         // Given
-        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        CropChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.cropChatRoomCreateParam();
 
         // When
-        Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
-        List<GardenChatRoomInfo> chatRoomInfos = chatRoomInfoRepository.findAll();
+        Long chatRoomId = cropChatRoomService.createCropChatRoom(chatRoomCreateParam);
+        List<CropChatRoomInfo> chatRoomInfos = cropChatRoomInfoRepository.findAll();
 
         // Then
         chatRoomInfos.stream()
-                .filter(GardenChatRoomInfo::isWriter)
+                .filter(CropChatRoomInfo::isWriter)
                 .forEach(
                         chatRoomInfo -> {
                             assertThat(chatRoomInfo.getPostId()).isEqualTo(chatRoomCreateParam.postId());
@@ -63,14 +63,13 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     @Test
     void createChatRoom_existedChatRoom_throwException() {
         // Given
-        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        CropChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.cropChatRoomCreateParam();
 
         // When
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+       cropChatRoomService.createCropChatRoom(chatRoomCreateParam);
 
         // Then
-        assertThatThrownBy(()-> gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam))
+        assertThatThrownBy(()->cropChatRoomService.createCropChatRoom(chatRoomCreateParam))
                 .isInstanceOf(IllegalArgumentException.class);
     }
-
 }

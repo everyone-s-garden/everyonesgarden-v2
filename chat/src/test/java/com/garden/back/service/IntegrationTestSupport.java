@@ -17,7 +17,6 @@ import java.util.Map;
 
 @ActiveProfiles("test")
 @SpringBootTest
-//@Import(TestSecurityConfig.class)
 public class IntegrationTestSupport {
 
      @MockBean
