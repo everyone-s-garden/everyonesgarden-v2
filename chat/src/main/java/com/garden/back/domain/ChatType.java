@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Getter
 public enum ChatType {
-    GARDEN(1L), HARVEST(2L);
+    GARDEN(1L), CROP(2L);
 
     private final Long chatTypeId;
 
