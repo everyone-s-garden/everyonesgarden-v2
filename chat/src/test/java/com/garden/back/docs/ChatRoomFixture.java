@@ -1,4 +1,4 @@
-package com.graden.back.docs;
+package com.garden.back.docs;
 
 import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
 

@@ -1,4 +1,4 @@
-package com.graden.back.docs;
+package com.garden.back.docs;
 
 import com.garden.back.controller.ChatRoomController;
 import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
@@ -29,18 +29,18 @@ class ChatDocsTest extends RestDocsSupport {
         return new ChatRoomController(chatRoomService);
     }
 
-    @DisplayName("채팅방을 생성할 수 있다.")
+    @DisplayName("텃밭 분양 관련 채팅방을 생성할 수 있다.")
     @Test
     void createChatRoom() throws Exception {
         GardenChatRoomCreateRequest gardenChatRoomCreateRequest = ChatRoomFixture.chatRoomCreateRequest();
         given(chatRoomService.createGardenChatRoom(any())).willReturn(1L);
 
-        mockMvc.perform(post("/chats")
+        mockMvc.perform(post("/chats/gardens")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(gardenChatRoomCreateRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andDo(document("create-chat-room",
+                .andDo(document("create-garden-chat-room",
                         requestFields(
                                 fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("본 게시글의 작성자 아이디"),
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("본 게시글 아이디"),

@@ -1,4 +1,4 @@
-package com.graden.back.docs;
+package com.garden.back.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;

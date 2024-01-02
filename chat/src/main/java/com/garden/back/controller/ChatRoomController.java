@@ -1,6 +1,6 @@
-package com.garden.back;
+package com.garden.back.controller;
 
-import com.garden.back.dto.GardenChatRoomCreateRequest;
+import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
@@ -23,6 +23,7 @@ public class ChatRoomController {
     }
 
     @PostMapping(
+            path = "/gardens",
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Void> createChatRoom(

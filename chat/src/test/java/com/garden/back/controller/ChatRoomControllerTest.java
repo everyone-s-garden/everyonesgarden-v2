@@ -1,4 +1,4 @@
-package com.graden.back.controller;
+package com.garden.back.controller;
 
 import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
 import org.junit.jupiter.api.DisplayName;
@@ -10,12 +10,12 @@ import java.util.stream.Stream;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ChatRoomControllerTest extends ControllerTestSupport{
+class ChatRoomControllerTest extends ControllerTestSupport {
 
-    @DisplayName("학원 이름 검색에 요청값에 대해 검증한다.")
+    @DisplayName("텃밭 분양 채팅방 생성 요청값에 대해 검증한다.")
     @ParameterizedTest
     @MethodSource("provideInvalidChatRoomCreateRequest")
-    void getGardensByName_invalidRequest(GardenChatRoomCreateRequest gardenChatRoomCreateRequest) throws Exception {
+    void createGardenChatRoom_invalidRequest(GardenChatRoomCreateRequest gardenChatRoomCreateRequest) throws Exception {
         mockMvc.perform(post("/chats")
                         .content(objectMapper.writeValueAsString(gardenChatRoomCreateRequest)))
                 .andExpect(status().is4xxClientError());

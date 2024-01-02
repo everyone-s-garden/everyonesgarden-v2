@@ -1,8 +1,7 @@
-package com.graden.back.controller;
+package com.garden.back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.garden.back.controller.ChatRoomController;
-import com.graden.back.global.TestSecurityConfig;
+import com.garden.back.global.TestSecurityConfig;
 import com.garden.back.service.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
