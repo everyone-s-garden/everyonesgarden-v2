@@ -1,9 +1,9 @@
-package com.graden.back.service.dto.request;
+package com.garden.back.service.dto.request;
 
-import com.graden.back.domain.ChatType;
-import com.graden.back.domain.garden.GardenChatRoom;
-import com.graden.back.domain.garden.GardenChatRoomInfo;
-import com.graden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
+import com.garden.back.domain.ChatType;
+import com.garden.back.domain.garden.GardenChatRoom;
+import com.garden.back.domain.garden.GardenChatRoomInfo;
+import com.garden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
 
 public record GardenChatRoomCreateParam(
         Long writerId,
@@ -34,8 +34,7 @@ public record GardenChatRoomCreateParam(
     public ChatRoomCreateRepositoryParam toChatRoomCreateRepositoryParam() {
         return new ChatRoomCreateRepositoryParam(
                 postId,
-                writerId,
-                chatType
+                writerId
         );
     }
 }
