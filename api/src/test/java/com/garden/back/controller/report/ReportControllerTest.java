@@ -1,4 +1,4 @@
-package com.garden.back.report;
+package com.garden.back.controller.report;
 
 import com.garden.back.ControllerTestSupport;
 import com.garden.back.report.request.ReportGardenRequest;

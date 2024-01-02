@@ -1,4 +1,4 @@
-package com.garden.back.garden;
+package com.garden.back.controller.garden;
 
 import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.dto.request.GardenByComplexesRequest;

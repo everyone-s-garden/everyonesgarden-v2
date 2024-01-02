@@ -1,4 +1,4 @@
-package com.garden.back.feedback;
+package com.garden.back.controller.feedback;
 
 import com.garden.back.ControllerTestSupport;
 import com.garden.back.feedback.request.FeedbackCreateRequest;

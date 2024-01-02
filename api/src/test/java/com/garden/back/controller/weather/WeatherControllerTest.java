@@ -1,4 +1,4 @@
-package com.garden.back.weather;
+package com.garden.back.controller.weather;
 
 import com.garden.back.ControllerTestSupport;
 import org.junit.jupiter.api.DisplayName;
