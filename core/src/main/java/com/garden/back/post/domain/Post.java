@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -52,6 +53,9 @@ public class Post extends BaseTimeEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
     private Post(String title, String content, Long postAuthorId, List<String> postUrls) {
         this.commentsCount = 0L;
         this.reportCount = 0L;
@@ -62,6 +66,7 @@ public class Post extends BaseTimeEntity {
         this.postImages = postUrls.stream()
             .map(postUrl -> PostImage.create(postUrl, this))
             .collect(Collectors.toSet());
+        this.createdDate = LocalDate.now();
 
         validatePostStatus();
     }

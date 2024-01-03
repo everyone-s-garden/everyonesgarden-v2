@@ -19,7 +19,7 @@ class CropServiceTest extends MockTestSupport {
     MonthlyRecommendedCropsFetcher monthlyRecommendedCropsFetcher;
 
     @InjectMocks
-    CropService cropService;
+    CropCommandService cropService;
 
     @Test
     void getMonthlyRecommendedCrops() {

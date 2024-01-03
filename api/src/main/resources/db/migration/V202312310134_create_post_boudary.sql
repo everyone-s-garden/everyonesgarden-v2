@@ -7,7 +7,9 @@ CREATE TABLE posts (
    title VARCHAR(255) NOT NULL,
    content TEXT NOT NULL,
    post_author_id BIGINT NOT NULL,
-   updated_at DATETIME,
+   created_date DATETIME,
+   updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
+   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    INDEX (post_author_id)
 ) ENGINE=InnoDB;
 
@@ -35,7 +37,8 @@ CREATE TABLE post_comments (
    author_id BIGINT NOT NULL,
    content VARCHAR(255) NOT NULL,
    post_id BIGINT NOT NULL,
-   updated_at DATETIME,
+   updated_at DATETIME ON UPDATE CURRENT_TIMESTAMP,
+   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    INDEX (author_id),
    INDEX (post_id),
    INDEX (parent_comment_id)

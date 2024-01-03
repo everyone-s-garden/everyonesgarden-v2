@@ -33,7 +33,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.likesCount,
                 member.nickname,
                 post.content,
-                post.title))
+                post.title,
+                post.createdDate))
             .from(post)
             .leftJoin(member).on(post.postAuthorId.eq(member.id))
             .where(post.id.eq(id))
@@ -43,13 +44,13 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     @Override
     public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getPostsOrderBy(request.orderBy());
-
         List<FindAllPostsResponse.PostInfo> posts = jpaQueryFactory
             .select(Projections.constructor(FindAllPostsResponse.PostInfo.class,
                 post.id,
                 post.title,
                 post.likesCount,
-                post.commentsCount))
+                post.commentsCount,
+                post.createdDate))
             .from(post)
             .orderBy(orderBy)
             .offset(request.offset())
@@ -87,7 +88,6 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .limit(request.limit())
             .fetch();
 
-        System.out.println(comments);
         return new FindPostsAllCommentResponse(comments);
     }
 
