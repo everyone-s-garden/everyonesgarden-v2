@@ -79,6 +79,8 @@ public class GardenController {
                 .body(GardenDetailResponse.to(gardenDetail));
     }
 
+    //to-do : 최근 본 텃밭 등록하기
+
     @GetMapping(
             path = "/recent",
             produces = MediaType.APPLICATION_JSON_VALUE)
