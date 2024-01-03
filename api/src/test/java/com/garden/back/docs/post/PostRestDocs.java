@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -41,7 +42,7 @@ class PostRestDocs extends RestDocsSupport {
     @DisplayName("게시글 전체 조회 api docs")
     @Test
     void findAllPosts() throws Exception {
-        FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L)));
+        FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
         FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "RECENT_DATE");
         given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
 
@@ -64,7 +65,8 @@ class PostRestDocs extends RestDocsSupport {
                     fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
                     fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
                     fieldWithPath("postInfos[].likeCount").type(NUMBER).description("좋아요 수"),
-                    fieldWithPath("postInfos[].commentCount").type(NUMBER).description("댓글 수")
+                    fieldWithPath("postInfos[].commentCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
                 )
             ));
     }
@@ -72,7 +74,7 @@ class PostRestDocs extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목");
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now());
         given(postQueryService.findPostById(any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
@@ -89,7 +91,8 @@ class PostRestDocs extends RestDocsSupport {
                     fieldWithPath("likeCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("author").type(STRING).description("작성자"),
                     fieldWithPath("content").type(STRING).description("내용"),
-                    fieldWithPath("title").type(STRING).description("제목")
+                    fieldWithPath("title").type(STRING).description("제목"),
+                    fieldWithPath("createdDate").type(STRING).description("생성 일")
                 )
             ));
     }

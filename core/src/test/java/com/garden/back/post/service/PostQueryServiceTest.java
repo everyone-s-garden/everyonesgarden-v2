@@ -74,14 +74,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount()),
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount()) //Post2가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
-        System.out.println(request);
-        System.out.println(savedPostId1 + " ," + savedPostId2);
-        System.out.println(postQueryService.findAllPosts(request));
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -107,8 +104,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount()), //Post가 댓글 더 많음
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount())
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(),post.getCreatedDate()), //Post가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
@@ -137,8 +134,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount()),
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount()) //Post가 더 오래 됨
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(),post2.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post가 더 오래 됨
 
         );
 
@@ -168,8 +165,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount()), //Post가 더 먼저 생성 됨
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount())
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()), //Post가 더 먼저 생성 됨
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
