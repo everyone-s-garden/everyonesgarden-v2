@@ -57,6 +57,7 @@ public class GardenCommandService {
         return savedGardenLike.getGardenLikeId();
     }
 
+    @Transactional
     public void deleteGardenLike(GardenLikeDeleteParam param) {
         gardenLikeRepository.delete(param.memberId(), param.gardenId());
     }
@@ -93,7 +94,8 @@ public class GardenCommandService {
         List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImage);
         uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
     }
-
+    
+    @Transactional
     public void deleteMyManagedGarden(MyManagedGardenDeleteParam param) {
         myManagedGardenRepository.delete(param.myManagedGardenId(), param.memberId());
     }
