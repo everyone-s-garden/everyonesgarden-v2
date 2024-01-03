@@ -90,7 +90,7 @@ public class GardenFixture {
                                 "1000",
                                 "영수네 텃밭",
                                 "100000",
-                                "www.garden.com",
+                                List.of("www.garden.com"),
                                 GardenStatus.ACTIVE.name(),
                                 GardenType.PUBLIC.name()
                         )
@@ -192,7 +192,7 @@ public class GardenFixture {
                                 "별이네 주말농장",
                                 "2023.12.01",
                                 "2023.12.31",
-                                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+                                List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg")
                         )
                 )
         );

@@ -18,7 +18,7 @@ class RecentViewGardensTest {
         RecentViewGardens recentViews = new RecentViewGardens(new ArrayDeque<>());
         for (long i = 0L; i < RecentViewGardens.MAX_RECENT_VIEW_COUNT + 5; i++) {
             RecentViewGarden garden = new RecentViewGarden(
-                    i, "Size", "Name", "Price", "Image", "Status", "Type");
+                    i, "Size", "Name", "Price", List.of("Image"), "Status", "Type");
             // When
             recentViews.addRecentViewGarden(garden);
         }
