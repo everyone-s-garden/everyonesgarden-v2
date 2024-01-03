@@ -8,6 +8,9 @@ import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.global.FixtureSupport;
 import com.garden.back.global.TestSecurityConfig;
+import com.garden.back.post.PostController;
+import com.garden.back.post.service.PostCommandService;
+import com.garden.back.post.service.PostQueryService;
 import com.garden.back.report.ReportController;
 import com.garden.back.report.service.ReportService;
 import com.garden.back.weather.WeatherController;
@@ -25,7 +28,8 @@ import org.springframework.web.context.WebApplicationContext;
         GardenController.class,
         WeatherController.class,
         ReportController.class,
-        FeedbackController.class
+        FeedbackController.class,
+        PostController.class
     }
 )
 @Import(TestSecurityConfig.class)
@@ -55,5 +59,11 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected FeedbackService feedbackService;
+
+    @MockBean
+    protected PostCommandService postCommandService;
+
+    @MockBean
+    protected PostQueryService postQueryService;
 
 }

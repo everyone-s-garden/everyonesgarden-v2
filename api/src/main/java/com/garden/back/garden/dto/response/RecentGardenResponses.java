@@ -20,7 +20,7 @@ public record RecentGardenResponses(
             String size,
             String gardenName,
             String price,
-            String images,
+            List<String> images,
             String gardenStatus,
             String gardenType
     ) {

@@ -193,7 +193,7 @@ class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("recentGardenResponses[].size").type(JsonFieldType.STRING).description("텃밭 크기"),
                                 fieldWithPath("recentGardenResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                                 fieldWithPath("recentGardenResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
-                                fieldWithPath("recentGardenResponses[].images").type(JsonFieldType.STRING).description("텃밭 이미지"),
+                                fieldWithPath("recentGardenResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 이미지"),
                                 fieldWithPath("recentGardenResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                                 fieldWithPath("recentGardenResponses[].gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)")
                         )));
@@ -229,7 +229,7 @@ class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("gardenMineResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                                 fieldWithPath("gardenMineResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
                                 fieldWithPath("gardenMineResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
-                                fieldWithPath("gardenMineResponses[].imageUrls").type(JsonFieldType.ARRAY).description("텃밭 사진")
+                                fieldWithPath("gardenMineResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 사진")
                         )));
     }
 
@@ -250,7 +250,7 @@ class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("gardenLikeByMemberResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                                 fieldWithPath("gardenLikeByMemberResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
                                 fieldWithPath("gardenLikeByMemberResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
-                                fieldWithPath("gardenLikeByMemberResponses[].imageUrls").type(JsonFieldType.ARRAY).description("텃밭 사진")
+                                fieldWithPath("gardenLikeByMemberResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 사진")
                         )));
     }
 
@@ -433,7 +433,7 @@ class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
                                 fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                                 fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                                fieldWithPath("myManagedGardenGetResponses[].imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
+                                fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
                         )));
     }
 
@@ -569,7 +569,7 @@ class GardenRestDocs extends RestDocsSupport {
                                 fieldWithPath("address").type(JsonFieldType.STRING).description("분양받은 텃밭의 주소"),
                                 fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                                 fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                                fieldWithPath("imageUrl").type(JsonFieldType.STRING).description("가꾸는 텃밭 대표 이미지 url")
+                                fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
                         )));
     }
 
