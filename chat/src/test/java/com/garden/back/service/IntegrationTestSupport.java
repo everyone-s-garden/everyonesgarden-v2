@@ -19,26 +19,26 @@ import java.util.Map;
 @SpringBootTest
 public class IntegrationTestSupport {
 
-     @MockBean
-     protected TokenProvider tokenProvider;
+    @MockBean
+    protected TokenProvider tokenProvider;
 
-     @MockBean
-     protected Map<AuthProvider, MemberProvider> authRegistrations;
+    @MockBean
+    protected Map<AuthProvider, MemberProvider> authRegistrations;
 
-     @MockBean
-     protected KakaoMemberProvider kakaoMemberProvider;
+    @MockBean
+    protected KakaoMemberProvider kakaoMemberProvider;
 
-     @MockBean
-     protected NaverMemberProvider naverMemberProvider;
+    @MockBean
+    protected NaverMemberProvider naverMemberProvider;
 
-     @MockBean
-     protected SecurityConfig securityConfig;
+    @MockBean
+    protected SecurityConfig securityConfig;
 
-     @MockBean
-     NaverOAuthClient naverOAuthClient;
+    @MockBean
+    NaverOAuthClient naverOAuthClient;
 
-     @MockBean
-     KakaoOAuthClient kakaoOAuthClient;
+    @MockBean
+    KakaoOAuthClient kakaoOAuthClient;
 
     @MockBean
     JwtProperties jwtProperties;
