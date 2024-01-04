@@ -1,7 +1,11 @@
 package com.garden.back.docs;
 
-import com.garden.back.controller.dto.CropChatRoomCreateRequest;
-import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
+import com.garden.back.controller.dto.request.CropChatRoomCreateRequest;
+import com.garden.back.controller.dto.request.GardenChatRoomCreateRequest;
+import com.garden.back.facade.dto.GardenChatRoomEnterFacadeResponse;
+import com.garden.back.garden.domain.vo.GardenStatus;
+
+import java.util.List;
 
 public class ChatRoomFixture {
 
@@ -16,6 +20,18 @@ public class ChatRoomFixture {
         return new CropChatRoomCreateRequest(
                 1L,
                 1L
+        );
+    }
+
+    public static GardenChatRoomEnterFacadeResponse gardenChatRoomEnterFacadeResponse() {
+        return new GardenChatRoomEnterFacadeResponse(
+                2L,
+                "임이라다",
+                1L,
+                GardenStatus.ACTIVE.name(),
+                "이라네 주말농장",
+                "100000",
+                List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg")
         );
     }
 
