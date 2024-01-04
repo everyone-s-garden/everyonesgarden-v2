@@ -2,6 +2,7 @@ package com.garden.back.repository.chatroominfo.garden;
 
 import com.garden.back.domain.garden.GardenChatRoomInfo;
 import com.garden.back.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
+import com.garden.back.repository.chatroominfo.garden.dto.GardenChatRoomEnterRepositoryResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,13 +20,15 @@ public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenCha
 
     @Query(
             """
-                    select cri.memberId
+                    select
+                    cri.memberId,
+                    cri.postId
                     from GardenChatRoomInfo as cri
                     where cri.chatRoom.chatRoomId =:chatRoomId
                     and cri.memberId !=:myId
                     """
     )
-    Long findPartnerId(@Param("chatRoomId") Long chatRoomId,
-                       @Param("myId") Long memberId);
+    GardenChatRoomEnterRepositoryResponse findPartnerId(@Param("chatRoomId") Long chatRoomId,
+                                                        @Param("myId") Long memberId);
 
 }

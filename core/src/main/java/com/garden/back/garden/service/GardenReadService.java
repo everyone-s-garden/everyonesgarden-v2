@@ -84,4 +84,10 @@ public class GardenReadService {
                 myManagedGardenRepository.getDetailById(myManagedGardenId));
     }
 
+    public GardenChatRoomInfoResult getGardenChatRoomInfo(Long postId) {
+        return GardenChatRoomInfoResult.to(
+                gardenRepository.getChatRoomInfo(postId),
+                postId);
+    }
+
 }
