@@ -4,6 +4,7 @@ import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
 import com.garden.back.garden.domain.GardenLike;
 import com.garden.back.garden.domain.MyManagedGarden;
+import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
@@ -278,6 +279,28 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThat(myManagedGardenDetailResult.gardenName()).isEqualTo(garden.getGardenName());
         assertThat(myManagedGardenDetailResult.address()).isEqualTo(garden.getAddress());
         assertThat(myManagedGardenDetailResult.imageUrl()).isEqualTo(myManagedGarden.getImageUrl());
+    }
+
+    @DisplayName("채팅방 입장시 텃밭 분양 정보의 기본 정보를 불러올 수 있다.")
+    @Test
+    void getGardenChatRoomInfo() {
+        // Given
+        GardenImage savedGardenImage = gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+
+        // When
+        GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(savedPrivateGarden.getGardenId());
+
+        // Then
+        assertThat(savedPrivateGarden.getGardenName()).isEqualTo(gardenChatRoomInfo.gardenName());
+        assertThat(savedPrivateGarden.getGardenStatus()).isEqualTo(GardenStatus.valueOf(gardenChatRoomInfo.gardenStatus()));
+        assertThat(savedPrivateGarden.getPrice()).isEqualTo(gardenChatRoomInfo.price());
+
+
+        assertThat(gardenChatRoomInfo.gardenName()).isEqualTo(savedPrivateGarden.getGardenName());
+        assertThat(GardenStatus.valueOf(gardenChatRoomInfo.gardenStatus())).isEqualTo(savedPrivateGarden.getGardenStatus());
+        assertThat(gardenChatRoomInfo.price()).isEqualTo(savedPrivateGarden.getPrice());
+        gardenChatRoomInfo.imageUrls()
+                        .forEach(image -> assertThat(gardenChatRoomInfo.imageUrls()).contains(image));
     }
 
 }
