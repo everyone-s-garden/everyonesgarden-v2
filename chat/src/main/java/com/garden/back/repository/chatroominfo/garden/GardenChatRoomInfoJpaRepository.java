@@ -21,8 +21,8 @@ public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenCha
     @Query(
             """
                     select
-                    cri.memberId,
-                    cri.postId
+                    cri.memberId as memberId,
+                    cri.postId as postId
                     from GardenChatRoomInfo as cri
                     where cri.chatRoom.chatRoomId =:chatRoomId
                     and cri.memberId !=:myId
