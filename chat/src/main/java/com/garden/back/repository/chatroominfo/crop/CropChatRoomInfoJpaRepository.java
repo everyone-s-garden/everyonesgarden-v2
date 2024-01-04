@@ -16,5 +16,5 @@ public interface CropChatRoomInfoJpaRepository extends JpaRepository<CropChatRoo
            ) then true else false end
            """)
     boolean existsByParams(@Param("param") ChatRoomCreateRepositoryParam param);
-    
+
 }

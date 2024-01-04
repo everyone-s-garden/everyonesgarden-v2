@@ -65,7 +65,6 @@ public class ChatRoomController {
 
     @PatchMapping(
             path = "/gardens/{roomId}",
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<GardenChatRoomEnterResponse> enterGardenChatRoom(
