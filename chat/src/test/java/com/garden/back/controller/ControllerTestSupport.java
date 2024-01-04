@@ -1,7 +1,9 @@
 package com.garden.back.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.garden.back.facade.ChatRoomFacade;
 import com.garden.back.global.TestSecurityConfig;
+import com.garden.back.service.crop.CropChatRoomService;
 import com.garden.back.service.garden.GardenChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,4 +32,10 @@ public class ControllerTestSupport {
 
     @MockBean
     protected GardenChatRoomService gardenChatRoomService;
+
+    @MockBean
+    protected CropChatRoomService chatRoomService;
+
+    @MockBean
+    protected ChatRoomFacade chatRoomFacade;
 }

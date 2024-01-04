@@ -1,13 +1,15 @@
 package com.garden.back.controller;
 
-import com.garden.back.controller.dto.CropChatRoomCreateRequest;
-import com.garden.back.controller.dto.GardenChatRoomCreateRequest;
+import com.garden.back.controller.dto.request.CropChatRoomCreateRequest;
+import com.garden.back.controller.dto.request.GardenChatRoomCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -28,6 +30,14 @@ class ChatRoomControllerTest extends ControllerTestSupport {
     void createGardenChatRoom_invalidRequest(CropChatRoomCreateRequest cropChatRoomCreateRequest) throws Exception {
         mockMvc.perform(post("/chats/crop")
                         .content(objectMapper.writeValueAsString(cropChatRoomCreateRequest)))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("텃밭 분양 채팅방에 들어갈 때 요청값 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L, 0L})
+    void enterGardenChatRoom_invalidRequest(Long roomId) throws Exception {
+        mockMvc.perform(patch("/chats/gardens/{roomId}",roomId))
                 .andExpect(status().is4xxClientError());
     }
 
