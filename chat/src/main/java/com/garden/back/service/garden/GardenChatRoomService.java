@@ -8,7 +8,9 @@ import com.garden.back.repository.chatentry.ChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
+import com.garden.back.repository.chatroominfo.garden.dto.GardenChatRoomEnterRepositoryResponse;
 import com.garden.back.service.dto.request.ChatRoomEntryParam;
+import com.garden.back.service.dto.request.ChatRoomEntryResult;
 import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +56,7 @@ public class GardenChatRoomService {
     }
 
     @Transactional
-    public void enterGardenChatRoom(ChatRoomEntryParam param) {
+    public ChatRoomEntryResult enterGardenChatRoom(ChatRoomEntryParam param) {
         if (!chatRoomEntryRepository.isMemberInRoom(
                 param.roomId(),
                 ChatType.GARDEN,
@@ -66,17 +68,20 @@ public class GardenChatRoomService {
                 param.roomId(),
                 ChatType.GARDEN,
                 param.memberId());
-        readAllGardenMessages(param);
+
+        return ChatRoomEntryResult.to(readAllGardenMessages(param));
     }
 
-    private void readAllGardenMessages(ChatRoomEntryParam param) {
-        Long partnerId = gardenChatRoomInfoRepository.findPartnerId(
+    private GardenChatRoomEnterRepositoryResponse readAllGardenMessages(ChatRoomEntryParam param) {
+        GardenChatRoomEnterRepositoryResponse response
+                = gardenChatRoomInfoRepository.findPartnerId(
                 param.roomId(),
                 param.memberId());
 
         gardenChatMessageRepository.markMessagesAsRead(
                 param.roomId(),
-                partnerId);
+                response.getMemberId());
+        return response;
     }
 
 }
