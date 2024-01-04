@@ -1,4 +1,4 @@
-package com.garden.back.controller.dto;
+package com.garden.back.controller.dto.request;
 
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
