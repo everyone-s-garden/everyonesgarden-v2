@@ -16,15 +16,5 @@ public interface CropChatRoomInfoJpaRepository extends JpaRepository<CropChatRoo
            ) then true else false end
            """)
     boolean existsByParams(@Param("param") ChatRoomCreateRepositoryParam param);
-
-    @Query(
-            """
-                    select cri.memberId
-                    from CropChatRoomInfo as cri
-                    where cri.chatRoom.chatRoomId =:chatRoomId
-                    and cri.memberId !=:myId
-                    """
-    )
-    Long findPartnerId(@Param("chatRoomId") Long chatRoomId,
-                       @Param("myId") Long memberId);
+    
 }
