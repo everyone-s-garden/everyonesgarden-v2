@@ -8,6 +8,7 @@ import com.garden.back.member.MemberService;
 import com.garden.back.service.dto.request.ChatRoomEntryResult;
 import com.garden.back.service.garden.GardenChatRoomService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class ChatRoomFacade {
@@ -22,6 +23,7 @@ public class ChatRoomFacade {
         this.memberService = memberService;
     }
 
+    @Transactional
     public GardenChatRoomEnterFacadeResponse enterGardenChatRoom(GardenChatRoomEnterFacadeRequest request) {
         ChatRoomEntryResult chatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(request.to());
         GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(chatRoomEntryResult.postId());
