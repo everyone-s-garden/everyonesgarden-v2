@@ -1,17 +1,15 @@
 package com.garden.back.crop.infra.wiki;
 
 import com.garden.back.crop.infra.MonthlyRecommendedCropsInfraResponse;
-import com.garden.back.global.IntegrationTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class WikiRecommendedCropsImplTest extends IntegrationTestSupport {
+class WikiRecommendedCropsImplTest {
 
-    @Autowired
-    WikiRecommendedCropsImpl wikiRecommendedCrops;
+
+    WikiRecommendedCropsImpl wikiRecommendedCrops = new WikiRecommendedCropsImpl(new MonthlyWikiRecommendedCropsRepository());
 
     @DisplayName("1월부터12월까지의 month 값이 예상과 일치하는지 확인한다.")
     @Test

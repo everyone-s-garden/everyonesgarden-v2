@@ -7,14 +7,18 @@ import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
 import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
 import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
+import static com.garden.back.post.domain.QPostImage.postImage;
 
 @Repository
 public class PostQueryRepositoryImpl implements PostQueryRepository {
@@ -27,6 +31,12 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
 
     @Override
     public FindPostDetailsResponse findPostDetails(Long id) {
+        List<String> imageUrls = jpaQueryFactory
+            .select(postImage.imageUrl)
+            .from(postImage)
+            .where(postImage.post.id.eq(id))
+            .fetch();
+
         return jpaQueryFactory
             .select(Projections.constructor(FindPostDetailsResponse.class,
                 post.commentsCount,
@@ -34,7 +44,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 member.nickname,
                 post.content,
                 post.title,
-                post.createdDate))
+                post.createdDate,
+                Expressions.constant(imageUrls)))
             .from(post)
             .leftJoin(member).on(post.postAuthorId.eq(member.id))
             .where(post.id.eq(id))
@@ -44,6 +55,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     @Override
     public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getPostsOrderBy(request.orderBy());
+
         List<FindAllPostsResponse.PostInfo> posts = jpaQueryFactory
             .select(Projections.constructor(FindAllPostsResponse.PostInfo.class,
                 post.id,
@@ -52,12 +64,17 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.commentsCount,
                 post.createdDate))
             .from(post)
+            .where(contentOrTitleLike(request.searchContent()))
             .orderBy(orderBy)
             .offset(request.offset())
             .limit(request.limit())
             .fetch();
 
         return new FindAllPostsResponse(posts);
+    }
+
+    private BooleanExpression contentOrTitleLike(String searchContent) {
+        return !StringUtils.hasText(searchContent) ? null : post.title.contains(searchContent).or(post.content.contains(searchContent));
     }
 
     private OrderSpecifier<?> getPostsOrderBy(FindAllPostParamRepositoryRequest.OrderBy orderBy) {
