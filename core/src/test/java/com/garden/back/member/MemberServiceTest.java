@@ -1,6 +1,8 @@
 package com.garden.back.member;
 
 import com.garden.back.global.IntegrationTestSupport;
+import com.garden.back.member.repository.MemberRepository;
+import com.garden.back.member.service.MemberService;
 import com.garden.back.testutil.member.MemberFixture;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

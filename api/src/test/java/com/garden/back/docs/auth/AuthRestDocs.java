@@ -39,6 +39,7 @@ class AuthRestDocs extends RestDocsSupport {
             .set("refreshToken", "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQ4MDM5MDZ9.Ev551IJTI2hJ380ZVRXc8O3VLXbhfbB4AIe3lV0re7s")
             .set("accessTokenExpiredDate", 1703594306493L)
             .set("refreshTokenExpiredDate", 1703594306493L)
+            .set("memberId", 1L)
             .sample();
 
         given(authService.login(any(), any())).willReturn(response);
@@ -56,7 +57,8 @@ class AuthRestDocs extends RestDocsSupport {
                     fieldWithPath("accessToken").description("엑세스 토큰"),
                     fieldWithPath("refreshToken").description("리프레시 토큰"),
                     fieldWithPath("accessTokenExpiredDate").description("엑세스 토큰 만료 날짜 (밀리초 단위 타임스탬프)"),
-                    fieldWithPath("refreshTokenExpiredDate").description("리프레시 토큰 만료 날짜 (밀리초 단위 타임스탬프)")
+                    fieldWithPath("refreshTokenExpiredDate").description("리프레시 토큰 만료 날짜 (밀리초 단위 타임스탬프)"),
+                    fieldWithPath("memberId").description("로그인 한 사용자의 id")
                 )
             ));
     }
@@ -93,6 +95,7 @@ class AuthRestDocs extends RestDocsSupport {
             .set("refreshToken", "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQ4MDM5MDZ9.Ev551IJTI2hJ380ZVRXc8O3VLXbhfbB4AIe3lV0re7s")
             .set("accessTokenExpiredDate", 1703594306493L)
             .set("refreshTokenExpiredDate", 1703594306493L)
+            .set("memberId", 1L)
             .sample();
 
         given(authService.login(any(), any())).willReturn(response);
@@ -110,7 +113,8 @@ class AuthRestDocs extends RestDocsSupport {
                     fieldWithPath("accessToken").description("엑세스 토큰"),
                     fieldWithPath("refreshToken").description("리프레시 토큰"),
                     fieldWithPath("accessTokenExpiredDate").description("엑세스 토큰 만료 날짜 (밀리초 단위 타임스탬프)"),
-                    fieldWithPath("refreshTokenExpiredDate").description("리프레시 토큰 만료 날짜 (밀리초 단위 타임스탬프)")
+                    fieldWithPath("refreshTokenExpiredDate").description("리프레시 토큰 만료 날짜 (밀리초 단위 타임스탬프)"),
+                    fieldWithPath("memberId").description("로그인 한 사용자의 id")
                 )
             ));
     }

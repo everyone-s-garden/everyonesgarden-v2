@@ -2,7 +2,7 @@ package com.garden.back.chat.facade;
 
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
-import com.garden.back.member.MemberService;
+import com.garden.back.member.service.MemberService;
 import com.garden.back.service.dto.request.ChatRoomEntryResult;
 import com.garden.back.service.garden.GardenChatRoomService;
 import org.springframework.stereotype.Component;

@@ -7,7 +7,7 @@ import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
 import com.garden.back.global.IntegrationTestSupport;
-import com.garden.back.member.MemberService;
+import com.garden.back.member.service.MemberService;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.service.dto.request.ChatRoomEntryParam;
