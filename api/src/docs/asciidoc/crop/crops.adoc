@@ -41,6 +41,9 @@ include::{snippets}/create-crops-posts/http-request.adoc[]
 include::{snippets}/create-crops-posts/request-parts.adoc[]
 include::{snippets}/create-crops-posts/request-part-texts-fields.adoc[]
 
+==== Response
+include::{snippets}/create-crops-posts/http-response.adoc[]
+
 [[update-crops-post]]
 === 작물 판매 게시글 수정하기
 작물 판매 게시글을 수정합니다. 게시글의 제목, 내용, 카테고리, 가격, 가격 제안 여부, 거래 유형, 예약 상태를 변경할 수 있습니다. 또한, 이미지를 추가하거나 기존 이미지를 삭제할 수도 있습니다.
@@ -49,6 +52,9 @@ include::{snippets}/create-crops-posts/request-part-texts-fields.adoc[]
 include::{snippets}/update-crops-post/http-request.adoc[]
 include::{snippets}/update-crops-post/request-parts.adoc[]
 include::{snippets}/update-crops-post/request-part-texts-fields.adoc[]
+
+==== Response
+include::{snippets}/update-crops-post/http-response.adoc[]
 
 [[create-crops-post-bookmark]]
 === 작물 게시글 북마크 생성하기
@@ -69,6 +75,9 @@ include::{snippets}/create-crops-post-bookmark/response-headers.adoc[]
 include::{snippets}/delete-post-crops-bookmark/http-request.adoc[]
 include::{snippets}/delete-post-crops-bookmark/path-parameters.adoc[]
 
+==== Response
+include::{snippets}/delete-post-crops-bookmark/http-response.adoc[]
+
 [[delete-post-crops]]
 === 작물 게시글 삭제하기
 특정 작물 게시글을 삭제합니다. 이 API는 지정된 게시글을 성공적으로 삭제하면, 콘텐츠 없음 상태를 반환합니다.
@@ -76,3 +85,16 @@ include::{snippets}/delete-post-crops-bookmark/path-parameters.adoc[]
 ==== Request
 include::{snippets}/delete-post-crops/http-request.adoc[]
 include::{snippets}/delete-post-crops/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/delete-post-crops/http-response.adoc[]
+
+[[assign-crops-buyer]]
+=== 작물을 구매한 이용자의 id 할당하기
+
+==== Request
+include::{snippets}/assign-crops-buyer/http-request.adoc[]
+include::{snippets}/assign-crops-buyer/request-fields.adoc[]
+
+==== Response
+include::{snippets}/assign-crops-buyer/http-response.adoc[]

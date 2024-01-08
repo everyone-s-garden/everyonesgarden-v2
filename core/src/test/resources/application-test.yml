@@ -44,5 +44,20 @@ spring:
       enabled: true
   jpa:
     open-in-view: false
+    properties:
+      hibernate:
+        highlight_sql: true
+        format_sql: true
+        use_sql_comments: true
     hibernate:
       ddl-auto: create
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+        type:
+          descriptor:
+            sql: trace
+

@@ -3,6 +3,9 @@ package com.garden.back;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.back.chat.controller.ChatRoomController;
 import com.garden.back.chat.facade.ChatRoomFacade;
+import com.garden.back.crop.CropController;
+import com.garden.back.crop.CropQueryService;
+import com.garden.back.crop.service.CropCommandService;
 import com.garden.back.feedback.FeedbackController;
 import com.garden.back.feedback.service.FeedbackService;
 import com.garden.back.garden.GardenController;
@@ -34,7 +37,8 @@ import org.springframework.web.context.WebApplicationContext;
         ReportController.class,
         FeedbackController.class,
         ChatRoomController.class,
-        PostController.class
+        PostController.class,
+        CropController.class
     }
 )
 @Import(TestSecurityConfig.class)
@@ -79,4 +83,11 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected PostQueryService postQueryService;
+
+    @MockBean
+    protected CropQueryService cropQueryService;
+
+    @MockBean
+    protected CropCommandService cropCommandService;
+
 }

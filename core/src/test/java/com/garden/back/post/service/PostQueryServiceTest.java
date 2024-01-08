@@ -44,15 +44,16 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         String content = "내용";
         String nickname = "닉네임";
         String title = "제목";
+        String imageUrl = "http://example.com/image.jpg";
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
-        Long savedPostId = postRepository.save(post).getId();
+        Post post = Post.create(title, content, savedMemberId, List.of(imageUrl));
+        Post savedPost = postRepository.save(post);
 
-        FindPostDetailsResponse response = new FindPostDetailsResponse(0L, 0L, nickname, content, title);
+        FindPostDetailsResponse response = new FindPostDetailsResponse(0L, 0L, nickname, content, title, savedPost.getCreatedDate(), List.of(imageUrl));
 
         //when & then
-        assertThat(postQueryService.findPostById(savedPostId)).isEqualTo(response);
+        assertThat(postQueryService.findPostById(savedPost.getId())).isEqualTo(response);
     }
 
     @DisplayName("모든 게시글을 댓글 순으로 정렬해서 조회할 수 있다.")
@@ -78,7 +79,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
             new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -108,7 +109,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
             new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -139,7 +140,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
 
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -169,7 +170,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
             new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);

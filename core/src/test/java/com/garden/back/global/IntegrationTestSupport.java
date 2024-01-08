@@ -1,6 +1,7 @@
 package com.garden.back.global;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.garden.back.crop.infra.MonthlyRecommendedCropsFetcher;
 import com.garden.back.global.image.ImageUploader;
 import com.garden.back.global.image.NCPProperties;
 import com.garden.back.weather.infra.api.naver.NaverGeoClient;
@@ -29,5 +30,8 @@ public abstract class IntegrationTestSupport extends FixtureSupport {
 
     @MockBean
     AmazonS3 ncpUploader;
+
+    @MockBean
+    protected MonthlyRecommendedCropsFetcher monthlyRecommendedCropsFetcher;
 
 }

@@ -3,6 +3,7 @@ package com.garden.back.post.domain.repository.request;
 public record FindAllPostParamRepositoryRequest(
     Integer offset,
     Integer limit,
+    String searchContent,
     OrderBy orderBy
 ) {
 

@@ -13,12 +13,14 @@ public record FindAllPostParamRequest(
     @NotNull(message = "limit을 입력해 주세요") @Positive(message = "0보다 큰 limit을 입력해 주세요.")
     Integer limit,
 
+    String searchContent,
+
     @EnumValue(enumClass = FindAllPostParamRepositoryRequest.OrderBy.class, message = "COMMENT_COUNT, RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요")
     String orderBy
 
 ) {
     public FindAllPostParamRepositoryRequest toRepositoryDto() {
-        return new FindAllPostParamRepositoryRequest(offset, limit, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy));
+        return new FindAllPostParamRepositoryRequest(offset, limit, searchContent, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy));
     }
 
 }

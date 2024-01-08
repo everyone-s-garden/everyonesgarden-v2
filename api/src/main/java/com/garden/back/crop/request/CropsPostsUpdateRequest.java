@@ -1,6 +1,7 @@
 package com.garden.back.crop.request;
 
 import com.garden.back.crop.domain.CropCategory;
+import com.garden.back.crop.domain.TradeStatus;
 import com.garden.back.crop.domain.TradeType;
 import com.garden.back.crop.service.request.UpdateCropsPostServiceRequest;
 import com.garden.back.global.validation.EnumValue;
@@ -32,11 +33,13 @@ public record CropsPostsUpdateRequest(
     @EnumValue(enumClass = TradeType.class, message = "DIRECT_TRADE, DELIVERY_TRADE 중에서 한개만 입력이 가능합니다.")
     String tradeType,
 
-    List<String> deleteImages,
+    @EnumValue(enumClass = TradeStatus.class, message = "TRADED, TRADING, RESERVED 중에서 한개만 입력이 가능합니다.")
+    String tradeStatus,
 
-    boolean reservationStatus
+    List<String> deleteImages
+
 ) {
-    public UpdateCropsPostServiceRequest toServiceRequest(List<MultipartFile> images) {
+    public UpdateCropsPostServiceRequest toServiceDto(List<MultipartFile> images) {
         return new UpdateCropsPostServiceRequest(
             title,
             content,
@@ -44,9 +47,9 @@ public record CropsPostsUpdateRequest(
             price,
             priceProposal,
             TradeType.valueOf(tradeType),
-            reservationStatus,
             deleteImages,
-            images
+            images,
+            TradeStatus.valueOf(tradeStatus)
         );
     }
 }

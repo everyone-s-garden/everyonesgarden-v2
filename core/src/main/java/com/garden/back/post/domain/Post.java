@@ -100,7 +100,7 @@ public class Post extends BaseTimeEntity {
         final int approveImageCount = 10;
         final int totalSize = addedImageCount + this.getPostImages().size() - deletedImageCount;
         if (totalSize > approveImageCount) {
-            throw new IllegalArgumentException("게시글 1개에는 10개의 이미지만 등록할 수 있습니다.");
+            throw new IllegalArgumentException("작물 게시글 1개에는 10개의 이미지만 등록할 수 있습니다.");
         }
     }
 

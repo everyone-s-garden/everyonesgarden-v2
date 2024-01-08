@@ -1,10 +1,10 @@
 package com.garden.back.docs.post;
 
 import com.garden.back.docs.RestDocsSupport;
+import com.garden.back.post.PostController;
 import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
 import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
 import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
-import com.garden.back.post.PostController;
 import com.garden.back.post.request.*;
 import com.garden.back.post.service.PostCommandService;
 import com.garden.back.post.service.PostQueryService;
@@ -43,10 +43,11 @@ class PostRestDocs extends RestDocsSupport {
     @Test
     void findAllPosts() throws Exception {
         FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
-        FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "RECENT_DATE");
+        FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "title", "RECENT_DATE");
         given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts")
+                .param("searchContent", request.searchContent())
                 .param("offset", String.valueOf(request.offset()))
                 .param("limit", String.valueOf(request.limit()))
                 .param("orderBy", request.orderBy())
@@ -56,6 +57,7 @@ class PostRestDocs extends RestDocsSupport {
             .andExpect(status().isOk())
             .andDo(document("get-all-posts",
                 queryParameters(
+                    parameterWithName("searchContent").description("검색할 제목 + 내용(해당 검색어로 검색할 경우 제목 또는 내용에 검색어가 포함되어 있을 경우 해당 게시글들을 반환, null일 경우 게시글 전체 조회)").optional(),
                     parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
                     parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
                     parameterWithName("orderBy").description("정렬 조건(COMMENT_COUNT, RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요)")
@@ -74,7 +76,7 @@ class PostRestDocs extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now());
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now(), List.of("이미지 url"));
         given(postQueryService.findPostById(any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
@@ -92,7 +94,8 @@ class PostRestDocs extends RestDocsSupport {
                     fieldWithPath("author").type(STRING).description("작성자"),
                     fieldWithPath("content").type(STRING).description("내용"),
                     fieldWithPath("title").type(STRING).description("제목"),
-                    fieldWithPath("createdDate").type(STRING).description("생성 일")
+                    fieldWithPath("createdDate").type(STRING).description("생성 일"),
+                    fieldWithPath("images").type(ARRAY).description("이미지 목록")
                 )
             ));
     }
@@ -342,6 +345,7 @@ class PostRestDocs extends RestDocsSupport {
     void deleteCommentLike() throws Exception {
         mockMvc.perform(delete("/v1/posts/comments/{commentId}/likes", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
             .andDo(document("delete-comment-likes",
                 pathParameters(
                     parameterWithName("commentId").description("댓글 id")
@@ -354,6 +358,7 @@ class PostRestDocs extends RestDocsSupport {
     void deletePostLike() throws Exception {
         mockMvc.perform(delete("/v1/posts/{postId}/likes", 1L)
                 .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent())
             .andDo(document("delete-post-likes",
                 pathParameters(
                     parameterWithName("postId").description("게시글 id")
