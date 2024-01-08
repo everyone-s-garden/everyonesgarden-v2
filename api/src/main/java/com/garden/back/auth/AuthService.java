@@ -5,7 +5,7 @@ import com.garden.back.auth.jwt.TokenProvider;
 import com.garden.back.auth.jwt.response.RefreshTokenResponse;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.member.Member;
-import com.garden.back.member.MemberRepository;
+import com.garden.back.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
