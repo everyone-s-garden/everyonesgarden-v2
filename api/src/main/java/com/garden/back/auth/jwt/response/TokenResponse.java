@@ -5,6 +5,7 @@ public record TokenResponse(
     String accessToken,
     String refreshToken,
     Long accessTokenExpiredDate,
-    Long refreshTokenExpiredDate
+    Long refreshTokenExpiredDate,
+    Long memberId
 ) {
 }
