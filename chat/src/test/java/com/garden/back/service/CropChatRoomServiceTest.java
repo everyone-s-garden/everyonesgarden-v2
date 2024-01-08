@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @Transactional
-class CropChatRoomServiceTest extends IntegrationTestSupport {
+class CropChatRoomServiceTest {
 
     @Autowired
     private CropChatRoomService cropChatRoomService;
@@ -66,10 +66,11 @@ class CropChatRoomServiceTest extends IntegrationTestSupport {
         CropChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.cropChatRoomCreateParam();
 
         // When
-       cropChatRoomService.createCropChatRoom(chatRoomCreateParam);
+        cropChatRoomService.createCropChatRoom(chatRoomCreateParam);
 
         // Then
-        assertThatThrownBy(()->cropChatRoomService.createCropChatRoom(chatRoomCreateParam))
+        assertThatThrownBy(() -> cropChatRoomService.createCropChatRoom(chatRoomCreateParam))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
 }
