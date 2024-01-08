@@ -2,7 +2,7 @@ package com.garden.back.post.service;
 
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.Member;
-import com.garden.back.member.MemberRepository;
+import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.member.Role;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
