@@ -40,3 +40,8 @@ include::garden/gardens.adoc[]
 == Login
 로그인 API 입니다.
 include::login/login.adoc[]
+
+[[Chat]]
+== Chat
+채팅 API 입니다.
+include::chat/chats.adoc[]

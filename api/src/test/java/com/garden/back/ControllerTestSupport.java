@@ -1,6 +1,8 @@
 package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.garden.back.chat.controller.ChatRoomController;
+import com.garden.back.chat.facade.ChatRoomFacade;
 import com.garden.back.feedback.FeedbackController;
 import com.garden.back.feedback.service.FeedbackService;
 import com.garden.back.garden.GardenController;
@@ -10,6 +12,8 @@ import com.garden.back.global.FixtureSupport;
 import com.garden.back.global.TestSecurityConfig;
 import com.garden.back.report.ReportController;
 import com.garden.back.report.service.ReportService;
+import com.garden.back.service.crop.CropChatRoomService;
+import com.garden.back.service.garden.GardenChatRoomService;
 import com.garden.back.weather.WeatherController;
 import com.garden.back.weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +29,8 @@ import org.springframework.web.context.WebApplicationContext;
         GardenController.class,
         WeatherController.class,
         ReportController.class,
-        FeedbackController.class
+        FeedbackController.class,
+        ChatRoomController.class
     }
 )
 @Import(TestSecurityConfig.class)
@@ -55,5 +60,14 @@ public class ControllerTestSupport extends FixtureSupport {
 
     @MockBean
     protected FeedbackService feedbackService;
+
+    @MockBean
+    protected GardenChatRoomService gardenChatRoomService;
+
+    @MockBean
+    protected CropChatRoomService chatRoomService;
+
+    @MockBean
+    protected ChatRoomFacade chatRoomFacade;
 
 }
