@@ -44,10 +44,15 @@ include::login/login.adoc[]
 [[Post]]
 == Post
 게시판 API 입니다.
-include::post/post.asciidoc[]
+include::post/post.adoc[]
 
+[[Chat]]
+== Chat
+채팅 API 입니다.
+include::chat/chats.adoc[]
 
 [[MyPage]]
 == MyPage
 마이 페이지에서 호출하는 API입니다.
 include::mypage/mypage.adoc[]
+

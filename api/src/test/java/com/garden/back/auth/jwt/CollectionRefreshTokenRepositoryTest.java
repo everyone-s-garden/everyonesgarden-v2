@@ -5,12 +5,14 @@ import com.garden.back.auth.jwt.repository.RefreshToken;
 import com.garden.back.global.FixtureSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Transactional
 class CollectionRefreshTokenRepositoryTest extends FixtureSupport {
 
     private CollectionRefreshTokenRepository repository = new CollectionRefreshTokenRepository();

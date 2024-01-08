@@ -16,4 +16,10 @@ public class MemberService {
     public MemberMyPageResult getMyMember(Long memberId) {
         return MemberMyPageResult.to(memberRepository.getMyPageMemberInfo(memberId));
     }
+
+    public String findNickname(Long memberId) {
+        return memberRepository.findNickName(memberId);
+    }
+
+
 }

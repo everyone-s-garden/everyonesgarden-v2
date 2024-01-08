@@ -3,6 +3,7 @@ package com.garden.back.garden.repository.garden;
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
+import com.garden.back.garden.repository.garden.dto.response.GardenChatRoomInfoRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
@@ -120,5 +121,20 @@ public interface GardenJpaRepository extends JpaRepository<Garden, Long>, Garden
                     """
     )
     List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(@Param("memberId") Long memberId);
+
+    @Query(
+            """
+                    select
+                     g.gardenName as gardenName,
+                     g.gardenStatus as gardenStatus,
+                     g.price as price,
+                     gi.imageUrl as imageUrl
+                    from Garden as g
+                    left join
+                     GardenImage as gi on g.gardenId = gi.garden.gardenId
+                    where g.gardenId =:gardenId
+                    """
+    )
+    List<GardenChatRoomInfoRepositoryResponse> getChatRoomInfo(@Param("gardenId") Long gardenId);
 
 }

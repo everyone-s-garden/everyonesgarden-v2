@@ -1,6 +1,6 @@
 package com.garden.back.controller.report;
 
-import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.report.request.ReportGardenRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;

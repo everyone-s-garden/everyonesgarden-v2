@@ -1,3 +1,4 @@
+
 == Gardens-by-names
 === 텃밭을 등록할 때 이름으로 검색하기
 
@@ -94,7 +95,7 @@ include::{snippets}/get-like-gardens/http-request.adoc[]
 include::{snippets}/get-like-gardens/http-response.adoc[]
 include::{snippets}/get-like-gardens/response-fields.adoc[]
 
-== Get like gardens
+== Create like gardens
 === 텃밭 찜하기
 마음에 드는 텃밭을 찜할 수 있다.
 
