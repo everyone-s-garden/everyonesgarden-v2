@@ -50,7 +50,7 @@ public class CropChatMessage {
             MessageType messageType
     ) {
         Assert.notNull(chatRoom, "Chat Room은 null일 수 없습니다.");
-        Assert.isTrue(memberId >= 0, "유저 아이디는 0보다 작을 수 없습니다.");
+        Assert.isTrue(memberId > 0, "유저 아이디는 0이거나 0보다 작을 수 없습니다.");
         Assert.notNull(contents, "메세지 내용은 null일 수 없습니다.");
 
         this.chatRoom = chatRoom;

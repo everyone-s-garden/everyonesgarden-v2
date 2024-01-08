@@ -2,6 +2,7 @@ package com.garden.back.domain.crop;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 @Getter
 @Table(name = "crop_chat_room_infos")
@@ -39,6 +40,9 @@ public class CropChatRoomInfo {
             Long postId,
             Long memberId
     ) {
+        Assert.isTrue(memberId > 0, "유저 아이디는 0이거나 0보다 작을 수 없습니다.");
+        Assert.isTrue(postId > 0, "게시글 아이디는 0이거나 0보다 작을 수 없습니다.");
+
         this.isWriter = isWriter;
         this.postId = postId;
         this.memberId = memberId;
