@@ -21,7 +21,7 @@ public record GardenMineResponses(
             String gardenName,
             String price,
             String gardenStatus,
-            List<String> imageUrls
+            List<String> images
     ) {
         public static GardenMineResponse to(GardenMineResults.GardenMineResult gardenMineResult) {
             return new GardenMineResponse(

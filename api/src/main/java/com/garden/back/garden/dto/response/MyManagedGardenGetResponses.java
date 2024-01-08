@@ -19,7 +19,7 @@ public record MyManagedGardenGetResponses (
             String gardenName,
             String useStartDate,
             String useEndDate,
-            String imageUrl
+            List<String> images
     ){
         public static MyManagedGardenGetResponse to(MyManagedGardenGetResults.MyManagedGardenGetResult result) {
             return new MyManagedGardenGetResponse(
@@ -27,7 +27,7 @@ public record MyManagedGardenGetResponses (
                     result.gardenName(),
                     result.useStartDate(),
                     result.useEndDate(),
-                    result.imageUrl()
+                    result.images()
             );
         }
     }

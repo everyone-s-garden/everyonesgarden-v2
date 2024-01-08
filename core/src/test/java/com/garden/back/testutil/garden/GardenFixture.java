@@ -162,8 +162,8 @@ public class GardenFixture {
                 1L,
                 "100",
                 "도연이네",
-                "www.everyGarden.com",
                 "10000",
+                List.of("www.everyGarden.com"),
                 GardenStatus.ACTIVE.name(),
                 GardenType.PUBLIC.name()
         );
@@ -174,8 +174,8 @@ public class GardenFixture {
                 1L,
                 "100",
                 "도연이네",
-                "www.everyGarden.com",
                 "10000",
+                List.of("www.everyGarden.com"),
                 GardenStatus.ACTIVE.name(),
                 GardenType.PRIVATE.name()
         );

@@ -41,6 +41,11 @@ include::garden/gardens.adoc[]
 로그인 API 입니다.
 include::login/login.adoc[]
 
+[[Post]]
+== Post
+게시판 API 입니다.
+include::post/post.adoc[]
+
 [[Chat]]
 == Chat
 채팅 API 입니다.

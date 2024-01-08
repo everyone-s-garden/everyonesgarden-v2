@@ -254,11 +254,11 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
-                .extracting("gardenName", "imageUrl")
+                .extracting("gardenName", "images")
                 .contains(
                         Tuple.tuple(
                                 savedPrivateGarden.getGardenName(),
-                                myManagedGarden.getImageUrl()
+                                List.of(myManagedGarden.getImageUrl())
                         )
                 );
     }
