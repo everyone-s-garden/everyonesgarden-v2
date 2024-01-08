@@ -21,7 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @Transactional
-class GardenChatRoomServiceTest {
+class GardenChatRoomServiceTest extends IntegrationTestSupport{
 
     @Autowired
     private GardenChatRoomService gardenChatRoomService;

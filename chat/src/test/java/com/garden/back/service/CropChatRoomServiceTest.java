@@ -16,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @Transactional
-class CropChatRoomServiceTest {
+class CropChatRoomServiceTest extends IntegrationTestSupport{
 
     @Autowired
     private CropChatRoomService cropChatRoomService;
