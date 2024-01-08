@@ -1,0 +1,10 @@
+
+=== 마이 페이지에서 회원 정보 조회
+
+마이 페이지에서 회원 정보 조회
+
+==== Request
+include::{snippets}/get-my-page-memberInfo/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-page-memberInfo/http-response.adoc[]

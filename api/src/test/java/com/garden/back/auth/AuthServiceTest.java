@@ -3,7 +3,7 @@ package com.garden.back.auth;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.Member;
-import com.garden.back.member.MemberRepository;
+import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.member.Role;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
