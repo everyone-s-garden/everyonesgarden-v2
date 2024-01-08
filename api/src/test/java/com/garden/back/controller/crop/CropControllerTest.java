@@ -1,6 +1,6 @@
 package com.garden.back.controller.crop;
 
-import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.crop.request.AssignBuyerRequest;
 import com.garden.back.crop.request.CropsPostCreateRequest;
 import com.garden.back.crop.request.CropsPostsUpdateRequest;
