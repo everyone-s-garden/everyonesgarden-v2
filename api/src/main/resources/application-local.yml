@@ -18,6 +18,18 @@ spring:
       password:
       driver-class-name: org.h2.Driver
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: # TODO - add email
+    password: # TODO - add credentials
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   h2:
     console:
       enabled: true
