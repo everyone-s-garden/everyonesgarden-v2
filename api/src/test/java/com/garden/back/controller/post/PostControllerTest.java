@@ -1,6 +1,6 @@
 package com.garden.back.controller.post;
 
-import com.garden.back.controller.ControllerTestSupport;
+import com.garden.back.ControllerTestSupport;
 import com.garden.back.post.request.CommentCreateRequest;
 import com.garden.back.post.request.CommentUpdateRequest;
 import com.garden.back.post.request.PostCreateRequest;

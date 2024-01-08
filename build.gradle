@@ -118,22 +118,15 @@ subprojects {
     tasks.register("prepareKotlinBuildScriptModel") {}
 }
 
-// api 모듈은 core 모듈에 의존
 project(':api') {
     dependencies {
         implementation project(':core')
+        implementation project(':chat')
     }
 }
 
 // batch 모듈은 core 모듈에 의존
 project(':batch') {
-    dependencies {
-        implementation project(':core')
-    }
-}
-
-// chat 모듈은 core 모듈에 의존
-project(':chat') {
     dependencies {
         implementation project(':core')
     }

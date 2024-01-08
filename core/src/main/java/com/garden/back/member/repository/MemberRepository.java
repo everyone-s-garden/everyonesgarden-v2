@@ -18,4 +18,14 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
           """
     )
     MyPageMemberRepositoryResponse getMyPageMemberInfo(@Param("memberId") Long memberId);
+
+    @Query(
+            """
+            select
+             m.nickname as nickname
+            from Member as m
+            where m.id =:memberId
+            """
+    )
+    String findNickName(@Param("memberId") Long memberId);
 }
