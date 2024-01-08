@@ -57,7 +57,9 @@ public class TokenProvider {
             accessToken,
             refreshToken,
             accessTokenExpiredDate.getTime(),
-            refreshTokenExpiredDate.getTime());
+            refreshTokenExpiredDate.getTime(),
+            member.getId()
+        );
     }
 
     @SneakyThrows
