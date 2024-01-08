@@ -1,10 +1,10 @@
 package com.garden.back.domain.garden;
 
 import com.garden.back.domain.MessageType;
-import io.jsonwebtoken.lang.Assert;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 
