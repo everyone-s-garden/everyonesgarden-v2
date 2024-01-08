@@ -1,5 +1,6 @@
 package com.garden.back.crop;
 
+import com.garden.back.crop.request.AssignBuyerRequest;
 import com.garden.back.crop.request.CropsPostCreateRequest;
 import com.garden.back.crop.request.CropsPostsUpdateRequest;
 import com.garden.back.crop.request.FindAllCropsPostRequest;
@@ -46,7 +47,7 @@ public class CropController {
     public ResponseEntity<FindAllCropsPostResponse> getAllCropsPost(
         @ModelAttribute @Valid FindAllCropsPostRequest request
     ) {
-        return ResponseEntity.ok(cropQueryService.findAll(request.toServiceDto()));
+        return ResponseEntity.ok(cropQueryService.findAll(request.toRepositoryDto()));
     }
 
     @GetMapping(
@@ -65,9 +66,10 @@ public class CropController {
     )
     public ResponseEntity<Void> createCropsPost(
         @RequestPart(value = "texts", required = true) @Valid CropsPostCreateRequest request,
-        @RequestPart(value = "images", required = false) List<MultipartFile> images
+        @RequestPart(value = "images", required = false) List<MultipartFile> images,
+        @CurrentUser LoginUser loginUser
     ) {
-        URI uri = LocationBuilder.buildLocation(cropCommandService.createCropsPost(request.toServiceRequest(images)));
+        URI uri = LocationBuilder.buildLocation(cropCommandService.createCropsPost(request.toServiceRequest(images), loginUser.memberId()));
         return ResponseEntity.created(uri).build();
     }
 
@@ -78,9 +80,24 @@ public class CropController {
     public ResponseEntity<Void> updateCropsPost(
         @PathVariable("id") Long id,
         @RequestPart(value = "texts", required = true) @Valid CropsPostsUpdateRequest request,
-        @RequestPart(value = "images", required = false) List<MultipartFile> images
+        @RequestPart(value = "images", required = false) List<MultipartFile> images,
+        @CurrentUser LoginUser loginUser
     ) {
-        cropCommandService.updateCropsPost(id, request.toServiceRequest(images));
+        cropCommandService.updateCropsPost(id, request.toServiceDto(images), loginUser.memberId());
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping(
+        value = "/posts/{id}/assign-buyer",
+        consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+
+    public ResponseEntity<Void> assignBuyer(
+        @PathVariable("id") Long id,
+        @CurrentUser LoginUser loginUser,
+        @RequestBody @Valid AssignBuyerRequest request
+    ) {
+        cropCommandService.assignCropBuyer(id, loginUser.memberId(), request.toServiceDto());
         return ResponseEntity.ok().build();
     }
 
@@ -107,8 +124,11 @@ public class CropController {
     @DeleteMapping(
         value = "/posts/{id}"
     )
-    public ResponseEntity<Void> deleteCropsPost(@PathVariable("id") Long id) {
-        cropCommandService.deleteCropsPost(id);
+    public ResponseEntity<Void> deleteCropsPost(
+        @PathVariable("id") Long id,
+        @CurrentUser LoginUser loginUser
+    ) {
+        cropCommandService.deleteCropsPost(id, loginUser.memberId());
         return ResponseEntity.noContent().build();
     }
 }

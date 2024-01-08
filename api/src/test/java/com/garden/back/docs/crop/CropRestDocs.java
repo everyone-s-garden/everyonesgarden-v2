@@ -5,13 +5,16 @@ import com.garden.back.crop.CropQueryService;
 import com.garden.back.crop.FindAllCropsPostResponse;
 import com.garden.back.crop.FindCropsPostDetailsResponse;
 import com.garden.back.crop.domain.CropCategory;
+import com.garden.back.crop.domain.TradeStatus;
 import com.garden.back.crop.domain.TradeType;
+import com.garden.back.crop.request.AssignBuyerRequest;
 import com.garden.back.crop.request.CropsPostCreateRequest;
 import com.garden.back.crop.request.CropsPostsUpdateRequest;
 import com.garden.back.crop.request.FindAllCropsPostRequest;
 import com.garden.back.crop.service.CropCommandService;
 import com.garden.back.crop.service.response.MonthlyRecommendedCropsResponse;
 import com.garden.back.docs.RestDocsSupport;
+import com.garden.back.region.Address;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -71,11 +74,14 @@ class CropRestDocs extends RestDocsSupport {
     @DisplayName("작물 게시글 전체 조회 api docs")
     @Test
     void findAllCropsPosts() throws Exception {
-        FindAllCropsPostResponse response = new FindAllCropsPostResponse(List.of(new FindAllCropsPostResponse.CropsInfo(1L, "제목", 100000, LocalDate.now(), TradeType.DIRECT_TRADE, true, true, 2)));
-        FindAllCropsPostRequest request = new FindAllCropsPostRequest(0, 10, "RECENT_DATE");
+        FindAllCropsPostResponse response = new FindAllCropsPostResponse(List.of(new FindAllCropsPostResponse.CropsInfo(1L, "제목", 100000, LocalDate.now(), TradeType.DIRECT_TRADE, true, TradeStatus.TRADING, CropCategory.FRUIT,2L)));
+        FindAllCropsPostRequest request = new FindAllCropsPostRequest(0, 10, "내용", TradeType.DIRECT_TRADE, CropCategory.FRUIT, "RECENT_DATE");
         given(cropQueryService.findAll(any())).willReturn(response);
 
         mockMvc.perform(get("/v1/crops/posts")
+                .param("searchContent", request.searchContent())
+                .param("tradeType", request.tradeType().name())
+                .param("cropCategory", request.cropCategory().name())
                 .param("offset", String.valueOf(request.offset()))
                 .param("limit", String.valueOf(request.limit()))
                 .param("orderBy", request.orderBy())
@@ -87,7 +93,10 @@ class CropRestDocs extends RestDocsSupport {
                 queryParameters(
                     parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
                     parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
-                    parameterWithName("orderBy").description("정렬 조건(RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요)")
+                    parameterWithName("searchContent").description("검색할 제목 + 내용(해당 검색어로 검색할 경우 제목 또는 내용에 검색어가 포함되어 있을 경우 해당 작물 게시글들을 반환, null일 경우 작물 게시글 전체 조회)").optional(),
+                    parameterWithName("tradeType").description("거래 타입 DIRECT_TRADE, DELIVERY_TRADE 중 한개만 선택이 가능합니다.(null 값을 넣으면 모든 거래 타입으로 조회 가능)").optional(),
+                    parameterWithName("cropCategory").description("작물 타입 GRAIN, VEGETABLE, FRUIT, BEAN, ETC 중 한개 선택이 가능합니다.(null 값도 가능)").optional(),
+                    parameterWithName("orderBy").description("정렬 조건(RECENT_DATE, BOOKMARK_COUNT, OLDER_DATE, LOWER_PRICE, HIGHER_PRICE) 중 한개를 입력해주세요)")
                 ),
                 responseFields(
                     fieldWithPath("cropsInfos").type(ARRAY).description("작물 게시글 정보 목록"),
@@ -97,8 +106,9 @@ class CropRestDocs extends RestDocsSupport {
                     fieldWithPath("cropsInfos[].createdDate").type(STRING).description("작물 게시글 생성 일"),
                     fieldWithPath("cropsInfos[].tradeType").type(STRING).description("작물의 거래 형식(직거래, 택배 거래)"),
                     fieldWithPath("cropsInfos[].priceProposal").type(BOOLEAN).description("가격제안 가능여부"),
-                    fieldWithPath("cropsInfos[].reservationStatus").type(BOOLEAN).description("예약 상태"),
-                    fieldWithPath("cropsInfos[].bookmarkCount").type(NUMBER).description("이 게시글을 북마크힌 이용자의 수")
+                    fieldWithPath("cropsInfos[].tradeStatus").type(STRING).description("거래 상태"),
+                    fieldWithPath("cropsInfos[].bookmarkCount").type(NUMBER).description("이 게시글을 북마크힌 이용자의 수"),
+                    fieldWithPath("cropsInfos[].cropCategory").type(STRING).description("작물의 카테고리")
                 )
             ));
     }
@@ -106,9 +116,9 @@ class CropRestDocs extends RestDocsSupport {
     @DisplayName("작물 게시글 상세 조회 api docs")
     @Test
     void findCropsPostsDetails() throws Exception {
-        FindCropsPostDetailsResponse response = new FindCropsPostDetailsResponse("내용", "글쓴이", "78.2", "서울시 성동구 금호동", CropCategory.FRUIT, 2, List.of("이미지 url"));
+        FindCropsPostDetailsResponse response = new FindCropsPostDetailsResponse("내용", "글쓴이", 100, new Address("서울시", "성동구", "금호동"), CropCategory.FRUIT, 2L, List.of("이미지 url"));
         given(cropQueryService.findCropsPostDetails(any())).willReturn(response);
-
+        System.out.println(response);
         mockMvc.perform(get("/v1/crops/posts/{id}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
@@ -121,8 +131,10 @@ class CropRestDocs extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("content").type(STRING).description("내용"),
                     fieldWithPath("author").type(STRING).description("작성자"),
-                    fieldWithPath("mannerPoint").type(STRING).description("매너 점수"),
-                    fieldWithPath("authorAddress").type(STRING).description("작성자 주소"),
+                    fieldWithPath("mannerPoint").type(NUMBER).description("매너 점수"),
+                    fieldWithPath("authorAddress.sido").type(STRING).description("작성자 주소의 시도"),
+                    fieldWithPath("authorAddress.sigungu").type(STRING).description("작성자 주소의 시군구"),
+                    fieldWithPath("authorAddress.upmyeondong").type(STRING).description("작성자 주소의 읍면동"),
                     fieldWithPath("cropCategory").type(STRING).description("작물 카테고리"),
                     fieldWithPath("bookmarkCount").type(NUMBER).description("북마크 수"),
                     fieldWithPath("images").type(ARRAY).description("이미지 URL 리스트")
@@ -201,7 +213,7 @@ class CropRestDocs extends RestDocsSupport {
             .set("price", 10000)
             .set("priceProposal", Boolean.TRUE)
             .set("tradeType", "DIRECT_TRADE")
-            .set("reservationStatus", false)
+            .set("tradeStatus", "TRADING")
             .size("deleteImages", 1)
             .set("deleteImages[0]", "해당 이미지의 url")
             .sample();
@@ -236,7 +248,7 @@ class CropRestDocs extends RestDocsSupport {
                     fieldWithPath("price").type(NUMBER).description("가격"),
                     fieldWithPath("priceProposal").type(BOOLEAN).description("가격 제안 여부"),
                     fieldWithPath("tradeType").type(STRING).description("거래 유형 (DIRECT_TRADE, DELIVERY_TRADE 중에서 한개만 입력이 가능합니다.)"),
-                    fieldWithPath("reservationStatus").type(BOOLEAN).description("예약 상태"),
+                    fieldWithPath("tradeStatus").type(STRING).description("거래 상태"),
                     fieldWithPath("deleteImages").type(ARRAY).description("삭제할 이미지의 url 목록")
                 ),
                 requestParts(
@@ -289,6 +301,25 @@ class CropRestDocs extends RestDocsSupport {
             .andDo(document("delete-post-crops",
                 pathParameters(
                     parameterWithName("id").description("삭제할 작물 게시글 id")
+                )
+            ));
+    }
+
+    @DisplayName("작물 게시글의 구매자 아이디를 할당할 수 있다.")
+    @Test
+    void assignBuyer() throws Exception {
+        AssignBuyerRequest request = new AssignBuyerRequest(2L);
+
+        mockMvc.perform(patch("/v1/crops//posts/{id}/assign-buyer", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andDo(document("assign-crops-buyer",
+                pathParameters(
+                    parameterWithName("id").description("작물 게시글의 id")
+                ),
+                requestFields(
+                    fieldWithPath("buyerId").type(NUMBER).description("구매한 이용자의 id")
                 )
             ));
     }

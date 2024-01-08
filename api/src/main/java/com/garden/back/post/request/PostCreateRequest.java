@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public record PostCreateRequest(
@@ -17,7 +17,7 @@ public record PostCreateRequest(
 ) {
     public PostCreateServiceRequest toServiceRequest(List<MultipartFile> images) {
         if (images == null) {
-            images = new ArrayList<>();
+            images = Collections.emptyList();
         }
 
         if (images.size() > 10) {

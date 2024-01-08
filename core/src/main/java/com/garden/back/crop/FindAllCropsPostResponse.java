@@ -1,6 +1,8 @@
 package com.garden.back.crop;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.garden.back.crop.domain.CropCategory;
+import com.garden.back.crop.domain.TradeStatus;
 import com.garden.back.crop.domain.TradeType;
 
 import java.time.LocalDate;
@@ -17,7 +19,8 @@ public record FindAllCropsPostResponse(
         LocalDate createdDate,
         TradeType tradeType,
         boolean priceProposal,
-        boolean reservationStatus,
-        Integer bookmarkCount
+        TradeStatus tradeStatus,
+        CropCategory cropCategory,
+        Long bookmarkCount
     ) {}
 }

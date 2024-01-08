@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 public record CropsPostCreateRequest(
@@ -19,7 +20,7 @@ public record CropsPostCreateRequest(
     @NotBlank(message = "내용을 입력해주세요")
     String content,
 
-    @EnumValue(enumClass = CropCategory.class, message = "GRAIN, VEGETABLE, FRUIT, BEAN 중에서 한개만 입력이 가능합니다.")
+    @EnumValue(enumClass = CropCategory.class, message = "GRAIN, VEGETABLE, FRUIT, BEAN, ETC 중에서 한개만 입력이 가능합니다.")
     String cropsCategory,
 
     @NotNull(message = "가격을 입력해주세요")
@@ -33,6 +34,14 @@ public record CropsPostCreateRequest(
     String tradeType
 ) {
     public CreateCropsPostServiceRequest toServiceRequest(List<MultipartFile> images) {
+        if (images == null) {
+            images = Collections.emptyList();
+        }
+
+        if (images.size() > 10) {
+            throw new IllegalArgumentException("게시글 한개당 10장의 이미지만 등록할 수 있습니다.");
+        }
+
         return new CreateCropsPostServiceRequest(
             content,
             title,

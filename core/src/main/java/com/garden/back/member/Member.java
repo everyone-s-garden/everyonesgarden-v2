@@ -1,5 +1,6 @@
 package com.garden.back.member;
 
+import com.garden.back.region.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,12 @@ public class Member {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "manner_score")
+    private Integer mannerScore;
+
+    @Embedded
+    private Address address;
+
     private Member(String email, String nickname, Role role) {
 
         if (!EmailValidator.getInstance().isValid(email)) {
@@ -36,6 +43,7 @@ public class Member {
             throw new IllegalArgumentException("닉네임은 30글자 이내로 입력해주세요");
         }
 
+        this.mannerScore = 0;
         this.email = email;
         this.role = role;
         this.nickname = nickname;
