@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -88,7 +89,7 @@ public class CropPost extends BaseTimeEntity {
         Assert.notNull(tradeType, "거래 종류를 입력해 주세요.");
         Assert.notNull(cropPostAuthorId, "게시글을 작성한 이용자의 id를 입력해주세요.");
 
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         this.bookMarkCount = 0L;
         this.tradeStatus = TradeStatus.TRADING;
         this.version = 0L;
