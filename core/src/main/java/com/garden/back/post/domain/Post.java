@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class Post extends BaseTimeEntity {
         this.postImages = postUrls.stream()
             .map(postUrl -> PostImage.create(postUrl, this))
             .collect(Collectors.toSet());
-        this.createdDate = LocalDate.now();
+        this.createdDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
 
         validatePostStatus();
     }
