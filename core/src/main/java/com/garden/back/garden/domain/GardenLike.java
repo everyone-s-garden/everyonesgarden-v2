@@ -11,27 +11,37 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-@Table(name = "garden_likes", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"member_id", "garden_id"})
-})
 public class GardenLike {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "garden_like_id")
     private Long gardenLikeId;
-
-    @Column(name = "member_id")
     private Long memberId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "garden_id")
     private Garden garden;
-
-    @CreatedDate
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
+
+    protected GardenLike(
+            Long gardenLikeId,
+            Long memberId,
+            Garden garden
+    ) {
+        isNullOrNegativeMemberId(memberId);
+        Assert.notNull(garden, "garden은 null일 수 없습니다.");
+
+        this.gardenLikeId = gardenLikeId;
+        this.memberId = memberId;
+        this.garden = garden;
+    }
+
+    public static GardenLike of(
+            Long gardenLikeId,
+            Long memberId,
+            Garden garden
+    ) {
+        return new GardenLike(
+                gardenLikeId,
+                memberId,
+                garden
+        );
+    }
 
     protected GardenLike(
             Long memberId,

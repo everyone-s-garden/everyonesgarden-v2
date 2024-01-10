@@ -12,12 +12,11 @@ import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -66,7 +65,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         // When_Then
         assertThatThrownBy(() -> gardenCommandService.deleteGarden(notExistedGardenDetailParam))
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
     @DisplayName("내가 작성한 텃밭 게시물이 아닌 경우 예외를 던진다.")
@@ -95,7 +94,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
-                .isInstanceOf(JpaObjectRetrievalFailureException.class);
+                .isInstanceOf(EmptyResultDataAccessException.class);
         assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).size())
                 .isEqualTo(0);
 
@@ -248,11 +247,11 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
-        myManagedGardenRepository.save(myManagedGarden);
+        MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
                 expectedUrl,
                 savedPublicGarden.getGardenId(),
-                myManagedGarden.getMyManagedGardenId()
+                savedMyManagedGarden.getMyManagedGardenId()
         );
 
         // When

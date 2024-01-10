@@ -76,6 +76,7 @@ public class GardenCommandService {
     public Long updateGarden(GardenUpdateParam param) {
         Garden gardenToUpdate = gardenRepository.getById(param.gardenId());
         gardenToUpdate.updateGarden(GardenUpdateParam.of(param));
+        gardenRepository.save(gardenToUpdate);
 
         deleteGardenImages(param.gardenId(), param.remainGardenImageUrls());
         saveNewGardenImages(gardenToUpdate, param.newGardenImages());
@@ -122,6 +123,7 @@ public class GardenCommandService {
 
         List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, List.of(param.myManagedGardenImage()));
         myManagedGarden.update(MyManagedGardenUpdateParam.to(param, uploadImageUrls.get(MY_MANAGED_GARDEN_IMAGE_INDEX)));
+        myManagedGardenRepository.save(myManagedGarden);
 
         return myManagedGarden.getMyManagedGardenId();
     }
