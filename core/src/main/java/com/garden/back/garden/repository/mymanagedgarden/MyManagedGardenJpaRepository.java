@@ -21,7 +21,7 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
                      mmg.useEndDate as useEndDate,
                      g.gardenName as gardenName
                     from MyManagedGarden as mmg
-                    inner join Garden as g on mmg.gardenId = g.gardenId
+                    inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.memberId =:memberId
                     """
     )
@@ -45,7 +45,7 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
                      g.gardenName as gardenName,
                      g.address as address
                     from MyManagedGarden as mmg
-                    inner join Garden as g on mmg.gardenId = g.gardenId
+                    inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.myManagedGardenId =:myManagedGardenId
                     """
     )
