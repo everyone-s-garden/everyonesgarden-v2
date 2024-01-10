@@ -76,6 +76,7 @@ public class GardenCommandService {
     public Long updateGarden(GardenUpdateParam param) {
         Garden gardenToUpdate = gardenRepository.getById(param.gardenId());
         gardenToUpdate.updateGarden(GardenUpdateParam.of(param));
+        gardenRepository.save(gardenToUpdate);
 
         deleteGardenImages(param.gardenId(), param.remainGardenImageUrls());
         saveNewGardenImages(gardenToUpdate, param.newGardenImages());
