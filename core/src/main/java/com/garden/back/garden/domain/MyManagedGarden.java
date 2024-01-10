@@ -2,52 +2,69 @@ package com.garden.back.garden.domain;
 
 import com.garden.back.garden.domain.dto.MyManagedGardenCreateDomainRequest;
 import com.garden.back.garden.domain.dto.MyManagedGardenUpdateDomainRequest;
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Entity
-@Table(name="my_managed_gardens")
 public class MyManagedGarden {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "my_managed_garden_id")
     private Long myManagedGardenId;
-
-    @Column(name="use_start_date")
     private LocalDate useStartDate;
-
-    @Column(name="use_end_date")
     private LocalDate useEndDate;
-
-    @Column(name="member_id")
     private Long memberId;
-
-    @Column(name = "image_url")
     private String imageUrl;
-
-    @Column(name = "garden_id")
     private Long gardenId;
 
     protected MyManagedGarden(
-        LocalDate useStartDate,
-        LocalDate useEndDate,
-        Long memberId,
-        String imageUrl,
-        Long gardenId
-    ){
+            Long myManagedGardenId,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Long memberId,
+            String imageUrl,
+            Long gardenId
+    ) {
+        this.myManagedGardenId = myManagedGardenId;
         this.useStartDate = useStartDate;
         this.useEndDate = useEndDate;
         this.memberId = memberId;
         this.imageUrl = imageUrl;
-        this.gardenId =gardenId;
+        this.gardenId = gardenId;
+    }
+
+    public static MyManagedGarden of(
+            Long myManagedGardenId,
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Long memberId,
+            String imageUrl,
+            Long gardenId
+    ) {
+        return new MyManagedGarden(
+                myManagedGardenId,
+                useStartDate,
+                useEndDate,
+                memberId,
+                imageUrl,
+                gardenId
+        );
+    }
+
+    protected MyManagedGarden(
+            LocalDate useStartDate,
+            LocalDate useEndDate,
+            Long memberId,
+            String imageUrl,
+            Long gardenId
+    ) {
+        this.useStartDate = useStartDate;
+        this.useEndDate = useEndDate;
+        this.memberId = memberId;
+        this.imageUrl = imageUrl;
+        this.gardenId = gardenId;
     }
 
     public static MyManagedGarden of(
