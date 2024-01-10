@@ -123,6 +123,7 @@ public class GardenCommandService {
 
         List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, List.of(param.myManagedGardenImage()));
         myManagedGarden.update(MyManagedGardenUpdateParam.to(param, uploadImageUrls.get(MY_MANAGED_GARDEN_IMAGE_INDEX)));
+        myManagedGardenRepository.save(myManagedGarden);
 
         return myManagedGarden.getMyManagedGardenId();
     }
