@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,7 +67,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         // When_Then
         assertThatThrownBy(() -> gardenCommandService.deleteGarden(notExistedGardenDetailParam))
-                .isInstanceOf(EntityNotFoundException.class);
+                .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
     @DisplayName("내가 작성한 텃밭 게시물이 아닌 경우 예외를 던진다.")
@@ -95,7 +96,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
-                .isInstanceOf(JpaObjectRetrievalFailureException.class);
+                .isInstanceOf(EmptyResultDataAccessException.class);
         assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).size())
                 .isEqualTo(0);
 
