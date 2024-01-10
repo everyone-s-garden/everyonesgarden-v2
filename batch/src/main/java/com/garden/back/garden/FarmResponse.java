@@ -1,6 +1,6 @@
 package com.garden.back.garden;
 
-import com.garden.back.garden.model.PublicDataGarden;
+import com.garden.back.garden.domain.PublicDataGarden;
 
 import java.util.List;
 
