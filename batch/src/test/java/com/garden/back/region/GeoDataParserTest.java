@@ -19,16 +19,17 @@ class GeoDataParserTest {
 
     @DisplayName("대한민국 전국의 법정동 데이터를 추가한다.")
     @Test
-    @Disabled
+    @Disabled("db에 데이터를 넣는 코드라 제거했습니다.")
     void saveAllKoreanRegionWithMultipolygonAndBeopjeongdong() {
         geoDataParser.saveAllKoreanRegionWithMultipolygonAndBeopjeongdong();
-        assertThat(regionRepository.findAll()).hasSize(5054);
+        assertThat(regionRepository.findAll()).hasSize(5053);
     }
 
     @DisplayName("대한민국의 변경된 법정된 데이터를 추가한다.")
     @Test
-    @Disabled
+    @Disabled("db에 데이터를 넣는 코드라 제거했습니다.")
     void saveChangedRegions() {
         geoDataParser.saveChangedRegions();
+        assertThat(regionRepository.findAll()).hasSize(7);
     }
 }

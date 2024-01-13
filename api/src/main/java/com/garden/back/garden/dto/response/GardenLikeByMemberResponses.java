@@ -21,7 +21,7 @@ public record GardenLikeByMemberResponses(
             String gardenName,
             String price,
             String gardenStatus,
-            List<String> imageUrls
+            List<String> images
     ) {
         public static GardenLikeByMemberResponse to(GardenLikeByMemberResults.GardenLikeByMemberResult gardenLikeByMemberResult) {
             return new GardenLikeByMemberResponse(

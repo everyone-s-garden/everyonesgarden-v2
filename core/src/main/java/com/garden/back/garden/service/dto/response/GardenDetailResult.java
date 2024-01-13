@@ -5,7 +5,6 @@ import jakarta.persistence.EntityNotFoundException;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record GardenDetailResult(
         Long gardenId,
@@ -29,7 +28,7 @@ public record GardenDetailResult(
         GardenFacility gardenFacility,
         boolean isLiked
 ) {
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public static GardenDetailResult to(List<GardenDetailRepositoryResponse> gardenDetailRepositoryResponses) {
         GardenDetailRepositoryResponse gardenDetailRepositoryResponse =
@@ -48,10 +47,10 @@ public record GardenDetailResult(
                 gardenDetailRepositoryResponse.getSize(),
                 gardenDetailRepositoryResponse.getGardenStatus().name(),
                 gardenDetailRepositoryResponse.getWriterId(),
-                gardenDetailRepositoryResponse.getRecruitStartDate().format(TIME_FORMATTER),
-                gardenDetailRepositoryResponse.getRecruitEndDate().format(TIME_FORMATTER),
-                gardenDetailRepositoryResponse.getUseStartDate().format(TIME_FORMATTER),
-                gardenDetailRepositoryResponse.getUseEndDate().format(TIME_FORMATTER),
+                gardenDetailRepositoryResponse.getRecruitStartDate().format(DATE_FORMATTER),
+                gardenDetailRepositoryResponse.getRecruitEndDate().format(DATE_FORMATTER),
+                gardenDetailRepositoryResponse.getUseStartDate().format(DATE_FORMATTER),
+                gardenDetailRepositoryResponse.getUseEndDate().format(DATE_FORMATTER),
                 gardenDetailRepositoryResponse.getGardenDescription(),
                 gardenDetailRepositoryResponses.stream()
                         .map(GardenDetailRepositoryResponse::getImageUrl)

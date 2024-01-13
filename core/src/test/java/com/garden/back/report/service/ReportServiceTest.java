@@ -1,8 +1,8 @@
 package com.garden.back.report.service;
 
 import com.garden.back.global.IntegrationTestSupport;
-import com.garden.back.report.model.GardenReport;
-import com.garden.back.report.model.GardenReportType;
+import com.garden.back.report.domain.GardenReport;
+import com.garden.back.report.domain.GardenReportType;
 import com.garden.back.report.repository.ReportRepository;
 import com.garden.back.report.service.request.ReportGardenServiceRequest;
 import jakarta.transaction.Transactional;

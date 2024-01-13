@@ -1,20 +1,29 @@
 package com.garden.back.testutil.garden;
 
-import com.garden.back.garden.model.Garden;
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
-import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
-import com.garden.back.garden.service.dto.request.GardenDetailParam;
+import com.garden.back.garden.domain.Garden;
+import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.MyManagedGarden;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.global.GeometryUtil;
 import org.locationtech.jts.geom.Point;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
 public class GardenFixture {
-
+    private static final String FIRST_GARDEN_IMAGE_URL = "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg";
+    private static final String SECOND_GARDEN_IMAGE_URL = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
     private static final double LATITUDE = 37.4449168;
     private static final double LONGITUDE = 127.1388684;
+    private static final LocalDate RECRUIT_START_DATE = LocalDate.of(2023,11,1);
+    private static final LocalDate RECRUIT_END_DATE = LocalDate.of(2023,12,7);
+    private static final LocalDate USE_START_DATE = LocalDate.of(2024,12,7);
+    private static final LocalDate USE_END_DATE = LocalDate.of(2024,12,15);
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
     }
@@ -33,10 +42,10 @@ public class GardenFixture {
                 "000-000-000",
                 "200.23",
                 "화장실이 깨끗하고 농기구를 빌려줍니다.",
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(30),
-                LocalDateTime.now().plusDays(31),
-                LocalDateTime.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 true,
                 false,
                 true,
@@ -44,6 +53,41 @@ public class GardenFixture {
                 false,
                 0
         );
+    }
+
+    public static Garden publicGarden() {
+        return Garden.of(
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                GeometryUtil.createPoint(LATITUDE, LONGITUDE),
+                "김별이네 텃밭",
+                GardenType.PUBLIC,
+                GardenStatus.ACTIVE,
+                "www.everygarden.me",
+                "100",
+                "000-000-000",
+                "200.23",
+                "화장실이 깨끗하고 농기구를 빌려줍니다.",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                true,
+                false,
+                true,
+                1L,
+                false,
+                0
+        );
+    }
+
+    public static GardenImage firstGardenImage(Garden garden) {
+        return GardenImage.of(FIRST_GARDEN_IMAGE_URL, garden);
+    }
+
+    public static GardenImage secondGardenImage(Garden garden) {
+        return GardenImage.of(SECOND_GARDEN_IMAGE_URL, garden);
     }
 
     public static GardenByComplexesParam publicGardenByComplexesParam() {
@@ -59,7 +103,7 @@ public class GardenFixture {
 
     public static GardenByComplexesParam allGardenByComplexesParam() {
         return new GardenByComplexesParam(
-                GardenType.All.name(),
+                GardenType.ALL.name(),
                 0,
                 LATITUDE,
                 LONGITUDE,
@@ -93,10 +137,10 @@ public class GardenFixture {
                 "000-000-000",
                 "200",
                 "화장실이 깨끗해요 그리고 시설이 최신식입니다.",
-                LocalDateTime.now(),
-                LocalDateTime.now().plusDays(30),
-                LocalDateTime.now().plusDays(31),
-                LocalDateTime.now().plusMonths(6),
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
                 true,
                 false,
                 true,
@@ -118,8 +162,8 @@ public class GardenFixture {
                 1L,
                 "100",
                 "도연이네",
-                "www.everyGarden.com",
                 "10000",
+                List.of("www.everyGarden.com"),
                 GardenStatus.ACTIVE.name(),
                 GardenType.PUBLIC.name()
         );
@@ -130,10 +174,107 @@ public class GardenFixture {
                 1L,
                 "100",
                 "도연이네",
-                "www.everyGarden.com",
                 "10000",
+                List.of("www.everyGarden.com"),
                 GardenStatus.ACTIVE.name(),
                 GardenType.PRIVATE.name()
+        );
+    }
+
+    public static GardenCreateParam gardenCreateParam(String expectedUrl) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new GardenCreateParam(
+                List.of(multipartFile),
+                "별이네 텃밭",
+                "100",
+                "200",
+                GardenStatus.ACTIVE,
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                new GardenCreateParam.GardenFacility(
+                        true,
+                        true,
+                        true
+                ),
+                "화장실이 깨끗하고 흙이 좋아요",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static GardenUpdateParam gardenUpdateParam(String expectedUrl, Long gardenId) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new GardenUpdateParam(
+                gardenId,
+                List.of(FIRST_GARDEN_IMAGE_URL),
+                List.of(multipartFile),
+                "별이네 텃밭",
+                "100",
+                "200",
+                GardenStatus.ACTIVE,
+                GardenType.PRIVATE,
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                new GardenUpdateParam.GardenFacility(
+                        true,
+                        true,
+                        true
+                ),
+                "화장실이 깨끗하고 흙이 좋아요",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static MyManagedGardenCreateParam myManagedGardenCreateParam(String expectedUrl) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new MyManagedGardenCreateParam(
+                multipartFile,
+                1L,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static MyManagedGardenUpdateParam myManagedGardenUpdateParam(
+            String expectedUrl,
+            Long gardenId,
+            Long myManagedGardenId) {
+        MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
+
+        return new MyManagedGardenUpdateParam(
+                multipartFile,
+                myManagedGardenId,
+                gardenId,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static MyManagedGarden myManagedGarden(Long gardenId) {
+        return MyManagedGarden.of(
+                USE_START_DATE,
+                USE_END_DATE,
+                1L,
+                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
+                gardenId
         );
     }
 

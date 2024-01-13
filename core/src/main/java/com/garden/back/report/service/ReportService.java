@@ -1,9 +1,8 @@
 package com.garden.back.report.service;
 
 import com.garden.back.global.event.Events;
-import com.garden.back.report.model.GardenReport;
-import com.garden.back.report.model.GardenReportCreatedEvent;
-import com.garden.back.report.model.Report;
+import com.garden.back.report.domain.GardenReport;
+import com.garden.back.report.domain.GardenReportCreatedEvent;
 import com.garden.back.report.repository.ReportRepository;
 import com.garden.back.report.service.request.ReportGardenServiceRequest;
 import jakarta.transaction.Transactional;

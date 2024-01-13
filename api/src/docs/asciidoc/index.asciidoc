@@ -35,3 +35,24 @@ include::report/reports.adoc[]
 == Garden
 텃밭 API 입니다.
 include::garden/gardens.adoc[]
+
+[[Login]]
+== Login
+로그인 API 입니다.
+include::login/login.adoc[]
+
+[[Post]]
+== Post
+게시판 API 입니다.
+include::post/post.adoc[]
+
+[[Chat]]
+== Chat
+채팅 API 입니다.
+include::chat/chats.adoc[]
+
+[[MyPage]]
+== MyPage
+마이 페이지에서 호출하는 API입니다.
+include::mypage/mypage.adoc[]
+

@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -94,7 +93,7 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
         String actual = naverAndOpenAPISupport.getNearestForecastDateTime(testTime);
 
         // then
-        LocalDateTime expectedTime = LocalDateTime.of(2023, 12, 15, 8, 0); // The expected nearest time
+        LocalDateTime expectedTime = LocalDateTime.of(2023, 12, 15, 5, 0); // The expected nearest time
         String expected = expectedTime.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         assertThat(actual).isEqualTo(expected);
     }

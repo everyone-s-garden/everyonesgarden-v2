@@ -3,9 +3,98 @@
 
 1월부터 12월까지 추천 작물을 조회합니다. (위키 기준)
 
+[[get-all-crops-posts]]
+=== 작물 게시글 전체 조회하기
+모든 작물 게시글을 조회합니다. 이 API는 페이지네이션을 지원하며, 사용자가 지정한 조건에 따라 정렬된 결과를 반환합니다. 각 게시글의 상세 정보로는 제목, 가격, 생성 일자, 거래 형식, 가격 제안 여부, 예약 상태, 북마크 수 등이 포함됩니다.
+
+==== Request
+include::{snippets}/get-all-crops-posts/http-request.adoc[]
+include::{snippets}/get-all-crops-posts/query-parameters.adoc[]
+
+==== Response
+include::{snippets}/get-all-crops-posts/response-fields.adoc[]
+
+[[get-details-crops-post]]
+=== 작물 게시글 상세 조회하기
+특정 작물 게시글의 상세 정보를 조회합니다. 이 API는 작성자, 내용, 매너 점수, 작성자 주소, 작물 카테고리, 북마크 수, 그리고 이미지 URL 리스트를 포함한 상세 정보를 제공합니다.
+
+==== Request
+include::{snippets}/get-details-crops-post/http-request.adoc[]
+include::{snippets}/get-details-crops-post/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/get-details-crops-post/response-fields.adoc[]
+
 ==== Request
 include::{snippets}/get-all-months-recommended-crops/http-request.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-all-months-recommended-crops/http-response.adoc[]
 include::{snippets}/get-all-months-recommended-crops/response-fields.adoc[]
+
+[[create-crops-post]]
+=== 작물 판매 게시글 생성하기
+작물 판매 게시글을 생성합니다.priceProposal의 값이 true면 가격제안이 가능하고 false면 불가능합니다.
+
+==== Request
+include::{snippets}/create-crops-posts/http-request.adoc[]
+include::{snippets}/create-crops-posts/request-parts.adoc[]
+include::{snippets}/create-crops-posts/request-part-texts-fields.adoc[]
+
+==== Response
+include::{snippets}/create-crops-posts/http-response.adoc[]
+
+[[update-crops-post]]
+=== 작물 판매 게시글 수정하기
+작물 판매 게시글을 수정합니다. 게시글의 제목, 내용, 카테고리, 가격, 가격 제안 여부, 거래 유형, 예약 상태를 변경할 수 있습니다. 또한, 이미지를 추가하거나 기존 이미지를 삭제할 수도 있습니다.
+
+==== Request
+include::{snippets}/update-crops-post/http-request.adoc[]
+include::{snippets}/update-crops-post/request-parts.adoc[]
+include::{snippets}/update-crops-post/request-part-texts-fields.adoc[]
+
+==== Response
+include::{snippets}/update-crops-post/http-response.adoc[]
+
+[[create-crops-post-bookmark]]
+=== 작물 게시글 북마크 생성하기
+특정 작물 게시글에 대한 북마크를 생성합니다. 이 API는 사용자가 지정한 게시글을 북마크하며, 성공적으로 생성된 북마크의 ID를 반환합니다.
+
+==== Request
+include::{snippets}/create-crops-post-bookmark/http-request.adoc[]
+include::{snippets}/create-crops-post-bookmark/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/create-crops-post-bookmark/response-headers.adoc[]
+
+[[delete-post-crops-bookmark]]
+=== 작물 게시글의 북마크 취소하기
+사용자가 북마크한 특정 작물 게시글의 북마크를 취소합니다. 이 API는 지정된 게시글의 북마크를 성공적으로 취소하면, 콘텐츠 없음 상태를 반환합니다.
+
+==== Request
+include::{snippets}/delete-post-crops-bookmark/http-request.adoc[]
+include::{snippets}/delete-post-crops-bookmark/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/delete-post-crops-bookmark/http-response.adoc[]
+
+[[delete-post-crops]]
+=== 작물 게시글 삭제하기
+특정 작물 게시글을 삭제합니다. 이 API는 지정된 게시글을 성공적으로 삭제하면, 콘텐츠 없음 상태를 반환합니다.
+
+==== Request
+include::{snippets}/delete-post-crops/http-request.adoc[]
+include::{snippets}/delete-post-crops/path-parameters.adoc[]
+
+==== Response
+include::{snippets}/delete-post-crops/http-response.adoc[]
+
+[[assign-crops-buyer]]
+=== 작물을 구매한 이용자의 id 할당하기
+
+==== Request
+include::{snippets}/assign-crops-buyer/http-request.adoc[]
+include::{snippets}/assign-crops-buyer/request-fields.adoc[]
+
+==== Response
+include::{snippets}/assign-crops-buyer/http-response.adoc[]

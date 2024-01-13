@@ -31,7 +31,7 @@ resilience4j:
   timelimiter:
     instances:
       openAPI_getWeatherForecast:
-        timeoutDuration: 3s
+        timeoutDuration: 10s
       openAPI_getMidLandForecast:
         timeoutDuration: 3s
       openAPI_getWeekWeatherForecast:

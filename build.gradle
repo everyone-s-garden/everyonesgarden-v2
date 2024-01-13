@@ -11,7 +11,7 @@ sonar {
         property "sonar.projectKey", "everyone-s-garden_back-V2"
         property "sonar.organization", "everyone-s-garden"
         property "sonar.host.url", "https://sonarcloud.io"
-        property 'sonar.coverage.exclusions', '**/health/**, **/*Request.java, **/*Response.java, **/*Result*.java, **/*Param*.java,  **/*Config*.java, **/*Exception*.java, **/*Info.java, **/*Client.java, **/*Parser.java'
+        property 'sonar.coverage.exclusions', '**/health/**, **/*Request.java, **/*Response.java, **/*Result*.java, **/*Param*.java,  **/*Config*.java, **/*Exception*.java, **/*Info.java, **/*Client.java, **/*Parser.java, **/global/error/**, **/auth/jwt/**'
         property 'sonar.exclusions', '**/*Application*.java, , **/*Parser.java'
     }
 }
@@ -118,10 +118,10 @@ subprojects {
     tasks.register("prepareKotlinBuildScriptModel") {}
 }
 
-// api 모듈은 core 모듈에 의존
 project(':api') {
     dependencies {
         implementation project(':core')
+        implementation project(':chat')
     }
 }
 

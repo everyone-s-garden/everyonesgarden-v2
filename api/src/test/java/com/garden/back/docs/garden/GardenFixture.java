@@ -1,13 +1,9 @@
 package com.garden.back.docs.garden;
 
-import com.garden.back.garden.dto.request.GardenLikeCreateRequest;
-import com.garden.back.garden.dto.request.GardenLikeDeleteRequest;
-import com.garden.back.garden.model.vo.GardenStatus;
-import com.garden.back.garden.model.vo.GardenType;
-import com.garden.back.garden.service.dto.request.GardenByNameParam;
+import com.garden.back.garden.domain.vo.GardenStatus;
+import com.garden.back.garden.domain.vo.GardenType;
+import com.garden.back.garden.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.util.List;
 
@@ -94,7 +90,7 @@ public class GardenFixture {
                                 "1000",
                                 "영수네 텃밭",
                                 "100000",
-                                "www.garden.com",
+                                List.of("www.garden.com"),
                                 GardenStatus.ACTIVE.name(),
                                 GardenType.PUBLIC.name()
                         )
@@ -141,4 +137,92 @@ public class GardenFixture {
                 1L
         );
     }
+
+    public static GardenCreateRequest gardenCreateRequest() {
+        return new GardenCreateRequest(
+                "별이네 텃밭",
+                "100",
+                "200",
+                "ACTIVE",
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                37.444917,
+                127.138868,
+                true,
+                true,
+                true,
+                "화장실이 깨끗하고 토양의 질이 좋습니다. 모두 놀러오세요",
+                "2023.12.01",
+                "2023.12.23",
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
+    public static GardenUpdateRequest gardenUpdateRequest() {
+        return new GardenUpdateRequest(
+                List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                "별이네 텃밭",
+                "100",
+                "200",
+                "ACTIVE",
+                "PRIVATE",
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                37.444917,
+                127.138868,
+                true,
+                true,
+                true,
+                "화장실이 깨끗하고 흙이 좋아요",
+                "2023.12.01",
+                "2023.12.23",
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
+    public static MyManagedGardenGetResults myManagedGardenGetResults() {
+        return new MyManagedGardenGetResults(
+                List.of(
+                        new MyManagedGardenGetResults.MyManagedGardenGetResult(
+                                1L,
+                                "별이네 주말농장",
+                                "2023.12.01",
+                                "2023.12.31",
+                                List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg")
+                        )
+                )
+        );
+    }
+
+    public static MyManagedGardenCreateRequest myManagedGardenCreateRequest() {
+        return new MyManagedGardenCreateRequest(
+                1L,
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
+    public static MyManagedGardenUpdateRequest myManagedGardenUpdateRequest() {
+        return new MyManagedGardenUpdateRequest(
+                1L,
+                "2023.12.01",
+                "2023.12.31"
+        );
+    }
+
+    public static MyManagedGardenDetailResult myManagedGardenDetailResult() {
+        return new MyManagedGardenDetailResult(
+                1L,
+                "금쪽이네 텃밭",
+                "인천 계양구 계산동 22",
+                "2023.12.01",
+                "2023.12.31",
+                "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+        );
+    }
+
 }

@@ -19,12 +19,12 @@ public record GardensByComplexes(
     public record GardenByComplexes(
             Long gardenId,
             String size,
-            String gardenName,
             String price,
-            String imageUrl,
+            String gardenStatus,
+            String gardenName,
             Double latitude,
             Double longitude,
-            String gardenStatus,
+            String imageUrl,
             String gardenType
     ) {
     }
