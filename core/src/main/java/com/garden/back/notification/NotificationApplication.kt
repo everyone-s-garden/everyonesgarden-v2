@@ -1,18 +1,14 @@
 package com.garden.back.notification
 
 import com.garden.back.notification.domain.Notification
+import com.garden.back.notification.domain.NotificationType
 import com.garden.back.notification.domain.slack.SlackChannel
-import com.garden.back.notification.service.NotificationService
-import org.springframework.beans.factory.annotation.Qualifier
+import com.garden.back.notification.service.NotificationServiceFactory
 import org.springframework.stereotype.Component
 
 @Component
 class NotificationApplication(
-    @Qualifier("email")
-    private val javaMailService: NotificationService,
-
-    @Qualifier("slack")
-    private val slackService: NotificationService,
+    private val notificationServiceFactory: NotificationServiceFactory,
 ) {
 
     fun toEmail(
@@ -26,7 +22,9 @@ class NotificationApplication(
             recipient = recipient,
         )
 
-        javaMailService.send(notification)
+        notificationServiceFactory
+            .get(NotificationType.EMAIL)
+            .send(notification)
     }
 
     fun toSlack(
@@ -38,6 +36,8 @@ class NotificationApplication(
             recipient = recipient,
         )
 
-        slackService.send(notification)
+        notificationServiceFactory
+            .get(NotificationType.SLACK)
+            .send(notification)
     }
 }

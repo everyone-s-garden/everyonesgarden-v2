@@ -1,6 +1,7 @@
 package com.garden.back.notification.service
 
 import com.garden.back.notification.domain.Notification
+import com.garden.back.notification.domain.NotificationType
 import com.garden.back.notification.utils.EmailUtils
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.mail.SimpleMailMessage
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service
 
 @Service("email")
 open class EmailJavaNotificationService(
-    @Value("example@gmail.com")
+    @Value("\${spring.mail.username}")
     private var OFFICIAL_EMAIL: String,
 
     private val javaMailSender: JavaMailSender,
@@ -30,6 +31,15 @@ open class EmailJavaNotificationService(
             text = notification.content
         }
 
-        javaMailSender.send(message)
+        try {
+            javaMailSender.send(message)
+        } catch (e: Exception) {
+            // TODO - add logging
+            throw IllegalStateException(e.message)
+        }
+    }
+
+    override fun supports(type: NotificationType): Boolean {
+        return type == NotificationType.EMAIL
     }
 }

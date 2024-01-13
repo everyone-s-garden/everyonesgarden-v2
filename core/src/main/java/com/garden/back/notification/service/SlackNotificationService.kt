@@ -1,6 +1,7 @@
 package com.garden.back.notification.service
 
 import com.garden.back.notification.domain.Notification
+import com.garden.back.notification.domain.NotificationType
 import com.garden.back.notification.domain.slack.SlackChannel
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
@@ -37,5 +38,9 @@ open class SlackNotificationService(
             // TODO - logging
             throw IllegalStateException("Failed to send message to slack (${recipientChannel.displayName}) using a hook of ${recipientChannel.hookUrl}")
         }
+    }
+
+    override fun supports(type: NotificationType): Boolean {
+        return type == NotificationType.SLACK
     }
 }
