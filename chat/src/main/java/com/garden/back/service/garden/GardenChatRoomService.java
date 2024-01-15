@@ -1,16 +1,16 @@
 package com.garden.back.service.garden;
 
-import com.garden.back.domain.ChatType;
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
-import com.garden.back.repository.chatentry.ChatRoomEntryRepository;
+import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
 import com.garden.back.repository.chatroominfo.garden.dto.GardenChatRoomEnterRepositoryResponse;
-import com.garden.back.service.dto.request.ChatRoomEntryParam;
-import com.garden.back.service.dto.request.ChatRoomEntryResult;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
+import com.garden.back.service.garden.dto.response.GardenChatRoomEntryResult;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,17 +21,17 @@ public class GardenChatRoomService {
 
     private final GardenChatRoomRepository gardenChatRoomRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
-    private final ChatRoomEntryRepository chatRoomEntryRepository;
+    private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
     private final GardenChatMessageRepository gardenChatMessageRepository;
 
     public GardenChatRoomService(
             GardenChatRoomRepository gardenChatRoomRepository,
             GardenChatRoomInfoRepository gardenChatRoomInfoRepository,
-            ChatRoomEntryRepository chatRoomEntryRepository,
+            GardenChatRoomEntryRepository gardenChatRoomEntryRepository,
             GardenChatMessageRepository gardenChatMessageRepository) {
         this.gardenChatRoomRepository = gardenChatRoomRepository;
         this.gardenChatRoomInfoRepository = gardenChatRoomInfoRepository;
-        this.chatRoomEntryRepository = chatRoomEntryRepository;
+        this.gardenChatRoomEntryRepository = gardenChatRoomEntryRepository;
         this.gardenChatMessageRepository = gardenChatMessageRepository;
     }
 
@@ -53,16 +53,13 @@ public class GardenChatRoomService {
     }
 
     @Transactional
-    public ChatRoomEntryResult enterGardenChatRoom(ChatRoomEntryParam param) {
-        chatRoomEntryRepository.addMemberToRoom(
-                param.roomId(),
-                ChatType.GARDEN,
-                param.memberId());
+    public GardenChatRoomEntryResult enterGardenChatRoom(GardenChatRoomEntryParam param) {
+        gardenChatRoomEntryRepository.addMemberToRoom(param.to());
 
-        return ChatRoomEntryResult.to(readAllGardenMessages(param));
+        return GardenChatRoomEntryResult.to(readAllGardenMessages(param));
     }
 
-    private GardenChatRoomEnterRepositoryResponse readAllGardenMessages(ChatRoomEntryParam param) {
+    private GardenChatRoomEnterRepositoryResponse readAllGardenMessages(GardenChatRoomEntryParam param) {
         GardenChatRoomEnterRepositoryResponse response
                 = gardenChatRoomInfoRepository.findPartnerId(
                 param.roomId(),
@@ -72,6 +69,10 @@ public class GardenChatRoomService {
                 param.roomId(),
                 response.getMemberId());
         return response;
+    }
+    
+    public void createSessionInfo(GardenSessionCreateParam param) {
+        gardenChatRoomEntryRepository.addMemberToRoom(param.toChatRoomEntry());
     }
 
 }
