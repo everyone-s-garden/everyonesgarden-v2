@@ -1,19 +1,18 @@
-package com.garden.back.repository.chatentry;
+package com.garden.back.repository.chatentry.garden;
 
-import com.garden.back.domain.ChatType;
+import com.garden.back.repository.chatentry.ChatRoomEntry;
 
-import java.util.Set;
+public interface GardenChatRoomEntryRepository {
 
-public interface ChatRoomEntryRepository {
+    void addMemberToRoom(ChatRoomEntry chatRoomEntry);
 
-    void addMemberToRoom(Long roomId, ChatType chatType, Long memberId);
+    void removeMemberFromRoom(Long sessionId);
 
-    void removeMemberFromRoom(Long roomId, ChatType chatType, Long memberId);
 
-    Set<Long> getMembersInRoom(Long roomId, ChatType chatType);
+    boolean isMemberInRoom(ChatRoomEntry chatRoomEntry);
 
-    boolean isMemberInRoom(Long roomId, ChatType chatType, Long memberId);
+    void deleteChatRoomEntryByRoomId(Long sessionId);
 
-    void deleteChatRoomEntryByRoomId(Long roomId, ChatType chatType);
+    boolean isContainsRoomIdAndMember(Long roomId, Long memberId);
 
 }

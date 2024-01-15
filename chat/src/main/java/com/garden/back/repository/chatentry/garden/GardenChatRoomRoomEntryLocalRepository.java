@@ -1,50 +1,40 @@
-package com.garden.back.repository.chatentry;
+package com.garden.back.repository.chatentry.garden;
 
-import com.garden.back.domain.ChatType;
+import com.garden.back.repository.chatentry.ChatRoomEntry;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Chat room entry repository implementation using local storage.
  */
 @Component
-public class ChatRoomRoomEntryLocalRepository implements ChatRoomEntryRepository {
-    private final Map<String, Set<Long>> chatEntries = new ConcurrentHashMap<>();
+public class GardenChatRoomRoomEntryLocalRepository {
+    private final Map<Long, ChatRoomEntry.ChatRoomEntryInfo> chatEntries = new ConcurrentHashMap<>();
 
-    public void addMemberToRoom(Long roomId, ChatType chatType, Long memberId) {
-        chatEntries.computeIfAbsent(
-                        generateRoomKey(roomId, chatType.getChatTypeId()), key -> ConcurrentHashMap.newKeySet())
-                .add(memberId);
+    public void addMemberToRoom(ChatRoomEntry chatRoomEntry) {
+        chatEntries.put(chatRoomEntry.sessionId(), chatRoomEntry.chatRoomEntryInfo());
     }
 
-    public void removeMemberFromRoom(Long roomId, ChatType chatType, Long memberId) {
-        chatEntries.get(
-                        generateRoomKey(roomId, chatType.getChatTypeId()))
-                .remove(memberId);
+    public void removeMemberFromRoom(Long sessionId) {
+        chatEntries.remove(sessionId);
     }
 
-    public Set<Long> getMembersInRoom(Long roomId, ChatType chatType) {
-        return chatEntries.getOrDefault(
-                generateRoomKey(roomId, chatType.getChatTypeId()),
-                Collections.emptySet());
+    public boolean isMemberInRoom(ChatRoomEntry chatRoomEntry) {
+        return chatEntries.get(chatRoomEntry.sessionId()).equals(chatRoomEntry.chatRoomEntryInfo());
     }
 
-    public boolean isMemberInRoom(Long roomId, ChatType chatType, Long memberId) {
-        return chatEntries.get(
-                        generateRoomKey(roomId, chatType.getChatTypeId()))
-                .contains(memberId);
+    public boolean isContainsRoomIdAndMember(Long roomId, Long memberId) {
+        return chatEntries.values()
+                .stream()
+                .anyMatch(entryInfo -> Objects.equals(entryInfo.roomId(), roomId)
+                        && Objects.equals(entryInfo.memberId(), memberId));
     }
 
-    public void deleteChatRoomEntryByRoomId(Long roomId, ChatType chatType) {
-        chatEntries.remove(generateRoomKey(roomId, chatType.getChatTypeId()));
-    }
-
-    private String generateRoomKey(Long roomId, Long chatTypeId) {
-        return roomId + ":" + chatTypeId;
+    public void deleteChatRoomEntryByRoomId(Long sessionId) {
+        chatEntries.remove(sessionId);
     }
 
 }
