@@ -41,10 +41,7 @@ public class GardenChatRoomEntryRepositoryImpl implements GardenChatRoomEntryRep
 
     @Override
     public boolean isContainsRoomIdAndMember(Long roomId, Long memberId) {
-        if(!gardenChatRoomRoomEntryLocalRepository.isContainsRoomIdAndMember(roomId, memberId)) {
-            throw new ChatRoomAccessException(CHAT_ROOM_SESSION_ACCESS_ERROR);
-        }
-        return true;
+        return gardenChatRoomRoomEntryLocalRepository.isContainsRoomIdAndMember(roomId, memberId);
     }
 
 }
