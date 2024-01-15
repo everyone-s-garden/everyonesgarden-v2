@@ -3,7 +3,7 @@ package com.garden.back.chat.facade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
 import com.garden.back.member.service.MemberService;
-import com.garden.back.service.dto.request.ChatRoomEntryResult;
+import com.garden.back.service.garden.dto.response.GardenChatRoomEntryResult;
 import com.garden.back.service.garden.GardenChatRoomService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +23,12 @@ public class ChatRoomFacade {
 
     @Transactional
     public GardenChatRoomEnterFacadeResponse enterGardenChatRoom(GardenChatRoomEnterFacadeRequest request) {
-        ChatRoomEntryResult chatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(request.to());
-        GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(chatRoomEntryResult.postId());
-        String nickname = memberService.findNickname(chatRoomEntryResult.postId());
+        GardenChatRoomEntryResult gardenChatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(request.to());
+        GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(gardenChatRoomEntryResult.postId());
+        String nickname = memberService.findNickname(gardenChatRoomEntryResult.postId());
 
         return GardenChatRoomEnterFacadeResponse.to(
-                chatRoomEntryResult,
+                gardenChatRoomEntryResult,
                 gardenChatRoomInfo,
                 nickname
         );

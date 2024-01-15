@@ -1,7 +1,7 @@
 package com.garden.back.chat.facade;
 
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
-import com.garden.back.service.dto.request.ChatRoomEntryResult;
+import com.garden.back.service.garden.dto.response.GardenChatRoomEntryResult;
 
 import java.util.List;
 
@@ -15,12 +15,12 @@ public record GardenChatRoomEnterFacadeResponse(
         List<String> images
 ) {
     public static GardenChatRoomEnterFacadeResponse to(
-            ChatRoomEntryResult chatRoomEntryResult,
+            GardenChatRoomEntryResult gardenChatRoomEntryResult,
             GardenChatRoomInfoResult gardenChatRoomInfo,
             String nickname
     ){
         return new GardenChatRoomEnterFacadeResponse(
-                chatRoomEntryResult.partnerId(),
+                gardenChatRoomEntryResult.partnerId(),
                 nickname,
                 gardenChatRoomInfo.postId(),
                 gardenChatRoomInfo.gardenStatus(),

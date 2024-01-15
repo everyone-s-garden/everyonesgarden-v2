@@ -1,14 +1,14 @@
 package com.garden.back.chat.facade;
 
 import com.garden.back.global.loginuser.LoginUser;
-import com.garden.back.service.dto.request.ChatRoomEntryParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
 
 public record GardenChatRoomEnterFacadeRequest(
         Long roomId,
         Long memberId
 ) {
-    public ChatRoomEntryParam to() {
-        return new ChatRoomEntryParam(
+    public GardenChatRoomEntryParam to() {
+        return new GardenChatRoomEntryParam(
                 roomId,
                 memberId
         );
