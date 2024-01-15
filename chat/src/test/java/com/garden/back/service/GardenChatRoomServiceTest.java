@@ -90,11 +90,10 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     void enterChatRoom_allMessages_read() {
         // Given
         Long memberId = 1L;
-        Long sessionId = 1L;
 
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
         Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
-        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(sessionId, chatRoomId, memberId);
+        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(chatRoomId, memberId);
 
         GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(chatRoomId).get();
         gardenChatMessageRepository.save(ChatRoomFixture.partnerFirstGardenChatMessage(gardenChatRoom));
