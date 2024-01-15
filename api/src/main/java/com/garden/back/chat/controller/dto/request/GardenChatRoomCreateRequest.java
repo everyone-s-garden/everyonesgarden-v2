@@ -1,7 +1,7 @@
 package com.garden.back.chat.controller.dto.request;
 
 import com.garden.back.global.loginuser.LoginUser;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
 import jakarta.validation.constraints.Positive;
 
 public record GardenChatRoomCreateRequest(

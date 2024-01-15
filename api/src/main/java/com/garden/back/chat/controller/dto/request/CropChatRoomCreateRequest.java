@@ -1,7 +1,7 @@
 package com.garden.back.chat.controller.dto.request;
 
 import com.garden.back.global.loginuser.LoginUser;
-import com.garden.back.service.dto.request.CropChatRoomCreateParam;
+import com.garden.back.service.crop.request.CropChatRoomCreateParam;
 import jakarta.validation.constraints.Positive;
 
 public record CropChatRoomCreateRequest(
