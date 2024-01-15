@@ -1,16 +1,16 @@
-package com.garden.back.service.dto.request;
+package com.garden.back.service.garden.dto.request;
 
 import com.garden.back.global.loginuser.LoginUser;
 
-public record ChatRoomEntryParam (
+public record GardenChatRoomEntryParam(
         Long roomId,
         Long memberId
 ) {
-    public static ChatRoomEntryParam to(
+    public static GardenChatRoomEntryParam to(
             Long roomId,
             LoginUser loginUser
     ){
-        return new ChatRoomEntryParam(
+        return new GardenChatRoomEntryParam(
                 roomId,
                 loginUser.memberId()
         );

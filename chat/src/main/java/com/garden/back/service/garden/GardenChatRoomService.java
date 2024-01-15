@@ -54,8 +54,6 @@ public class GardenChatRoomService {
 
     @Transactional
     public GardenChatRoomEntryResult enterGardenChatRoom(GardenChatRoomEntryParam param) {
-        gardenChatRoomEntryRepository.addMemberToRoom(param.to());
-
         return GardenChatRoomEntryResult.to(readAllGardenMessages(param));
     }
 
