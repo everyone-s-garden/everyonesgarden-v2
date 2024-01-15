@@ -3,13 +3,14 @@ package com.garden.back.service;
 import com.garden.back.domain.garden.GardenChatMessage;
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
-import com.garden.back.repository.chatentry.ChatRoomEntryRepository;
+import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
-import com.garden.back.service.dto.request.ChatRoomEntryParam;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
 import com.garden.back.service.garden.GardenChatRoomService;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
+import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     private GardenChatMessageRepository gardenChatMessageRepository;
 
     @Autowired
-    private ChatRoomEntryRepository chatRoomEntryRepository;
+    private GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
 
     @DisplayName("해당 게시글에 대한 채팅방을 생성할 수 있다.")
     @Test
@@ -89,23 +90,37 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     void enterChatRoom_allMessages_read() {
         // Given
         Long memberId = 1L;
+        Long sessionId = 1L;
 
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
         Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
-        ChatRoomEntryParam chatRoomEntryParam = new ChatRoomEntryParam(chatRoomId, memberId);
+        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(sessionId, chatRoomId, memberId);
 
         GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(chatRoomId).get();
         gardenChatMessageRepository.save(ChatRoomFixture.partnerFirstGardenChatMessage(gardenChatRoom));
         gardenChatMessageRepository.save(ChatRoomFixture.partnerSecondGardenChatMessage(gardenChatRoom));
 
         // When
-        gardenChatRoomService.enterGardenChatRoom(chatRoomEntryParam);
+        gardenChatRoomService.enterGardenChatRoom(gardenChatRoomEntryParam);
         List<GardenChatMessage> allPartnerMessages = gardenChatMessageRepository.findAll();
 
         // Then
         allPartnerMessages.forEach(
                 gardenChatMessage -> assertThat(gardenChatMessage.isReadOrNot()).isTrue()
         );
+    }
+
+    @DisplayName("세션 정보를 만들 수 있다.")
+    @Test
+    void createSessionInfo() {
+        // Given
+        GardenSessionCreateParam gardenSessionCreateParam = ChatRoomFixture.gardenSessionCreateParam();
+
+        // When
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParam);
+
+        // Then
+        assertThat(gardenChatRoomEntryRepository.isMemberInRoom(gardenSessionCreateParam.toChatRoomEntry())).isEqualTo(true);
     }
 
 }

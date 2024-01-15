@@ -5,8 +5,8 @@ import com.garden.back.domain.crop.CropChatMessage;
 import com.garden.back.domain.crop.CropChatRoom;
 import com.garden.back.domain.garden.GardenChatMessage;
 import com.garden.back.domain.garden.GardenChatRoom;
-import com.garden.back.service.dto.request.CropChatRoomCreateParam;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.crop.request.CropChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
 
 public class ChatRoomFixture {
 
