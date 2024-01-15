@@ -7,7 +7,8 @@ public enum ErrorCode{
     //global
     INTERNAL_SERVER_ERROR("G001", "Internal Server Error"),
 
-    CHAT_ROOM_ACCESS_ERROR("C001","해당 사용자는 이 채팅방에 소속되어 있지 않습니다.");
+    CHAT_ROOM_ACCESS_ERROR("C001","해당 사용자는 이 채팅방에 소속되어 있지 않습니다."),
+    CHAT_ROOM_SESSION_ACCESS_ERROR("C002","해당 사용자는 이 세션에 소속되어 있지 않습니다.");
 
     private final String code;
     private final String message;
