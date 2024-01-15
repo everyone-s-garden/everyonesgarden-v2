@@ -2,6 +2,7 @@ package com.garden.back.domain.garden;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,5 +29,20 @@ public class GardenChatRoom {
 
     public static GardenChatRoom of() {
         return new GardenChatRoom();
+    }
+
+    private GardenChatRoom(
+            Long chatRoomId
+    ) {
+        Assert.isTrue(chatRoomId > 0 , "chatRoom id는 양수여야 합니다.");
+        this.chatRoomId = chatRoomId;
+    }
+
+    public static GardenChatRoom of(
+            Long chatRoomId
+    ){
+        return new GardenChatRoom(
+                chatRoomId
+        );
     }
 }
