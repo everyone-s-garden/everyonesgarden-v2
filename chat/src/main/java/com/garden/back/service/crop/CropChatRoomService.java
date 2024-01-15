@@ -2,11 +2,11 @@ package com.garden.back.service.crop;
 
 import com.garden.back.domain.crop.CropChatRoom;
 import com.garden.back.domain.crop.CropChatRoomInfo;
-import com.garden.back.repository.chatentry.ChatRoomEntryRepository;
+import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.crop.CropChatMessageRepository;
 import com.garden.back.repository.chatroom.crop.CropChatRoomRepository;
 import com.garden.back.repository.chatroominfo.crop.CropChatRoomInfoRepository;
-import com.garden.back.service.dto.request.CropChatRoomCreateParam;
+import com.garden.back.service.crop.request.CropChatRoomCreateParam;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +17,13 @@ public class CropChatRoomService {
 
     private final CropChatRoomRepository cropChatRoomRepository;
     private final CropChatRoomInfoRepository cropChatRoomInfoRepository;
-    private final ChatRoomEntryRepository chatRoomEntryRepository;
+    private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
     private final CropChatMessageRepository cropChatMessageRepository;
 
-    public CropChatRoomService(CropChatRoomRepository cropChatRoomRepository, CropChatRoomInfoRepository cropChatRoomInfoRepository, ChatRoomEntryRepository chatRoomEntryRepository, CropChatMessageRepository cropChatMessageRepository) {
+    public CropChatRoomService(CropChatRoomRepository cropChatRoomRepository, CropChatRoomInfoRepository cropChatRoomInfoRepository, GardenChatRoomEntryRepository gardenChatRoomEntryRepository, CropChatMessageRepository cropChatMessageRepository) {
         this.cropChatRoomRepository = cropChatRoomRepository;
         this.cropChatRoomInfoRepository = cropChatRoomInfoRepository;
-        this.chatRoomEntryRepository = chatRoomEntryRepository;
+        this.gardenChatRoomEntryRepository = gardenChatRoomEntryRepository;
         this.cropChatMessageRepository = cropChatMessageRepository;
     }
 

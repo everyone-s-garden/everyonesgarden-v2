@@ -1,4 +1,4 @@
-package com.garden.back.service.dto.request;
+package com.garden.back.service.crop.request;
 
 import com.garden.back.domain.crop.CropChatRoom;
 import com.garden.back.domain.crop.CropChatRoomInfo;
