@@ -1,6 +1,7 @@
 package com.garden.back.service.garden;
 
 import com.garden.back.domain.garden.GardenChatMessage;
+import com.garden.back.domain.garden.dto.GardenChatMessageDomainParam;
 import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
@@ -24,16 +25,24 @@ public class GardenChatService {
 
     @Transactional
     public GardenChatMessageSendResult saveMessage(GardenChatMessageSendParam param) {
-        Long partnerId = gardenChatRoomInfoRepository.findPartnerId(param.roomId(), param.memberId()).getMemberId();
 
         gardenChatRoomEntryRepository.isMemberInRoom(param.toChatRoomEntry());
-        gardenChatRoomEntryRepository.isContainsRoomIdAndMember(param.roomId(), partnerId);
 
-       return GardenChatMessageSendResult.to(
+        GardenChatMessageDomainParam gardenChatMessageDomainParam = param.toGardenChatMessageDomainParam();
+        Long partnerId = gardenChatRoomInfoRepository.findPartnerId(param.roomId(), param.memberId()).getMemberId();
+        if (gardenChatRoomEntryRepository.isContainsRoomIdAndMember(param.roomId(), partnerId)) {
+            return GardenChatMessageSendResult.to(
+                    gardenChatMessageRepository.save(
+                            GardenChatMessage.toReadGardenChatMessage(gardenChatMessageDomainParam))
+            );
+        }
+
+        return GardenChatMessageSendResult.to(
                 gardenChatMessageRepository.save(
-                GardenChatMessage.toReadGardenChatMessage(
-                        param.toReadGardenChatMessage()))
+                        GardenChatMessage.toNotReadGardenChatMessage(gardenChatMessageDomainParam)
+                )
         );
+
     }
 
 }

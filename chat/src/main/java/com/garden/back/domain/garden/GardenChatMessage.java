@@ -1,6 +1,6 @@
 package com.garden.back.domain.garden;
 
-import com.garden.back.domain.garden.dto.ReadGardenChatMessage;
+import com.garden.back.domain.garden.dto.GardenChatMessageDomainParam;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -70,13 +70,24 @@ public class GardenChatMessage {
     }
 
     public static GardenChatMessage toReadGardenChatMessage(
-            ReadGardenChatMessage readGardenChatMessage
+            GardenChatMessageDomainParam gardenChatMessageDomainParam
     ) {
         return new GardenChatMessage(
-                GardenChatRoom.of(readGardenChatMessage.roomId()),
-                readGardenChatMessage.memberId(),
-                readGardenChatMessage.contents(),
-                readGardenChatMessage.readOrNot()
+                GardenChatRoom.of(gardenChatMessageDomainParam.roomId()),
+                gardenChatMessageDomainParam.memberId(),
+                gardenChatMessageDomainParam.contents(),
+                true
+        );
+    }
+
+    public static GardenChatMessage toNotReadGardenChatMessage(
+            GardenChatMessageDomainParam gardenChatMessageDomainParam
+    ) {
+        return new GardenChatMessage(
+                GardenChatRoom.of(gardenChatMessageDomainParam.roomId()),
+                gardenChatMessageDomainParam.memberId(),
+                gardenChatMessageDomainParam.contents(),
+                false
         );
     }
 
