@@ -1,4 +1,4 @@
-package com.garden.back.service.dto.request;
+package com.garden.back.service.garden.dto.request;
 
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
