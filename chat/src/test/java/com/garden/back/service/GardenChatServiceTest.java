@@ -1,6 +1,7 @@
 package com.garden.back.service;
 
 import com.garden.back.domain.garden.GardenChatMessage;
+import com.garden.back.exception.ChatRoomAccessException;
 import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.service.garden.GardenChatRoomService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 class GardenChatServiceTest extends IntegrationTestSupport {
@@ -55,8 +57,8 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         GardenChatMessage secondGardenChatMessage = gardenChatMessageRepository.getById(secondGardenChatMessageSendResult.chatMessageId());
 
         // Then
-        assertThat(firstGardenChatMessage.isReadOrNot()).isEqualTo(true);
-        assertThat(secondGardenChatMessage.isReadOrNot()).isEqualTo(true);
+        assertThat(firstGardenChatMessage.isReadOrNot()).isTrue();
+        assertThat(secondGardenChatMessage.isReadOrNot()).isTrue();
     }
 
     @DisplayName("텃밭 분양 관련 채팅 메세지를 보낼 때 상대방 유저가 채팅 세션에 접속 중이지 않으면 모두 읽지 않음으로 처리된다.")
@@ -79,8 +81,24 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         GardenChatMessage secondGardenChatMessage = gardenChatMessageRepository.getById(secondGardenChatMessageSendResult.chatMessageId());
 
         // Then
-        assertThat(firstGardenChatMessage.isReadOrNot()).isEqualTo(false);
-        assertThat(secondGardenChatMessage.isReadOrNot()).isEqualTo(false);
+        assertThat(firstGardenChatMessage.isReadOrNot()).isFalse();
+        assertThat(secondGardenChatMessage.isReadOrNot()).isFalse();
+    }
+
+    @DisplayName("메세지를 보낸 유저가 세션에 접속중이지 않으면 예외를 던진다.")
+    @Test
+    void saveMessage_notExistedMe_throwException() {
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
+
+        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirst();
+
+        // When_Then
+        assertThatThrownBy(() ->gardenChatService.saveMessage(gardenChatMessageSendParamFirst)).
+                isInstanceOf(ChatRoomAccessException.class);
     }
 
 }

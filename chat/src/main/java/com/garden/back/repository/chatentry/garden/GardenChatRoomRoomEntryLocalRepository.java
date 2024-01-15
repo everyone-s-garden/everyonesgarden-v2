@@ -24,6 +24,9 @@ public class GardenChatRoomRoomEntryLocalRepository {
     }
 
     public boolean isMemberInRoom(ChatRoomEntry chatRoomEntry) {
+        if (chatEntries.get(chatRoomEntry.sessionId()) == null) {
+            return false;
+        }
         return chatEntries.get(chatRoomEntry.sessionId()).equals(chatRoomEntry.chatRoomEntryInfo());
     }
 
