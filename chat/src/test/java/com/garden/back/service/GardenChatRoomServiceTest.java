@@ -113,7 +113,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     @Test
     void createSessionInfo() {
         // Given
-        GardenSessionCreateParam gardenSessionCreateParam = ChatRoomFixture.gardenSessionCreateParam();
+        GardenSessionCreateParam gardenSessionCreateParam = ChatRoomFixture.gardenSessionCreateParamAboutMe();
 
         // When
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParam);
