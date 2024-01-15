@@ -10,9 +10,9 @@ import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.service.MemberService;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
-import com.garden.back.service.dto.request.ChatRoomEntryParam;
-import com.garden.back.service.dto.request.ChatRoomEntryResult;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
+import com.garden.back.service.garden.dto.response.GardenChatRoomEntryResult;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
 import com.garden.back.service.garden.GardenChatRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,14 +57,14 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
 
         GardenChatRoomEnterFacadeRequest request = new GardenChatRoomEnterFacadeRequest(chatRoomId, memberId);
 
-        ChatRoomEntryParam chatRoomEntryParam = new ChatRoomEntryParam(chatRoomId, memberId);
+        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(chatRoomId, memberId);
 
         // When
         GardenChatRoomEnterFacadeResponse response = chatRoomFacade.enterGardenChatRoom(request);
 
         String nickname = memberService.findNickname(chatRoomCreateParam.viewerId());
         GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(chatRoomCreateParam.postId());
-        ChatRoomEntryResult chatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(chatRoomEntryParam);
+        GardenChatRoomEntryResult gardenChatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(gardenChatRoomEntryParam);
 
         // Then
         assertThat(response)
@@ -77,6 +77,6 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
                         gardenChatRoomInfo.postId()
                 );
         assertThat(response.partnerNickname()).isEqualTo(nickname);
-        assertThat(response.partnerId()).isEqualTo(chatRoomEntryResult.partnerId());
+        assertThat(response.partnerId()).isEqualTo(gardenChatRoomEntryResult.partnerId());
     }
 }

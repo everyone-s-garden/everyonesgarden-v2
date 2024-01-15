@@ -23,8 +23,7 @@ public class ChatRoomFixture {
                 gardenChatRoom,
                 2L,
                 "안녕하세요",
-                false,
-                MessageType.TALK
+                false
         );
     }
 
@@ -33,8 +32,7 @@ public class ChatRoomFixture {
                 gardenChatRoom,
                 2L,
                 "분양가는 한 달에 100000원입니다.",
-                false,
-                MessageType.TALK
+                false
         );
     }
 

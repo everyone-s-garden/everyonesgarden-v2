@@ -1,6 +1,5 @@
 package com.garden.back.domain.garden;
 
-import com.garden.back.domain.MessageType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,8 +18,7 @@ class GardenChatMessageTest {
                         null,
                         1L,
                         "안녕",
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 
@@ -33,8 +31,7 @@ class GardenChatMessageTest {
                         new GardenChatRoom(),
                         memberId,
                         "안녕",
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 
@@ -47,8 +44,7 @@ class GardenChatMessageTest {
                         new GardenChatRoom(),
                         1L,
                         chatContent,
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 }
