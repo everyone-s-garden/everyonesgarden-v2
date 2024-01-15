@@ -1,6 +1,7 @@
 package com.garden.back.repository.chatentry.garden;
 
 import com.garden.back.repository.chatentry.ChatRoomEntry;
+import com.garden.back.repository.chatentry.SessionId;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -12,13 +13,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Component
 public class GardenChatRoomRoomEntryLocalRepository {
-    private final Map<Long, ChatRoomEntry.ChatRoomEntryInfo> chatEntries = new ConcurrentHashMap<>();
+    private final Map<SessionId, ChatRoomEntry.ChatRoomEntryInfo> chatEntries = new ConcurrentHashMap<>();
 
     public void addMemberToRoom(ChatRoomEntry chatRoomEntry) {
         chatEntries.put(chatRoomEntry.sessionId(), chatRoomEntry.chatRoomEntryInfo());
     }
 
-    public void removeMemberFromRoom(Long sessionId) {
+    public void removeMemberFromRoom(SessionId sessionId) {
         chatEntries.remove(sessionId);
     }
 
@@ -33,7 +34,7 @@ public class GardenChatRoomRoomEntryLocalRepository {
                         && Objects.equals(entryInfo.memberId(), memberId));
     }
 
-    public void deleteChatRoomEntryByRoomId(Long sessionId) {
+    public void deleteChatRoomEntryByRoomId(SessionId sessionId) {
         chatEntries.remove(sessionId);
     }
 

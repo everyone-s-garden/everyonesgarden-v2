@@ -2,6 +2,7 @@ package com.garden.back.repository.chatentry.garden;
 
 import com.garden.back.exception.ChatRoomAccessException;
 import com.garden.back.repository.chatentry.ChatRoomEntry;
+import com.garden.back.repository.chatentry.SessionId;
 import org.springframework.stereotype.Repository;
 
 import static com.garden.back.global.exception.ErrorCode.CHAT_ROOM_SESSION_ACCESS_ERROR;
@@ -21,7 +22,7 @@ public class GardenChatRoomEntryRepositoryImpl implements GardenChatRoomEntryRep
     }
 
     @Override
-    public void removeMemberFromRoom(Long sessionId) {
+    public void removeMemberFromRoom(SessionId sessionId) {
         gardenChatRoomRoomEntryLocalRepository.removeMemberFromRoom(sessionId);
     }
 
@@ -34,7 +35,7 @@ public class GardenChatRoomEntryRepositoryImpl implements GardenChatRoomEntryRep
     }
 
     @Override
-    public void deleteChatRoomEntryByRoomId(Long sessionId) {
+    public void deleteChatRoomEntryByRoomId(SessionId sessionId) {
         gardenChatRoomRoomEntryLocalRepository.deleteChatRoomEntryByRoomId(sessionId);
     }
 
