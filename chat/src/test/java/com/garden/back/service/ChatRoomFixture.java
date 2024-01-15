@@ -1,12 +1,11 @@
 package com.garden.back.service;
 
-import com.garden.back.domain.MessageType;
-import com.garden.back.domain.crop.CropChatMessage;
-import com.garden.back.domain.crop.CropChatRoom;
 import com.garden.back.domain.garden.GardenChatMessage;
 import com.garden.back.domain.garden.GardenChatRoom;
-import com.garden.back.service.dto.request.CropChatRoomCreateParam;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.repository.chatentry.SessionId;
+import com.garden.back.service.crop.request.CropChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
 
 public class ChatRoomFixture {
 
@@ -23,8 +22,7 @@ public class ChatRoomFixture {
                 gardenChatRoom,
                 2L,
                 "안녕하세요",
-                false,
-                MessageType.TALK
+                false
         );
     }
 
@@ -33,8 +31,7 @@ public class ChatRoomFixture {
                 gardenChatRoom,
                 2L,
                 "분양가는 한 달에 100000원입니다.",
-                false,
-                MessageType.TALK
+                false
         );
     }
 
@@ -46,23 +43,11 @@ public class ChatRoomFixture {
         );
     }
 
-    public static CropChatMessage partnerFirstCropChatMessage(CropChatRoom cropChatRoom) {
-        return CropChatMessage.of(
-                cropChatRoom,
+    public static GardenSessionCreateParam gardenSessionCreateParam() {
+        return new GardenSessionCreateParam(
+                SessionId.of("1L"),
                 1L,
-                "안녕하세요",
-                false,
-                MessageType.TALK
-        );
-    }
-
-    public static CropChatMessage partnerSecondCropChatMessage(CropChatRoom cropChatRoom) {
-        return CropChatMessage.of(
-                cropChatRoom,
-                1L,
-                "분양가는 한 달에 100000원입니다.",
-                false,
-                MessageType.TALK
+                1L
         );
     }
 

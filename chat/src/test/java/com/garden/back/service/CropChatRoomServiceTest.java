@@ -4,7 +4,7 @@ import com.garden.back.domain.crop.CropChatRoomInfo;
 import com.garden.back.repository.chatroom.crop.CropChatRoomRepository;
 import com.garden.back.repository.chatroominfo.crop.CropChatRoomInfoRepository;
 import com.garden.back.service.crop.CropChatRoomService;
-import com.garden.back.service.dto.request.CropChatRoomCreateParam;
+import com.garden.back.service.crop.request.CropChatRoomCreateParam;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
