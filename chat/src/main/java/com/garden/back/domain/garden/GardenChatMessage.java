@@ -1,6 +1,6 @@
 package com.garden.back.domain.garden;
 
-import com.garden.back.domain.MessageType;
+import com.garden.back.domain.garden.dto.ReadGardenChatMessage;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,16 +38,11 @@ public class GardenChatMessage {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    @Column(name = "message_type", nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private MessageType messageType;
-
     private GardenChatMessage(
             GardenChatRoom chatRoom,
             Long memberId,
             String contents,
-            boolean readOrNot,
-            MessageType messageType
+            boolean readOrNot
     ) {
         Assert.notNull(chatRoom, "Chat Room은 null일 수 없습니다.");
         Assert.isTrue(memberId > 0, "유저 아이디는 0이거나 0보다 작을 수 없습니다.");
@@ -57,24 +52,32 @@ public class GardenChatMessage {
         this.memberId = memberId;
         this.contents = contents;
         this.readOrNot = readOrNot;
-        this.messageType = messageType;
     }
 
     public static GardenChatMessage of(
             GardenChatRoom chatRoom,
             Long memberId,
             String contents,
-            boolean readOrNot,
-            MessageType messageType
+            boolean readOrNot
     ) {
         return new GardenChatMessage(
                 chatRoom,
                 memberId,
                 contents,
-                readOrNot,
-                messageType
+                readOrNot
         );
 
+    }
+
+    public static GardenChatMessage toReadGardenChatMessage(
+            ReadGardenChatMessage readGardenChatMessage
+    ) {
+        return new GardenChatMessage(
+                GardenChatRoom.of(readGardenChatMessage.roomId()),
+                readGardenChatMessage.memberId(),
+                readGardenChatMessage.contents(),
+                readGardenChatMessage.readOrNot()
+        );
     }
 
 }
