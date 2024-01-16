@@ -2,10 +2,12 @@ package com.garden.back.chat.controller;
 
 import com.garden.back.chat.controller.dto.request.CropChatRoomCreateRequest;
 import com.garden.back.chat.controller.dto.request.GardenChatRoomCreateRequest;
+import com.garden.back.chat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.controller.dto.response.GardenChatRoomEnterResponse;
 import com.garden.back.chat.facade.ChatRoomFacade;
 import com.garden.back.chat.facade.GardenChatRoomEnterFacadeRequest;
 import com.garden.back.global.LocationBuilder;
+import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.service.crop.CropChatRoomService;
 import com.garden.back.service.garden.GardenChatRoomService;
@@ -38,7 +40,7 @@ public class ChatRoomController {
     )
     public ResponseEntity<Void> createGardenChatRoom(
             @RequestBody @Valid GardenChatRoomCreateRequest request,
-            LoginUser loginUser
+            @CurrentUser LoginUser loginUser
     ) {
         URI location = LocationBuilder.buildLocation(
                 gardenChatRoomService.createGardenChatRoom(request.to(loginUser)
@@ -53,7 +55,7 @@ public class ChatRoomController {
     )
     public ResponseEntity<Void> createCropChatRoom(
             @RequestBody @Valid CropChatRoomCreateRequest request,
-            LoginUser loginUser
+            @CurrentUser LoginUser loginUser
     ) {
         URI location = LocationBuilder.buildLocation(
                 chatRoomService.createCropChatRoom(request.to(loginUser)
@@ -68,12 +70,24 @@ public class ChatRoomController {
     )
     public ResponseEntity<GardenChatRoomEnterResponse> enterGardenChatRoom(
             @PathVariable @Positive Long roomId,
-            LoginUser loginUser
+            @CurrentUser LoginUser loginUser
     ) {
         GardenChatRoomEnterFacadeRequest request = GardenChatRoomEnterFacadeRequest.to(roomId, loginUser);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenChatRoomEnterResponse.to(
                         chatRoomFacade.enterGardenChatRoom(request)));
+    }
+
+    @PostMapping(
+            path = "/gardens/sessions",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Void> createSession(
+            @RequestBody @Valid GardenSessionCreateRequest request,
+            @CurrentUser LoginUser loginUser
+    ){
+        gardenChatRoomService.createSessionInfo(request.to(loginUser));
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
