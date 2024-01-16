@@ -30,3 +30,15 @@ include::{snippets}/enter-garden-chat-room/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/enter-garden-chat-room/http-response.adoc[]
+
+
+=== 텃밭 채팅 세션 등록
+현재 채팅의 세션을 등록해야 채팅방에 접속해 있는 유저를 판단할 수 있습니다. +
+이 정보는 읽음 처리를 처리할 때 사용됩니다.
+
+==== Request
+include::{snippets}/create-garden-chat-session/http-request.adoc[]
+include::{snippets}/create-garden-chat-session/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-garden-chat-session/http-response.adoc[]

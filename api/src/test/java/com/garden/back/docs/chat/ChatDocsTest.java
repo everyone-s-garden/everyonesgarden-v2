@@ -3,6 +3,7 @@ package com.garden.back.docs.chat;
 import com.garden.back.chat.controller.ChatRoomController;
 import com.garden.back.chat.controller.dto.request.CropChatRoomCreateRequest;
 import com.garden.back.chat.controller.dto.request.GardenChatRoomCreateRequest;
+import com.garden.back.chat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.facade.ChatRoomFacade;
 import com.garden.back.chat.facade.GardenChatRoomEnterFacadeResponse;
 import com.garden.back.docs.RestDocsSupport;
@@ -102,6 +103,23 @@ class ChatDocsTest extends RestDocsSupport {
                                 fieldWithPath("gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                                 fieldWithPath("price").type(JsonFieldType.STRING).description("텃밭 가격"),
                                 fieldWithPath("images").type(JsonFieldType.ARRAY).description("텃밭 이미지들")
+                        )));
+    }
+
+    @DisplayName("텃밭 분양 관련 채팅방 세션을 생성할 수 있다.")
+    @Test
+    void createGardenChatSession() throws Exception {
+        GardenSessionCreateRequest gardenSessionCreateRequest = ChatRoomFixture.gardenSessionCreateRequest();
+
+        mockMvc.perform(post("/chats/gardens/sessions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(gardenSessionCreateRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andDo(document("create-garden-chat-session",
+                        requestFields(
+                                fieldWithPath("sessionId").type(JsonFieldType.STRING).description("채팅 세션 아이디"),
+                                fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("채팅방 아이디")
                         )));
     }
 
