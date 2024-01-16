@@ -2,6 +2,7 @@ package com.garden.back.docs.chat;
 
 import com.garden.back.chat.controller.dto.request.CropChatRoomCreateRequest;
 import com.garden.back.chat.controller.dto.request.GardenChatRoomCreateRequest;
+import com.garden.back.chat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.facade.GardenChatRoomEnterFacadeResponse;
 import com.garden.back.garden.domain.vo.GardenStatus;
 
@@ -32,6 +33,13 @@ public class ChatRoomFixture {
                 "이라네 주말농장",
                 "100000",
                 List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg")
+        );
+    }
+
+    public static GardenSessionCreateRequest gardenSessionCreateRequest() {
+        return new GardenSessionCreateRequest(
+                "234",
+                1L
         );
     }
 

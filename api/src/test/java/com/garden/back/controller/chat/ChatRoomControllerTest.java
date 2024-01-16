@@ -3,6 +3,7 @@ package com.garden.back.controller.chat;
 import com.garden.back.ControllerTestSupport;
 import com.garden.back.chat.controller.dto.request.CropChatRoomCreateRequest;
 import com.garden.back.chat.controller.dto.request.GardenChatRoomCreateRequest;
+import com.garden.back.chat.controller.dto.request.GardenSessionCreateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -42,6 +43,14 @@ class ChatRoomControllerTest extends ControllerTestSupport {
                 .andExpect(status().is4xxClientError());
     }
 
+    @DisplayName("텃밭 분양 채팅방에 대한 세션 정보를 저장할 때 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidGardenSessionCreateRequest")
+    void createSession_invalidRequest(GardenSessionCreateRequest request) throws Exception {
+        mockMvc.perform(post("/chats/gardens/sessions"))
+                .andExpect(status().is4xxClientError());
+    }
+
     private static Stream<CropChatRoomCreateRequest> provideInvalidCropChatRoomCreateRequest() {
         return Stream.of(
                 new CropChatRoomCreateRequest(
@@ -72,6 +81,35 @@ class ChatRoomControllerTest extends ControllerTestSupport {
                 new GardenChatRoomCreateRequest(
                         1L,
                         1L
+                )
+        );
+    }
+
+    private static Stream<GardenSessionCreateRequest> provideInvalidGardenSessionCreateRequest() {
+        return Stream.of(
+                new GardenSessionCreateRequest(
+                        null,
+                        1L
+                ),
+                new GardenSessionCreateRequest(
+                        "",
+                        1L
+                ),
+                new GardenSessionCreateRequest(
+                        " ",
+                        1L
+                ),
+                new GardenSessionCreateRequest(
+                        "233",
+                        null
+                ),
+                new GardenSessionCreateRequest(
+                        "233",
+                        0L
+                ),
+                new GardenSessionCreateRequest(
+                        "233",
+                        -1L
                 )
         );
     }
