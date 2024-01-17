@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.util.Assert;
 
+import java.util.Objects;
+
 @Getter
 @Table(name = "garden_chat_room_infos")
 @Entity
@@ -29,6 +31,9 @@ public class GardenChatRoomInfo {
 
     @Column(name = "member_id", nullable = false)
     private Long memberId;
+
+    @Column(name="isDeleted")
+    private boolean isDeleted;
 
     public void create(GardenChatRoom chatRoom) {
         this.chatRoom = chatRoom;
@@ -58,6 +63,18 @@ public class GardenChatRoomInfo {
                 postId,
                 memberId
         );
+    }
+
+    public boolean deleteChatRoomInfo(Long deleteRequestMemberId){
+        if(isSameMember(deleteRequestMemberId)) {
+            isDeleted = true;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isSameMember(Long memberId) {
+        return Objects.equals(this.memberId, memberId);
     }
 
 }

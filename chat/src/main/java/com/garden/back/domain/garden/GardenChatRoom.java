@@ -12,6 +12,8 @@ import java.util.List;
 @Entity
 public class GardenChatRoom {
 
+    private static final int MAXIMUM_PEOPLE = 2;
+
     protected GardenChatRoom() {
     }
 
@@ -45,4 +47,15 @@ public class GardenChatRoom {
                 chatRoomId
         );
     }
+
+    public boolean isRoomEmpty() {
+        int size = chatRoomInfos.stream()
+                .filter(GardenChatRoomInfo::isDeleted)
+                .toList()
+                .size();
+
+        return size == MAXIMUM_PEOPLE;
+    }
+
+
 }
