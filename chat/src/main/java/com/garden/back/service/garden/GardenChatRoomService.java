@@ -71,21 +71,21 @@ public class GardenChatRoomService {
                 response.getMemberId());
         return response;
     }
-    
+
     public void createSessionInfo(GardenSessionCreateParam param) {
         gardenChatRoomEntryRepository.addMemberToRoom(param.toChatRoomEntry());
     }
 
     @Transactional
     public void deleteChatRoom(GardenChatRoomDeleteParam param) {
-        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(param.chatRoomId()).orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
+        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(param.chatRoomId())
+                .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
         gardenChatRoomInfoRepository.findByRoomId(param.chatRoomId()).forEach(
                 gardenChatRoomInfo -> gardenChatRoomInfo.deleteChatRoomInfo(param.deleteRequestMemberId()));
 
-        if(gardenChatRoom.isRoomEmpty()) {
+        if (gardenChatRoom.isRoomEmpty()) {
             gardenChatRoomInfoRepository.deleteAll(param.chatRoomId());
             gardenChatRoomRepository.deleteById(param.chatRoomId());
         }
     }
-
 }
