@@ -43,7 +43,6 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
         GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
 
-
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
 
@@ -88,6 +87,7 @@ class GardenChatServiceTest extends IntegrationTestSupport {
     @DisplayName("메세지를 보낸 유저가 세션에 접속중이지 않으면 예외를 던진다.")
     @Test
     void saveMessage_notExistedMe_throwException() {
+        // Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
         gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
@@ -99,6 +99,27 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         // When_Then
         assertThatThrownBy(() ->gardenChatService.saveMessage(gardenChatMessageSendParamFirst)).
                 isInstanceOf(ChatRoomAccessException.class);
+    }
+
+    @DisplayName("채팅방을 나가는 경우 세션 정보가 삭제된다.")
+    @Test
+    void leaveChatRoom() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
+
+        // When
+        gardenChatService.leaveChatRoom(gardenSessionCreateParamAboutMe.sessionId());
+
+        // Then
+        assertThatThrownBy(()->gardenChatRoomEntryRepository.isMemberInRoom(gardenSessionCreateParamAboutMe.toChatRoomEntry()))
+                .isInstanceOf(ChatRoomAccessException.class);
     }
 
 }
