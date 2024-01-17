@@ -1,5 +1,7 @@
 package com.garden.back.domain.garden;
 
+import com.garden.back.garden.domain.GardenChatMessage;
+import com.garden.back.garden.domain.GardenChatRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

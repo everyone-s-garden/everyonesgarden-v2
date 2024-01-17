@@ -1,10 +1,10 @@
 package com.garden.back.service;
 
-import com.garden.back.domain.garden.GardenChatMessage;
-import com.garden.back.domain.garden.GardenChatRoom;
-import com.garden.back.repository.chatentry.SessionId;
-import com.garden.back.service.crop.request.CropChatRoomCreateParam;
-import com.garden.back.service.garden.dto.request.*;
+import com.garden.back.garden.domain.GardenChatMessage;
+import com.garden.back.garden.domain.GardenChatRoom;
+import com.garden.back.garden.repository.chatentry.SessionId;
+import com.garden.back.crop.service.request.CropChatRoomCreateParam;
+import com.garden.back.garden.service.dto.request.*;
 
 public class ChatRoomFixture {
 

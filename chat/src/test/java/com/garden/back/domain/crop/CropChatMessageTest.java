@@ -1,6 +1,8 @@
 package com.garden.back.domain.crop;
 
-import com.garden.back.domain.MessageType;
+import com.garden.back.crop.domain.CropChatMessage;
+import com.garden.back.crop.domain.CropChatRoom;
+import com.garden.back.global.MessageType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

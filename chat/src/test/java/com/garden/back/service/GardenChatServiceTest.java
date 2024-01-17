@@ -1,16 +1,16 @@
 package com.garden.back.service;
 
-import com.garden.back.domain.garden.GardenChatMessage;
-import com.garden.back.exception.ChatRoomAccessException;
-import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
-import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
-import com.garden.back.service.garden.GardenChatRoomService;
-import com.garden.back.service.garden.GardenChatService;
-import com.garden.back.service.garden.dto.request.GardenChatMessageSendParam;
-import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
-import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
-import com.garden.back.service.garden.dto.response.GardenChatMessageSendResult;
-import com.garden.back.service.garden.dto.response.GardenChatMessagesGetResults;
+import com.garden.back.garden.domain.GardenChatMessage;
+import com.garden.back.garden.service.GardenChatRoomService;
+import com.garden.back.garden.service.GardenChatService;
+import com.garden.back.global.exception.ChatRoomAccessException;
+import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
+import com.garden.back.garden.repository.chatmessage.garden.GardenChatMessageRepository;
+import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
+import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;
+import com.garden.back.garden.service.dto.response.GardenChatMessageSendResult;
+import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

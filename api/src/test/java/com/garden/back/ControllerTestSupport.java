@@ -1,8 +1,8 @@
 package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.garden.back.chat.controller.ChatRoomController;
-import com.garden.back.chat.facade.ChatRoomFacade;
+import com.garden.back.chat.gardenchat.controller.GardenChatRoomController;
+import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.crop.CropController;
 import com.garden.back.crop.CropQueryService;
 import com.garden.back.crop.service.CropCommandService;
@@ -18,8 +18,8 @@ import com.garden.back.post.service.PostCommandService;
 import com.garden.back.post.service.PostQueryService;
 import com.garden.back.report.ReportController;
 import com.garden.back.report.service.ReportService;
-import com.garden.back.service.crop.CropChatRoomService;
-import com.garden.back.service.garden.GardenChatRoomService;
+import com.garden.back.crop.service.CropChatRoomService;
+import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.weather.WeatherController;
 import com.garden.back.weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ import org.springframework.web.context.WebApplicationContext;
         WeatherController.class,
         ReportController.class,
         FeedbackController.class,
-        ChatRoomController.class,
+        GardenChatRoomController.class,
         PostController.class,
         CropController.class
     }
