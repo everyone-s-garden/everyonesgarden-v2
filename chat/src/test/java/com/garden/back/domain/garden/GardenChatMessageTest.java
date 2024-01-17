@@ -30,7 +30,7 @@ class GardenChatMessageTest {
     void throwException_zeroOrMinus_memberId(Long memberId) {
         assertThrows(IllegalArgumentException.class,
                 () -> GardenChatMessage.of(
-                        new GardenChatRoom(),
+                        GardenChatRoom.of(1L),
                         memberId,
                         "안녕",
                         false
@@ -43,7 +43,7 @@ class GardenChatMessageTest {
     void throwException_nullOrEmpty_chatContent(String chatContent) {
         assertThrows(IllegalArgumentException.class,
                 () -> GardenChatMessage.of(
-                        new GardenChatRoom(),
+                        GardenChatRoom.of(1L),
                         1L,
                         chatContent,
                         false

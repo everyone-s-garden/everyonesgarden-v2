@@ -115,7 +115,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     @Test
     void createSessionInfo() {
         // Given
-        GardenSessionCreateParam gardenSessionCreateParam = ChatRoomFixture.gardenSessionCreateParamAboutMe();
+        GardenSessionCreateParam gardenSessionCreateParam = ChatRoomFixture.gardenSessionCreateParamAboutMe(1L);
 
         // When
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParam);
@@ -129,9 +129,9 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     void deleteChatRoom_onePerson() {
         // Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam();
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam(gardenChatRoomId);
 
         // When
         gardenChatRoomService.deleteChatRoom(gardenChatRoomDeleteParam);
@@ -139,7 +139,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
         // Then
         assertThat(gardenChatRoomRepository.findById(gardenChatRoomDeleteParam.chatRoomId())).isNotEmpty();
         assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).stream()
-                .filter(GardenChatRoomInfo::isDeleted).toList()).isEqualTo(1);
+                .filter(GardenChatRoomInfo::isDeleted).toList().size()).isEqualTo(1);
     }
 
     @DisplayName("채팅방을 영구적으로 나가는 경우 모두 나가는 경우에는 채팅방은 삭제된다.")
@@ -147,10 +147,10 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     void deleteChatRoom_twoPerson() {
         // Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam();
-        GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner = ChatRoomFixture.gardenChatRoomDeleteParamAboutPartner();
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam(gardenChatRoomId);
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner = ChatRoomFixture.gardenChatRoomDeleteParamAboutPartner(gardenChatRoomId);
 
         // When
         gardenChatRoomService.deleteChatRoom(gardenChatRoomDeleteParam);

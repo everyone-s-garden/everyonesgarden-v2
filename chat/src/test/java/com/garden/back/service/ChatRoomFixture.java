@@ -42,72 +42,72 @@ public class ChatRoomFixture {
         );
     }
 
-    public static GardenSessionCreateParam gardenSessionCreateParamAboutMe() {
+    public static GardenSessionCreateParam gardenSessionCreateParamAboutMe(Long gardenChatRoomId) {
         return new GardenSessionCreateParam(
                 SessionId.of("1L"),
-                1L,
+                gardenChatRoomId,
                 1L
         );
     }
 
-    public static GardenSessionCreateParam gardenSessionCreateParamAboutPartner() {
+    public static GardenSessionCreateParam gardenSessionCreateParamAboutPartner(Long gardenChatRoomId) {
         return new GardenSessionCreateParam(
                 SessionId.of("2L"),
-                1L,
+                gardenChatRoomId,
                 2L
         );
     }
 
-    public static GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe() {
+    public static GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe(Long gardenChatRoomId) {
         return new GardenChatMessageSendParam(
                 SessionId.of("1L"),
                 1L,
-                1L,
+                gardenChatRoomId,
                 "안녕하세요. 분양 정보 보고 문의드립니다.");
     }
 
-    public static GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe() {
+    public static GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe(Long gardenChatRoomId) {
         return new GardenChatMessageSendParam(
                 SessionId.of("1L"),
                 1L,
-                1L,
+                gardenChatRoomId,
                 "근처에 화장실이 구비되어 있나요?");
     }
 
-    public static GardenChatMessageSendParam gardenChatMessageSendParamFirstByPartner() {
+    public static GardenChatMessageSendParam gardenChatMessageSendParamFirstByPartner(Long gardenChatRoomId) {
         return new GardenChatMessageSendParam(
                 SessionId.of("2L"),
                 2L,
-                1L,
+                gardenChatRoomId,
                 "반갑습니다.");
     }
 
-    public static GardenChatMessageSendParam gardenChatMessageSendParamSecondByPartner() {
+    public static GardenChatMessageSendParam gardenChatMessageSendParamSecondByPartner(Long gardenChatRoomId) {
         return new GardenChatMessageSendParam(
                 SessionId.of("2L"),
                 2L,
-                1L,
+                gardenChatRoomId,
                 "구비되어 있어요");
     }
 
-    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParam() {
+    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParam(Long gardenChatRoomId) {
         return new GardenChatRoomDeleteParam(
-                1L,
+                gardenChatRoomId,
                 1L
         );
     }
 
-    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner() {
+    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner(Long gardenChatRoomId) {
         return new GardenChatRoomDeleteParam(
-                1L,
+                gardenChatRoomId,
                 2L
         );
     }
 
-    public static GardenChatMessagesGetParam gardenChatMessagesGetParam() {
+    public static GardenChatMessagesGetParam gardenChatMessagesGetParam(Long gardenChatRoomId) {
         return new GardenChatMessagesGetParam(
                 1L,
-                1L,
+                gardenChatRoomId,
                 0
         );
     }

@@ -10,7 +10,7 @@ public record CropChatRoomCreateParam(
         Long postId
 ) {
     public CropChatRoom toChatRoom() {
-        return CropChatRoom.of();
+        return CropChatRoom.of(1L);
     }
 
     public CropChatRoomInfo toChatRoomInfoToWriter() {

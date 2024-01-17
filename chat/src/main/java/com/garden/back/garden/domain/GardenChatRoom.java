@@ -57,5 +57,4 @@ public class GardenChatRoom {
         return size == MAXIMUM_PEOPLE;
     }
 
-
 }

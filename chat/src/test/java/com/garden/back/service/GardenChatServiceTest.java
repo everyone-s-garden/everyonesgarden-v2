@@ -41,16 +41,16 @@ class GardenChatServiceTest extends IntegrationTestSupport {
     void saveMessage_exitedPartner_allReadMessage() {
         //Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
-        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
 
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
 
-        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe();
-        GardenChatMessageSendParam gardenChatMessageSendParamSecond = ChatRoomFixture.gardenChatMessageSendParamSecondByMe();
+        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecond = ChatRoomFixture.gardenChatMessageSendParamSecondByMe(gardenChatRoomId);
 
         // When
         GardenChatMessageSendResult firstGardenChatMessageSendResult = gardenChatService.saveMessage(gardenChatMessageSendParamFirst);
@@ -68,13 +68,13 @@ class GardenChatServiceTest extends IntegrationTestSupport {
     void saveMessage_notExitedPartner_notReadMessage() {
         //Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
 
-        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe();
-        GardenChatMessageSendParam gardenChatMessageSendParamSecond = ChatRoomFixture.gardenChatMessageSendParamSecondByMe();
+        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecond = ChatRoomFixture.gardenChatMessageSendParamSecondByMe(gardenChatRoomId);
 
         // When
         GardenChatMessageSendResult firstGardenChatMessageSendResult = gardenChatService.saveMessage(gardenChatMessageSendParamFirst);
@@ -92,12 +92,12 @@ class GardenChatServiceTest extends IntegrationTestSupport {
     void saveMessage_notExistedMe_throwException() {
         // Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
 
-        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe();
+        GardenChatMessageSendParam gardenChatMessageSendParamFirst = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
 
         // When_Then
         assertThatThrownBy(() -> gardenChatService.saveMessage(gardenChatMessageSendParamFirst)).
@@ -109,10 +109,10 @@ class GardenChatServiceTest extends IntegrationTestSupport {
     void leaveChatRoom() {
         // Given
         GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
-        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
-        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
-        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
 
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
@@ -134,25 +134,25 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
         // 상대방과 나의 세션 생성
-        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe();
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
-        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner();
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
 
         // 내 메세지 전송
-        GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe = ChatRoomFixture.gardenChatMessageSendParamFirstByMe();
-        GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe = ChatRoomFixture.gardenChatMessageSendParamSecondByMe();
+        GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe = ChatRoomFixture.gardenChatMessageSendParamSecondByMe(gardenChatRoomId);
         GardenChatMessageSendResult firstGardenChatMessageByMe = gardenChatService.saveMessage(gardenChatMessageSendParamFirstByMe);
         GardenChatMessageSendResult secondGardenChatMessageByMe = gardenChatService.saveMessage(gardenChatMessageSendParamSecondByMe);
 
         // 상대방 메세지 전송
-        GardenChatMessageSendParam gardenChatMessageSendParamFirstByPart = ChatRoomFixture.gardenChatMessageSendParamFirstByPartner();
-        GardenChatMessageSendParam gardenChatMessageSendParamSecondByPart = ChatRoomFixture.gardenChatMessageSendParamSecondByPartner();
+        GardenChatMessageSendParam gardenChatMessageSendParamFirstByPart = ChatRoomFixture.gardenChatMessageSendParamFirstByPartner(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecondByPart = ChatRoomFixture.gardenChatMessageSendParamSecondByPartner(gardenChatRoomId);
         GardenChatMessageSendResult firstGardenChatMessageByPart = gardenChatService.saveMessage(gardenChatMessageSendParamFirstByPart);
         GardenChatMessageSendResult secondGardenChatMessageByPart = gardenChatService.saveMessage(gardenChatMessageSendParamSecondByPart);
 
         // When
-        GardenChatMessagesGetResults chatRoomMessages = gardenChatService.getChatRoomMessages(ChatRoomFixture.gardenChatMessagesGetParam());
+        GardenChatMessagesGetResults chatRoomMessages = gardenChatService.getChatRoomMessages(ChatRoomFixture.gardenChatMessagesGetParam(gardenChatRoomId));
 
         // Then
         assertThat(chatRoomMessages.gardenChatMessagesGetResponses().stream().toList()).extracting("createdAt")
