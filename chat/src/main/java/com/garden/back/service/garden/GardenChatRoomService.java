@@ -2,6 +2,8 @@ package com.garden.back.service.garden;
 
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
+import com.garden.back.exception.EntityNotFoundException;
+import com.garden.back.global.exception.ErrorCode;
 import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
@@ -71,6 +73,18 @@ public class GardenChatRoomService {
     
     public void createSessionInfo(GardenSessionCreateParam param) {
         gardenChatRoomEntryRepository.addMemberToRoom(param.toChatRoomEntry());
+    }
+
+    @Transactional
+    public void deleteChatRoom(Long chatRoomId, Long deleteRequestMemberId) {
+        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(chatRoomId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
+        gardenChatRoomInfoRepository.findByRoomId(chatRoomId).forEach(
+                gardenChatRoomInfo -> gardenChatRoomInfo.deleteChatRoomInfo(deleteRequestMemberId)
+        );
+
+        if(gardenChatRoom.isRoomEmpty()) {
+            gardenChatRoomRepository.deleteById(chatRoomId);
+        }
     }
 
 }

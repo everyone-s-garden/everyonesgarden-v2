@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenChatRoomInfo, Long> {
     @Query("""
            select case when exists(
@@ -30,5 +32,15 @@ public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenCha
     )
     GardenChatRoomEnterRepositoryResponse findPartnerId(@Param("chatRoomId") Long chatRoomId,
                                                         @Param("myId") Long memberId);
+
+    @Query(
+            """
+                    select gri
+                    from GardenChatRoomInfo as gri
+                    where gri.chatRoom.chatRoomId =:chatRoomId
+                    """
+    )
+    List<GardenChatRoomInfo> findByRoomId(@Param("chatRoomId") Long chatRoomId);
+
 
 }
