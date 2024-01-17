@@ -1,22 +1,18 @@
 package com.garden.back.garden.domain;
 
-import jakarta.persistence.*;
+import com.garden.back.global.jpa.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GardenLike {
+public class GardenLike extends BaseTimeEntity {
 
     private Long gardenLikeId;
     private Long memberId;
     private Garden garden;
-    private LocalDateTime createdDate;
 
     protected GardenLike(
             Long gardenLikeId,

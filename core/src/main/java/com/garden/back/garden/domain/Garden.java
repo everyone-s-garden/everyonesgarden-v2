@@ -3,6 +3,7 @@ package com.garden.back.garden.domain;
 import com.garden.back.garden.domain.dto.GardenUpdateDomainRequest;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
+import com.garden.back.global.jpa.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Garden {
+public class Garden extends BaseTimeEntity {
 
     private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
@@ -36,7 +37,6 @@ public class Garden {
     private LocalDate recruitEndDate;
     private LocalDate useStartDate;
     private LocalDate useEndDate;
-    private LocalDate createdDate;
     private LocalDate lastModifiedDate;
     private Boolean isToilet;
     private Boolean isWaterway;
