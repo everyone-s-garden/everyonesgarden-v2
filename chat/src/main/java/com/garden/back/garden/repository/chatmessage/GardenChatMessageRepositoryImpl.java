@@ -1,4 +1,4 @@
-package com.garden.back.garden.repository.chatmessage.garden;
+package com.garden.back.garden.repository.chatmessage;
 
 import com.garden.back.garden.domain.GardenChatMessage;
 import jakarta.persistence.EntityNotFoundException;

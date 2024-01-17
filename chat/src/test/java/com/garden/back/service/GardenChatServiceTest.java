@@ -5,7 +5,7 @@ import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.global.exception.ChatRoomAccessException;
 import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
-import com.garden.back.garden.repository.chatmessage.garden.GardenChatMessageRepository;
+import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
 import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;

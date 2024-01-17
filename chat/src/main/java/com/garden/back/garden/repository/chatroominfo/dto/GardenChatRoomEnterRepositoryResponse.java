@@ -1,4 +1,4 @@
-package com.garden.back.garden.repository.chatroominfo.garden.dto;
+package com.garden.back.garden.repository.chatroominfo.dto;
 
 public interface GardenChatRoomEnterRepositoryResponse {
     Long getPostId();

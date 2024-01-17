@@ -1,6 +1,6 @@
 package com.garden.back.garden.service.dto.response;
 
-import com.garden.back.garden.repository.chatroominfo.garden.dto.GardenChatRoomEnterRepositoryResponse;
+import com.garden.back.garden.repository.chatroominfo.dto.GardenChatRoomEnterRepositoryResponse;
 
 public record GardenChatRoomEntryResult(
         Long partnerId,

@@ -1,15 +1,19 @@
 package com.garden.back.garden.domain;
 
 import com.garden.back.garden.domain.dto.GardenChatMessageDomainParam;
-import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "garden_chat_messages")
 @Entity
-public class GardenChatMessage extends BaseTimeEntity {
+public class GardenChatMessage {
 
     protected GardenChatMessage() {
     }
@@ -31,6 +35,10 @@ public class GardenChatMessage extends BaseTimeEntity {
 
     @Column(name = "read_or_not", nullable = false)
     private boolean readOrNot;
+
+    @CreatedDate
+    @Column(name = "created_at", updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
     private GardenChatMessage(
             GardenChatRoom chatRoom,

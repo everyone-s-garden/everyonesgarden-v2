@@ -4,11 +4,12 @@ import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeRequest;
 import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeResponse;
 import com.garden.back.garden.domain.GardenChatRoom;
+import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.service.MemberService;
-import com.garden.back.garden.repository.chatmessage.garden.GardenChatMessageRepository;
+import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.garden.service.dto.request.GardenChatRoomEntryParam;
 import com.garden.back.garden.service.dto.response.GardenChatRoomEntryResult;
@@ -26,6 +27,9 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenChatRoomService gardenChatRoomService;
+
+    @Autowired
+    private GardenChatService gardenChatService;
 
     @Autowired
     private GardenReadService gardenReadService;
