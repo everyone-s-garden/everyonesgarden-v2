@@ -86,7 +86,7 @@ public class ChatRoomController {
     public ResponseEntity<Void> createSession(
             @RequestBody @Valid GardenSessionCreateRequest request,
             @CurrentUser LoginUser loginUser
-    ){
+    ) {
         gardenChatRoomService.createSessionInfo(request.to(loginUser));
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -97,7 +97,7 @@ public class ChatRoomController {
     public ResponseEntity<Void> deleteChatRoom(
             @PathVariable @Positive Long roomId,
             @CurrentUser LoginUser loginUser
-    ){
+    ) {
         gardenChatRoomService.deleteChatRoom(
                 GardenChatRoomDeleteParam.of(
                         roomId,
