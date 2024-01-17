@@ -51,6 +51,14 @@ class ChatRoomControllerTest extends ControllerTestSupport {
                 .andExpect(status().is4xxClientError());
     }
 
+    @DisplayName("텃밭 분양 채팅방을 영구적으로 삭제할 때 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L, 0L})
+    void deleteGardenChatRoom_invalidRequest(Long roomId) throws Exception {
+        mockMvc.perform(patch("/chats/gardens/{roomId}",roomId))
+                .andExpect(status().is4xxClientError());
+    }
+
     private static Stream<CropChatRoomCreateRequest> provideInvalidCropChatRoomCreateRequest() {
         return Stream.of(
                 new CropChatRoomCreateRequest(

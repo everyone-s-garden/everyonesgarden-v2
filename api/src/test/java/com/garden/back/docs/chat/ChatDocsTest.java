@@ -20,8 +20,7 @@ import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -121,6 +120,21 @@ class ChatDocsTest extends RestDocsSupport {
                                 fieldWithPath("sessionId").type(JsonFieldType.STRING).description("채팅 세션 아이디"),
                                 fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("채팅방 아이디")
                         )));
+    }
+
+    @DisplayName("텃밭 분양 채팅방을 영구적으로 삭제한다.")
+    @Test
+    void deleteGardenChatRoom() throws Exception {
+        Long roomId = 1L;
+        mockMvc.perform(delete("/chats/gardens/{roomId}",roomId))
+                .andDo(print())
+                .andExpect(status().isNoContent())
+                .andDo(document("delete-garden-chat-room",
+                        pathParameters(
+                                parameterWithName("roomId").description("채팅방 id")
+                        )
+                ));
+
     }
 
 

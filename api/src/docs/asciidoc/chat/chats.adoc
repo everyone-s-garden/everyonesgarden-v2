@@ -42,3 +42,15 @@ include::{snippets}/create-garden-chat-session/request-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/create-garden-chat-session/http-response.adoc[]
+
+
+=== 텃밭 채팅방 삭제
+텃밭 채팅방을 삭제할 수 있습니다. +
+그러나 대화를 나누고 있는 상대방의 채팅방은 남아있게 됩니다.
+
+==== Request
+include::{snippets}/delete-garden-chat-room/http-request.adoc[]
+include::{snippets}/delete-garden-chat-room/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/delete-garden-chat-room/http-response.adoc[]
