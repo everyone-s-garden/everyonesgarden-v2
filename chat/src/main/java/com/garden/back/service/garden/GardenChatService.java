@@ -2,6 +2,7 @@ package com.garden.back.service.garden;
 
 import com.garden.back.domain.garden.GardenChatMessage;
 import com.garden.back.domain.garden.dto.GardenChatMessageDomainParam;
+import com.garden.back.repository.chatentry.SessionId;
 import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
@@ -43,6 +44,11 @@ public class GardenChatService {
                 )
         );
 
+    }
+
+    @Transactional
+    public void leaveChatRoom(SessionId sessionId) {
+        gardenChatRoomEntryRepository.deleteChatRoomEntryByRoomId(sessionId);
     }
 
 }
