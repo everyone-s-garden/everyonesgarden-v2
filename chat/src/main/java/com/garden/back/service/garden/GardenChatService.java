@@ -7,12 +7,18 @@ import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
 import com.garden.back.service.garden.dto.request.GardenChatMessageSendParam;
+import com.garden.back.service.garden.dto.request.GardenChatMessagesGetParam;
 import com.garden.back.service.garden.dto.response.GardenChatMessageSendResult;
+import com.garden.back.service.garden.dto.response.GardenChatMessagesGetResults;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GardenChatService {
+    private final int GARDEN_CHAT_MESSAGE_PAGE_SIZE = 10;
     private final GardenChatMessageRepository gardenChatMessageRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
     private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
@@ -49,6 +55,15 @@ public class GardenChatService {
     @Transactional
     public void leaveChatRoom(SessionId sessionId) {
         gardenChatRoomEntryRepository.deleteChatRoomEntryByRoomId(sessionId);
+    }
+
+    @Transactional
+    public GardenChatMessagesGetResults getChatRoomMessages(GardenChatMessagesGetParam param) {
+
+        Pageable pageable = PageRequest.of(param.pageNumber(), GARDEN_CHAT_MESSAGE_PAGE_SIZE);
+        Slice<GardenChatMessage> gardenChatMessage = gardenChatMessageRepository.getGardenChatMessage(param.chatRoomId(), pageable);
+
+        return GardenChatMessagesGetResults.to(gardenChatMessage, param.memberId());
     }
 
 }
