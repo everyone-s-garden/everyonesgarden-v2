@@ -1,4 +1,6 @@
 [[Chatting]]
+
+== 텃밭
 === 텃밭 채팅방 만들기
 텃밭 분양 채팅방을 만들 수 있다.
 
@@ -8,17 +10,6 @@ include::{snippets}/create-garden-chat-room/request-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/create-garden-chat-room/http-response.adoc[]
-
-=== 작물거래 채팅방 만들기
-작물 거래 채팅방을 만들 수 있다.
-
-==== Request
-include::{snippets}/create-crop-chat-room/http-request.adoc[]
-include::{snippets}/create-crop-chat-room/request-fields.adoc[]
-
-==== Response (Success)
-include::{snippets}/create-crop-chat-room/http-response.adoc[]
-
 
 === 텃밭 채팅방 입장
 텃밭 채팅방 입장할 때는 읽지 않은 상대방의 메세지는 모두 읽음 처리로 변하며 +
@@ -54,3 +45,27 @@ include::{snippets}/delete-garden-chat-room/path-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/delete-garden-chat-room/http-response.adoc[]
+
+
+=== 텃밭 채팅방 메세지 목록
+무한 스크롤로 생성되며 메세지는 10개씩 보내드립니다. +
+해당 페이지의 오래된 순에서 최신 순으로 보내드립니다.
+
+==== Request
+include::{snippets}/get-garden-chat-messages/http-request.adoc[]
+include::{snippets}/get-garden-chat-messages/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-garden-chat-messages/http-response.adoc[]
+include::{snippets}/get-garden-chat-messages/response-fields.adoc[]
+
+== 작물
+=== 작물거래 채팅방 만들기
+작물 거래 채팅방을 만들 수 있다.
+
+==== Request
+include::{snippets}/create-crop-chat-room/http-request.adoc[]
+include::{snippets}/create-crop-chat-room/request-fields.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-crop-chat-room/http-response.adoc[]
