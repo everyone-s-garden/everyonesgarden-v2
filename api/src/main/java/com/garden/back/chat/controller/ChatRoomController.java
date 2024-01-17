@@ -11,6 +11,7 @@ import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.service.crop.CropChatRoomService;
 import com.garden.back.service.garden.GardenChatRoomService;
+import com.garden.back.service.garden.dto.request.GardenChatRoomDeleteParam;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
@@ -88,6 +89,23 @@ public class ChatRoomController {
     ){
         gardenChatRoomService.createSessionInfo(request.to(loginUser));
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping(
+            path = "/gardens/{roomId}"
+    )
+    public ResponseEntity<Void> deleteChatRoom(
+            @PathVariable @Positive Long roomId,
+            @CurrentUser LoginUser loginUser
+    ){
+        gardenChatRoomService.deleteChatRoom(
+                GardenChatRoomDeleteParam.of(
+                        roomId,
+                        loginUser.memberId()
+                )
+        );
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }
