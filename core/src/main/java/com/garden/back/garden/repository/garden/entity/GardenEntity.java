@@ -3,21 +3,23 @@ package com.garden.back.garden.repository.garden.entity;
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Table(name = "gardens")
-public class GardenEntity {
+public class GardenEntity extends BaseTimeEntity {
 
     private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
@@ -77,10 +79,6 @@ public class GardenEntity {
 
     @Column(name = "use_end_date")
     private LocalDate useEndDate;
-
-    @CreatedDate
-    @Column(name = "created_date")
-    private LocalDate createdDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")

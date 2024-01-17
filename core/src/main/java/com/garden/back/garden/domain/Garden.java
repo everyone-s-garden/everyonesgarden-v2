@@ -3,18 +3,18 @@ package com.garden.back.garden.domain;
 import com.garden.back.garden.domain.dto.GardenUpdateDomainRequest;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
-import com.garden.back.global.jpa.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.springframework.util.Assert;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Garden extends BaseTimeEntity {
+public class Garden {
 
     private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
@@ -37,6 +37,7 @@ public class Garden extends BaseTimeEntity {
     private LocalDate recruitEndDate;
     private LocalDate useStartDate;
     private LocalDate useEndDate;
+    private LocalDate createdAt;
     private LocalDate lastModifiedDate;
     private Boolean isToilet;
     private Boolean isWaterway;
