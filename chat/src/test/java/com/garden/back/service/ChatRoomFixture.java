@@ -6,6 +6,7 @@ import com.garden.back.repository.chatentry.SessionId;
 import com.garden.back.service.crop.request.CropChatRoomCreateParam;
 import com.garden.back.service.garden.dto.request.GardenChatMessageSendParam;
 import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomDeleteParam;
 import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
 
 public class ChatRoomFixture {
@@ -74,6 +75,20 @@ public class ChatRoomFixture {
                 1L,
                 1L,
                 "근처에 화장실이 구비되어 있나요?");
+    }
+
+    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParam() {
+        return new GardenChatRoomDeleteParam(
+                1L,
+                1L
+        );
+    }
+
+    public static GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner() {
+        return new GardenChatRoomDeleteParam(
+                1L,
+                2L
+        );
     }
 
 }

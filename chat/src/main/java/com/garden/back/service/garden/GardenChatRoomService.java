@@ -9,8 +9,9 @@ import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
 import com.garden.back.repository.chatroominfo.garden.dto.GardenChatRoomEnterRepositoryResponse;
-import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
 import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomDeleteParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
 import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
 import com.garden.back.service.garden.dto.response.GardenChatRoomEntryResult;
 import org.springframework.stereotype.Service;
@@ -76,14 +77,14 @@ public class GardenChatRoomService {
     }
 
     @Transactional
-    public void deleteChatRoom(Long chatRoomId, Long deleteRequestMemberId) {
-        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(chatRoomId).orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
-        gardenChatRoomInfoRepository.findByRoomId(chatRoomId).forEach(
-                gardenChatRoomInfo -> gardenChatRoomInfo.deleteChatRoomInfo(deleteRequestMemberId)
-        );
+    public void deleteChatRoom(GardenChatRoomDeleteParam param) {
+        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(param.chatRoomId()).orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
+        gardenChatRoomInfoRepository.findByRoomId(param.chatRoomId()).forEach(
+                gardenChatRoomInfo -> gardenChatRoomInfo.deleteChatRoomInfo(param.deleteRequestMemberId()));
 
         if(gardenChatRoom.isRoomEmpty()) {
-            gardenChatRoomRepository.deleteById(chatRoomId);
+            gardenChatRoomInfoRepository.deleteAll(param.chatRoomId());
+            gardenChatRoomRepository.deleteById(param.chatRoomId());
         }
     }
 

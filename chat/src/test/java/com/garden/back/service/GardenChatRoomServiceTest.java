@@ -3,12 +3,14 @@ package com.garden.back.service;
 import com.garden.back.domain.garden.GardenChatMessage;
 import com.garden.back.domain.garden.GardenChatRoom;
 import com.garden.back.domain.garden.GardenChatRoomInfo;
+import com.garden.back.exception.EntityNotFoundException;
 import com.garden.back.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
 import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.repository.chatroominfo.garden.GardenChatRoomInfoRepository;
 import com.garden.back.service.garden.GardenChatRoomService;
 import com.garden.back.service.garden.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.service.garden.dto.request.GardenChatRoomDeleteParam;
 import com.garden.back.service.garden.dto.request.GardenChatRoomEntryParam;
 import com.garden.back.service.garden.dto.request.GardenSessionCreateParam;
 import org.junit.jupiter.api.DisplayName;
@@ -31,7 +33,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
     private GardenChatRoomRepository gardenChatRoomRepository;
 
     @Autowired
-    private GardenChatRoomInfoRepository chatRoomInfoRepository;
+    private GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
 
     @Autowired
     private GardenChatMessageRepository gardenChatMessageRepository;
@@ -47,7 +49,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
 
         // When
         Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
-        List<GardenChatRoomInfo> chatRoomInfos = chatRoomInfoRepository.findAll();
+        List<GardenChatRoomInfo> chatRoomInfos = gardenChatRoomInfoRepository.findAll();
 
         // Then
         chatRoomInfos.stream()
@@ -120,6 +122,43 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
 
         // Then
         assertThat(gardenChatRoomEntryRepository.isMemberInRoom(gardenSessionCreateParam.toChatRoomEntry())).isEqualTo(true);
+    }
+
+    @DisplayName("채팅방을 영구적으로 나가는 경우 한쪽만 나가는 경우에는 상대방 채팅방은 살아있다.")
+    @Test
+    void deleteChatRoom_onePerson() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam();
+
+        // When
+        gardenChatRoomService.deleteChatRoom(gardenChatRoomDeleteParam);
+
+        // Then
+        assertThat(gardenChatRoomRepository.findById(gardenChatRoomDeleteParam.chatRoomId())).isNotEmpty();
+        assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).stream()
+                .filter(GardenChatRoomInfo::isDeleted).toList()).isEqualTo(1);
+    }
+
+    @DisplayName("채팅방을 영구적으로 나가는 경우 모두 나가는 경우에는 채팅방은 삭제된다.")
+    @Test
+    void deleteChatRoom_twoPerson() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParam = ChatRoomFixture.gardenChatRoomDeleteParam();
+        GardenChatRoomDeleteParam gardenChatRoomDeleteParamAboutPartner = ChatRoomFixture.gardenChatRoomDeleteParamAboutPartner();
+
+        // When
+        gardenChatRoomService.deleteChatRoom(gardenChatRoomDeleteParam);
+        gardenChatRoomService.deleteChatRoom(gardenChatRoomDeleteParamAboutPartner);
+
+        // Then
+        assertThatThrownBy(()-> gardenChatRoomRepository.getById(gardenChatRoomDeleteParam.chatRoomId())).isInstanceOf(EntityNotFoundException.class);
+        assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).size()).isEqualTo(0);
     }
 
 }
