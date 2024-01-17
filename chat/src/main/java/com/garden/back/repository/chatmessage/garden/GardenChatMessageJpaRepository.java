@@ -1,6 +1,8 @@
 package com.garden.back.repository.chatmessage.garden;
 
 import com.garden.back.domain.garden.GardenChatMessage;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +21,15 @@ public interface GardenChatMessageJpaRepository extends JpaRepository<GardenChat
     )
     void markMessagesAsRead(@Param("roomId") Long roomId,
                             @Param("partnerId") Long partnerId);
+
+
+    @Query(
+            """
+            select gm
+            from GardenChatMessage as gm
+            where gm.chatRoom.chatRoomId =:chatRoomId
+            order by gm.createdAt desc    
+            """
+    )
+    Slice<GardenChatMessage> getGardenChatMessage(@Param("chatRoomId") Long chatRoomId, Pageable pageable);
 }
