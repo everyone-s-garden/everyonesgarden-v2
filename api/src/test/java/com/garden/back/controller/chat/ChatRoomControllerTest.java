@@ -11,8 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 class ChatRoomControllerTest extends ControllerTestSupport {
@@ -56,6 +55,15 @@ class ChatRoomControllerTest extends ControllerTestSupport {
     @ValueSource(longs = {-1L, 0L})
     void deleteGardenChatRoom_invalidRequest(Long roomId) throws Exception {
         mockMvc.perform(patch("/chats/gardens/{roomId}",roomId))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("텃밭 분양 채팅방 메세지 목록을 확인할 때 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L, 0L})
+    void getGardenChatMessages_invalidRequest(Long roomId) throws Exception {
+        mockMvc.perform(get("/garden-chats/{roomId}",roomId)
+                        .param("pageNumber","0"))
                 .andExpect(status().is4xxClientError());
     }
 
