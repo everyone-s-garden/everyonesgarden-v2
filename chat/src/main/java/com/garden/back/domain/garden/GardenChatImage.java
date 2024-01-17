@@ -1,17 +1,16 @@
 package com.garden.back.domain.garden;
 
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Table(name = "garden_chat_images")
 @Entity
-public class GardenChatImage {
+public class GardenChatImage extends BaseTimeEntity {
 
     protected GardenChatImage() {
     }
@@ -33,9 +32,5 @@ public class GardenChatImage {
 
     @Column(name = "read_or_not", nullable = false)
     private boolean readOrNot;
-
-    @Column(name = "created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
 
 }

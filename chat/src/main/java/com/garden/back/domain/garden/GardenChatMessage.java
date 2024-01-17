@@ -1,17 +1,15 @@
 package com.garden.back.domain.garden;
 
 import com.garden.back.domain.garden.dto.GardenChatMessageDomainParam;
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Table(name = "garden_chat_messages")
 @Entity
-public class GardenChatMessage {
+public class GardenChatMessage extends BaseTimeEntity {
 
     protected GardenChatMessage() {
     }
@@ -33,10 +31,6 @@ public class GardenChatMessage {
 
     @Column(name = "read_or_not", nullable = false)
     private boolean readOrNot;
-
-    @Column(name = "created_at")
-    @CreatedDate
-    private LocalDateTime createdAt;
 
     private GardenChatMessage(
             GardenChatRoom chatRoom,
