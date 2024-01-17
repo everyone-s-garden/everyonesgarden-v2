@@ -3,7 +3,6 @@ package com.garden.back.service.garden.dto.response;
 
 import com.garden.back.domain.garden.GardenChatMessage;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -11,7 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 public record GardenChatMessagesGetResults(
-        Slice<GardenChatMessagesGetResult> gardenChatMessagesGetResponses
+        List<GardenChatMessagesGetResult> gardenChatMessagesGetResponses,
+        boolean hasNext
 
 ) {
     public record GardenChatMessagesGetResult(
@@ -40,9 +40,8 @@ public record GardenChatMessagesGetResults(
                 .sorted(Comparator.comparing(GardenChatMessagesGetResult::createdAt))
                 .toList();
 
-        return new GardenChatMessagesGetResults(new SliceImpl<>(
+        return new GardenChatMessagesGetResults(
                 sortedResponses,
-                gardenChatMessages.getPageable(),
-                gardenChatMessages.hasNext()));
+                gardenChatMessages.hasNext());
     }
 }

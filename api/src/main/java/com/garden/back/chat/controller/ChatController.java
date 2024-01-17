@@ -35,8 +35,8 @@ public class ChatController {
         this.gardenChatService = gardenChatService;
     }
 
-    @MessageMapping("/chats/{roomId}/messages")
-    @SendToUser("/queue/chats/{roomId}")
+    @MessageMapping("/garden-chats/{roomId}/")
+    @SendToUser("/queue/garden-chats/{roomId}")
     public GardenMessageSendResponse sendMessage(
             @DestinationVariable("roomId") Long roomId,
             @CurrentUser LoginUser loginUser,
@@ -50,7 +50,7 @@ public class ChatController {
     }
 
     @GetMapping(
-            path = "/chats/{roomId}/messages",
+            path = "/garden-chats/{roomId}/messages",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<GardenChatMessageGetResponses> getGardenChatMessages(

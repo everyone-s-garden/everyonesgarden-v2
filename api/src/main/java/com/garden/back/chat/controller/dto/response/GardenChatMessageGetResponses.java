@@ -1,12 +1,13 @@
 package com.garden.back.chat.controller.dto.response;
 
 import com.garden.back.service.garden.dto.response.GardenChatMessagesGetResults;
-import org.springframework.data.domain.Slice;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record GardenChatMessageGetResponses(
-        Slice<GardenChatMessageGetResponse> gardenChatMessageResponses
+        List<GardenChatMessageGetResponse> gardenChatMessageResponses,
+        boolean hasNext
 ) {
     public record GardenChatMessageGetResponse(
             Long chatMessageId,
@@ -32,7 +33,10 @@ public record GardenChatMessageGetResponses(
     public static GardenChatMessageGetResponses to(GardenChatMessagesGetResults gardenChatMessagesGetResults) {
         return new GardenChatMessageGetResponses(
                 gardenChatMessagesGetResults.gardenChatMessagesGetResponses()
+                        .stream()
                         .map(GardenChatMessageGetResponse::to)
+                        .toList(),
+                gardenChatMessagesGetResults.hasNext()
         );
     }
 }
