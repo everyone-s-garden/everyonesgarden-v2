@@ -1,4 +1,4 @@
-package com.garden.back.global;
+package com.garden.back.global.jpa;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.context.annotation.Configuration;
