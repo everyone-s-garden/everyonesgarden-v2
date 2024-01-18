@@ -17,8 +17,9 @@ import org.springframework.security.core.Authentication;
 @Configuration
 public class ChatPreHandler implements ChannelInterceptor {
 
-    private static final String HEADER_PREFIX = "Bearer ";
-    private static final String HEADER_NAME = "Authorization";
+    private static final String AUTHORIZATION_HEADER_PREFIX = "Bearer ";
+    private static final String AUTHORIZATION_HEADER_NAME = "Authorization";
+
     private final TokenProvider tokenProvider;
 
     public ChatPreHandler(TokenProvider tokenProvider) {
@@ -28,7 +29,9 @@ public class ChatPreHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor headerAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-        String authorizationHeader = headerAccessor.getFirstNativeHeader(HEADER_NAME);
+        validateHeaderAccessor(headerAccessor);
+
+        String authorizationHeader = headerAccessor.getFirstNativeHeader(AUTHORIZATION_HEADER_NAME);
         StompCommand stompCommand = headerAccessor.getCommand();
 
         if (isConnectOrSend(stompCommand)) {
@@ -37,18 +40,23 @@ public class ChatPreHandler implements ChannelInterceptor {
         return message;
     }
 
-    private boolean isConnectOrSend(StompCommand stompCommand) {
-        return StompCommand.CONNECT == stompCommand || StompCommand.SEND == stompCommand;
-    }
-
-    private void handleAuthorization(String authorizationHeader, StompHeaderAccessor headerAccessor) {
-        if (authorizationHeader != null && authorizationHeader.startsWith(HEADER_PREFIX)) {
-            String accessToken = authorizationHeader.substring(HEADER_PREFIX.length());
-            Authentication authentication = tokenProvider.getAuthentication(accessToken);
-            headerAccessor.setUser(authentication);
-        } else {
-            throw new UnauthorizedException("유효한 Jwt 토큰이 아닙니다.");
+    private void validateHeaderAccessor(StompHeaderAccessor headerAccessor) {
+        if (headerAccessor == null) {
+            throw new UnauthorizedException("StompHeaderAccessor은 null일 수 없습니다.");
         }
     }
 
+    private boolean isConnectOrSend(StompCommand stompCommand) {
+        return stompCommand == StompCommand.CONNECT || stompCommand == StompCommand.SEND;
+    }
+
+    private void handleAuthorization(String authorizationHeader, StompHeaderAccessor headerAccessor) {
+        if (authorizationHeader != null && authorizationHeader.startsWith(AUTHORIZATION_HEADER_PREFIX)) {
+            String accessToken = authorizationHeader.substring(AUTHORIZATION_HEADER_PREFIX.length());
+            Authentication authentication = tokenProvider.getAuthentication(accessToken);
+            headerAccessor.setUser(authentication);
+        } else {
+            throw new UnauthorizedException("유효하지 않은 Jwt token입니다.");
+        }
+    }
 }
