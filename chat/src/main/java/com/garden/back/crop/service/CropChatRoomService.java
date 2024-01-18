@@ -2,8 +2,6 @@ package com.garden.back.crop.service;
 
 import com.garden.back.crop.domain.CropChatRoom;
 import com.garden.back.crop.domain.CropChatRoomInfo;
-import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
-import com.garden.back.crop.repository.chatmessage.CropChatMessageRepository;
 import com.garden.back.crop.repository.chatroom.CropChatRoomRepository;
 import com.garden.back.crop.repository.chatroomInfo.CropChatRoomInfoRepository;
 import com.garden.back.crop.service.request.CropChatRoomCreateParam;
@@ -17,14 +15,10 @@ public class CropChatRoomService {
 
     private final CropChatRoomRepository cropChatRoomRepository;
     private final CropChatRoomInfoRepository cropChatRoomInfoRepository;
-    private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
-    private final CropChatMessageRepository cropChatMessageRepository;
 
-    public CropChatRoomService(CropChatRoomRepository cropChatRoomRepository, CropChatRoomInfoRepository cropChatRoomInfoRepository, GardenChatRoomEntryRepository gardenChatRoomEntryRepository, CropChatMessageRepository cropChatMessageRepository) {
+    public CropChatRoomService(CropChatRoomRepository cropChatRoomRepository, CropChatRoomInfoRepository cropChatRoomInfoRepository) {
         this.cropChatRoomRepository = cropChatRoomRepository;
         this.cropChatRoomInfoRepository = cropChatRoomInfoRepository;
-        this.gardenChatRoomEntryRepository = gardenChatRoomEntryRepository;
-        this.cropChatMessageRepository = cropChatMessageRepository;
     }
 
     @Transactional

@@ -1,6 +1,5 @@
 package com.garden.back.global.exception;
 
-import com.garden.back.global.exception.ErrorCode;
 import lombok.Getter;
 
 @Getter
