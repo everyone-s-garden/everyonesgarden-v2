@@ -121,7 +121,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
         gardenChatRoomService.createSessionInfo(gardenSessionCreateParam);
 
         // Then
-        assertThat(gardenChatRoomEntryRepository.isMemberInRoom(gardenSessionCreateParam.toChatRoomEntry())).isEqualTo(true);
+        assertThat(gardenChatRoomEntryRepository.isMemberInRoom(gardenSessionCreateParam.toChatRoomEntry())).isTrue();
     }
 
     @DisplayName("채팅방을 영구적으로 나가는 경우 한쪽만 나가는 경우에는 상대방 채팅방은 살아있다.")
@@ -158,7 +158,7 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
 
         // Then
         assertThatThrownBy(()-> gardenChatRoomRepository.getById(gardenChatRoomDeleteParam.chatRoomId())).isInstanceOf(EntityNotFoundException.class);
-        assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).size()).isEqualTo(0);
+        assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).size()).isZero();
     }
 
 }
