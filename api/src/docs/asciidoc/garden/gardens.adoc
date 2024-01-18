@@ -1,6 +1,6 @@
+[[텃밭분양정보]]
 
-== Gardens-by-names
-=== 텃밭을 등록할 때 이름으로 검색하기
+==== 텃밭을 등록할 때 이름으로 검색하기
 
 텃밭을 등록할 때 기존에 등록된 텃밭 중에서 이름으로 검색해서 찾는 기능입니다.
 
@@ -12,7 +12,6 @@ include::{snippets}/get-gardens-by-name/query-parameters.adoc[]
 include::{snippets}/get-gardens-by-name/http-response.adoc[]
 include::{snippets}/get-gardens-by-name/response-fields.adoc[]
 
-== All-garden
 === 모든 텃밭 정보 조회하기
 
 모든 텃밭에 대해서 조회합니다.
@@ -25,7 +24,6 @@ include::{snippets}/get-all-gardens/query-parameters.adoc[]
 include::{snippets}/get-all-gardens/http-response.adoc[]
 include::{snippets}/get-all-gardens/response-fields.adoc[]
 
-== Gardens by complexes and garden type
 === 텃밭 타입과 위치에 따른 조회하기
 화면의 북서쪽과 남동쪽의 위도 및 경도 그리고 텃밭 타입에 따른 결과를 반환합니다.
 
@@ -37,7 +35,6 @@ include::{snippets}/get-gardens-by-complexes/query-parameters.adoc[]
 include::{snippets}/get-gardens-by-complexes/http-response.adoc[]
 include::{snippets}/get-gardens-by-complexes/response-fields.adoc[]
 
-== Detail garden
 === 텃밭 상세보기
 텃밭 상세 보기입니다.
 
@@ -49,19 +46,16 @@ include::{snippets}/detail-garden/path-parameters.adoc[]
 include::{snippets}/detail-garden/http-response.adoc[]
 include::{snippets}/detail-garden/response-fields.adoc[]
 
-== Recent gardens
 === 최근 본 텃밭
 최근 본 텃밭 최대 10개를 반환합니다.
 
 ==== Request
 include::{snippets}/recent-gardens/http-request.adoc[]
 
-
 ==== Response (Success)
 include::{snippets}/recent-gardens/http-response.adoc[]
 include::{snippets}/recent-gardens/response-fields.adoc[]
 
-== Delete garden
 === 텃밭 삭제
 텃밭을 삭제합니다.
 
@@ -73,7 +67,6 @@ include::{snippets}/delete-garden/path-parameters.adoc[]
 include::{snippets}/delete-garden/http-response.adoc[]
 
 
-== Get my gardens
 === 내가 등록한 텃밭 목록 조회
 내가 다른 사람들에게 텃밭을 분양하고자 등록한 텃밭 목록을 확인한다.
 
@@ -84,7 +77,6 @@ include::{snippets}/get-my-gardens/http-request.adoc[]
 include::{snippets}/get-my-gardens/http-response.adoc[]
 include::{snippets}/get-my-gardens/response-fields.adoc[]
 
-== Get like gardens
 === 내가 찜한 텃밭 목록 조회
 내가 찜한 텃밭 목록을 조회한다.
 
@@ -95,7 +87,6 @@ include::{snippets}/get-like-gardens/http-request.adoc[]
 include::{snippets}/get-like-gardens/http-response.adoc[]
 include::{snippets}/get-like-gardens/response-fields.adoc[]
 
-== Create like gardens
 === 텃밭 찜하기
 마음에 드는 텃밭을 찜할 수 있다.
 
@@ -107,7 +98,6 @@ include::{snippets}/create-like-garden/request-fields.adoc[]
 include::{snippets}/create-like-garden/http-response.adoc[]
 
 
-== Delete like
 === 찜한 텃밭 취소
 텃밭의 찜하기를 취소할 수 있다.
 
@@ -118,7 +108,6 @@ include::{snippets}/delete-like/request-fields.adoc[]
 ==== Response (Success)
 include::{snippets}/delete-like/http-response.adoc[]
 
-== Create garden
 === 분양하고자 하는 텃밭 등록
 분양하고자 하는 텃밭 등록할 수 있다.
 
@@ -132,7 +121,6 @@ include::{snippets}/create-garden/request-part-gardenCreateRequest-fields.adoc[]
 ==== Response (Success)
 include::{snippets}/create-garden/http-response.adoc[]
 
-== Update garden
 === 텃밭 수정
 내가 올린 텃밭 분양 정보를 수정한다. +
 수정하며 새롭게 추가하는 사진들은 Multipart로, +
@@ -153,7 +141,6 @@ include::{snippets}/update-garden/request-part-gardenUpdateRequest-fields.adoc[]
 include::{snippets}/update-garden/http-response.adoc[]
 
 
-== Get my managed gardens
 === 내가 가꾸는 텃밭 목록 조회
 내가 가꾸는 텃밭 목록 조회한다.
 
@@ -164,7 +151,6 @@ include::{snippets}/get-my-managed-gardens/http-request.adoc[]
 include::{snippets}/get-my-managed-gardens/http-response.adoc[]
 include::{snippets}/get-my-managed-gardens/response-fields.adoc[]
 
-== Delete my managed garden
 === 내가 가꾸는 텃밭 삭제
 내가 가꾸는 텃밭 삭제할 수 있다.
 
@@ -175,7 +161,6 @@ include::{snippets}/delete-my-managed-garden/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/delete-my-managed-garden/http-response.adoc[]
 
-== Create my managed garden
 === 내가 가꾸는 텃밭 등록
 내가 가꾸는 텃밭 등록할 수 있다.
 
@@ -189,7 +174,6 @@ include::{snippets}/create-my-managed-garden/request-part-myManagedGardenCreateR
 ==== Response (Success)
 include::{snippets}/create-my-managed-garden/http-response.adoc[]
 
-== Update my managed garden
 === 내가 가꾸는 텃밭 수정
 내가 가꾸는 텃밭 정보를 수정한다. +
 수정하며 새롭게 추가하는 사진는 Multipart로 주시기 바랍니다.
@@ -205,7 +189,6 @@ include::{snippets}/update-my-managed-garden/request-part-myManagedGardenUpdateR
 ==== Response (Success)
 include::{snippets}/update-my-managed-garden/http-response.adoc[]
 
-== Detail my managed garden
 === 내가 가꾸는 텃밭 상세보기
 내가 가꾸는 텃밭 상세보기입니다.
 수정하기 이전 기존 글을 불러올 때 사용될 수 있습니다.

@@ -1,6 +1,8 @@
 package com.garden.back.domain.crop;
 
-import com.garden.back.domain.MessageType;
+import com.garden.back.crop.domain.CropChatMessage;
+import com.garden.back.crop.domain.CropChatRoom;
+import com.garden.back.global.MessageType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,7 +32,7 @@ class CropChatMessageTest {
     void throwException_zeroOrMinus_memberId(Long memberId) {
         assertThrows(IllegalArgumentException.class,
                 () -> CropChatMessage.of(
-                        new CropChatRoom(),
+                        CropChatRoom.of(1L),
                         memberId,
                         "안녕",
                         false,
@@ -44,7 +46,7 @@ class CropChatMessageTest {
     void throwException_nullOrEmpty_chatContent(String chatContent) {
         assertThrows(IllegalArgumentException.class,
                 () -> CropChatMessage.of(
-                        new CropChatRoom(),
+                        CropChatRoom.of(1L),
                         1L,
                         chatContent,
                         false,

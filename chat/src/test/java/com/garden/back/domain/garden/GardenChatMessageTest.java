@@ -1,6 +1,7 @@
 package com.garden.back.domain.garden;
 
-import com.garden.back.domain.MessageType;
+import com.garden.back.garden.domain.GardenChatMessage;
+import com.garden.back.garden.domain.GardenChatRoom;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,8 +20,7 @@ class GardenChatMessageTest {
                         null,
                         1L,
                         "안녕",
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 
@@ -30,11 +30,10 @@ class GardenChatMessageTest {
     void throwException_zeroOrMinus_memberId(Long memberId) {
         assertThrows(IllegalArgumentException.class,
                 () -> GardenChatMessage.of(
-                        new GardenChatRoom(),
+                        GardenChatRoom.of(1L),
                         memberId,
                         "안녕",
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 
@@ -44,11 +43,10 @@ class GardenChatMessageTest {
     void throwException_nullOrEmpty_chatContent(String chatContent) {
         assertThrows(IllegalArgumentException.class,
                 () -> GardenChatMessage.of(
-                        new GardenChatRoom(),
+                        GardenChatRoom.of(1L),
                         1L,
                         chatContent,
-                        false,
-                        MessageType.TALK
+                        false
                 ));
     }
 }

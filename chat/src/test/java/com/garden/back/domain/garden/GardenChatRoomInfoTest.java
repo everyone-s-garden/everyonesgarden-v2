@@ -1,5 +1,6 @@
 package com.garden.back.domain.garden;
 
+import com.garden.back.garden.domain.GardenChatRoomInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

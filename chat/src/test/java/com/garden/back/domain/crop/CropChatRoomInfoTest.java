@@ -1,5 +1,6 @@
 package com.garden.back.domain.crop;
 
+import com.garden.back.crop.domain.CropChatRoomInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;

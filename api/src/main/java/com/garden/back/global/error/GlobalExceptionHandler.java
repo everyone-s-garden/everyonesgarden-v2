@@ -1,6 +1,6 @@
 package com.garden.back.global.error;
 
-import com.garden.back.exception.ChatRoomAccessException;
+import com.garden.back.global.exception.ChatRoomAccessException;
 import com.garden.back.global.exception.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
