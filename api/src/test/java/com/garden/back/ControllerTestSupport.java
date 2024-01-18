@@ -1,6 +1,7 @@
 package com.garden.back;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.garden.back.chat.cropchat.controller.CropChatRoomController;
 import com.garden.back.chat.gardenchat.controller.GardenChatRoomController;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.crop.CropController;
@@ -37,6 +38,7 @@ import org.springframework.web.context.WebApplicationContext;
         ReportController.class,
         FeedbackController.class,
         GardenChatRoomController.class,
+        CropChatRoomController.class,
         PostController.class,
         CropController.class
     }
