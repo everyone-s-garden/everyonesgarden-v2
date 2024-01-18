@@ -20,11 +20,19 @@ dependencies {
     //Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
     //JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
     implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    //Socket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation group: 'org.webjars', name: 'sockjs-client', version: '1.5.1'
+    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.4'
+
+
 }
 
 ext { // 전역 변수

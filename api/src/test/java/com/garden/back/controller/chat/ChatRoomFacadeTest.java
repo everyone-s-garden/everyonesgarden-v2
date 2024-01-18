@@ -1,19 +1,20 @@
 package com.garden.back.controller.chat;
 
-import com.garden.back.chat.facade.ChatRoomFacade;
-import com.garden.back.chat.facade.GardenChatRoomEnterFacadeRequest;
-import com.garden.back.chat.facade.GardenChatRoomEnterFacadeResponse;
-import com.garden.back.domain.garden.GardenChatRoom;
+import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
+import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeRequest;
+import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeResponse;
+import com.garden.back.garden.domain.GardenChatRoom;
+import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenChatRoomInfoResult;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.service.MemberService;
-import com.garden.back.repository.chatmessage.garden.GardenChatMessageRepository;
-import com.garden.back.repository.chatroom.garden.GardenChatRoomRepository;
-import com.garden.back.service.dto.request.ChatRoomEntryParam;
-import com.garden.back.service.dto.request.ChatRoomEntryResult;
-import com.garden.back.service.dto.request.GardenChatRoomCreateParam;
-import com.garden.back.service.garden.GardenChatRoomService;
+import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
+import com.garden.back.garden.repository.chatroom.garden.GardenChatRoomRepository;
+import com.garden.back.garden.service.dto.request.GardenChatRoomEntryParam;
+import com.garden.back.garden.service.dto.response.GardenChatRoomEntryResult;
+import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.garden.service.GardenChatRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenChatRoomService gardenChatRoomService;
+
+    @Autowired
+    private GardenChatService gardenChatService;
 
     @Autowired
     private GardenReadService gardenReadService;
@@ -57,14 +61,14 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
 
         GardenChatRoomEnterFacadeRequest request = new GardenChatRoomEnterFacadeRequest(chatRoomId, memberId);
 
-        ChatRoomEntryParam chatRoomEntryParam = new ChatRoomEntryParam(chatRoomId, memberId);
+        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(chatRoomId, memberId);
 
         // When
         GardenChatRoomEnterFacadeResponse response = chatRoomFacade.enterGardenChatRoom(request);
 
         String nickname = memberService.findNickname(chatRoomCreateParam.viewerId());
         GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(chatRoomCreateParam.postId());
-        ChatRoomEntryResult chatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(chatRoomEntryParam);
+        GardenChatRoomEntryResult gardenChatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(gardenChatRoomEntryParam);
 
         // Then
         assertThat(response)
@@ -77,6 +81,6 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
                         gardenChatRoomInfo.postId()
                 );
         assertThat(response.partnerNickname()).isEqualTo(nickname);
-        assertThat(response.partnerId()).isEqualTo(chatRoomEntryResult.partnerId());
+        assertThat(response.partnerId()).isEqualTo(gardenChatRoomEntryResult.partnerId());
     }
 }

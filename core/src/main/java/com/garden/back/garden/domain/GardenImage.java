@@ -9,7 +9,6 @@ import org.springframework.util.Assert;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class GardenImage {
 
-
     private Long gardenImageId;
     private String imageUrl;
     Garden garden;

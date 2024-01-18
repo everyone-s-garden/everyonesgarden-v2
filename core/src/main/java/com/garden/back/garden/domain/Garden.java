@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
 import org.springframework.util.Assert;
+
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -36,7 +37,7 @@ public class Garden {
     private LocalDate recruitEndDate;
     private LocalDate useStartDate;
     private LocalDate useEndDate;
-    private LocalDate createdDate;
+    private LocalDate createdAt;
     private LocalDate lastModifiedDate;
     private Boolean isToilet;
     private Boolean isWaterway;
