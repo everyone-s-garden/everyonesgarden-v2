@@ -18,11 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class GardenChatService {
-    private final int GARDEN_CHAT_MESSAGE_PAGE_SIZE = 10;
+    private static final int GARDEN_CHAT_MESSAGE_PAGE_SIZE = 10;
     private final GardenChatMessageRepository gardenChatMessageRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
     private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
-
 
     public GardenChatService(GardenChatMessageRepository gardenChatMessageRepository, GardenChatRoomInfoRepository gardenChatRoomInfoRepository, GardenChatRoomEntryRepository gardenChatRoomEntryRepository) {
         this.gardenChatMessageRepository = gardenChatMessageRepository;
