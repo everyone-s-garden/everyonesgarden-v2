@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class GardenFixture {
@@ -209,6 +210,32 @@ public class GardenFixture {
         );
     }
 
+    public static GardenCreateParam gardenCreateParam() {
+        return new GardenCreateParam(
+                Collections.emptyList(),
+                "별이네 텃밭",
+                "100",
+                "200",
+                GardenStatus.ACTIVE,
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                new GardenCreateParam.GardenFacility(
+                        true,
+                        true,
+                        true
+                ),
+                "화장실이 깨끗하고 흙이 좋아요",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
     public static GardenUpdateParam gardenUpdateParam(String expectedUrl, Long gardenId) {
         MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
 
@@ -216,6 +243,64 @@ public class GardenFixture {
                 gardenId,
                 List.of(FIRST_GARDEN_IMAGE_URL),
                 List.of(multipartFile),
+                "별이네 텃밭",
+                "100",
+                "200",
+                GardenStatus.ACTIVE,
+                GardenType.PRIVATE,
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                new GardenUpdateParam.GardenFacility(
+                        true,
+                        true,
+                        true
+                ),
+                "화장실이 깨끗하고 흙이 좋아요",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static GardenUpdateParam gardenUpdateParam(Long gardenId) {
+        return new GardenUpdateParam(
+                gardenId,
+                List.of(FIRST_GARDEN_IMAGE_URL),
+                Collections.emptyList(),
+                "별이네 텃밭",
+                "100",
+                "200",
+                GardenStatus.ACTIVE,
+                GardenType.PRIVATE,
+                "www.everygarden.me",
+                "000-000-0000",
+                "인천광역시 서구 만수동 200",
+                LATITUDE,
+                LONGITUDE,
+                new GardenUpdateParam.GardenFacility(
+                        true,
+                        true,
+                        true
+                ),
+                "화장실이 깨끗하고 흙이 좋아요",
+                RECRUIT_START_DATE,
+                RECRUIT_END_DATE,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static GardenUpdateParam gardenUpdateParamWithoutImageToDelete(Long gardenId) {
+        return new GardenUpdateParam(
+                gardenId,
+                List.of(FIRST_GARDEN_IMAGE_URL, SECOND_GARDEN_IMAGE_URL),
+                Collections.emptyList(),
                 "별이네 텃밭",
                 "100",
                 "200",
@@ -252,6 +337,16 @@ public class GardenFixture {
         );
     }
 
+    public static MyManagedGardenCreateParam myManagedGardenCreateParamWithoutImage() {
+        return new MyManagedGardenCreateParam(
+                null,
+                1L,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
     public static MyManagedGardenUpdateParam myManagedGardenUpdateParam(
             String expectedUrl,
             Long gardenId,
@@ -260,6 +355,19 @@ public class GardenFixture {
 
         return new MyManagedGardenUpdateParam(
                 multipartFile,
+                myManagedGardenId,
+                gardenId,
+                USE_START_DATE,
+                USE_END_DATE,
+                1L
+        );
+    }
+
+    public static MyManagedGardenUpdateParam myManagedGardenUpdateParamWithoutImage(
+            Long gardenId,
+            Long myManagedGardenId) {
+        return new MyManagedGardenUpdateParam(
+                null,
                 myManagedGardenId,
                 gardenId,
                 USE_START_DATE,
