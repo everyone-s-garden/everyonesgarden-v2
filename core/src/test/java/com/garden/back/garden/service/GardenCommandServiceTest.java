@@ -18,7 +18,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +31,8 @@ import static org.mockito.BDDMockito.given;
 
 @Transactional
 class GardenCommandServiceTest extends IntegrationTestSupport {
+
+    private static final String EMPTY_IMAGE_URL = "";
 
     @Autowired
     private GardenRepository gardenRepository;
@@ -138,7 +142,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         //Given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
         GardenCreateParam gardenCreateParam = GardenFixture.gardenCreateParam(expectedUrl);
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+        given(parallelImageUploader.upload(any(), (List<MultipartFile>) any())).willReturn(List.of(expectedUrl));
 
         //When
         Long savedGardenId = gardenCommandService.createGarden(gardenCreateParam);
@@ -155,6 +159,22 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(garden.getPrice()).isEqualTo(gardenCreateParam.price());
     }
 
+    @DisplayName("내가 분양하고자 하는 텃밭을 등록할 때 빈 값이 들어오면 이미지는 네이버에 업로드 되지 않고 빈값으로 저장된다.")
+    @Test
+    void createGarden_imageNull() {
+        //Given
+        List<String> expectedUrl = Collections.emptyList();
+        GardenCreateParam gardenCreateParam = GardenFixture.gardenCreateParam();
+        given(parallelImageUploader.upload(any(), (List<MultipartFile>) any())).willReturn(expectedUrl);
+
+        //When
+        Long savedGardenId = gardenCommandService.createGarden(gardenCreateParam);
+        List<GardenImage> gardenImages = gardenImageRepository.findByGardenId(savedGardenId);
+
+        //Then
+        assertThat(gardenImages).isEmpty();
+    }
+
     @DisplayName("텃밭을 수정할 수 있다.")
     @Test
     void updateGarden() {
@@ -167,8 +187,8 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         gardenImageRepository.save(firstGardenImage);
         gardenImageRepository.save(secondGardenImage);
 
-        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/love.jpg";
+        given(parallelImageUploader.upload(any(), any())).willReturn(List.of(expectedUrl));
         GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParam(expectedUrl, savedGarden.getGardenId());
 
         //When
@@ -195,6 +215,32 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(updatedGardenImages).extracting("imageUrl")
                 .contains(expectedUrl)
                 .contains(gardenUpdateParam.remainGardenImageUrls().toArray());
+    }
+
+    @DisplayName("텃밭을 수정할 때 새롭게 등록할 파일을 하나도 올리지 않으면 기존의 파일이 그대로 유지된다.")
+    @Test
+    void updateGarden_nullNewImages() {
+        //Given
+        Garden gardenToSave = GardenFixture.privateGarden();
+        Garden savedGarden = gardenRepository.save(gardenToSave);
+
+        GardenImage firstGardenImage = GardenFixture.firstGardenImage(savedGarden);
+        GardenImage secondGardenImage = GardenFixture.secondGardenImage(savedGarden);
+        gardenImageRepository.save(firstGardenImage);
+        gardenImageRepository.save(secondGardenImage);
+
+        List<String> expectedUrl = Collections.emptyList();
+        given(parallelImageUploader.upload(any(),any())).willReturn(expectedUrl);
+        GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParamWithoutImageToDelete(savedGarden.getGardenId());
+
+        //When
+        gardenCommandService.updateGarden(gardenUpdateParam);
+        List<GardenImage> updatedGardenImages = gardenImageRepository.findByGardenId(savedGarden.getGardenId());
+
+        //Then
+        assertThat(updatedGardenImages).extracting("imageUrl")
+                        .contains(firstGardenImage.getImageUrl(), secondGardenImage.getImageUrl());
+        assertThat(updatedGardenImages.size()).isEqualTo(2);
     }
 
     @DisplayName("내가 가꾸는 텃밭을 삭제할 수 있다.")
@@ -236,6 +282,23 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(savedMyManagedGarden.getUseEndDate()).isEqualTo(myManagedGardenCreateParam.useEndDate());
     }
 
+    @DisplayName("내가 가꾸는 텃밭을 등록할 때 null 값이면 저장되지 않고 url로 빈값이 저장된다.")
+    @Test
+    void createMyManagedGarden_nullImage() {
+        // Given
+        String expectedUrl = "";
+        MyManagedGardenCreateParam myManagedGardenCreateParam = GardenFixture.myManagedGardenCreateParamWithoutImage();
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+
+        // When
+        Long myManagedGardenId = gardenCommandService.createMyManagedGarden(myManagedGardenCreateParam);
+        Optional<MyManagedGarden> myManagedGarden = myManagedGardenRepository.findById(myManagedGardenId);
+        MyManagedGarden savedMyManagedGarden = myManagedGarden.get();
+
+        // Then
+        assertThat(savedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
+    }
+
     @DisplayName("내가 가꾸는 텃밭을 수정할 수 있다.")
     @Test
     void updateMyManagedGarden() {
@@ -263,6 +326,32 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(updatedMyManagedGarden.getUseStartDate()).isEqualTo(myManagedGardenUpdateParam.useStartDate());
         assertThat(updatedMyManagedGarden.getGardenId()).isEqualTo(myManagedGardenUpdateParam.gardenId());
         assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
+    }
+
+    @DisplayName("내가 가꾸는 텃밭을 수정할 때 빈값으로 파일을 보내면 기존 파일이 유지된다.")
+    @Test
+    void updateMyManagedGarden_nullImage() {
+        // Given
+        Garden garden = GardenFixture.publicGarden();
+        Garden savedPublicGarden = gardenRepository.save(garden);
+
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
+
+        String expectedUrl = "";
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+
+        MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParamWithoutImage(
+                savedPublicGarden.getGardenId(),
+                savedMyManagedGarden.getMyManagedGardenId()
+        );
+
+        // When
+        Long updateMyManagedGardenId = gardenCommandService.updateMyManagedGarden(myManagedGardenUpdateParam);
+        MyManagedGarden updatedMyManagedGarden = myManagedGardenRepository.getById(updateMyManagedGardenId);
+
+        // Then
+        assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(myManagedGarden.getImageUrl());
     }
 
 }
