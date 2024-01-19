@@ -187,8 +187,8 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         gardenImageRepository.save(firstGardenImage);
         gardenImageRepository.save(secondGardenImage);
 
-        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/love.jpg";
+        given(parallelImageUploader.upload(any(), any())).willReturn(List.of(expectedUrl));
         GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParam(expectedUrl, savedGarden.getGardenId());
 
         //When
@@ -230,7 +230,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         gardenImageRepository.save(secondGardenImage);
 
         List<String> expectedUrl = Collections.emptyList();
-        given(parallelImageUploader.upload(any(), (List<MultipartFile>) any())).willReturn(expectedUrl);
+        given(parallelImageUploader.upload(any(),any())).willReturn(expectedUrl);
         GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParamWithoutImageToDelete(savedGarden.getGardenId());
 
         //When
