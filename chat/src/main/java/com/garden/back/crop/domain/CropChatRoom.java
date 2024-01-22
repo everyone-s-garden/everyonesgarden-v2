@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Table(name = "chat_rooms")
+@Table(name = "crop_chat_rooms")
 @Entity
 public class CropChatRoom {
 
