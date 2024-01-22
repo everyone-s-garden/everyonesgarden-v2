@@ -7,12 +7,13 @@ import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRep
 import com.garden.back.garden.repository.chatmessage.ChatRoomFindRepositoryResponse;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
+import com.garden.back.garden.service.dto.request.GardenChatMessageFindParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessagesGetParam;
 import com.garden.back.garden.service.dto.response.GardenChatMessageFindResults;
 import com.garden.back.garden.service.dto.response.GardenChatMessageSendResult;
 import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
-import org.springframework.data.domain.PageRequest;
+import com.garden.back.util.PageMaker;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -62,17 +63,16 @@ public class GardenChatService {
 
     @Transactional
     public GardenChatMessagesGetResults getChatRoomMessages(GardenChatMessagesGetParam param) {
-
-        Pageable pageable = PageRequest.of(param.pageNumber(), GARDEN_CHAT_MESSAGE_PAGE_SIZE);
+        Pageable pageable = PageMaker.makePage(param.pageNumber());
         Slice<GardenChatMessage> gardenChatMessage = gardenChatMessageRepository.getGardenChatMessage(param.chatRoomId(), pageable);
 
         return GardenChatMessagesGetResults.to(gardenChatMessage, param.memberId());
     }
 
     @Transactional(readOnly = true)
-    public GardenChatMessageFindResults findChatMessagesInRooms(Long memberId, int pageNumber) {
-        Pageable pageable = PageRequest.of(pageNumber, GARDEN_CHAT_MESSAGE_PAGE_SIZE);
-        Slice<ChatRoomFindRepositoryResponse> chatRooms = gardenChatMessageRepository.findChatRooms(memberId, pageable);
+    public GardenChatMessageFindResults findChatMessagesInRooms(GardenChatMessageFindParam param) {
+        Pageable pageable = PageMaker.makePage(param.pageNumber());
+        Slice<ChatRoomFindRepositoryResponse> chatRooms = gardenChatMessageRepository.findChatRooms(param.memberId(), pageable);
 
         Map<Long, String> messageById = chatRooms.stream()
                 .collect(Collectors.toMap(
