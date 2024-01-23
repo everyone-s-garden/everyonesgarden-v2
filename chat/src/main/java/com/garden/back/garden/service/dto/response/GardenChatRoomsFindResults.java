@@ -7,16 +7,16 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-public record GardenChatMessageFindResults(
-        List<GardenChatMessageFindResult> gardenChatMessageFindResults,
+public record GardenChatRoomsFindResults(
+        List<GardenChatRoomsFindResult> gardenChatRoomsFindResults,
         boolean hasNest
 
 ) {
-    public static GardenChatMessageFindResults to(Slice<ChatRoomFindRepositoryResponse> responses, Map<Long, String> messageById) {
-        return new GardenChatMessageFindResults(
+    public static GardenChatRoomsFindResults to(Slice<ChatRoomFindRepositoryResponse> responses, Map<Long, String> messageById) {
+        return new GardenChatRoomsFindResults(
                 responses.stream()
                         .map(chatRoomFindRepositoryResponse ->
-                                GardenChatMessageFindResult.to(
+                                GardenChatRoomsFindResult.to(
                                         chatRoomFindRepositoryResponse,
                                         messageById.get(chatRoomFindRepositoryResponse.getChatMessageId())
                                 )
@@ -26,7 +26,7 @@ public record GardenChatMessageFindResults(
 
     }
 
-    public record GardenChatMessageFindResult(
+    public record GardenChatRoomsFindResult(
             Long chatMessageId,
             LocalDateTime createdAt,
             int readNotCnt,
@@ -35,8 +35,8 @@ public record GardenChatMessageFindResults(
             Long postId,
             String recentContents
     ) {
-        public static GardenChatMessageFindResult to(ChatRoomFindRepositoryResponse response, String recentContents) {
-            return new GardenChatMessageFindResult(
+        public static GardenChatRoomsFindResult to(ChatRoomFindRepositoryResponse response, String recentContents) {
+            return new GardenChatRoomsFindResult(
                     response.getChatMessageId(),
                     response.getCreatedAt(),
                     response.getNotReadCount(),
