@@ -112,8 +112,8 @@ public class ChatRoomFixture {
         );
     }
 
-    public static GardenChatMessageFindParam gardenChatMessageFindParam(Long memberId) {
-        return new GardenChatMessageFindParam(
+    public static GardenChatRoomsFindParam gardenChatMessageFindParam(Long memberId) {
+        return new GardenChatRoomsFindParam(
                 memberId,
                 0
         );

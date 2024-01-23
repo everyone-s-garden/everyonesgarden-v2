@@ -7,10 +7,10 @@ import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRep
 import com.garden.back.garden.repository.chatmessage.ChatRoomFindRepositoryResponse;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
-import com.garden.back.garden.service.dto.request.GardenChatMessageFindParam;
+import com.garden.back.garden.service.dto.request.GardenChatRoomsFindParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessagesGetParam;
-import com.garden.back.garden.service.dto.response.GardenChatMessageFindResults;
+import com.garden.back.garden.service.dto.response.GardenChatRoomsFindResults;
 import com.garden.back.garden.service.dto.response.GardenChatMessageSendResult;
 import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
 import com.garden.back.util.PageMaker;
@@ -70,7 +70,7 @@ public class GardenChatService {
     }
 
     @Transactional(readOnly = true)
-    public GardenChatMessageFindResults findChatMessagesInRooms(GardenChatMessageFindParam param) {
+    public GardenChatRoomsFindResults findChatMessagesInRooms(GardenChatRoomsFindParam param) {
         Pageable pageable = PageMaker.makePage(param.pageNumber());
         Slice<ChatRoomFindRepositoryResponse> chatRooms = gardenChatMessageRepository.findChatRooms(param.memberId(), pageable);
 
@@ -80,7 +80,7 @@ public class GardenChatService {
                         response -> getMessageContent(response.getChatMessageId())
                 ));
 
-        return GardenChatMessageFindResults.to(chatRooms, messageById);
+        return GardenChatRoomsFindResults.to(chatRooms, messageById);
     }
 
     private String getMessageContent(Long chatMessageId) {

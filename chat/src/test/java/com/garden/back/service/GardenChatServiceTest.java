@@ -8,7 +8,7 @@ import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
 import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;
-import com.garden.back.garden.service.dto.response.GardenChatMessageFindResults;
+import com.garden.back.garden.service.dto.response.GardenChatRoomsFindResults;
 import com.garden.back.garden.service.dto.response.GardenChatMessageSendResult;
 import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
 import com.garden.back.global.exception.ChatRoomAccessException;
@@ -199,23 +199,23 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         GardenChatMessageSendResult secondGardenChatMessageByPart = gardenChatService.saveMessage(gardenChatMessageSendParamSecondByPart);
 
         // When
-        GardenChatMessageFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
-        GardenChatMessageFindResults.GardenChatMessageFindResult gardenChatMessageFindResult = chatMessagesInRooms.gardenChatMessageFindResults().get(0);
+        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
+        GardenChatRoomsFindResults.GardenChatRoomsFindResult gardenChatRoomsFindResult = chatMessagesInRooms.gardenChatRoomsFindResults().get(0);
 
         // Then
-        assertThat(gardenChatMessageFindResult.recentContents()).isEqualTo(secondGardenChatMessageByPart.message());
-        assertThat(gardenChatMessageFindResult.readNotCnt()).isZero();
+        assertThat(gardenChatRoomsFindResult.recentContents()).isEqualTo(secondGardenChatMessageByPart.message());
+        assertThat(gardenChatRoomsFindResult.readNotCnt()).isZero();
 
-        assertThat(gardenChatMessageFindResult.createdAt().getDayOfYear()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfYear());
-        assertThat(gardenChatMessageFindResult.createdAt().getMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMonth());
-        assertThat(gardenChatMessageFindResult.createdAt().getDayOfMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfMonth());
-        assertThat(gardenChatMessageFindResult.createdAt().getHour()).isEqualTo(secondGardenChatMessageByPart.createdAt().getHour());
-        assertThat(gardenChatMessageFindResult.createdAt().getMinute()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMinute());
-        assertThat(gardenChatMessageFindResult.createdAt().getSecond()).isEqualTo(secondGardenChatMessageByPart.createdAt().getSecond());
+        assertThat(gardenChatRoomsFindResult.createdAt().getDayOfYear()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfYear());
+        assertThat(gardenChatRoomsFindResult.createdAt().getMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMonth());
+        assertThat(gardenChatRoomsFindResult.createdAt().getDayOfMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfMonth());
+        assertThat(gardenChatRoomsFindResult.createdAt().getHour()).isEqualTo(secondGardenChatMessageByPart.createdAt().getHour());
+        assertThat(gardenChatRoomsFindResult.createdAt().getMinute()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMinute());
+        assertThat(gardenChatRoomsFindResult.createdAt().getSecond()).isEqualTo(secondGardenChatMessageByPart.createdAt().getSecond());
 
-        assertThat(gardenChatMessageFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
-        assertThat(gardenChatMessageFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
-        assertThat(gardenChatMessageFindResult.partnerId()).isEqualTo(partnerId);
+        assertThat(gardenChatRoomsFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
+        assertThat(gardenChatRoomsFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
+        assertThat(gardenChatRoomsFindResult.partnerId()).isEqualTo(partnerId);
     }
 
     @DisplayName("내가 생성한 채팅방 목록을 확인할 수 있다. 각 채팅방 목록에는 상대방의 아이디, 최근에 보낸 메세지, 읽지 않은 메세지 개수, 최근에 보낸 시간를 확인할 수 있다. " +
@@ -250,23 +250,23 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         GardenChatMessageSendResult secondGardenChatMessageByPart = gardenChatService.saveMessage(gardenChatMessageSendParamSecondByPart);
 
         // When
-        GardenChatMessageFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
-        GardenChatMessageFindResults.GardenChatMessageFindResult gardenChatMessageFindResult = chatMessagesInRooms.gardenChatMessageFindResults().get(0);
+        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
+        GardenChatRoomsFindResults.GardenChatRoomsFindResult gardenChatRoomsFindResult = chatMessagesInRooms.gardenChatRoomsFindResults().get(0);
 
         // Then
-        assertThat(gardenChatMessageFindResult.recentContents()).isEqualTo(secondGardenChatMessageByPart.message());
-        assertThat(gardenChatMessageFindResult.readNotCnt()).isEqualTo(2);
+        assertThat(gardenChatRoomsFindResult.recentContents()).isEqualTo(secondGardenChatMessageByPart.message());
+        assertThat(gardenChatRoomsFindResult.readNotCnt()).isEqualTo(2);
 
-        assertThat(gardenChatMessageFindResult.createdAt().getDayOfYear()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfYear());
-        assertThat(gardenChatMessageFindResult.createdAt().getMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMonth());
-        assertThat(gardenChatMessageFindResult.createdAt().getDayOfMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfMonth());
-        assertThat(gardenChatMessageFindResult.createdAt().getHour()).isEqualTo(secondGardenChatMessageByPart.createdAt().getHour());
-        assertThat(gardenChatMessageFindResult.createdAt().getMinute()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMinute());
-        assertThat(gardenChatMessageFindResult.createdAt().getSecond()).isEqualTo(secondGardenChatMessageByPart.createdAt().getSecond());
+        assertThat(gardenChatRoomsFindResult.createdAt().getDayOfYear()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfYear());
+        assertThat(gardenChatRoomsFindResult.createdAt().getMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMonth());
+        assertThat(gardenChatRoomsFindResult.createdAt().getDayOfMonth()).isEqualTo(secondGardenChatMessageByPart.createdAt().getDayOfMonth());
+        assertThat(gardenChatRoomsFindResult.createdAt().getHour()).isEqualTo(secondGardenChatMessageByPart.createdAt().getHour());
+        assertThat(gardenChatRoomsFindResult.createdAt().getMinute()).isEqualTo(secondGardenChatMessageByPart.createdAt().getMinute());
+        assertThat(gardenChatRoomsFindResult.createdAt().getSecond()).isEqualTo(secondGardenChatMessageByPart.createdAt().getSecond());
 
-        assertThat(gardenChatMessageFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
-        assertThat(gardenChatMessageFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
-        assertThat(gardenChatMessageFindResult.partnerId()).isEqualTo(partnerId);
+        assertThat(gardenChatRoomsFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
+        assertThat(gardenChatRoomsFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
+        assertThat(gardenChatRoomsFindResult.partnerId()).isEqualTo(partnerId);
     }
 
 }
