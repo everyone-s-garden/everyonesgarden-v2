@@ -15,7 +15,7 @@ public record MyManagedGardenCreateParam(
     public static MyManagedGardenCreateDomainRequest to(
             MyManagedGardenCreateParam param,
             String imageUrl
-    ){
+    ) {
         return new MyManagedGardenCreateDomainRequest(
                 imageUrl,
                 param.gardenId,
@@ -24,4 +24,5 @@ public record MyManagedGardenCreateParam(
                 param.memberId
         );
     }
+
 }

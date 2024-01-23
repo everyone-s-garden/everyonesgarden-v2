@@ -1,6 +1,6 @@
 package com.garden.back.garden;
 
-import com.garden.back.garden.model.PublicDataGarden;
+import com.garden.back.garden.domain.PublicDataGarden;
 import com.garden.back.garden.repository.publicgarden.PublicDataGardenRepository;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;

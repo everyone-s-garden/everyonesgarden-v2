@@ -18,6 +18,7 @@ import java.util.Objects;
 @Component
 public class NCPImageUploader implements ImageUploader {
 
+    private static final String EMPTY_IMAGE_URL = "";
     private final NCPProperties ncpProperties;
     private final AmazonS3 ncpUploader;
 
@@ -28,6 +29,9 @@ public class NCPImageUploader implements ImageUploader {
 
     @Override
     public String upload(String directory, MultipartFile multipartFile) {
+        if(multipartFile.isEmpty()) {
+            return EMPTY_IMAGE_URL;
+        }
 
         String originalFilename = multipartFile.getOriginalFilename();
         String contentType = Objects.requireNonNull(multipartFile.getContentType());
@@ -48,6 +52,10 @@ public class NCPImageUploader implements ImageUploader {
 
     @Override
     public void delete(String directory, String imageUrl) {
+        if(imageUrl.isEmpty()) {
+            return;
+        }
+
         try {
             URL url = new URL(imageUrl);
             String path = refineUrl(url.getPath());

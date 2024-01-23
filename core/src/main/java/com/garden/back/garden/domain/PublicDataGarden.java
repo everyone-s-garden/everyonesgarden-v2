@@ -1,4 +1,4 @@
-package com.garden.back.garden.model;
+package com.garden.back.garden.domain;
 
 import jakarta.persistence.*;
 

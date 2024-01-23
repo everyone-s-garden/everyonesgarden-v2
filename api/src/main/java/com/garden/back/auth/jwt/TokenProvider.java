@@ -5,17 +5,24 @@ import com.garden.back.auth.jwt.repository.RefreshToken;
 import com.garden.back.auth.jwt.repository.RefreshTokenRepository;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.member.Member;
+import com.garden.back.member.Role;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 
-@Component
+@Configuration
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
@@ -23,8 +30,8 @@ public class TokenProvider {
     private final Key key;
 
     public TokenProvider(
-        JwtProperties jwtProperties,
-        CollectionRefreshTokenRepository refreshTokenRepository
+            JwtProperties jwtProperties,
+            CollectionRefreshTokenRepository refreshTokenRepository
     ) {
         this.jwtProperties = jwtProperties;
         this.refreshTokenRepository = refreshTokenRepository;
@@ -37,28 +44,28 @@ public class TokenProvider {
 
         Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
         String accessToken = Jwts.builder()
-            .setSubject(String.valueOf(member.getId()))
-            .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
-            .setExpiration(accessTokenExpiredDate)
-            .signWith(key, SignatureAlgorithm.HS256)
-            .compact();
+                .setSubject(String.valueOf(member.getId()))
+                .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
+                .setExpiration(accessTokenExpiredDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
 
         Date refreshTokenExpiredDate = new Date(now + jwtProperties.getRefreshTokenExpireTime());
         String refreshToken = Jwts.builder()
-            .setExpiration(refreshTokenExpiredDate)
-            .signWith(key, SignatureAlgorithm.HS256)
-            .compact();
+                .setExpiration(refreshTokenExpiredDate)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
 
         RefreshToken refreshTokenObject = new RefreshToken(refreshToken, member, refreshTokenExpiredDate);
         refreshTokenRepository.save(refreshTokenObject);
 
         return new TokenResponse(
-            jwtProperties.getBearerPrefix(),
-            accessToken,
-            refreshToken,
-            accessTokenExpiredDate.getTime(),
-            refreshTokenExpiredDate.getTime(),
-            member.getId()
+                jwtProperties.getBearerPrefix(),
+                accessToken,
+                refreshToken,
+                accessTokenExpiredDate.getTime(),
+                refreshTokenExpiredDate.getTime(),
+                member.getId()
         );
     }
 
@@ -66,14 +73,34 @@ public class TokenProvider {
     public String generateAccessToken(String refreshTokenKey) {
         long now = (new Date().getTime());
         RefreshToken refreshToken = (RefreshToken) refreshTokenRepository.findByKey(refreshTokenKey)
-            .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
 
         return Jwts.builder()
-            .setSubject(String.valueOf(member.getId()))
-            .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
-            .setExpiration(new Date(now + jwtProperties.getAccessTokenExpireTime()))
-            .signWith(key, SignatureAlgorithm.HS256)
-            .compact();
+                .setSubject(String.valueOf(member.getId()))
+                .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
+                .setExpiration(new Date(now + jwtProperties.getAccessTokenExpireTime()))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
+
+    public Authentication getAuthentication(String accessToken) {
+
+        Claims claims = decodeAccessToken(accessToken);
+        Long userId = Long.parseLong(claims.getSubject());
+
+        String authorityKey = Role.USER.getKey() + claims.get(jwtProperties.getAuthorityKey(), String.class);
+        SimpleGrantedAuthority authority = new SimpleGrantedAuthority(authorityKey);
+
+        return new UsernamePasswordAuthenticationToken(userId, null, Collections.singleton(authority));
+    }
+
+    public Claims decodeAccessToken(String accessToken) {
+        try {
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
+        } catch (ExpiredJwtException expiredJwtException) {
+            throw new RuntimeException("만료된 토큰입니다.");
+        }
+    }
+
 }

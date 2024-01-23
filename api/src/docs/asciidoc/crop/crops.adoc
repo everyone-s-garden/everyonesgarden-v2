@@ -134,3 +134,5 @@ include::{snippets}/get-my-buy-crop-posts/query-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-my-buy-crop-posts/http-response.adoc[]
+=======
+include::{snippets}/assign-crops-buyer/http-response.adoc[]
