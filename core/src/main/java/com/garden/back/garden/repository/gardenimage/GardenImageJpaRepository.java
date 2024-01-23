@@ -20,4 +20,9 @@ public interface GardenImageJpaRepository extends JpaRepository<GardenImageEntit
             "select gi from GardenImageEntity as gi where gi.garden.gardenId =:gardenId"
     )
     List<GardenImageEntity> findByGardenId(@Param("gardenId") Long gardenId);
+
+    @Query(
+            "select gi.imageUrl from GardenImageEntity as gi where gi.garden.gardenId =:gardenId"
+    )
+    List<String> findGardenImageUrls(@Param("gardenId") Long gardenId);
 }
