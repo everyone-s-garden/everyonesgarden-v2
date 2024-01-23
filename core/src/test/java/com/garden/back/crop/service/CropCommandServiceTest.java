@@ -123,7 +123,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
 
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
 
         UpdateCropsPostServiceRequest request = sut.giveMeBuilder(UpdateCropsPostServiceRequest.class)
@@ -137,6 +137,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
             .set("images[0]", mockMultipartFile)
             .size("deletedImages", 1)
             .set("deletedImages[0]", expectedUrl)
+            .set("memberAddressId", 1L)
             .sample();
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
@@ -163,7 +164,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
 
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
 
         UpdateCropsPostServiceRequest request = sut.giveMeBuilder(UpdateCropsPostServiceRequest.class)
@@ -187,6 +188,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
             .set("images[10]", mockMultipartFile)
             .size("deletedImages", 1)
             .set("deletedImages[0]", expectedUrl)
+            .set("memberAddressId", 1L)
             .sample();
 
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
@@ -203,7 +205,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
 
         //when
@@ -221,7 +223,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
         cropCommandService.addCropsBookmark(savedCropPostId, loginUserId);
 
@@ -237,7 +239,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
 
         //when
@@ -253,7 +255,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
         cropCommandService.addCropsBookmark(savedCropPostId, loginUserId);
 
@@ -271,10 +273,10 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
-        cropPost.update("제목","내용",CropCategory.FRUIT,100000,false,TradeType.DIRECT_TRADE,List.of(expectedUrl),List.of(expectedUrl),loginUserId, TradeStatus.TRADED);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
+        cropPost.update("제목","내용",CropCategory.FRUIT,100000,false,TradeType.DIRECT_TRADE,List.of(expectedUrl),List.of(expectedUrl),loginUserId, TradeStatus.TRADED, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
-        AssignBuyerServiceRequest request = new AssignBuyerServiceRequest(1L);
+        AssignBuyerServiceRequest request = new AssignBuyerServiceRequest(2L);
 
         //when
         cropCommandService.assignCropBuyer(savedCropPostId, loginUserId, request);
@@ -290,7 +292,7 @@ class CropCommandServiceTest extends IntegrationTestSupport {
         //given
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         Long loginUserId = 1L;
-        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId);
+        CropPost cropPost = CropPost.create("내용", "제목", CropCategory.FRUIT, 100000, false, TradeType.DIRECT_TRADE, List.of(expectedUrl), loginUserId, 1L);
         Long savedCropPostId = cropJpaRepository.save(cropPost).getId();
         AssignBuyerServiceRequest request = new AssignBuyerServiceRequest(1L);
 

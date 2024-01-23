@@ -2,11 +2,11 @@ package com.garden.back.docs.crop;
 
 import com.garden.back.crop.CropController;
 import com.garden.back.crop.CropQueryService;
-import com.garden.back.crop.FindAllCropsPostResponse;
-import com.garden.back.crop.FindCropsPostDetailsResponse;
 import com.garden.back.crop.domain.CropCategory;
 import com.garden.back.crop.domain.TradeStatus;
 import com.garden.back.crop.domain.TradeType;
+import com.garden.back.crop.domain.repository.response.FindAllCropsPostResponse;
+import com.garden.back.crop.domain.repository.response.FindCropsPostDetailsResponse;
 import com.garden.back.crop.request.AssignBuyerRequest;
 import com.garden.back.crop.request.CropsPostCreateRequest;
 import com.garden.back.crop.request.CropsPostsUpdateRequest;
@@ -14,7 +14,7 @@ import com.garden.back.crop.request.FindAllCropsPostRequest;
 import com.garden.back.crop.service.CropCommandService;
 import com.garden.back.crop.service.response.MonthlyRecommendedCropsResponse;
 import com.garden.back.docs.RestDocsSupport;
-import com.garden.back.region.Address;
+import com.garden.back.member.MemberMannerGrade;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -74,16 +74,19 @@ class CropRestDocs extends RestDocsSupport {
     @DisplayName("작물 게시글 전체 조회 api docs")
     @Test
     void findAllCropsPosts() throws Exception {
-        FindAllCropsPostResponse response = new FindAllCropsPostResponse(List.of(new FindAllCropsPostResponse.CropsInfo(1L, "제목", 100000, LocalDate.now(), TradeType.DIRECT_TRADE, true, TradeStatus.TRADING, CropCategory.FRUIT,2L)));
-        FindAllCropsPostRequest request = new FindAllCropsPostRequest(0, 10, "내용", TradeType.DIRECT_TRADE, CropCategory.FRUIT, "RECENT_DATE");
+        FindAllCropsPostResponse response = new FindAllCropsPostResponse(List.of(new FindAllCropsPostResponse.CropsInfo(1L, "제목", 100000, LocalDate.now(), TradeType.DIRECT_TRADE, true, TradeStatus.TRADING, CropCategory.FRUIT, 2L, "imageUrl", "서울시 성동구 금호동")));
+        FindAllCropsPostRequest request = new FindAllCropsPostRequest(0, 10, "내용", TradeType.DIRECT_TRADE, CropCategory.FRUIT,"서울시 성동구 금호동", 0, 1000000, "RECENT_DATE");
         given(cropQueryService.findAll(any())).willReturn(response);
 
         mockMvc.perform(get("/v1/crops/posts")
                 .param("searchContent", request.searchContent())
                 .param("tradeType", request.tradeType().name())
                 .param("cropCategory", request.cropCategory().name())
+                .param("region", request.region())
                 .param("offset", String.valueOf(request.offset()))
                 .param("limit", String.valueOf(request.limit()))
+                .param("minPrice", String.valueOf(request.minPrice()))
+                .param("maxPrice", String.valueOf(request.maxPrice()))
                 .param("orderBy", request.orderBy())
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
@@ -94,8 +97,11 @@ class CropRestDocs extends RestDocsSupport {
                     parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
                     parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
                     parameterWithName("searchContent").description("검색할 제목 + 내용(해당 검색어로 검색할 경우 제목 또는 내용에 검색어가 포함되어 있을 경우 해당 작물 게시글들을 반환, null일 경우 작물 게시글 전체 조회)").optional(),
-                    parameterWithName("tradeType").description("거래 타입 DIRECT_TRADE, DELIVERY_TRADE 중 한개만 선택이 가능합니다.(null 값을 넣으면 모든 거래 타입으로 조회 가능)").optional(),
+                    parameterWithName("tradeType").description("거래 타입 DIRECT_TRADE, DELIVERY_TRADE, ALL 중 한개만 선택이 가능합니다.(null 값을 넣으면 모든 거래 타입으로 조회 가능)").optional(),
                     parameterWithName("cropCategory").description("작물 타입 GRAIN, VEGETABLE, FRUIT, BEAN, ETC 중 한개 선택이 가능합니다.(null 값도 가능)").optional(),
+                    parameterWithName("region").description("지역 명(optional)").optional(),
+                    parameterWithName("minPrice").description("최소 가격").optional(),
+                    parameterWithName("maxPrice").description("최대 가격").optional(),
                     parameterWithName("orderBy").description("정렬 조건(RECENT_DATE, BOOKMARK_COUNT, OLDER_DATE, LOWER_PRICE, HIGHER_PRICE) 중 한개를 입력해주세요)")
                 ),
                 responseFields(
@@ -108,7 +114,9 @@ class CropRestDocs extends RestDocsSupport {
                     fieldWithPath("cropsInfos[].priceProposal").type(BOOLEAN).description("가격제안 가능여부"),
                     fieldWithPath("cropsInfos[].tradeStatus").type(STRING).description("거래 상태"),
                     fieldWithPath("cropsInfos[].bookmarkCount").type(NUMBER).description("이 게시글을 북마크힌 이용자의 수"),
-                    fieldWithPath("cropsInfos[].cropCategory").type(STRING).description("작물의 카테고리")
+                    fieldWithPath("cropsInfos[].cropCategory").type(STRING).description("작물의 카테고리"),
+                    fieldWithPath("cropsInfos[].imageUrl").type(STRING).description("작물의 대표 이미지"),
+                    fieldWithPath("cropsInfos[].region").type(STRING).description("작물의 판매 지역").optional()
                 )
             ));
     }
@@ -116,7 +124,7 @@ class CropRestDocs extends RestDocsSupport {
     @DisplayName("작물 게시글 상세 조회 api docs")
     @Test
     void findCropsPostsDetails() throws Exception {
-        FindCropsPostDetailsResponse response = new FindCropsPostDetailsResponse("내용", "글쓴이", 100, new Address("서울시", "성동구", "금호동"), CropCategory.FRUIT, 2L, List.of("이미지 url"));
+        FindCropsPostDetailsResponse response = new FindCropsPostDetailsResponse("내용", "글쓴이", MemberMannerGrade.SEED, "서울시 성동구 금호동", CropCategory.FRUIT, 2L, List.of("이미지 url"));
         given(cropQueryService.findCropsPostDetails(any())).willReturn(response);
         System.out.println(response);
         mockMvc.perform(get("/v1/crops/posts/{id}", 1L)
@@ -131,10 +139,8 @@ class CropRestDocs extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("content").type(STRING).description("내용"),
                     fieldWithPath("author").type(STRING).description("작성자"),
-                    fieldWithPath("mannerPoint").type(NUMBER).description("매너 점수"),
-                    fieldWithPath("authorAddress.sido").type(STRING).description("작성자 주소의 시도"),
-                    fieldWithPath("authorAddress.sigungu").type(STRING).description("작성자 주소의 시군구"),
-                    fieldWithPath("authorAddress.upmyeondong").type(STRING).description("작성자 주소의 읍면동"),
+                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자 매너 등급"),
+                    fieldWithPath("address").type(STRING).description("판매 지역"),
                     fieldWithPath("cropCategory").type(STRING).description("작물 카테고리"),
                     fieldWithPath("bookmarkCount").type(NUMBER).description("북마크 수"),
                     fieldWithPath("images").type(ARRAY).description("이미지 URL 리스트")
@@ -160,6 +166,7 @@ class CropRestDocs extends RestDocsSupport {
             .set("price", 10000)
             .set("priceProposal", Boolean.TRUE)
             .set("tradeType", "DIRECT_TRADE")
+            .set("memberAddressId", 1L)
             .sample();
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
@@ -184,7 +191,8 @@ class CropRestDocs extends RestDocsSupport {
                     fieldWithPath("cropsCategory").type(STRING).description("작물 카테고리 (GRAIN, VEGETABLE, FRUIT, BEAN 중에서 한개만 입력이 가능합니다.)"),
                     fieldWithPath("price").type(NUMBER).description("가격"),
                     fieldWithPath("priceProposal").type(BOOLEAN).description("가격 제안 여부"),
-                    fieldWithPath("tradeType").type(STRING).description("거래 유형 (DIRECT_TRADE, DELIVERY_TRADE 중에서 한개만 입력이 가능합니다.)")
+                    fieldWithPath("tradeType").type(STRING).description("거래 유형 (DIRECT_TRADE, DELIVERY_TRADE, ALL 중에서 한개만 입력이 가능합니다.)"),
+                    fieldWithPath("memberAddressId").type(NUMBER).description("거래 희망 장소(null 가능)").optional()
                 ),
                 requestParts(
                     partWithName("texts").description("게시글 내용 texts에는 json 형식으로 위 part 필드들에 대해 요청해주시면 됩니다."),
@@ -216,6 +224,7 @@ class CropRestDocs extends RestDocsSupport {
             .set("tradeStatus", "TRADING")
             .size("deleteImages", 1)
             .set("deleteImages[0]", "해당 이미지의 url")
+            .set("memberAddressId", 1L)
             .sample();
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
@@ -247,9 +256,10 @@ class CropRestDocs extends RestDocsSupport {
                     fieldWithPath("cropsCategory").type(STRING).description("작물 카테고리 (GRAIN, VEGETABLE, FRUIT, BEAN 중에서 한개만 입력이 가능합니다.)"),
                     fieldWithPath("price").type(NUMBER).description("가격"),
                     fieldWithPath("priceProposal").type(BOOLEAN).description("가격 제안 여부"),
-                    fieldWithPath("tradeType").type(STRING).description("거래 유형 (DIRECT_TRADE, DELIVERY_TRADE 중에서 한개만 입력이 가능합니다.)"),
+                    fieldWithPath("tradeType").type(STRING).description("거래 유형 (DIRECT_TRADE, DELIVERY_TRADE, ALL 중에서 한개만 입력이 가능합니다.)"),
                     fieldWithPath("tradeStatus").type(STRING).description("거래 상태"),
-                    fieldWithPath("deleteImages").type(ARRAY).description("삭제할 이미지의 url 목록")
+                    fieldWithPath("deleteImages").type(ARRAY).description("삭제할 이미지의 url 목록"),
+                    fieldWithPath("memberAddressId").type(NUMBER).description("거래 희망 장소(null 가능)").optional()
                 ),
                 requestParts(
                     partWithName("texts").description("게시글 내용, 제목, 수정할 때 삭제되는 이미지 url들 texts에는 json 형식으로 위 part 필드들에 대해 요청해주시면 됩니다."),

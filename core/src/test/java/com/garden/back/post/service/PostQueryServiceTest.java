@@ -266,4 +266,20 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
     }
+
+
+    @Test
+    void findAllByMyLike() {
+
+    }
+
+    @Test
+    void findAllMyPosts() {
+
+    }
+
+    @Test
+    void findAllByMyComment() {
+
+    }
 }

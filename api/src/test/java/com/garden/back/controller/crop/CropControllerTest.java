@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -44,12 +45,13 @@ class CropControllerTest extends ControllerTestSupport {
 
     private static Stream<Arguments> invalidCropsPostCreateRequests() {
         return Stream.of(
-            Arguments.of("", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE"), // 잘못된 title
-            Arguments.of("Valid title", "", "GRAIN", 100, true, "DIRECT_TRADE"), // 잘못된 content
-            Arguments.of("Valid title", "Valid content", "INVALID_CATEGORY", 100, true, "DIRECT_TRADE"), // 잘못된 cropsCategory
-            Arguments.of("Valid title", "Valid content", "GRAIN", -1, true, "DIRECT_TRADE"), // 잘못된 price (음수)
-            Arguments.of("Valid title", "Valid content", "GRAIN", 100, null, "DIRECT_TRADE"), // priceProposal이 null
-            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "INVALID_TRADE_TYPE") // 잘못된 tradeType
+            Arguments.of("", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", 1L), // 잘못된 title
+            Arguments.of("Valid title", "", "GRAIN", 100, true, "DIRECT_TRADE", 1L), // 잘못된 content
+            Arguments.of("Valid title", "Valid content", "INVALID_CATEGORY", 100, true, "DIRECT_TRADE", 1L), // 잘못된 cropsCategory
+            Arguments.of("Valid title", "Valid content", "GRAIN", -1, true, "DIRECT_TRADE", 1L), // 잘못된 price (음수)
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, null, "DIRECT_TRADE", 1L), // priceProposal이 null
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "INVALID_TRADE_TYPE", 1L), // 잘못된 tradeType
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", -1L) // 잘못된 memberAddressId
 
         );
     }
@@ -57,8 +59,8 @@ class CropControllerTest extends ControllerTestSupport {
     @DisplayName("게시글 생성 유효하지 않은 요청 테스트")
     @ParameterizedTest
     @MethodSource("invalidCropsPostCreateRequests")
-    void createCropsPostInvalidRequest(String title, String content, String cropsCategory, Integer price, Boolean priceProposal, String tradeType) throws Exception {
-        CropsPostCreateRequest request = new CropsPostCreateRequest(title, content, cropsCategory, price, priceProposal, tradeType);
+    void createCropsPostInvalidRequest(String title, String content, String cropsCategory, Integer price, Boolean priceProposal, String tradeType, Long memberAddressId) throws Exception {
+        CropsPostCreateRequest request = new CropsPostCreateRequest(title, content, cropsCategory, price, priceProposal, tradeType, memberAddressId);
         MockMultipartFile mockRequestPart = new MockMultipartFile(
             "texts",
             "",
@@ -84,21 +86,23 @@ class CropControllerTest extends ControllerTestSupport {
 
     private static Stream<Arguments> invalidPostUpdateRequests() {
         return Stream.of(
-            Arguments.of("", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", "TRADING", null), // 잘못된 title
-            Arguments.of("Valid title", "", "GRAIN", 100, true, "DIRECT_TRADE", "TRADING", null), // 잘못된 content
-            Arguments.of("Valid title", "Valid content", "INVALID_CATEGORY", 100, true, "DIRECT_TRADE", "TRADING", null), // 잘못된 cropsCategory
-            Arguments.of("Valid title", "Valid content", "GRAIN", -1, true, "DIRECT_TRADE", "TRADING", null), // 잘못된 price (음수)
-            Arguments.of("Valid title", "Valid content", "GRAIN", 100, null, "DIRECT_TRADE", "TRADING", null), // priceProposal이 null
-            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "INVALID_TRADE_TYPE", "TRADING", null), // 잘못된 tradeType
-            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", "INVALID_STATUS", null) // 잘못된 tradeStatus
+            Arguments.of("", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", "TRADING", Collections.emptyList(), 1L), // 잘못된 title
+            Arguments.of("Valid title", "", "GRAIN", 100, true, "DIRECT_TRADE", "TRADING", Collections.emptyList(), 1L), // 잘못된 content
+            Arguments.of("Valid title", "Valid content", "INVALID_CATEGORY", 100, true, "DIRECT_TRADE", "TRADING", Collections.emptyList(), 1L), // 잘못된 cropsCategory
+            Arguments.of("Valid title", "Valid content", "GRAIN", -1, true, "DIRECT_TRADE", "TRADING", Collections.emptyList(), 1L), // 잘못된 price (음수)
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, null, "DIRECT_TRADE", "TRADING", Collections.emptyList(), 1L), // priceProposal이 null
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "INVALID_TRADE_TYPE", "TRADING", Collections.emptyList(), 1L), // 잘못된 tradeType
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", "INVALID_STATUS", Collections.emptyList(), 1L), // 잘못된 tradeStatus
+            Arguments.of("Valid title", "Valid content", "GRAIN", 100, true, "DIRECT_TRADE", "TRADING", Collections.emptyList(), -1L) // 잘못된 memberAddressId
         );
     }
+
 
     @DisplayName("게시글 수정 유효하지 않은 요청 테스트")
     @ParameterizedTest
     @MethodSource("invalidPostUpdateRequests")
-    void updatePostInvalidRequest(String title, String content, String cropsCategory, Integer price, Boolean priceProposal, String tradeType, String tradeStatus, List<String> deleteImages) throws Exception {
-        CropsPostsUpdateRequest request = new CropsPostsUpdateRequest(title, content, cropsCategory, price, priceProposal, tradeType, tradeStatus, deleteImages);
+    void updatePostInvalidRequest(String title, String content, String cropsCategory, Integer price, Boolean priceProposal, String tradeType, String tradeStatus, List<String> deleteImages, Long memberAddressId) throws Exception {
+        CropsPostsUpdateRequest request = new CropsPostsUpdateRequest(title, content, cropsCategory, price, priceProposal, tradeType, tradeStatus, deleteImages, memberAddressId);
         MockMultipartFile mockRequestPart = new MockMultipartFile(
             "texts",
             "",

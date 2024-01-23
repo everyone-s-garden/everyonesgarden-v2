@@ -1,4 +1,4 @@
-package com.garden.back.crop;
+package com.garden.back.crop.domain.repository.response;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.garden.back.crop.domain.CropCategory;
@@ -21,6 +21,8 @@ public record FindAllCropsPostResponse(
         boolean priceProposal,
         TradeStatus tradeStatus,
         CropCategory cropCategory,
-        Long bookmarkCount
+        Long bookmarkCount,
+        String imageUrl,
+        String region
     ) {}
 }

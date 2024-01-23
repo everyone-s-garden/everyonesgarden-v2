@@ -1,6 +1,5 @@
 package com.garden.back.member;
 
-import com.garden.back.region.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -11,7 +10,8 @@ import org.apache.commons.validator.routines.EmailValidator;
 @Table(name = "members")
 public class Member {
 
-    protected Member() {}
+    protected Member() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,14 @@ public class Member {
     private String nickname;
 
     @Column(name = "manner_score")
-    private Integer mannerScore;
+    private Float mannerScore;
 
-    @Embedded
-    private Address address;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "member_manner_grade")
+    private MemberMannerGrade memberMannerGrade;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
 
     private Member(String email, String nickname, Role role) {
 
@@ -43,13 +47,24 @@ public class Member {
             throw new IllegalArgumentException("닉네임은 30글자 이내로 입력해주세요");
         }
 
-        this.mannerScore = 0;
+        this.mannerScore = 0.0f;
         this.email = email;
         this.role = role;
         this.nickname = nickname;
+        this.memberMannerGrade = MemberMannerGrade.SEED;
     }
 
     public static Member create(String email, String nickname, Role role) {
         return new Member(email, nickname, role);
+    }
+
+    public void updateMannerScore(Float mannerScore) {
+        this.mannerScore += mannerScore;
+        this.memberMannerGrade = MemberMannerGrade.getGradeByScore(mannerScore);
+    }
+
+    public void updateProfile(String nickname, String image) {
+        this.nickname = nickname;
+        this.profileImageUrl = image;
     }
 }

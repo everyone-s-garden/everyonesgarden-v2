@@ -18,7 +18,8 @@ public record UpdateCropsPostServiceRequest(
     TradeType tradeType,
     List<String> deletedImages,
     List<MultipartFile> images,
-    TradeStatus tradeStatus
+    TradeStatus tradeStatus,
+    Long memberAddressId
 ) {
 
     public Integer getAddedImageSize() {
@@ -30,6 +31,6 @@ public record UpdateCropsPostServiceRequest(
     }
 
     public UpdateCropsPostRepositoryRequest toRepositoryDto(CropPost cropPost, List<String> images, Long loginUserId) {
-        return new UpdateCropsPostRepositoryRequest(title, content, cropCategory, price, priceProposal, tradeType, deletedImages, images, loginUserId, cropPost, tradeStatus);
+        return new UpdateCropsPostRepositoryRequest(title, content, cropCategory, price, priceProposal, tradeType, deletedImages, images, loginUserId, cropPost, tradeStatus, memberAddressId);
     }
 }

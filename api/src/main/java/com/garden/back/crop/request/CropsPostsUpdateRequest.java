@@ -8,6 +8,7 @@ import com.garden.back.global.validation.EnumValue;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,16 +31,20 @@ public record CropsPostsUpdateRequest(
     @NotNull(message = "가격 제안 여부를 선택해주세요")
     Boolean priceProposal,
 
-    @EnumValue(enumClass = TradeType.class, message = "DIRECT_TRADE, DELIVERY_TRADE 중에서 한개만 입력이 가능합니다.")
+    @EnumValue(enumClass = TradeType.class, message = "DIRECT_TRADE, DELIVERY_TRADE, ALL 중에서 한개만 입력이 가능합니다.")
     String tradeType,
 
     @EnumValue(enumClass = TradeStatus.class, message = "TRADED, TRADING, RESERVED 중에서 한개만 입력이 가능합니다.")
     String tradeStatus,
 
-    List<String> deleteImages
+    List<String> deleteImages,
+
+    @Positive(message = "사용자 주소의 id는 양수로 입력해주세요.")
+    Long memberAddressId
 
 ) {
     public UpdateCropsPostServiceRequest toServiceDto(List<MultipartFile> images) {
+
         return new UpdateCropsPostServiceRequest(
             title,
             content,
@@ -49,7 +54,8 @@ public record CropsPostsUpdateRequest(
             TradeType.valueOf(tradeType),
             deleteImages,
             images,
-            TradeStatus.valueOf(tradeStatus)
+            TradeStatus.valueOf(tradeStatus),
+            memberAddressId
         );
     }
 }

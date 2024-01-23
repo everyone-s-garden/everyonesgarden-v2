@@ -14,9 +14,10 @@ public record CreateCropsPostServiceRequest(
     Integer price,
     boolean priceProposal,
     TradeType tradeType,
-    List<MultipartFile> images
+    List<MultipartFile> images,
+    Long memberAddressId
 ) {
     public CropPost toEntity(List<String> images, Long loginUserId) {
-        return CropPost.create(content, title, cropCategory, price, priceProposal, tradeType, images, loginUserId);
+        return CropPost.create(content, title, cropCategory, price, priceProposal, tradeType, images, loginUserId, memberAddressId);
     }
 }

@@ -98,3 +98,39 @@ include::{snippets}/assign-crops-buyer/request-fields.adoc[]
 
 ==== Response
 include::{snippets}/assign-crops-buyer/http-response.adoc[]
+
+[[get-my-bookmark-crop-posts]]
+=== 내가 북마크 한 작물 게시글
+
+사용자가 북마크한 작물 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-bookmark-crop-posts/http-request.adoc[]
+include::{snippets}/get-my-bookmark-crop-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-bookmark-crop-posts/http-response.adoc[]
+
+[[get-my-crop-posts]]
+=== 내가 작성한 작물 게시글
+
+사용자가 작성한 작물 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-crop-posts/http-request.adoc[]
+include::{snippets}/get-my-crop-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-crop-posts/http-response.adoc[]
+
+[[get-my-buy-crop-posts]]
+=== 내가 구매한 작물 게시글
+
+사용자가 구매한 작물 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-buy-crop-posts/http-request.adoc[]
+include::{snippets}/get-my-buy-crop-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-buy-crop-posts/http-response.adoc[]

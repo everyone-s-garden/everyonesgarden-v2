@@ -19,15 +19,19 @@ public class Address {
     @Column(name = "upmyeondong")
     private String upmyeondong;
 
+    @Column(name = "full_address")
+    private String fullAddress;
+
     public Address(String sido, String sigungu, String upmyeondong) {
         this.sido = sido;
         this.sigungu = sigungu;
         this.upmyeondong = upmyeondong;
+        this.fullAddress = sido + " " + sigungu + " " + upmyeondong;
     }
 
     @Override
     public String toString() {
-        return sido + " " + sigungu + " " + upmyeondong;
+        return fullAddress;
     }
 
 }

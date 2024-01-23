@@ -48,7 +48,8 @@ public class CropCommandRepositoryImpl implements CropCommandRepository {
             request.addedImages(),
             request.deletedImages(),
             request.loginUserId(),
-            request.tradeStatus()
+            request.tradeStatus(),
+            request.memberAddressId()
         );
     }
 
