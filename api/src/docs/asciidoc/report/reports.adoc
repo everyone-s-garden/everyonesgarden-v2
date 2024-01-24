@@ -1,5 +1,6 @@
 [[report-garden]]
-=== 텃밭 신고하기
+
+== 텃밭 신고하기
 
 잘못된 텃밭에 대해 신고하기 기능입니다. 신고 성공시 201 상태코드와 함께 생성된 report의 id가 location 헤더에 /{gardenId}/{reportId}와 같은 형식으로 담겨서 응답합니다.
 
