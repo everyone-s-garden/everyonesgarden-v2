@@ -26,15 +26,15 @@ public record GardenChatRoomsFindResponses(
             String recentContents,
             PartnerInfo partnerInfo,
             PostInfo postInfo
-    ){
-        public static GardenChatRoomsFindResponse to(GardenChatRoomsFindFacadeResponses.GardenChatRoomsFindFacadeResponse response){
+    ) {
+        public static GardenChatRoomsFindResponse to(GardenChatRoomsFindFacadeResponses.GardenChatRoomsFindFacadeResponse response) {
             return new GardenChatRoomsFindResponse(
                     response.chatMessageId(),
                     response.createdAt(),
                     response.readNotCnt(),
                     response.chatRoomId(),
                     response.recentContents(),
-                    new PartnerInfo(response.partnerInfo().partnerId(), response.partnerInfo().nickName()),
+                    new PartnerInfo(response.partnerInfo().partnerId(), response.partnerInfo().nickName(), response.partnerInfo().imageUrl()),
                     new PostInfo(response.postInfo().postId(), response.postInfo().images())
             );
         }
@@ -43,8 +43,9 @@ public record GardenChatRoomsFindResponses(
 
     public record PartnerInfo(
             Long partnerId,
-            String nickName
-    ){
+            String nickName,
+            String imageUrl
+    ) {
 
     }
 
