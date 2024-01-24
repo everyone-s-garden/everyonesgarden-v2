@@ -2,16 +2,15 @@ package com.garden.back.garden.repository.chatentry.garden;
 
 import com.garden.back.garden.repository.chatentry.ChatRoomEntry;
 import com.garden.back.garden.repository.chatentry.SessionId;
+import com.garden.back.service.IntegrationTestSupport;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@SpringBootTest
-class GardenChatRoomRoomEntryLocalRepositoryTest {
+class GardenChatRoomRoomEntryLocalRepositoryTest extends IntegrationTestSupport {
 
     private ChatRoomEntry chatRoomEntry;
     @Autowired
