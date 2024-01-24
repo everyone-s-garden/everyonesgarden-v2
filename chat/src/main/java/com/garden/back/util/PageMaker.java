@@ -12,6 +12,10 @@ public class PageMaker {
     private static final int GARDEN_BY_NAME_PAGE_SIZE = 10;
 
     public static Pageable makePage(Integer pageNumber) {
+        if(pageNumber < 0) {
+            throw new IllegalArgumentException("페이지 넘버는 음수일 수 없습니다.");
+        }
+
         return PageRequest.of(pageNumber, GARDEN_BY_NAME_PAGE_SIZE);
     }
 
