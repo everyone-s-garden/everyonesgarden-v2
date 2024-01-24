@@ -83,6 +83,7 @@ class ChatMessageDocsTest extends RestDocsSupport {
                                 fieldWithPath("responses[].recentContents").type(JsonFieldType.STRING).description("최근 보낸 메시지 내용"),
                                 fieldWithPath("responses[].partnerInfo.partnerId").type(JsonFieldType.NUMBER).description("상대방 아이디"),
                                 fieldWithPath("responses[].partnerInfo.nickName").type(JsonFieldType.STRING).description("상대방 별명"),
+                                fieldWithPath("responses[].partnerInfo.imageUrl").type(JsonFieldType.STRING).description("상대방 사진 URL"),
                                 fieldWithPath("responses[].postInfo.postId").type(JsonFieldType.NUMBER).description("채팅방 관련 텃밭 분양글 아이디"),
                                 fieldWithPath("responses[].postInfo.images").type(JsonFieldType.ARRAY).description("채팅방 관련 텃밭 분양글 사진 URL"),
                                 fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부"))
