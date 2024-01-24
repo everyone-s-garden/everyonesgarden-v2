@@ -7,6 +7,7 @@ import com.garden.back.chat.gardenchat.controller.dto.request.GardenSessionCreat
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
@@ -64,6 +65,15 @@ class GardenChatRoomControllerTest extends ControllerTestSupport {
     void getGardenChatMessages_invalidRequest(Long roomId) throws Exception {
         mockMvc.perform(get("/garden-chats/{roomId}",roomId)
                         .param("pageNumber","0"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("텃밭 분양 채팅방 목록을 조회할 때 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @NullSource
+    void getGardenChatRoomsInMember_invalidRequest(String pageNumber) throws Exception {
+        mockMvc.perform(get("/garden-chats")
+                        .param("pageNumber",pageNumber))
                 .andExpect(status().is4xxClientError());
     }
 

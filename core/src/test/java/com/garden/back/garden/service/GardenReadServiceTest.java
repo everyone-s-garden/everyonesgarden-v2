@@ -303,4 +303,16 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                         .forEach(image -> assertThat(gardenChatRoomInfo.imageUrls()).contains(image));
     }
 
+    @DisplayName("텃밭의 이미지 url를 얻을 수 있다.")
+    @Test
+    void getGardenImages() {
+        // Given
+        GardenImage savedGardenImage = gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+
+        // When
+        List<String> gardenImages = gardenReadService.getGardenImages(savedPrivateGarden.getGardenId());
+
+        // Then
+        assertThat(gardenImages).contains(savedGardenImage.getImageUrl());
+    }
 }
