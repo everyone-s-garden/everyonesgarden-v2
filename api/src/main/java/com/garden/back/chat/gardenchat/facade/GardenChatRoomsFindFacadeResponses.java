@@ -49,7 +49,7 @@ public record GardenChatRoomsFindFacadeResponses(
                     result.readNotCnt(),
                     result.chatRoomId(),
                     result.recentContents(),
-                    new PartnerInfo(result.partnerId(), memberMyPageResult.nickname()),
+                    new PartnerInfo(result.partnerId(), memberMyPageResult.nickname(), memberMyPageResult.imageUrl()),
                     new PostInfo(result.postId(),imageUrls)
             );
         }
@@ -58,7 +58,8 @@ public record GardenChatRoomsFindFacadeResponses(
     }
     public record PartnerInfo(
             Long partnerId,
-            String nickName
+            String nickName,
+            String imageUrl
     ){
     }
 

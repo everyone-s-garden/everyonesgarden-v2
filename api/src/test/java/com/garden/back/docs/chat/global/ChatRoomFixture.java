@@ -67,7 +67,8 @@ public class ChatRoomFixture {
                                 "한 달에 드는 비용은 3만원입니다.",
                                 new GardenChatRoomsFindFacadeResponses.PartnerInfo(
                                         1L,
-                                        "불가사리"
+                                        "불가사리",
+                                        "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
                                 ),
                                 new GardenChatRoomsFindFacadeResponses.PostInfo(
                                         1L,
