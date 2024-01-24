@@ -113,11 +113,11 @@ public class MyManagedGarden {
         validWriterId(request.memberId());
         validateDate(request.useStartDate(), request.useEndDate());
 
+        updateImageIfPresent(request.myManagedGardenImageUrl());
+
         useStartDate = request.useStartDate();
         useEndDate = request.useEndDate();
-        imageUrl = request.myManagedGardenImageUrl();
         gardenId = request.gardenId();
-
     }
 
     private void validWriterId(Long requestMemberId) {
@@ -129,6 +129,12 @@ public class MyManagedGarden {
     private void validateDate(LocalDate startDate, LocalDate endDate) {
         if (endDate.isBefore(startDate)) {
             throw new IllegalArgumentException("종료일은 시작일보다 이전일 수 없습니다.");
+        }
+    }
+
+    private void updateImageIfPresent(String newImageUrl) {
+        if (!newImageUrl.isEmpty()) {
+            imageUrl = newImageUrl;
         }
     }
 

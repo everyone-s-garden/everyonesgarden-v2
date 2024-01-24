@@ -1,5 +1,7 @@
 package com.garden.back.report.domain;
 
+import com.garden.back.report.domain.garden.GardenReport;
+import com.garden.back.report.domain.garden.GardenReportType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -14,7 +16,7 @@ class GardenReportTest {
     @MethodSource("invalidCreateArguments")
     void createWithInvalidArguments(Long reporterId, String content, GardenReportType reportType, Long gardenId) {
         assertThatThrownBy(() ->
-                GardenReport.create(reporterId, content, reportType, gardenId))
+            GardenReport.create(reporterId, content, reportType, gardenId))
             .isInstanceOf(IllegalArgumentException.class);
     }
 

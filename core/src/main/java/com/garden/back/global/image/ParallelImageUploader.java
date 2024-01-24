@@ -14,7 +14,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 @Component
 public class ParallelImageUploader {
-
     private final ImageUploader imageUploader;
     private final Executor imageExecutor;
 
@@ -28,12 +27,12 @@ public class ParallelImageUploader {
             return Collections.emptyList();
         }
         List<CompletableFuture<String>> futures = multipartFiles.stream()
-            .map(multipartFile ->
-                CompletableFuture.supplyAsync(
-                    () -> imageUploader.upload(directory, multipartFile), imageExecutor
+                .map(multipartFile ->
+                        CompletableFuture.supplyAsync(
+                                () -> imageUploader.upload(directory, multipartFile), imageExecutor
+                        )
                 )
-            )
-            .toList();
+                .toList();
 
         return gatherFileNamesFromFutures(directory, futures);
     }
@@ -66,11 +65,11 @@ public class ParallelImageUploader {
         }
 
         List<CompletableFuture<Void>> futures = fileNames.stream()
-            .map(fileName ->
-                CompletableFuture.runAsync(
-                    () -> imageUploader.delete(directory, fileName), imageExecutor
-                )
-            ).toList();
+                .map(fileName ->
+                        CompletableFuture.runAsync(
+                                () -> imageUploader.delete(directory, fileName), imageExecutor
+                        )
+                ).toList();
 
         CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
 

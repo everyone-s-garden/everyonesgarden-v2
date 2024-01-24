@@ -71,8 +71,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         try {
-            Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
-            return claims;
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
         } catch (ExpiredJwtException e) {
             expiredTokenResponse(response, e);
         } catch (Exception e) {

@@ -1,10 +1,7 @@
 package com.garden.back.post.domain.repository;
 
-import com.garden.back.post.domain.repository.request.FindAllPostCommentsParamRepositoryRequest;
-import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
-import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
-import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
-import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.request.*;
+import com.garden.back.post.domain.repository.response.*;
 
 public interface PostQueryRepository {
     FindPostDetailsResponse findPostDetails(Long id);
@@ -12,4 +9,10 @@ public interface PostQueryRepository {
     FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request);
 
     FindPostsAllCommentResponse findPostsAllComments(Long id, FindAllPostCommentsParamRepositoryRequest request);
+
+    FindAllMyLikePostsResponse findAllByMyLike(Long loginUserId, FindAllMyLikePostsRepositoryRequest request);
+
+    FindAllMyPostsResponse findAllMyPosts(Long loginUserId, FindAllMyPostsRepositoryRequest request);
+
+    FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request);
 }

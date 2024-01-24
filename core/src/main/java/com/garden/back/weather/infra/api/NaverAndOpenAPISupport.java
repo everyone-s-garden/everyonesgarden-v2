@@ -5,9 +5,7 @@ import com.garden.back.weather.infra.api.open.response.WeatherForecastResponse;
 import com.garden.back.weather.infra.api.open.response.WeekWeatherResponse;
 import com.garden.back.weather.infra.response.AllRegionsWeatherInfo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +16,8 @@ import java.util.stream.Collectors;
  * getAllRegionsWeatherInfo의 흐름을 하나씩 담은 확장 불가능한 클래스 (가독성을 위해서 만든 클래스)
  * */
 public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher {
+
+    private static final String SEOUL = "Asia/Seoul";
 
     public AllRegionsWeatherInfo parseWeatherForecastResponse(Region region, WeatherForecastResponse response) {
         Map<String, String> skyConditionMap = getSkyConditionMap();
@@ -47,7 +47,8 @@ public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher
     }
 
     public String getBaseDateForWeeklyForecast() {
-        LocalDateTime now = LocalDateTime.now();
+        ZonedDateTime now = ZonedDateTime.now(ZoneId.of(SEOUL));
+
         if (now.getHour() >= 6) {
             return now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         }
@@ -74,13 +75,17 @@ public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher
         return baseTime.format(formatter);
     }
 
+
     public List<WeekWeatherResponse.Response.Body.Items.WeatherItem> filterForecastData(
         WeekWeatherResponse weekWeatherForecast) {
+        ZonedDateTime nowSeoul = ZonedDateTime.now(ZoneId.of(SEOUL));
+
         return weekWeatherForecast.response().body().items().item().stream()
             .filter(item -> item.category().equals("TMP") || item.category().equals("PTY"))
             .filter(item -> LocalDateTime.of(LocalDate.parse(item.fcstDate(), DateTimeFormatter.BASIC_ISO_DATE),
                     LocalTime.parse(item.fcstTime(), DateTimeFormatter.ofPattern("HHmm")))
-                .isAfter(LocalDateTime.now()))
+                .atZone(ZoneId.of(SEOUL))
+                .isAfter(nowSeoul))
             .toList();
     }
 
@@ -95,8 +100,9 @@ public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher
 
     public List<WeekWeatherResponse.Response.Body.Items.WeatherItem> addTomorrowNoonForecast(
         List<WeekWeatherResponse.Response.Body.Items.WeatherItem> filteredItems) {
-        LocalDateTime tomorrowNoon = LocalDate.now().plusDays(1).atTime(12, 0);
-        String tomorrowNoonKey = tomorrowNoon.format(DateTimeFormatter.BASIC_ISO_DATE) + "1200";
+        ZonedDateTime tomorrowNoonSeoul = ZonedDateTime.now(ZoneId.of(SEOUL)).plusDays(1).withHour(12).withMinute(0).withSecond(0).withNano(0);
+        String tomorrowNoonKey = tomorrowNoonSeoul.format(DateTimeFormatter.BASIC_ISO_DATE) + "1200";
+
         return filteredItems.stream()
             .filter(item -> (item.fcstDate() + item.fcstTime()).equals(tomorrowNoonKey))
             .toList();

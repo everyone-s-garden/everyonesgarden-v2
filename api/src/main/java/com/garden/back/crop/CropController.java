@@ -1,5 +1,7 @@
 package com.garden.back.crop;
 
+import com.garden.back.crop.domain.repository.response.FindAllCropsPostResponse;
+import com.garden.back.crop.domain.repository.response.FindCropsPostDetailsResponse;
 import com.garden.back.crop.request.AssignBuyerRequest;
 import com.garden.back.crop.request.CropsPostCreateRequest;
 import com.garden.back.crop.request.CropsPostsUpdateRequest;
@@ -91,7 +93,6 @@ public class CropController {
         value = "/posts/{id}/assign-buyer",
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-
     public ResponseEntity<Void> assignBuyer(
         @PathVariable("id") Long id,
         @CurrentUser LoginUser loginUser,

@@ -1,10 +1,7 @@
 package com.garden.back.post.domain.repository;
 
-import com.garden.back.post.domain.repository.request.FindAllPostCommentsParamRepositoryRequest;
-import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
-import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
-import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
-import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.request.*;
+import com.garden.back.post.domain.repository.response.*;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -19,6 +16,7 @@ import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
 import static com.garden.back.post.domain.QPostImage.postImage;
+import static com.garden.back.post.domain.QPostLike.postLike;
 
 @Repository
 public class PostQueryRepositoryImpl implements PostQueryRepository {
@@ -114,5 +112,56 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             case LIKE_COUNT -> postComment.likesCount.desc();
             case OLDER_DATE -> postComment.createAt.asc();
         };
+    }
+
+
+    @Override
+    public FindAllMyLikePostsResponse findAllByMyLike(Long loginUserId, FindAllMyLikePostsRepositoryRequest request) {
+        List<FindAllMyLikePostsResponse.PostInfo> postInfos =  jpaQueryFactory
+            .select(Projections.constructor(FindAllMyLikePostsResponse.PostInfo.class,
+                post.id,
+                post.title
+            ))
+            .from(post)
+            .join(postLike).on(post.id.eq(postLike.postId))
+            .where(postLike.likesClickerId.eq(loginUserId))
+            .offset(request.offset())
+            .limit(request.limit())
+            .fetch();
+
+        return new FindAllMyLikePostsResponse(postInfos);
+    }
+
+    @Override
+    public FindAllMyPostsResponse findAllMyPosts(Long loginUserId, FindAllMyPostsRepositoryRequest request) {
+        List<FindAllMyPostsResponse.PostInfo> postInfos =  jpaQueryFactory
+            .select(Projections.constructor(FindAllMyPostsResponse.PostInfo.class,
+                post.id,
+                post.title
+            ))
+            .from(post)
+            .where(post.postAuthorId.eq(loginUserId))
+            .offset(request.offset())
+            .limit(request.limit())
+            .fetch();
+
+        return new FindAllMyPostsResponse(postInfos);
+    }
+
+    @Override
+    public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
+        List<FindAllMyCommentPostsResponse.PostInfo> postInfos =  jpaQueryFactory
+            .select(Projections.constructor(FindAllMyCommentPostsResponse.PostInfo.class,
+                post.id,
+                post.title
+            ))
+            .from(post)
+            .join(postComment).on(post.id.eq(postComment.postId))
+            .where(postComment.authorId.eq(loginUserId))
+            .offset(request.offset())
+            .limit(request.limit())
+            .fetch();
+
+        return new FindAllMyCommentPostsResponse(postInfos);
     }
 }

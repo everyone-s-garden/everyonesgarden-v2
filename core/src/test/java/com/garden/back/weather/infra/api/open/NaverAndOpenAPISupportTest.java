@@ -10,9 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +21,8 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
 
     @InjectMocks
     NaverAndOpenAPISupport naverAndOpenAPISupport;
+
+    ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
 
     @DisplayName("기상청으로 부터 받은 응답 중 PTY, T1H 만을 필터링 해서 하늘 상태, 온도를 얻을 수 있다.")
     @Test
@@ -65,7 +65,7 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @DisplayName("현재 시간에 따라 오늘 새벽 6시 또는 어제 새벽 6시의 주간예보 기준일 반환한다.")
     void testGetBaseDateForWeeklyForecast() {
         // given 현재 시간을 가져온다
-        LocalDateTime now = LocalDateTime.now();
+
         String actual = naverAndOpenAPISupport.getBaseDateForWeeklyForecast();
 
         // when
@@ -104,10 +104,11 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @DisplayName("기상청으로 부터 받은 응답 중 TMP, PTY 카테고리의 미래 시간 데이터만을 필터링한다.")
     void testFilterForecastData() {
         // given: 1시간 전, 1시간 이후의 데이터를 받음
-        String todayDate = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
-        String yesterdayDate = LocalDateTime.now().minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
-        String futureTimeFormatted = LocalTime.now().plusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
-        String pastTimeFormatted = LocalTime.now().minusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
+
+        String todayDate = now.format(DateTimeFormatter.BASIC_ISO_DATE);
+        String yesterdayDate = now.minusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        String futureTimeFormatted = now.plusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
+        String pastTimeFormatted = now.minusHours(1).format(DateTimeFormatter.ofPattern("HHmm"));
 
         WeekWeatherResponse weekWeatherResponse = sut
             .giveMeBuilder(WeekWeatherResponse.class)
@@ -198,8 +199,8 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
     @Test
     void addTomorrowNoonForecast() {
         //given
-        String tomorrow = LocalDate.now().plusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
-        String today = LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE);
+        String tomorrow = now.plusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
+        String today = now.format(DateTimeFormatter.BASIC_ISO_DATE);
         String forecastTime = "1200";
 
         WeekWeatherResponse given = sut
