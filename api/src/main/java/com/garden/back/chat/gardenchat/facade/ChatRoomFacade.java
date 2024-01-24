@@ -55,7 +55,6 @@ public class ChatRoomFacade {
                             imageUrlsById.put(result.chatMessageId(), gardenReadService.getGardenImages(result.postId()));
                             memberInfoById.put(result.chatMessageId(), memberService.getMyMember(result.partnerId()));
                         }
-
                 );
 
         return GardenChatRoomsFindFacadeResponses.to(chatMessagesInRooms, imageUrlsById, memberInfoById);
