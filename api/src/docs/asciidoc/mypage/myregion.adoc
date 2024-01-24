@@ -1,0 +1,36 @@
+
+=== 사용자가 등록한 주소 조회 api
+
+==== Request
+include::{snippets}/get-my-regions/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-regions/http-response.adoc[]
+
+=== 사용자 사는 지역 등록 api docs
+
+==== Request
+include::{snippets}/register-my-regions/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/register-my-regions/http-response.adoc[]
+include::{snippets}/register-my-regions/response-headers.adoc[]
+
+=== 사용자 사는 지역 삭제 api docs
+
+==== Request
+include::{snippets}/delete-my-regions/http-request.adoc[]
+include::{snippets}/delete-my-regions/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/delete-my-regions/http-response.adoc[]
+
+=== 현재 내 위치의 주소 조회 api docs
+
+==== Request
+include::{snippets}/find-my-current-region/http-request.adoc[]
+include::{snippets}/find-my-current-region/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/find-my-current-region/http-response.adoc[]
+include::{snippets}/find-my-current-region/response-fields.adoc[]

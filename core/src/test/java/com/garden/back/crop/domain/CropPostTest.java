@@ -18,43 +18,41 @@ class CropPostTest {
     @ParameterizedTest
     @MethodSource("provideInvalidCropPostArguments")
     @DisplayName("CropPost 생성 시 유효하지 않은 인자 검증")
-    void testInvalidCropPostCreation(String content, String title, CropCategory cropCategory, Integer price, Boolean priceProposal, TradeType tradeType, Long cropPostAuthorId, List<String> cropUrls) {
-        assertThatThrownBy(() -> CropPost.create(content, title, cropCategory, price, priceProposal, tradeType, cropUrls, cropPostAuthorId))
+    void testInvalidCropPostCreation(String content, String title, CropCategory cropCategory, Integer price, Boolean priceProposal, TradeType tradeType, Long cropPostAuthorId, List<String> cropUrls, Long memberAddressId) {
+        assertThatThrownBy(() -> CropPost.create(content, title, cropCategory, price, priceProposal, tradeType, cropUrls, cropPostAuthorId, memberAddressId))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     private static Stream<Arguments> provideInvalidCropPostArguments() {
         return Stream.of(
-            Arguments.of(null, "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", null, CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", "유효한 제목", null, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, null, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, null, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, true, null, 1L, Collections.singletonList("http://validurl.com")),
-            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, true, TradeType.DELIVERY_TRADE, null, Collections.singletonList("http://validurl.com"))
+            Arguments.of(null, "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", null, CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", "유효한 제목", null, 100, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, null, true, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, null, TradeType.DELIVERY_TRADE, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, true, null, 1L, Collections.singletonList("http://validurl.com"), 1L),
+            Arguments.of("유효한 내용", "유효한 제목", CropCategory.VEGETABLE, 100, true, TradeType.DELIVERY_TRADE, null, Collections.singletonList("http://validurl.com"), 1L)
         );
     }
 
     @Test
     @DisplayName("update 메소드 유효성 검증")
     void testUpdateMethod() {
-        // Arrange: 초기 CropPost 객체 생성
+        // given
         Long authorId = 1L;
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), authorId);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), authorId, null);
 
-        // Act & Assert: 작성자 ID가 다를 때
-        assertThatThrownBy(() -> post.update("제목", "내용", CropCategory.FRUIT, 10000, false, TradeType.DIRECT_TRADE, List.of("http://validurl.com"), List.of("http://validurl.com"), 2L, TradeStatus.TRADED))
+        // when & then
+        assertThatThrownBy(() -> post.update("제목", "내용", CropCategory.FRUIT, 10000, false, TradeType.DIRECT_TRADE, List.of("http://validurl.com"), List.of("http://validurl.com"), 2L, TradeStatus.TRADED, null))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessageContaining("자신이 작성한 작물 게시물만 수정이 가능합니다.");
-
-        // 추가적인 테스트 케이스들을 구현...
     }
 
     @Test
     @DisplayName("increaseBookmarkCount 메소드 검증")
     void testIncreaseBookmarkCount() {
         // given
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L, null);
         Long beforeCount = post.getBookMarkCount();
 
         // when
@@ -68,7 +66,7 @@ class CropPostTest {
     @DisplayName("decreaseBookmarkCount 메소드 검증")
     void testDecreaseBookmarkCount() {
         // given
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L, null);
 
         //when
         post.increaseBookmarkCount();
@@ -87,7 +85,7 @@ class CropPostTest {
     @DisplayName("decreaseBookmarkCount 메소드 검증(값이 0보다 작아질 때")
     void testDecreaseBookmarkCountInvalid() {
         // given
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L, null);
 
         // when & then
         assertThatThrownBy(post::decreaseBookmarkCount)
@@ -99,8 +97,8 @@ class CropPostTest {
     @DisplayName("assignBuyer 메소드 검증")
     void testAssignBuyer() {
         // given
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L);
-        post.update("제목", "내용", CropCategory.FRUIT, 10000, false, TradeType.DIRECT_TRADE, List.of("http://validurl.com"), List.of("http://validurl.com"), 1L, TradeStatus.TRADED);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L, null);
+        post.update("제목", "내용", CropCategory.FRUIT, 10000, false, TradeType.DIRECT_TRADE, List.of("http://validurl.com"), List.of("http://validurl.com"), 1L, TradeStatus.TRADED, null);
         Long buyerId = 2L;
         // when
         post.assignBuyer(buyerId);
@@ -113,7 +111,7 @@ class CropPostTest {
     @DisplayName("판매과 완료되지 않은 상품은 구매자를 할당할 수 없다.")
     void testAssignBuyerInvalid() {
         // given
-        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L);
+        CropPost post = CropPost.create("내용", "유효한 제목", CropCategory.FRUIT, 100, true, TradeType.DELIVERY_TRADE, List.of("http://validurl.com"), 1L, null);
         Long buyerId = 2L;
 
         // when & then

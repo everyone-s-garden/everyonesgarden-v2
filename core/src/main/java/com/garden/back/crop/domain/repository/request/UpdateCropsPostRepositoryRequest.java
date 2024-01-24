@@ -18,5 +18,6 @@ public record UpdateCropsPostRepositoryRequest(
     List<String> addedImages,
     Long loginUserId,
     CropPost crop,
-    TradeStatus tradeStatus
+    TradeStatus tradeStatus,
+    Long memberAddressId
 ) {}

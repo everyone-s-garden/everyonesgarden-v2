@@ -23,7 +23,6 @@ public class CropImage {
     @Column(name = "image_url")
     private String imageUrl;
 
-
     private CropImage(String imageUrl, CropPost cropPost) {
         Assert.notNull(cropPost, "Crop은 null일 수 없습니다.");
         validateImageUrl(imageUrl);

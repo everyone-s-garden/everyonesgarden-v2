@@ -2,12 +2,16 @@ package com.garden.back.docs.report;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.report.ReportController;
+import com.garden.back.report.request.ReportCommentRequest;
 import com.garden.back.report.request.ReportGardenRequest;
+import com.garden.back.report.request.ReportPostRequest;
 import com.garden.back.report.service.ReportService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
@@ -38,7 +42,7 @@ class ReportRestDocs extends RestDocsSupport {
             .set("content", "허위로 등록된 텃밭 입니디.")
             .set("reportType", "FAKED_SALE")
                 .sample();
-        mockMvc.perform(post("/v1/reports/{gardenId}", gardenId)
+        mockMvc.perform(post("/v1/reports/gardens/{gardenId}", gardenId)
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isCreated())
@@ -49,7 +53,79 @@ class ReportRestDocs extends RestDocsSupport {
                 ),
                 requestFields(
                     fieldWithPath("content").type(STRING).description("신고 내용"),
-                    fieldWithPath("reportType").type(STRING).description("신고 타입(FAKED_SALE,SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, COMMENTS 중 하나만 가능)")
+                    fieldWithPath("reportType").type(STRING).description("신고 타입(FAKED_SALE,SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, COMMENTS) 중 하나만 가능)")
+                ),
+                responseHeaders(
+                    headerWithName("Location").description("생성된 신고의 id를 포함한 url")
+                )
+            ));
+    }
+
+    @DisplayName("댓글 신고 api docs")
+    @Test
+    void reportComment() throws Exception {
+        given(reportService.reportComment(any())).willReturn(1L);
+        ReportCommentRequest request = new ReportCommentRequest("SPAMMING");
+
+        mockMvc.perform(post("/v1/reports/comments/{commentId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andDo(print())
+            .andDo(document("report-comments",
+                pathParameters(
+                    parameterWithName("commentId").description("댓글 id")
+                ),
+                requestFields(
+                    fieldWithPath("reportType").type(STRING).description("신고 타입(SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, OFFENSIVE_EXPRESSION) 중 하나만 가능)")
+                ),
+                responseHeaders(
+                    headerWithName("Location").description("생성된 신고의 id를 포함한 url")
+                )
+            ));
+    }
+
+    @DisplayName("게시글 신고 api docs")
+    @Test
+    void reportPost() throws Exception {
+        given(reportService.reportPost(any())).willReturn(1L);
+        ReportPostRequest request = new ReportPostRequest("SPAMMING");
+
+        mockMvc.perform(post("/v1/reports/posts/{postId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andDo(print())
+            .andDo(document("report-posts",
+                pathParameters(
+                    parameterWithName("postId").description("게시글 id")
+                ),
+                requestFields(
+                    fieldWithPath("reportType").type(STRING).description("신고 타입(SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, OFFENSIVE_EXPRESSION) 중 하나만 가능)")
+                ),
+                responseHeaders(
+                    headerWithName("Location").description("생성된 신고의 id를 포함한 url")
+                )
+            ));
+    }
+
+    @DisplayName("작물 게시글 신고 api docs")
+    @Test
+    void reportCropPost() throws Exception {
+        given(reportService.reportPost(any())).willReturn(1L);
+        ReportPostRequest request = new ReportPostRequest("SPAMMING");
+
+        mockMvc.perform(post("/v1/reports/crop-posts/{cropPostId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().isCreated())
+            .andDo(print())
+            .andDo(document("report-crop-posts",
+                pathParameters(
+                    parameterWithName("cropPostId").description("작물 게시글 id")
+                ),
+                requestFields(
+                    fieldWithPath("reportType").type(STRING).description("신고 타입(SPAMMING, SWEAR_WORD, SENSATIONAL, PERSONAL_INFORMATION_EXPOSURE, OFFENSIVE_EXPRESSION) 중 하나만 가능)")
                 ),
                 responseHeaders(
                     headerWithName("Location").description("생성된 신고의 id를 포함한 url")

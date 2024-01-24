@@ -21,6 +21,14 @@ public record FindAllCropsPostRequest(
 
     CropCategory cropCategory,
 
+    String region,
+
+    @PositiveOrZero(message = "가격은 0이상의 수로 입력해주세요.")
+    Integer minPrice,
+
+    @PositiveOrZero(message = "가격은 0이상의 수로 입력해주세요.")
+    Integer maxPrice,
+
     @EnumValue(enumClass = FindAllCropsPostRepositoryRequest.OrderBy.class, message = "RECENT_DATE, LIKE_COUNT, OLDER_DATE, LOWER_PRICE, HIGHER_PRICE 중 한개를 입력해주세요")
     String orderBy
 ){
@@ -31,6 +39,9 @@ public record FindAllCropsPostRequest(
             searchContent,
             tradeType,
             cropCategory,
+            region,
+            minPrice,
+            maxPrice,
             FindAllCropsPostRepositoryRequest.OrderBy.valueOf(orderBy)
         );
     }

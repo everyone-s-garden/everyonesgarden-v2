@@ -9,6 +9,9 @@ public record FindAllCropsPostRepositoryRequest(
     String searchContent,
     TradeType tradeType,
     CropCategory cropCategory,
+    String region,
+    Integer minPrice,
+    Integer maxPrice,
     OrderBy orderBy
 ) {
     public enum OrderBy {
