@@ -68,6 +68,9 @@ public class CropPost extends BaseTimeEntity {
     @Column(name = "created_date", nullable = false)
     private LocalDate createdDate;
 
+    @Column(name = "member_address_id", nullable = true)
+    private Long memberAddressId;
+
     @Transient
     static final int APPROVE_IMAGE_COUNT = 10;
 
@@ -79,7 +82,8 @@ public class CropPost extends BaseTimeEntity {
         Boolean priceProposal,
         TradeType tradeType,
         List<String> cropUrls,
-        Long cropPostAuthorId
+        Long cropPostAuthorId,
+        Long memberAddressId
     ) {
         Assert.notNull(content, "content를 작성해주세요.");
         Assert.notNull(title, "제목을 작성해주세요.");
@@ -103,6 +107,7 @@ public class CropPost extends BaseTimeEntity {
             .map(cropUrl -> CropImage.create(cropUrl, this))
             .collect(Collectors.toSet());
         this.cropPostAuthorId = cropPostAuthorId;
+        this.memberAddressId = memberAddressId;
     }
 
     public static CropPost create(
@@ -113,9 +118,10 @@ public class CropPost extends BaseTimeEntity {
         Boolean priceProposal,
         TradeType tradeType,
         List<String> cropUrls,
-        Long loginUserId
+        Long loginUserId,
+        Long memberAddressId
     ) {
-        return new CropPost(content, title, cropCategory, price, priceProposal, tradeType, cropUrls, loginUserId);
+        return new CropPost(content, title, cropCategory, price, priceProposal, tradeType, cropUrls, loginUserId, memberAddressId);
     }
 
     public void validateUpdatable(Integer addedImageCount, Integer deletedImageCount) {
@@ -136,7 +142,8 @@ public class CropPost extends BaseTimeEntity {
         List<String> addedImages,
         List<String> deletedImages,
         Long cropPostAuthorId,
-        TradeStatus tradeStatus
+        TradeStatus tradeStatus,
+        Long memberAddressId
     ) {
         Assert.notNull(content, "content를 작성해주세요.");
         Assert.notNull(title, "제목을 작성해주세요.");
@@ -167,6 +174,7 @@ public class CropPost extends BaseTimeEntity {
         this.price = price;
         this.priceProposal = priceProposal;
         this.tradeStatus = tradeStatus;
+        this.memberAddressId = memberAddressId;
     }
 
     public void increaseBookmarkCount() {
@@ -184,6 +192,11 @@ public class CropPost extends BaseTimeEntity {
         if (!this.tradeStatus.equals(TradeStatus.TRADED)) {
             throw new IllegalArgumentException("거래 완료가 되지 않은 작물 게시글입니다.");
         }
+
+        if (buyerId.equals(cropPostAuthorId)) {
+            throw new IllegalArgumentException("자신이 등록한 게시글에는 자신이 구매자가 될 수 없습니다.");
+        }
+
         this.buyerId = buyerId;
         Events.raise(new AssignBuyerEvent(this)); //TODO: AFTER COMMIT 옵션으로 이벤트 받아서 구매한 사람, 판매한 사람 양쪽에 리뷰 쓰라고 알람 보내기  NOSONAR
     }

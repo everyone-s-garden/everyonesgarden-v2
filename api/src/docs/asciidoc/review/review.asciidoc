@@ -1,0 +1,11 @@
+[[create-crop-reviews]]
+=== 작물 거래 리뷰하기
+
+==== Request
+include::{snippets}/create-crop-reviews/http-request.adoc[]
+include::{snippets}/create-crop-reviews/request-fields.adoc[]
+include::{snippets}/create-crop-reviews/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/create-crop-reviews/http-response.adoc[]
+include::{snippets}/create-crop-reviews/response-headers.adoc[]

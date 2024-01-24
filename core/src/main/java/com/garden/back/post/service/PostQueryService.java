@@ -1,11 +1,8 @@
 package com.garden.back.post.service;
 
 import com.garden.back.post.domain.repository.PostQueryRepository;
-import com.garden.back.post.domain.repository.request.FindAllPostCommentsParamRepositoryRequest;
-import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
-import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
-import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
-import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.request.*;
+import com.garden.back.post.domain.repository.response.*;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,4 +26,15 @@ public class PostQueryService {
         return postQueryRepository.findPostsAllComments(id, request);
     }
 
+    public FindAllMyLikePostsResponse findAllByMyLike(Long loginUserId, FindAllMyLikePostsRepositoryRequest request) {
+        return postQueryRepository.findAllByMyLike(loginUserId, request);
+    }
+
+    public FindAllMyPostsResponse findAllMyPosts(Long loginUserId, FindAllMyPostsRepositoryRequest request) {
+        return postQueryRepository.findAllMyPosts(loginUserId, request);
+    }
+
+    public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
+        return postQueryRepository.findAllByMyComment(loginUserId, request);
+    }
 }

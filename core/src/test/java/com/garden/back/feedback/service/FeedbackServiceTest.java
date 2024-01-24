@@ -10,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 class FeedbackServiceTest extends IntegrationTestSupport {
 
@@ -36,7 +36,7 @@ class FeedbackServiceTest extends IntegrationTestSupport {
             .set("images[0]", multipartFile)
             .sample();
 
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+        given(parallelImageUploader.upload(any(), any())).willReturn(List.of(expectedUrl));
 
         //when
         Long savedId = feedbackService.createFeedback(request);

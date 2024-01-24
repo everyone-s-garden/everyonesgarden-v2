@@ -1,7 +1,7 @@
 package com.garden.back.report.service.request;
 
-import com.garden.back.report.domain.GardenReport;
-import com.garden.back.report.domain.GardenReportType;
+import com.garden.back.report.domain.garden.GardenReport;
+import com.garden.back.report.domain.garden.GardenReportType;
 
 public record ReportGardenServiceRequest(
     String content,

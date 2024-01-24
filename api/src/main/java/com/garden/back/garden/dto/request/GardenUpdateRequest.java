@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 public record GardenUpdateRequest(
@@ -85,6 +86,9 @@ public record GardenUpdateRequest(
                 GardenUpdateRequest gardenUpdateRequest,
                 Long memberId
         ) {
+                if (newGardenImages == null) {
+                        newGardenImages = Collections.emptyList();
+                }
                 return new GardenUpdateParam(
                         gardenId,
                         gardenUpdateRequest.remainGardenImageUrls,

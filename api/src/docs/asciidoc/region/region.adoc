@@ -1,0 +1,12 @@
+[[search-regions]]
+=== 지역 검색 API
+
+지역을 검색하는 api 입니다. 서울로 검색하면 서울을 포함한 모든 지역이 offset 부터 limit 만큼 조회됩니다.
+
+==== Request
+include::{snippets}/search-regions/http-request.adoc[]
+include::{snippets}/search-regions/query-parameters.adoc[]
+
+
+==== Response (Success)
+include::{snippets}/search-regions/http-response.adoc[]

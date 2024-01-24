@@ -1,5 +1,6 @@
 [[report-garden]]
-=== 텃밭 신고하기
+
+== 텃밭 신고하기
 
 잘못된 텃밭에 대해 신고하기 기능입니다. 신고 성공시 201 상태코드와 함께 생성된 report의 id가 location 헤더에 /{gardenId}/{reportId}와 같은 형식으로 담겨서 응답합니다.
 
@@ -13,3 +14,51 @@ include::{snippets}/report-garden/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/report-garden/http-response.adoc[]
 include::{snippets}/report-garden/response-headers.adoc[]
+
+[[report-comment]]
+=== 댓글 신고하기
+
+댓글 신고하기 기능입니다. 신고 성공시 201 상태코드와 함께 생성된 report의 id가 location 헤더에 담겨 응답합니다.
+
+동일한 댓글에 대해 동일한 사용자가 두 번이상 신고할 경우 400 상태코드를 예외 메시지와 함께 응답합니다.
+
+==== Request
+include::{snippets}/report-comments/http-request.adoc[]
+include::{snippets}/report-comments/request-fields.adoc[]
+include::{snippets}/report-comments/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/report-comments/http-response.adoc[]
+include::{snippets}/report-comments/response-headers.adoc[]
+
+[[report-posts]]
+=== 게시글 신고하기
+
+게시글 신고하기 기능입니다. 신고 성공시 201 상태코드와 함께 생성된 report의 id가 location 헤더에 담겨서 응답합니다.
+
+동일한 게시글에 대해 동일한 사용자가 두 번이상 신고할 경우 400 상태코드를 예외 메시지와 함께 응답합니다.
+
+==== Request
+include::{snippets}/report-posts/http-request.adoc[]
+include::{snippets}/report-posts/request-fields.adoc[]
+include::{snippets}/report-posts/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/report-posts/http-response.adoc[]
+include::{snippets}/report-posts/response-headers.adoc[]
+
+[[report-crop-posts]]
+=== 작물 게시글 신고하기
+
+작물 게시글 신고하기 기능입니다. 신고 성공시 201 상태코드와 함께 생성된 report의 id가 location 헤더에 담겨서 응답합니다.
+
+동일한 작물 게시글에 대해 동일한 사용자가 두 번이상 신고할 경우 400 상태코드를 예외 메시지와 함께 응답합니다.
+
+==== Request
+include::{snippets}/report-crop-posts/http-request.adoc[]
+include::{snippets}/report-crop-posts/request-fields.adoc[]
+include::{snippets}/report-crop-posts/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/report-crop-posts/http-response.adoc[]
+include::{snippets}/report-crop-posts/response-headers.adoc[]

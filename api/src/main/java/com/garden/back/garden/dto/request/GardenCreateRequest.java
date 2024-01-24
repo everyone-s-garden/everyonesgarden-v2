@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 public record GardenCreateRequest(
@@ -76,6 +77,9 @@ public record GardenCreateRequest(
             GardenCreateRequest gardenCreateRequest,
             Long writerId
     ) {
+        if (multipartFiles == null) {
+            multipartFiles = Collections.emptyList();
+        }
         return new GardenCreateParam(
                 multipartFiles,
                 gardenCreateRequest.gardenName,

@@ -1,13 +1,11 @@
 package com.garden.back.garden.domain;
 
-import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.util.Assert;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,7 +14,7 @@ public class GardenLike {
     private Long gardenLikeId;
     private Long memberId;
     private Garden garden;
-    private LocalDateTime createdDate;
+    private LocalDate createdAt;
 
     protected GardenLike(
             Long gardenLikeId,

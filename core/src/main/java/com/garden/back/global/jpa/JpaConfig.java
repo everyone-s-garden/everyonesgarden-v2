@@ -1,4 +1,3 @@
-
 package com.garden.back.global.jpa;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;

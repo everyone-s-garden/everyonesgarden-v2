@@ -1,7 +1,7 @@
 package com.garden.back.report.request;
 
 import com.garden.back.global.validation.EnumValue;
-import com.garden.back.report.domain.GardenReportType;
+import com.garden.back.report.domain.garden.GardenReportType;
 import com.garden.back.report.service.request.ReportGardenServiceRequest;
 import jakarta.validation.constraints.NotEmpty;
 

@@ -167,4 +167,39 @@ include::{snippets}/delete-post-likes/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/delete-post-likes/http-response.adoc[]
 
+[[get-my-comment-posts]]
+=== 내가 작성한 댓글의 게시글
+
+사용자가 작성한 댓글이 달린 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-comment-posts/http-request.adoc[]
+include::{snippets}/get-my-comment-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-comment-posts/http-response.adoc[]
+
+[[get-my-posts]]
+=== 내가 작성한 게시글
+
+사용자가 작성한 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-posts/http-request.adoc[]
+include::{snippets}/get-my-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-posts/http-response.adoc[]
+
+[[get-my-likes-posts]]
+=== 내가 좋아요한 게시글
+
+사용자가 좋아요한 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-likes-posts/http-request.adoc[]
+include::{snippets}/get-my-likes-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-likes-posts/http-response.adoc[]
 

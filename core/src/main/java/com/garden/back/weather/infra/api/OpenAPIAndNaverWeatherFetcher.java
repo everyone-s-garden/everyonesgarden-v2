@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +56,7 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
      */
     @Override
     public List<AllRegionsWeatherInfo> getAllRegionsWeatherInfo() {
-        String forecastDateTime = super.getNearestForecastDateTime(LocalDateTime.now());
+        String forecastDateTime = super.getNearestForecastDateTime(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime());
 
         String baseDate = forecastDateTime.substring(0, 8); // "20231214"
         String baseTime = forecastDateTime.substring(8);    // "0200"
@@ -94,7 +95,7 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
         String regionName = naverGeoClient.getGeoInfoByLongitudeAndLatitude(longitude + "," + latitude, "JSON", naverApiId, naverApiSecret).results().get(0).region().area1().name();
 
         //현재 시간 이후의 매 정시 날씨를 조회하기 위한 시간 값
-        String forecastDateTime = super.getNearestForecastDateTime(LocalDateTime.now());
+        String forecastDateTime = super.getNearestForecastDateTime(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime());
         // 예: forecastDateTime = "202312140200"
 
         String baseDate = forecastDateTime.substring(0, 8); // "20231214"
