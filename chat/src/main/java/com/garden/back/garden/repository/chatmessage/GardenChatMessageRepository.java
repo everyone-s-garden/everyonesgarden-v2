@@ -20,4 +20,8 @@ public interface GardenChatMessageRepository {
     GardenChatMessage getById(Long chatMessageId);
 
     Slice<GardenChatMessage> getGardenChatMessage(Long chatRoomId, Pageable pageable);
+
+    Slice<ChatRoomFindRepositoryResponse> findChatRooms(Long memberId, Pageable pageable);
+
+    String getContentsById(Long chatMessageId);
 }

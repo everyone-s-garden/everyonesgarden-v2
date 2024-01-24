@@ -13,4 +13,6 @@ public interface GardenImageRepository {
 
     void delete(GardenImage gardenImage);
 
+    List<String> findGardenImageUrls(Long gardenId);
+
 }

@@ -1,9 +1,9 @@
 package com.garden.back.service;
 
+import com.garden.back.crop.service.request.CropChatRoomCreateParam;
 import com.garden.back.garden.domain.GardenChatMessage;
 import com.garden.back.garden.domain.GardenChatRoom;
 import com.garden.back.garden.repository.chatentry.SessionId;
-import com.garden.back.crop.service.request.CropChatRoomCreateParam;
 import com.garden.back.garden.service.dto.request.*;
 
 public class ChatRoomFixture {
@@ -112,4 +112,10 @@ public class ChatRoomFixture {
         );
     }
 
+    public static GardenChatRoomsFindParam gardenChatMessageFindParam(Long memberId) {
+        return new GardenChatRoomsFindParam(
+                memberId,
+                0
+        );
+    }
 }

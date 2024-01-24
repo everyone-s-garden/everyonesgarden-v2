@@ -1,14 +1,18 @@
 package com.garden.back.chat.gardenchat.controller;
 
-import com.garden.back.chat.gardenchat.controller.dto.response.GardenMessageSendResponse;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatMessagesGetRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenMessageSendRequest;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatMessageGetResponses;
-import com.garden.back.global.loginuser.CurrentUser;
-import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomsFindResponses;
+import com.garden.back.chat.gardenchat.controller.dto.response.GardenMessageSendResponse;
+import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
+import com.garden.back.chat.gardenchat.facade.GardenChatRoomsFindFacadeRequest;
+import com.garden.back.chat.gardenchat.facade.GardenChatRoomsFindFacadeResponses;
 import com.garden.back.garden.repository.chatentry.SessionId;
 import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
+import com.garden.back.global.loginuser.CurrentUser;
+import com.garden.back.global.loginuser.LoginUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -30,9 +34,11 @@ import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 public class GardenChatController {
 
     private final GardenChatService gardenChatService;
+    private final ChatRoomFacade chatRoomFacade;
 
-    public GardenChatController(GardenChatService gardenChatService) {
+    public GardenChatController(GardenChatService gardenChatService, ChatRoomFacade chatRoomFacade) {
         this.gardenChatService = gardenChatService;
+        this.chatRoomFacade = chatRoomFacade;
     }
 
     @MessageMapping("/garden-chats/{roomId}/")
@@ -64,6 +70,23 @@ public class GardenChatController {
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenChatMessageGetResponses.to(chatRoomMessages));
+    }
+
+    @GetMapping(
+            path = "/garden-chats",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GardenChatRoomsFindResponses> findChatRoomsInMember(
+            @RequestParam @NotNull Integer pageNumber,
+            @CurrentUser LoginUser loginUser
+    ){
+        GardenChatRoomsFindFacadeResponses chatRoomsInMember = chatRoomFacade.findChatRoomsInMember(GardenChatRoomsFindFacadeRequest.of(
+                loginUser,
+                pageNumber
+        ));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                        .body(GardenChatRoomsFindResponses.to(chatRoomsInMember));
     }
 
 }

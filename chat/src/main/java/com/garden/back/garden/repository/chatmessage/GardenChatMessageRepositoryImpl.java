@@ -48,4 +48,14 @@ public class GardenChatMessageRepositoryImpl implements GardenChatMessageReposit
     public Slice<GardenChatMessage> getGardenChatMessage(Long chatRoomId, Pageable pageable) {
         return gardenChatMessageJpaRepository.getGardenChatMessage(chatRoomId, pageable);
     }
+
+    @Override
+    public Slice<ChatRoomFindRepositoryResponse> findChatRooms(Long memberId, Pageable pageable) {
+        return gardenChatMessageJpaRepository.findChatRooms(memberId, pageable);
+    }
+
+    @Override
+    public String getContentsById(Long chatMessageId) {
+        return gardenChatMessageJpaRepository.getContentsById(chatMessageId);
+    }
 }
