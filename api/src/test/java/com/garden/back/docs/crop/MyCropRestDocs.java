@@ -1,6 +1,6 @@
 package com.garden.back.docs.crop;
 
-import com.garden.back.crop.CropQueryService;
+import com.garden.back.crop.service.CropQueryService;
 import com.garden.back.crop.MyCropController;
 import com.garden.back.crop.domain.repository.response.FindAllMyBookmarkCropPostsResponse;
 import com.garden.back.crop.domain.repository.response.FindAllMyBoughtCropPostsResponse;

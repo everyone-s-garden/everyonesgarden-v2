@@ -1,0 +1,11 @@
+[[create-appointment]]
+=== 약속 생성하기
+약속 생성 API DOCS
+
+==== Request
+include::{snippets}/create-appointment/http-request.adoc[]
+include::{snippets}/create-appointment/request-fields.adoc[]
+
+==== Response
+include::{snippets}/create-appointment/http-response.adoc[]
+include::{snippets}/create-appointment/response-fields.adoc[]

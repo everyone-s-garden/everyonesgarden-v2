@@ -1,7 +1,7 @@
 package com.garden.back.docs.crop;
 
 import com.garden.back.crop.CropController;
-import com.garden.back.crop.CropQueryService;
+import com.garden.back.crop.service.CropQueryService;
 import com.garden.back.crop.domain.CropCategory;
 import com.garden.back.crop.domain.TradeStatus;
 import com.garden.back.crop.domain.TradeType;

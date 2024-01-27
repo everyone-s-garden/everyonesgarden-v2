@@ -71,8 +71,14 @@ public class CropPost extends BaseTimeEntity {
     @Column(name = "member_address_id", nullable = true)
     private Long memberAddressId;
 
+    @Column(name = "delete_status")
+    private boolean deleteStatus;
+
     @Transient
-    static final int APPROVE_IMAGE_COUNT = 10;
+    private static final int APPROVE_IMAGE_COUNT = 10;
+
+    @Transient
+    private static final int DELETE_REPORT_COUNT = 10;
 
     private CropPost(
         String content,
@@ -108,6 +114,7 @@ public class CropPost extends BaseTimeEntity {
             .collect(Collectors.toSet());
         this.cropPostAuthorId = cropPostAuthorId;
         this.memberAddressId = memberAddressId;
+        this.deleteStatus = false;
     }
 
     public static CropPost create(
@@ -198,6 +205,12 @@ public class CropPost extends BaseTimeEntity {
         }
 
         this.buyerId = buyerId;
-        Events.raise(new AssignBuyerEvent(this)); //TODO: AFTER COMMIT 옵션으로 이벤트 받아서 구매한 사람, 판매한 사람 양쪽에 리뷰 쓰라고 알람 보내기  NOSONAR
+        Events.raise(new AssignBuyerEvent(this));
+    }
+
+    public void delete(Long reportCount) {
+        if (reportCount > DELETE_REPORT_COUNT) {
+            this.deleteStatus = true;
+        }
     }
 }

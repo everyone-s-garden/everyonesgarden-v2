@@ -85,4 +85,12 @@ public class PostCommandService {
     public void deletePostLike(Long postId, Long memberId) {
         postCommandRepository.deletePostLike(postId, memberId);
     }
+
+    public void deletePostByReport(Long id) {
+        postCommandRepository.deletePostByReport(id);
+    }
+
+    public void deletePostCommentByReport(Long id) {
+        postCommandRepository.deletePostCommentByReport(id);
+    }
 }

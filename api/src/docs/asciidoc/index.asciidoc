@@ -56,3 +56,17 @@ include::chat/chats.adoc[]
 마이 페이지에서 호출하는 API입니다.
 include::mypage/mypage.adoc[]
 
+[[Review]]
+== Review
+리뷰 API 입니다.
+include::review/review.asciidoc[]
+
+[[Appointment]]
+== Appointment
+약속 API 입니다.
+include::appointment/appointment.adoc[]
+
+[[Region]]
+== Region
+지역 검색 API 입니다.
+include::region/region.adoc[]

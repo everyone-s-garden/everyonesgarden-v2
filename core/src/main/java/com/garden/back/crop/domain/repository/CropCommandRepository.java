@@ -18,4 +18,6 @@ public interface CropCommandRepository {
     void deleteCropBookmark(Long id, Long loginUserId);
 
     void assignCropBuyer(Long id, Long loginUserId, Long buyerId);
+
+    void deleteCropPostByReport(Long id);
 }

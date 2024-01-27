@@ -6,7 +6,7 @@ import com.garden.back.chat.cropchat.controller.CropChatRoomController;
 import com.garden.back.chat.gardenchat.controller.GardenChatRoomController;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.crop.CropController;
-import com.garden.back.crop.CropQueryService;
+import com.garden.back.crop.service.CropQueryService;
 import com.garden.back.crop.service.CropCommandService;
 import com.garden.back.feedback.FeedbackController;
 import com.garden.back.feedback.service.FeedbackService;

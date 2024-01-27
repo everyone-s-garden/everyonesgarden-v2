@@ -26,4 +26,8 @@ public interface PostCommandRepository {
     void deleteCommentLike(Long commentId, Long memberId);
 
     void deletePostLike(Long postId, Long memberId);
+
+    void deletePostByReport(Long id);
+
+    void deletePostCommentByReport(Long id);
 }

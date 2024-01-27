@@ -1,6 +1,5 @@
 package com.garden.back.crop.service;
 
-import com.garden.back.crop.CropQueryService;
 import com.garden.back.crop.domain.*;
 import com.garden.back.crop.domain.repository.CropBookmarkJpaRepository;
 import com.garden.back.crop.domain.repository.CropJpaRepository;

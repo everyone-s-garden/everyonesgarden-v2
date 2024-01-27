@@ -1,4 +1,4 @@
-package com.garden.back.crop;
+package com.garden.back.crop.service;
 
 import com.garden.back.crop.domain.repository.CropQueryRepository;
 import com.garden.back.crop.domain.repository.request.FindAllCropsPostRepositoryRequest;

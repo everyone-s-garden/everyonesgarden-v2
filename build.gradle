@@ -122,6 +122,7 @@ project(':api') {
     dependencies {
         implementation project(':core')
         implementation project(':chat')
+        implementation project(':batch')
     }
 }
 
