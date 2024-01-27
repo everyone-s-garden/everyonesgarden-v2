@@ -59,6 +59,7 @@ public class CropQueryRepositoryImpl implements CropQueryRepository {
             .leftJoin(member).on(cropPost.cropPostAuthorId.eq(member.id))
             .innerJoin(memberAddress).on(cropPost.memberAddressId.eq(memberAddress.id))
             .where(
+                cropPost.deleteStatus.eq(false),
                 contentOrTitleLike(request.searchContent()),
                 tradeType(request.tradeType()),
                 cropCategoryType(request.cropCategory()),
@@ -131,7 +132,9 @@ public class CropQueryRepositoryImpl implements CropQueryRepository {
             .from(cropPost)
             .leftJoin(member).on(cropPost.cropPostAuthorId.eq(member.id))
             .leftJoin(memberAddress).on(cropPost.memberAddressId.eq(memberAddress.id))
-            .where(cropPost.id.eq(id))
+            .where(
+                cropPost.deleteStatus.eq(false),
+                cropPost.id.eq(id))
             .fetchOne();
     }
 
@@ -149,7 +152,10 @@ public class CropQueryRepositoryImpl implements CropQueryRepository {
                 ))
                 .from(cropPost)
                 .innerJoin(cropBookmark).on(cropPost.id.eq(cropBookmark.cropPostId))
-                .where(cropBookmark.bookMarkOwnerId.eq(loginUserId))
+                .where(
+                    cropPost.deleteStatus.eq(false),
+                    cropBookmark.bookMarkOwnerId.eq(loginUserId)
+                )
                 .offset(request.offset())
                 .limit(request.limit())
                 .fetch();
@@ -170,7 +176,10 @@ public class CropQueryRepositoryImpl implements CropQueryRepository {
                         .limit(1L)
                 ))
                 .from(cropPost)
-                .where(cropPost.cropPostAuthorId.eq(loginUserId))
+                .where(
+                    cropPost.deleteStatus.eq(false),
+                    cropPost.cropPostAuthorId.eq(loginUserId)
+                )
                 .offset(request.offset())
                 .limit(request.limit())
                 .fetch();
@@ -191,7 +200,10 @@ public class CropQueryRepositoryImpl implements CropQueryRepository {
                         .limit(1L)
                 ))
                 .from(cropPost)
-                .where(cropPost.buyerId.eq(request.loginUserId()))
+                .where(
+                    cropPost.deleteStatus.eq(false),
+                    cropPost.buyerId.eq(request.loginUserId())
+                )
                 .offset(request.offset())
                 .limit(request.limit())
                 .fetch();

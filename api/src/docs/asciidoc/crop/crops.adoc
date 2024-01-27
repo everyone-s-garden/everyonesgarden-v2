@@ -3,6 +3,12 @@
 
 1월부터 12월까지 추천 작물을 조회합니다. (위키 기준)
 
+==== Request
+include::{snippets}/get-all-months-recommended-crops/http-request.adoc[]
+==== Response
+include::{snippets}/get-all-months-recommended-crops/http-response.adoc[]
+include::{snippets}/get-all-months-recommended-crops/response-fields.adoc[]
+
 [[get-all-crops-posts]]
 === 작물 게시글 전체 조회하기
 모든 작물 게시글을 조회합니다. 이 API는 페이지네이션을 지원하며, 사용자가 지정한 조건에 따라 정렬된 결과를 반환합니다. 각 게시글의 상세 정보로는 제목, 가격, 생성 일자, 거래 형식, 가격 제안 여부, 예약 상태, 북마크 수 등이 포함됩니다.
@@ -134,5 +140,28 @@ include::{snippets}/get-my-buy-crop-posts/query-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-my-buy-crop-posts/http-response.adoc[]
-=======
+
+[[get-my-buy-crop-posts]]
+=== 내가 구매한 작물 게시글
+
+사용자가 구매한 작물 게시글 목록을 반환하는 API입니다.
+
+==== Request
+include::{snippets}/get-my-buy-crop-posts/http-request.adoc[]
+include::{snippets}/get-my-buy-crop-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-my-buy-crop-posts/http-response.adoc[]
+
+[[assign-crops-buyer]]
+=== 구매자 할당하기
+
+사용자가 판매한 작물의 구매자를 할당하는 API입니다.
+
+==== Request
+include::{snippets}/assign-crops-buyer/http-request.adoc[]
+include::{snippets}/assign-crops-buyer/request-fields.adoc[]
+
+==== Response (Success)
 include::{snippets}/assign-crops-buyer/http-response.adoc[]
+

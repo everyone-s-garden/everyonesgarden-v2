@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 
+import static com.garden.back.crop.domain.QCropPost.cropPost;
 import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
@@ -46,7 +47,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 Expressions.constant(imageUrls)))
             .from(post)
             .leftJoin(member).on(post.postAuthorId.eq(member.id))
-            .where(post.id.eq(id))
+            .where(
+                post.id.eq(id),
+                post.deleteStatus.eq(false)
+            )
             .fetchOne();
     }
 
@@ -62,7 +66,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.commentsCount,
                 post.createdDate))
             .from(post)
-            .where(contentOrTitleLike(request.searchContent()))
+            .where(
+                post.deleteStatus.eq(false),
+                contentOrTitleLike(request.searchContent())
+            )
             .orderBy(orderBy)
             .offset(request.offset())
             .limit(request.limit())
@@ -96,7 +103,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 member.nickname
             ))
             .from(postComment)
-            .where(postComment.postId.eq(id))
+            .where(
+                postComment.postId.eq(id),
+                postComment.deleteStatus.eq(false)
+            )
             .leftJoin(member).on(postComment.authorId.eq(member.id))
             .orderBy(orderBy)
             .offset(request.offset())
@@ -140,7 +150,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.title
             ))
             .from(post)
-            .where(post.postAuthorId.eq(loginUserId))
+            .where(
+                post.deleteStatus.eq(false),
+                post.postAuthorId.eq(loginUserId)
+            )
             .offset(request.offset())
             .limit(request.limit())
             .fetch();

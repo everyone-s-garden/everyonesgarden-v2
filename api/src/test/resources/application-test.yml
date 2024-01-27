@@ -8,8 +8,8 @@ oauth2:
 ---
 api:
   mafra:
-    name: ""
-    url: asfd
+    name: "openAPIGarden"
+    url: "url"
     secret: asdf
   weather:
     url: asdf

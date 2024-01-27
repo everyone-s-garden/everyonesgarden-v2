@@ -1,5 +1,6 @@
 package com.garden.back.report.domain.post;
 
+import com.garden.back.global.event.Events;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class PostReport {
         this.postId = postId;
         this.reporterId = reporterId;
         this.reportType = postReportType;
+        Events.raise(new PostReportCreateEvent(this));
     }
     public static PostReport create(Long postId, Long reporterId, PostReportType postReportType) {
         return new PostReport(postId, reporterId, postReportType);

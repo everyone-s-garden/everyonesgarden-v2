@@ -68,4 +68,8 @@ public class CropCommandService {
     public void assignCropBuyer(Long id, Long loginUserId, AssignBuyerServiceRequest request) {
         cropCommandRepository.assignCropBuyer(id ,loginUserId, request.memberId());
     }
+
+    public void deleteCropPostByReport(Long id) {
+        cropCommandRepository.deleteCropPostByReport(id);
+    }
 }

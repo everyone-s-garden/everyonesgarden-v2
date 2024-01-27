@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface RegionRepository extends JpaRepository<Region, Long> {
 
-    @Query(value = "SELECT * FROM regions WHERE MATCH(regions.fullAddress) AGAINST(:address IN NATURAL LANGUAGE MODE ) LIMIT :pageSize OFFSET :pageNumber", nativeQuery = true)
+    @Query(value = "SELECT * FROM regions WHERE MATCH(regions.full_address) AGAINST(:address IN NATURAL LANGUAGE MODE ) LIMIT :pageSize OFFSET :pageNumber", nativeQuery = true)
     List<Region> findAllRegions(@Param("address") String address, @Param("pageSize") int limit, @Param("pageNumber") int offset);
 }
