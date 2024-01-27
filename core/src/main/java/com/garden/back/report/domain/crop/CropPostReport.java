@@ -1,5 +1,6 @@
 package com.garden.back.report.domain.crop;
 
+import com.garden.back.global.event.Events;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -28,6 +29,7 @@ public class CropPostReport {
         this.cropPostId = cropPostId;
         this.reporterId = reporterId;
         this.reportType = reportType;
+        Events.raise(new CropPostReportCreateEvent(this));
     }
 
     public static CropPostReport create(Long cropPostId, Long reporterId, CropPostReportType reportType) {

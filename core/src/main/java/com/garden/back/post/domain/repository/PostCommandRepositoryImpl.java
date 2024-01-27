@@ -2,6 +2,8 @@ package com.garden.back.post.domain.repository;
 
 import com.garden.back.post.domain.*;
 import com.garden.back.post.domain.repository.request.PostUpdateRepositoryRequest;
+import com.garden.back.report.domain.comment.CommentReportRepository;
+import com.garden.back.report.domain.post.PostReportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -17,17 +19,22 @@ public class PostCommandRepositoryImpl implements PostCommandRepository {
     private final PostLikeRepository postLikeRepository;
     private final CommentLikeRepository commentLikeRepository;
     private final PostCommentRepository postCommentRepository;
+    private final PostReportRepository postReportRepository;
+    private final CommentReportRepository commentReportRepository;
 
     public PostCommandRepositoryImpl(
         PostRepository postRepository,
         PostLikeRepository postLikeRepository,
         CommentLikeRepository commentLikeRepository,
-        PostCommentRepository postCommentRepository
+        PostCommentRepository postCommentRepository,
+        PostReportRepository postReportRepository, CommentReportRepository commentReportRepository
     ) {
         this.postRepository = postRepository;
         this.postLikeRepository = postLikeRepository;
         this.commentLikeRepository = commentLikeRepository;
         this.postCommentRepository = postCommentRepository;
+        this.postReportRepository = postReportRepository;
+        this.commentReportRepository = commentReportRepository;
     }
 
     @Override
@@ -102,5 +109,19 @@ public class PostCommandRepositoryImpl implements PostCommandRepository {
         postLikeRepository.delete(like);
         Post post = postRepository.findById(like.getPostId()).orElseThrow(() -> new EntityNotFoundException("존재하는 게시글이 없습니다."));
         post.decreaseLikeCount();
+    }
+
+    @Override
+    public void deletePostByReport(Long id) {
+        Long reportCount = postReportRepository.countByPostId(id);
+
+        postRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하는 게시글이 없습니다.")).delete(reportCount);
+
+    }
+
+    @Override
+    public void deletePostCommentByReport(Long id) {
+        Long reportCount = commentReportRepository.countByCommentId(id);
+        postCommentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하는 댓글이 없습니다.")).delete(reportCount);
     }
 }
