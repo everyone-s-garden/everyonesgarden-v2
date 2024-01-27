@@ -25,6 +25,8 @@ api:
     url: asdf
     id: asdf
     secret: asdf
+  slack:
+    bot: http://example.com
 forecast:
   weekly:
     publish:
@@ -64,3 +66,14 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: create
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: example@gmail.com
+    password: exaple.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

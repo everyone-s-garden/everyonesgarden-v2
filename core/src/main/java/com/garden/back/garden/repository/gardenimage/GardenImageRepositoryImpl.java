@@ -1,6 +1,5 @@
 package com.garden.back.garden.repository.gardenimage;
 
-import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
 import com.garden.back.garden.repository.garden.GardenJpaRepository;
 import com.garden.back.garden.repository.gardenimage.entity.GardenImageEntity;
@@ -40,6 +39,11 @@ public class GardenImageRepositoryImpl implements GardenImageRepository{
     @Override
     public void delete(GardenImage gardenImage) {
         gardenImageJpaRepository.delete(GardenImageEntity.from(gardenImage));
+    }
+
+    @Override
+    public List<String> findGardenImageUrls(Long gardenId) {
+        return gardenImageJpaRepository.findGardenImageUrls(gardenId);
     }
 
 }

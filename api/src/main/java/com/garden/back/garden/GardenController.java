@@ -10,6 +10,8 @@ import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.global.LocationBuilder;
+import com.garden.back.global.loginuser.CurrentUser;
+import com.garden.back.global.loginuser.LoginUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -71,32 +73,32 @@ public class GardenController {
             path = "/{gardenId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-            @PathVariable @Positive Long gardenId) {
-        Long memberId = 1L;
-        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(GardenDetailRequest.of(memberId, gardenId));
+            @PathVariable @Positive Long gardenId,
+            @CurrentUser LoginUser loginUser) {
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(
+                GardenDetailRequest.of(loginUser.memberId(), gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenDetailResponse.to(gardenDetail));
     }
 
-    //to-do : 최근 본 텃밭 등록하기
-
     @GetMapping(
             path = "/recent",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RecentGardenResponses> getRecentGardens() {
-        Long memberId = 1L;
+    public ResponseEntity<RecentGardenResponses> getRecentGardens(
+            @CurrentUser LoginUser loginUser
+    ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(memberId)));
+                .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(loginUser.memberId())));
     }
 
     @DeleteMapping(
             path = "/{gardenId}")
     public ResponseEntity<Void> deleteGarden(
-            @PathVariable @Positive Long gardenId) {
-        Long memberId = 1L;
-
-        gardenCommandService.deleteGarden(GardenDeleteParam.of(memberId, gardenId));
+            @PathVariable @Positive Long gardenId,
+            @CurrentUser LoginUser loginUser) {
+        gardenCommandService.deleteGarden(
+                GardenDeleteParam.of(loginUser.memberId(), gardenId));
 
         URI location = URI.create("/v2/gardens/" + gardenId);
         return ResponseEntity
@@ -108,20 +110,23 @@ public class GardenController {
     @GetMapping(
             path = "/mine",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenMineResponses> getMyGarden() {
-        Long memberId = 1L;
+    public ResponseEntity<GardenMineResponses> getMyGarden(
+            @CurrentUser LoginUser loginUser
+    ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenMineResponses.to(gardenReadService.getMyGarden(memberId)));
+                .body(GardenMineResponses.to(gardenReadService.getMyGarden(loginUser.memberId())));
 
     }
 
     @GetMapping(
             path = "/likes",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember() {
-        Long memberId = 1L;
+    public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember(
+            @CurrentUser LoginUser loginUser
+    ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenLikeByMemberResponses.to(gardenReadService.getLikeGardensByMember(memberId)));
+                .body(GardenLikeByMemberResponses.to(
+                        gardenReadService.getLikeGardensByMember(loginUser.memberId())));
     }
 
     @PostMapping(
@@ -129,10 +134,10 @@ public class GardenController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createGardenLike(
-            @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest) {
-        Long memberId = 1L;
+            @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest,
+            @CurrentUser LoginUser loginUser) {
         Long gardenLikeId = gardenCommandService.createGardenLike(
-                GardenLikeCreateRequest.of(memberId, gardenLikeCreateRequest));
+                GardenLikeCreateRequest.of(loginUser.memberId(), gardenLikeCreateRequest));
 
         return ResponseEntity.created(URI.create("/v2/gardens/" + gardenLikeId)).build();
     }
@@ -142,10 +147,10 @@ public class GardenController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteGardenLike(
-            @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest) {
-        Long memberId = 1L;
+            @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest,
+            @CurrentUser LoginUser loginUser) {
         gardenCommandService.deleteGardenLike(
-                GardenLikeDeleteRequest.of(memberId, gardenLikeDeleteRequest));
+                GardenLikeDeleteRequest.of(loginUser.memberId(), gardenLikeDeleteRequest));
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -154,11 +159,11 @@ public class GardenController {
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> createGarden(
             @RequestPart(value = "gardenImages", required = false) List<MultipartFile> gardenImages,
-            @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest
+            @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest,
+            @CurrentUser LoginUser loginUser
     ) {
-        Long memberId = 1L;
         Long gardenId = gardenCommandService.createGarden(
-                GardenCreateRequest.to(gardenImages, gardenCreateRequest, memberId));
+                GardenCreateRequest.to(gardenImages, gardenCreateRequest, loginUser.memberId()));
         URI location = LocationBuilder.buildLocation(gardenId);
 
         return ResponseEntity.created(location).build();
@@ -170,14 +175,14 @@ public class GardenController {
     public ResponseEntity<Void> updateGarden(
             @PathVariable @Positive Long gardenId,
             @RequestPart(value = "newGardenImages", required = false) List<MultipartFile> newGardenImages,
-            @RequestPart(value = "gardenUpdateRequest") @Valid GardenUpdateRequest gardenUpdateRequest
+            @RequestPart(value = "gardenUpdateRequest") @Valid GardenUpdateRequest gardenUpdateRequest,
+            @CurrentUser LoginUser loginUser
     ) {
-        Long memberId = 1L;
         gardenCommandService.updateGarden(GardenUpdateRequest.to(
                 gardenId,
                 newGardenImages,
                 gardenUpdateRequest,
-                memberId));
+                loginUser.memberId()));
 
         URI location = URI.create("/v2/gardens/" + gardenId);
         return ResponseEntity
@@ -190,22 +195,23 @@ public class GardenController {
             value = "/my-managed",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<MyManagedGardenGetResponses> getMyManagedGardens() {
-        Long memberId = 1L;
+    public ResponseEntity<MyManagedGardenGetResponses> getMyManagedGardens(
+            @CurrentUser LoginUser loginUser
+    ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGardens(memberId)));
+                .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGardens(loginUser.memberId())));
     }
 
     @DeleteMapping(
             value = "/my-managed/{myManagedGardenId}"
     )
     public ResponseEntity<Void> deletedMyManagedGarden(
-            @PathVariable @Positive Long myManagedGardenId
+            @PathVariable @Positive Long myManagedGardenId,
+            @CurrentUser LoginUser loginUser
     ) {
-        Long memberId = 1L;
         gardenCommandService.deleteMyManagedGarden(MyManagedGardenDeleteParam.of(
                 myManagedGardenId,
-                memberId));
+                loginUser.memberId()));
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -216,11 +222,11 @@ public class GardenController {
     )
     public ResponseEntity<Void> createMyManagedGarden(
             @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
-            @RequestPart(value = "myManagedGardenCreateRequest") @Valid MyManagedGardenCreateRequest request
+            @RequestPart(value = "myManagedGardenCreateRequest") @Valid MyManagedGardenCreateRequest request,
+            @CurrentUser LoginUser loginUser
     ) {
-        Long memberId = 1L;
         Long myManagedGardenId = gardenCommandService.createMyManagedGarden(
-                MyManagedGardenCreateRequest.of(newGardenImage, request, memberId));
+                MyManagedGardenCreateRequest.of(newGardenImage, request, loginUser.memberId()));
         URI location = LocationBuilder.buildLocation(myManagedGardenId);
 
         return ResponseEntity.created(location).build();
@@ -233,15 +239,15 @@ public class GardenController {
     public ResponseEntity<Void> updateMyManagedGarden(
             @PathVariable @Positive Long myManagedGardenId,
             @RequestPart(value = "gardenImage", required = false) MultipartFile newGardenImage,
-            @RequestPart(value = "myManagedGardenUpdateRequest") @Valid MyManagedGardenUpdateRequest request
+            @RequestPart(value = "myManagedGardenUpdateRequest") @Valid MyManagedGardenUpdateRequest request,
+            @CurrentUser LoginUser loginUser
     ) {
-        Long memberId = 1L;
         Long updatedMyManagedGardenId = gardenCommandService.updateMyManagedGarden(
                 MyManagedGardenUpdateRequest.to(
                         myManagedGardenId,
                         newGardenImage,
                         request,
-                        memberId
+                        loginUser.memberId()
                 ));
         URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId);
 

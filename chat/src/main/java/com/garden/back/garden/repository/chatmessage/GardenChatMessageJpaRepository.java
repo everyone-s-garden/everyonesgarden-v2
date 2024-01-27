@@ -32,4 +32,35 @@ public interface GardenChatMessageJpaRepository extends JpaRepository<GardenChat
             """
     )
     Slice<GardenChatMessage> getGardenChatMessage(@Param("chatRoomId") Long chatRoomId, Pageable pageable);
+
+    @Query(
+            """
+                    SELECT
+                                MAX(gm.chatMessageId) as chatMessageId,
+                                MAX(gm.createdAt) AS createdAt,
+                                SUM(gm.readOrNot = false and gm.memberId !=:myId) AS notReadCount,
+                                MAX(gcri.memberId) AS partnerId,
+                                MAX(gcri.chatRoom.chatRoomId) AS chatRoomId,
+                                MAX(gcri.postId) AS postId
+                            FROM
+                                        GardenChatRoomInfo AS gcrim
+                            JOIN
+                                        GardenChatRoomInfo AS gcri ON gcrim.chatRoom.chatRoomId = gcri.chatRoom.chatRoomId
+                                    and gcrim.memberId =:myId and gcrim.memberId != gcri.memberId
+                            JOIN
+                                GardenChatMessage AS gm ON gm.chatRoom.chatRoomId = gcri.chatRoom.chatRoomId
+                            group by gm.chatRoom.chatRoomId
+            """
+    )
+    Slice<ChatRoomFindRepositoryResponse> findChatRooms(@Param("myId") Long memberId, Pageable pageable);
+
+    @Query(
+            """
+            select gcm.contents
+            from GardenChatMessage as gcm
+            where gcm.chatMessageId =:chatMessageId
+            """
+    )
+    String getContentsById(@Param("chatMessageId") Long chatMessageId);
+
 }

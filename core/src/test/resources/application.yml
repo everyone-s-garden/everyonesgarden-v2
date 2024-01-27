@@ -7,6 +7,18 @@ spring:
     hibernate:
       ddl-auto: none
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: example@gmail.com
+    password: example
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 api:
   mafra:
     url: asfd
@@ -22,6 +34,8 @@ api:
     url: asdf
     id: asdf
     secret: asdf
+  slack:
+    bot: https://example.com
 forecast:
   weekly:
     publish:
