@@ -1,6 +1,7 @@
 package com.garden.back.docs.chat.global;
 
 import com.garden.back.chat.cropchat.controller.dto.request.CropChatRoomCreateRequest;
+import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatReportRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatRoomCreateRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeResponse;
@@ -78,6 +79,13 @@ public class ChatRoomFixture {
                         )
 
                 ), false
+        );
+    }
+
+    public static GardenChatReportRequest gardenChatReportRequest() {
+        return new GardenChatReportRequest(
+                "계속 욕설을 하셔서 신고합니다.",
+                "DISPUTE"
         );
     }
 
