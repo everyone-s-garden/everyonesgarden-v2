@@ -45,7 +45,7 @@ public class CropPostReview {
         this.reviewScore = reviewScore;
         this.reviewWriterId = reviewWriterId;
         this.reviewReceiverId = reviewReceiverId;
-        Events.raise(new CropPostReviewCreateEvent(this));
+        Events.raise(CropPostReviewCreateEvent.to(this));
     }
 
     public static CropPostReview create(Long cropPostId, Set<CropPostReviewType> cropPostReviewType, Float reviewScore, Long reviewWriterId, Long reviewReceiverId) {

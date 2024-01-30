@@ -30,7 +30,7 @@ public class GardenChatImage {
     @Column(name = "member_id", nullable = false)
     private Long memberId;
 
-    @Column(name = "chat_image_")
+    @Column(name = "chat_images")
     private List<String> imageUrls = new ArrayList<>();
 
     @Column(name = "read_or_not", nullable = false)
