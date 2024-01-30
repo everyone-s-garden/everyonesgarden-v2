@@ -26,7 +26,7 @@ public class GardenImageRepositoryImpl implements GardenImageRepository{
     @Override
     public GardenImage save(GardenImage gardenImage) {
         return gardenImageJpaRepository.save(GardenImageEntity.from(gardenImage,
-                gardenJpaRepository.getById(gardenImage.getGarden().getGardenId()))).toModel();
+                gardenJpaRepository.getByGardenId(gardenImage.getGarden().getGardenId()))).toModel();
     }
 
     @Override

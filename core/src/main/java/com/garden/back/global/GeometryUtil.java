@@ -10,7 +10,7 @@ public class GeometryUtil {
 
     private static final String LINESTRING_SQL = "'LINESTRING(%f %f, %f %f)',4326";
     private GeometryUtil() {
-        throw new RuntimeException("유틸클래스 생성자를 통해서 객체를 생성할 수 없습니다.");
+        throw new AssertionError("유틸클래스 생성자를 통해서 객체를 생성할 수 없습니다.");
     }
 
     private static final GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);

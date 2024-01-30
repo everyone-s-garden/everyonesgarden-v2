@@ -57,6 +57,12 @@ public class Post extends BaseTimeEntity {
     @Column(name = "created_date")
     private LocalDate createdDate;
 
+    @Column(name = "delete_status")
+    private boolean deleteStatus;
+
+    @Transient
+    private static final int DELETE_REPORT_COUNT = 10;
+
     private Post(String title, String content, Long postAuthorId, List<String> postUrls) {
         this.commentsCount = 0L;
         this.reportCount = 0L;
@@ -68,7 +74,7 @@ public class Post extends BaseTimeEntity {
             .map(postUrl -> PostImage.create(postUrl, this))
             .collect(Collectors.toSet());
         this.createdDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
-
+        this.deleteStatus = false;
         validatePostStatus();
     }
 
@@ -144,6 +150,12 @@ public class Post extends BaseTimeEntity {
 
         if (StringUtils.isBlank(this.content)) {
             throw new IllegalArgumentException("내용은 공백일 수 없습니다.");
+        }
+    }
+
+    public void delete(Long reportCount) {
+        if (reportCount > DELETE_REPORT_COUNT) {
+            this.deleteStatus = true;
         }
     }
 }

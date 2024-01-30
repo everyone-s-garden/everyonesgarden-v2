@@ -3,6 +3,7 @@ package com.garden.back.crop.domain.repository;
 import com.garden.back.crop.domain.CropBookmark;
 import com.garden.back.crop.domain.CropPost;
 import com.garden.back.crop.domain.repository.request.UpdateCropsPostRepositoryRequest;
+import com.garden.back.report.domain.crop.CropPostReportRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.retry.annotation.Backoff;
@@ -15,15 +16,19 @@ public class CropCommandRepositoryImpl implements CropCommandRepository {
 
     private final CropJpaRepository cropJpaRepository;
     private final CropBookmarkJpaRepository cropBookmarkJpaRepository;
+    private final CropPostReportRepository cropPostReportRepository;
 
     private static final String DEFAULT_CROP_NOT_FOUND_MESSAGE = "존재하지 않는 작물 게시글 입니다.";
 
+
     public CropCommandRepositoryImpl(
         CropJpaRepository cropJpaRepository,
-        CropBookmarkJpaRepository cropBookmarkJpaRepository
+        CropBookmarkJpaRepository cropBookmarkJpaRepository,
+        CropPostReportRepository cropPostReportRepository
     ) {
         this.cropJpaRepository = cropJpaRepository;
         this.cropBookmarkJpaRepository = cropBookmarkJpaRepository;
+        this.cropPostReportRepository = cropPostReportRepository;
     }
 
     @Override
@@ -87,4 +92,11 @@ public class CropCommandRepositoryImpl implements CropCommandRepository {
         cropPost.assignBuyer(cropBuyerId);
     }
 
+    @Override
+    @Transactional
+    public void deleteCropPostByReport(Long id) {
+        CropPost cropPost = cropJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(DEFAULT_CROP_NOT_FOUND_MESSAGE));
+        Long reportCount = cropPostReportRepository.countByCropPostId(id);
+        cropPost.delete(reportCount);
+    }
 }

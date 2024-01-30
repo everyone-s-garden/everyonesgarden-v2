@@ -1,7 +1,6 @@
 package com.garden.back.garden.dto.response;
 
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
-import org.springframework.data.domain.Slice;
 
 import java.util.List;
 

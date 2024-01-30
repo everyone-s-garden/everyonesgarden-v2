@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class SessionId {
 
-    private final String sessionId;
+    private final String socketSessionId;
 
     private SessionId(String sessionId) {
-        this.sessionId = sessionId;
+        this.socketSessionId = sessionId;
     }
 
     public static SessionId of(String sessionId) {
@@ -21,11 +21,11 @@ public class SessionId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SessionId sessionId1 = (SessionId) o;
-        return Objects.equals(sessionId, sessionId1.sessionId);
+        return Objects.equals(socketSessionId, sessionId1.socketSessionId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sessionId);
+        return Objects.hash(socketSessionId);
     }
 }

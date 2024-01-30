@@ -43,6 +43,12 @@ public class PostComment extends BaseTimeEntity {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    @Column(name = "delete_status")
+    private boolean deleteStatus;
+
+    @Transient
+    private static final int DELETE_REPORT_COUNT = 10;
+
     private PostComment(Long parentCommentId, Long authorId, String content, Long postId) {
         this.reportCount = 0L;
         this.likesCount = 0L;
@@ -95,6 +101,12 @@ public class PostComment extends BaseTimeEntity {
         this.likesCount--;
         if (likesCount < 0) {
             throw new IllegalStateException("좋아요의 갯수는 음수가 될 수 없습니다.");
+        }
+    }
+
+    public void delete(Long reportCount) {
+        if (reportCount > DELETE_REPORT_COUNT) {
+            this.deleteStatus = true;
         }
     }
 }

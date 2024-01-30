@@ -8,11 +8,9 @@ import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
 import com.garden.back.post.domain.repository.PostCommentRepository;
 import com.garden.back.post.domain.repository.PostRepository;
-import com.garden.back.post.domain.repository.request.FindAllPostCommentsParamRepositoryRequest;
-import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
-import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
-import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
-import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.request.*;
+import com.garden.back.post.domain.repository.response.*;
+import com.garden.back.post.service.request.CommentCreateServiceRequest;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,6 +34,9 @@ class PostQueryServiceTest extends IntegrationTestSupport {
 
     @Autowired
     PostCommentRepository postCommentRepository;
+
+    @Autowired
+    PostCommandService postCommandService;
 
     @DisplayName("게시글 id로 게시글의 상세를 조회할 수 있다.(댓글 수, 좋아요 수, 작성자, 제목, 내용)")
     @Test
@@ -268,18 +269,62 @@ class PostQueryServiceTest extends IntegrationTestSupport {
     }
 
 
+    @DisplayName("내가 좋아요한 게시글을 조회한다.")
     @Test
     void findAllByMyLike() {
+        //given
+        String content = "내용";
+        String nickname = "닉네임";
+        String title = "제목";
+        Member member = Member.create("asdf@example.com", nickname, Role.USER);
+        Long savedMemberId = memberRepository.save(member).getId();
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        postRepository.save(post);
+        postCommandService.addLikeToPost(post.getId(), member.getId());
+        FindAllMyLikePostsResponse expected = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(post.getId(), post.getTitle())));
+
+        //when & then
+        FindAllMyLikePostsResponse actual = postQueryService.findAllByMyLike(member.getId(), new FindAllMyLikePostsRepositoryRequest(0L, 10L));
+        assertThat(expected).isEqualTo(actual);
 
     }
 
+    @DisplayName("내가 작성한 게시글을 조회한다.")
     @Test
     void findAllMyPosts() {
+        //given
+        String content = "내용";
+        String nickname = "닉네임";
+        String title = "제목";
+        Member member = Member.create("asdf@example.com", nickname, Role.USER);
+        Long savedMemberId = memberRepository.save(member).getId();
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        postRepository.save(post);
+        FindAllMyPostsResponse expected = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(post.getId(), post.getTitle())));
+
+        //when & then
+        FindAllMyPostsResponse actual = postQueryService.findAllMyPosts(member.getId(), new FindAllMyPostsRepositoryRequest(0L, 10L));
+        assertThat(expected).isEqualTo(actual);
+
 
     }
 
+    @DisplayName("내가 작성한 댓글의 게시글을 조회한다.")
     @Test
     void findAllByMyComment() {
+        //given
+        String content = "내용";
+        String nickname = "닉네임";
+        String title = "제목";
+        Member member = Member.create("asdf@example.com", nickname, Role.USER);
+        Long savedMemberId = memberRepository.save(member).getId();
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        postRepository.save(post);
+        postCommandService.createComment(post.getId(), member.getId(), new CommentCreateServiceRequest("내용", null));
+        FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(post.getId(), post.getTitle())));
 
+        //when & then
+        FindAllMyCommentPostsResponse actual = postQueryService.findAllByMyComment(member.getId(), new FindAllMyCommentPostsRepositoryRequest(0L, 10L));
+        assertThat(expected).isEqualTo(actual);
     }
 }

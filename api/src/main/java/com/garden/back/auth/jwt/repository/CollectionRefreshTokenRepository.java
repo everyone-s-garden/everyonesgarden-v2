@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class CollectionRefreshTokenRepository implements RefreshTokenRepository<RefreshToken> {
+public class CollectionRefreshTokenRepository implements RefreshTokenRepository {
 
     private final List<RefreshToken> refreshTokenList = new ArrayList<>();
 

@@ -1,5 +1,6 @@
 package com.garden.back.report.domain.comment;
 
+import com.garden.back.global.event.Events;
 import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -29,6 +30,7 @@ public class CommentReport extends BaseTimeEntity {
         this.reporterId = reporterId;
         this.commentId = commentId;
         this.reportType = commentReportType;
+        Events.raise(new CommentReportCreateEvent(this));
     }
 
     public static CommentReport create(Long reporterId, Long commentId, CommentReportType commentReportType) {

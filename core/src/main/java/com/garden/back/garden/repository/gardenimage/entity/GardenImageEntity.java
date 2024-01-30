@@ -1,13 +1,11 @@
 package com.garden.back.garden.repository.gardenimage.entity;
 
-import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
 import com.garden.back.garden.repository.garden.entity.GardenEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.util.Assert;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
