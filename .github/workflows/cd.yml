@@ -1,26 +1,27 @@
 name: 배포자동화
 on:
   push:
-    branches:      
-      - main   
+    branches:
+      - main
 jobs:
-
-  build:
-    name: Build
+  deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: executing remote ssh commands using password
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.PASSWORD }}
-        port: ${{ secrets.PORT }}
-        script: |
-          echo "Connected to the server"
-          ls
-          cd app
-          echo "build 실행"
-          ./build.sh
-          ehoc "배포 실행"
-          ./deploy.sh
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH connection
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ec2-user
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            echo "Connected to the server"
+            ls
+            cd app
+            echo "build 실행"
+            ./build.sh
+            echo "배포 실행"
+            ./deploy.sh
