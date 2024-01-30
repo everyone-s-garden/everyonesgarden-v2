@@ -1,15 +1,13 @@
 package com.garden.back.garden;
 
-import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.dto.request.GardenByComplexesRequest;
+import com.garden.back.garden.dto.request.GardenByNameRequest;
+import com.garden.back.garden.dto.request.GardenDetailRequest;
 import com.garden.back.garden.dto.response.*;
-import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
-import com.garden.back.garden.service.dto.request.GardenDeleteParam;
-import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
-import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import jakarta.validation.Valid;
@@ -19,10 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/v2/gardens")
@@ -35,79 +29,79 @@ public class GardenController {
     }
 
     @GetMapping(
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByNameResponses> getGardenNames(
-            @ModelAttribute @Valid GardenByNameRequest gardenByNameRequest) {
+        @ModelAttribute @Valid GardenByNameRequest gardenByNameRequest) {
         GardenByNameParam gardenByNameParam = GardenByNameRequest.to(gardenByNameRequest);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenByNameResponses.to(gardenReadService.getGardensByName(gardenByNameParam)));
+            .body(GardenByNameResponses.to(gardenReadService.getGardensByName(gardenByNameParam)));
     }
 
     @GetMapping(
-            path = "/all",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/all",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenGetAllResponses> getGardenAll(
-            @RequestParam @PositiveOrZero Integer pageNumber) {
+        @RequestParam @PositiveOrZero Integer pageNumber) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenGetAllResponses.to(
-                        gardenReadService.getAllGarden(pageNumber)));
+            .body(GardenGetAllResponses.to(
+                gardenReadService.getAllGarden(pageNumber)));
     }
 
     @GetMapping(
-            path = "/by-complexes",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/by-complexes",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByComplexesResponses> getGardensByComplexes(
-            @ModelAttribute @Valid GardenByComplexesRequest request) {
+        @ModelAttribute @Valid GardenByComplexesRequest request) {
         GardenByComplexesResults gardensByComplexes
-                = gardenReadService.getGardensByComplexes(GardenByComplexesRequest.to(request));
+            = gardenReadService.getGardensByComplexes(GardenByComplexesRequest.to(request));
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenByComplexesResponses.to(gardensByComplexes));
+            .body(GardenByComplexesResponses.to(gardensByComplexes));
     }
 
     @GetMapping(
-            path = "/{gardenId}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/{gardenId}",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
-            @PathVariable @Positive Long gardenId,
-            @CurrentUser LoginUser loginUser) {
+        @PathVariable @Positive Long gardenId,
+        @CurrentUser LoginUser loginUser) {
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(
-                GardenDetailRequest.of(loginUser.memberId(), gardenId));
+            GardenDetailRequest.of(loginUser.memberId(), gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenDetailResponse.to(gardenDetail));
+            .body(GardenDetailResponse.to(gardenDetail));
     }
 
     @GetMapping(
-            path = "/recent",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/recent",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecentGardenResponses> getRecentGardens(
-            @CurrentUser LoginUser loginUser
+        @CurrentUser LoginUser loginUser
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(loginUser.memberId())));
+            .body(RecentGardenResponses.to(gardenReadService.getRecentGardens(loginUser.memberId())));
     }
 
     @GetMapping(
-            path = "/mine",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/mine",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenMineResponses> getMyGarden(
-            @CurrentUser LoginUser loginUser
+        @CurrentUser LoginUser loginUser
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenMineResponses.to(gardenReadService.getMyGarden(loginUser.memberId())));
+            .body(GardenMineResponses.to(gardenReadService.getMyGarden(loginUser.memberId())));
     }
 
     @GetMapping(
-            path = "/likes",
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/likes",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember(
-            @CurrentUser LoginUser loginUser
+        @CurrentUser LoginUser loginUser
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenLikeByMemberResponses.to(
-                        gardenReadService.getLikeGardensByMember(loginUser.memberId())));
+            .body(GardenLikeByMemberResponses.to(
+                gardenReadService.getLikeGardensByMember(loginUser.memberId())));
     }
 
     @GetMapping(
@@ -122,16 +116,16 @@ public class GardenController {
     }
 
     @GetMapping(
-            value = "/my-managed/{myManagedGardenId}",
-            produces = MediaType.APPLICATION_JSON_VALUE
+        value = "/my-managed/{myManagedGardenId}",
+        produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<MyManagedGardenDetailResponse> getDetailMyManagedGarden(
-            @PathVariable @Positive Long myManagedGardenId
+        @PathVariable @Positive Long myManagedGardenId
     ) {
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(MyManagedGardenDetailResponse.to(
-                        gardenReadService.getDetailMyManagedGarden(myManagedGardenId)));
+            .status(HttpStatus.OK)
+            .body(MyManagedGardenDetailResponse.to(
+                gardenReadService.getDetailMyManagedGarden(myManagedGardenId)));
     }
 
 }

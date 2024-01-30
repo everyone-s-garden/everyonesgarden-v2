@@ -72,7 +72,7 @@ public class TokenProvider {
     @SneakyThrows
     public String generateAccessToken(String refreshTokenKey) {
         long now = (new Date().getTime());
-        RefreshToken refreshToken = (RefreshToken) refreshTokenRepository.findByKey(refreshTokenKey)
+        RefreshToken refreshToken = refreshTokenRepository.findByKey(refreshTokenKey)
                 .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
 
