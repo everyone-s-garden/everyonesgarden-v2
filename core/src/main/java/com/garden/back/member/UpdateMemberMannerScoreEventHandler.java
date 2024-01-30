@@ -9,11 +9,11 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
-public class UpdateMemberMannerScoreAfterCropReviewEventHandler {
+public class UpdateMemberMannerScoreEventHandler {
 
     private final MemberService memberService;
 
-    public UpdateMemberMannerScoreAfterCropReviewEventHandler(MemberService memberService) {
+    public UpdateMemberMannerScoreEventHandler(MemberService memberService) {
         this.memberService = memberService;
     }
 
@@ -21,11 +21,20 @@ public class UpdateMemberMannerScoreAfterCropReviewEventHandler {
     @Async
     public void handle(CropPostReviewCreateEvent event) {
         CropPostReview cropPostReview = event.cropPostReview();
-        cropPostReview.getReviewReceiverId();
 
         memberService.updateMannerScore(
             cropPostReview.getReviewReceiverId(),
             cropPostReview.getReviewScore()
         );
     }
+
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    @Async
+    public void handle(ChatReportEvent event) {
+        memberService.updateMannerScore(
+            event.reporterId(),
+            event.score()
+        );
+    }
+
 }

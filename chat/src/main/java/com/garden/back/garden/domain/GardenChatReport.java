@@ -1,7 +1,9 @@
 package com.garden.back.garden.domain;
 
 import com.garden.back.garden.domain.dto.GardenChatReportDomainParam;
+import com.garden.back.garden.domain.dto.GardenChatReportEvent;
 import com.garden.back.global.ChatReportType;
+import com.garden.back.global.event.Events;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,6 +41,9 @@ public class GardenChatReport {
         this.roomId = roomId;
         this.reportType = commentReportType;
         this.reportContents = reportContents;
+        Events.raise(
+            GardenChatReportEvent.toChatReportEvent(this)
+        );
     }
 
     public static GardenChatReport create(GardenChatReportDomainParam param) {
@@ -47,5 +52,9 @@ public class GardenChatReport {
                 param.roomId(),
                 param.commentReportType(),
                 param.reportContents());
+    }
+
+    public int getReportScore() {
+        return reportType.getScore();
     }
 }
