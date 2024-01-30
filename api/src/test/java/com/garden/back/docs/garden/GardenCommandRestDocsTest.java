@@ -311,4 +311,18 @@ public class GardenCommandRestDocsTest extends RestDocsSupport {
                 )
             ));
     }
+
+    @DisplayName("텃밭을 삭제할 수 있다.")
+    @Test
+    void deleteGarden() throws Exception {
+        Long gardenId = 1L;
+        mockMvc.perform(delete("/v2/gardens/{gardenId}", gardenId))
+            .andDo(print())
+            .andExpect(status().isNoContent())
+            .andDo(document("delete-garden",
+                pathParameters(
+                    parameterWithName("gardenId").description("삭제하고자 하는 텃밭 아이디")
+                )));
+    }
+
 }
