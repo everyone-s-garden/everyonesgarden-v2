@@ -38,7 +38,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class CropRestDocs extends RestDocsSupport {
+class CropRestDocsTest extends RestDocsSupport {
 
     CropCommandService cropCommandService = mock(CropCommandService.class);
     CropQueryService cropQueryService = mock(CropQueryService.class);

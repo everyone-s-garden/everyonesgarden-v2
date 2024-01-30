@@ -7,17 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class RecentViewGardenStorage implements GardenHistoryManager {
 
-    private static final Map<Long, RecentViewGardens> recentViewGardenStorage = new ConcurrentHashMap<>();
+    private static final Map<Long, RecentViewGardens> recentViewGardens = new ConcurrentHashMap<>();
 
     @Override
     public void addRecentViewGarden(Long memberId, RecentViewGarden recentViewGarden) {
-        recentViewGardenStorage.computeIfAbsent(memberId, k -> new RecentViewGardens(new ArrayDeque<>()))
+        RecentViewGardenStorage.recentViewGardens.computeIfAbsent(memberId, k -> new RecentViewGardens(new ArrayDeque<>()))
                 .addRecentViewGarden(recentViewGarden);
     }
 
     @Override
     public Optional<RecentViewGardens> findRecentViewGarden(Long memberId) {
-        return Optional.of(recentViewGardenStorage.get(memberId).getRecentViewGardens());
+        return Optional.of(recentViewGardens.get(memberId).getRecentViewGardens());
     }
 
 }

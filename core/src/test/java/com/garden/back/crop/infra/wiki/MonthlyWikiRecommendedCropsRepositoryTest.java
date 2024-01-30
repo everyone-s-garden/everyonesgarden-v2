@@ -5,12 +5,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +18,7 @@ class MonthlyWikiRecommendedCropsRepositoryTest extends IntegrationTestSupport {
 
     @DisplayName("위키에 있는 내용을 초기화 한다.")
     @Test
-    void setUp() {
+    void initWiki() {
         assertThat(monthlyWikiRecommendedCropsRepository.findByMonth(1)).isNotEmpty();
     }
 

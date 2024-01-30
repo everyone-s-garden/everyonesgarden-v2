@@ -20,8 +20,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AuthRestDocs extends RestDocsSupport {
+class AuthRestDocsTest extends RestDocsSupport {
 
     AuthService authService = mock(AuthService.class);
 
@@ -48,6 +49,7 @@ class AuthRestDocs extends RestDocsSupport {
                 .header("Authorization", "Bearer f-YtRrCTiBdnRY7gflPzk0TYf6MmCSXb1boKPXUZAAABjKCdJFZONYg--5I0Sw")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
+            .andExpect(status().isOk())
             .andDo(document("login-with-kakao",
                 requestHeaders(
                     headerWithName("Authorization").description("카카오에서 받은 엑세스 토큰(이 양식대로 보내주셔야 합니다.)")
@@ -76,6 +78,7 @@ class AuthRestDocs extends RestDocsSupport {
                 .header("Refresh", "eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3MDQ4MjQxMzZ9.5qJZqWtuqF6BaGtpbJmchaettS3buzUAtHIrkvDP06E")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
+            .andExpect(status().isOk())
             .andDo(document("refresh-access-token",
                 requestHeaders(
                     headerWithName("Refresh").description("리프레시 토큰")
@@ -104,6 +107,7 @@ class AuthRestDocs extends RestDocsSupport {
                 .header("Authorization", "Bearer f-YtRrCTiBdnRY7gflPzk0TYf6MmCSXb1boKPXUZAAABjKCdJFZONYg--5I0Sw")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding(StandardCharsets.UTF_8))
+            .andExpect(status().isOk())
             .andDo(document("login-with-naver",
                 requestHeaders(
                     headerWithName("Authorization").description("네이버에서 받은 엑세스 토큰(이 양식대로 보내주셔야 합니다.)")

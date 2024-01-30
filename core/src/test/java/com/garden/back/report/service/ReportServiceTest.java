@@ -139,13 +139,16 @@ class ReportServiceTest extends IntegrationTestSupport {
         PostComment postComment = PostComment.create(1L, 1L, "내용", 1L);
         postCommentRepository.save(postComment);
 
-        //when & then
-        ReportCommentServiceRequest request = new ReportCommentServiceRequest(1L ,1L, CommentReportType.SPAMMING);
+        //when
+        ReportCommentServiceRequest request = new ReportCommentServiceRequest(1L, 1L, CommentReportType.SPAMMING);
+        reportService.reportComment(request);
+
+        //then
         assertThrows(IllegalArgumentException.class, () -> {
-            reportService.reportComment(request);
-            reportService.reportComment(request);
+            reportService.reportComment(request); // 예외가 발생하는 두 번째 호출
         });
     }
+
 
     @DisplayName("게시글을 신고한다.")
     @Test
@@ -172,8 +175,9 @@ class ReportServiceTest extends IntegrationTestSupport {
 
         //when & then
         ReportPostServiceRequest request = new ReportPostServiceRequest(1L ,1L, PostReportType.SPAMMING);
+        reportService.reportPost(request);
+
         assertThrows(IllegalArgumentException.class, () -> {
-            reportService.reportPost(request);
             reportService.reportPost(request);
         });
     }
@@ -203,8 +207,9 @@ class ReportServiceTest extends IntegrationTestSupport {
 
         //when & then
         ReportCropPostServiceRequest request = new ReportCropPostServiceRequest(1L ,1L, CropPostReportType.SPAMMING);
+        reportService.reportCropPost(request);
+
         assertThrows(IllegalArgumentException.class, () -> {
-            reportService.reportCropPost(request);
             reportService.reportCropPost(request);
         });
     }

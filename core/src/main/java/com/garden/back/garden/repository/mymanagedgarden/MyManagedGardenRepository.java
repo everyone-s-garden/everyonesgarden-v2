@@ -3,8 +3,6 @@ package com.garden.back.garden.repository.mymanagedgarden;
 import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;

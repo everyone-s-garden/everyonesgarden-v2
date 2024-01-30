@@ -10,7 +10,6 @@ import com.garden.back.garden.repository.garden.dto.response.GardenDetailReposit
 import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import com.garden.back.garden.repository.garden.entity.GardenEntity;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;

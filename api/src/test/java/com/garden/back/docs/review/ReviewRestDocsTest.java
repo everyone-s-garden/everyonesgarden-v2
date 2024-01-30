@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class ReviewRestDocs extends RestDocsSupport {
+class ReviewRestDocsTest extends RestDocsSupport {
     ReviewService reviewService = mock(ReviewService.class);
 
     @Override
