@@ -4,11 +4,13 @@ import com.garden.back.notification.domain.Notification
 import com.garden.back.notification.domain.NotificationType
 import com.garden.back.notification.utils.EmailUtils
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.context.annotation.Profile
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 
+@Profile("!test")
 @Service("email")
 open class EmailJavaNotificationService(
     @Value("\${spring.mail.username}")
