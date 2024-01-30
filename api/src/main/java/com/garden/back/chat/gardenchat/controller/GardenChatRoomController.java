@@ -103,7 +103,6 @@ public class GardenChatRoomController {
             @RequestPart @Valid GardenChatReportRequest gardenChatReportRequest,
             @CurrentUser LoginUser loginUser
     ) {
-
         Long reportId = gardenChatRoomService.reportChatRoom(gardenChatReportRequest.toGardenChatReportRequest(
                 loginUser,
                 roomId,

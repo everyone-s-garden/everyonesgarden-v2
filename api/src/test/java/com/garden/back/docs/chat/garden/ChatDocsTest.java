@@ -148,6 +148,7 @@ class ChatDocsTest extends RestDocsSupport {
                                 partWithName("gardenChatReportRequest").description("텃밭 채팅방 신고 요청값")
                         ),
                         requestPartFields("gardenChatReportRequest",
+                                fieldWithPath("reportedMemberId").type(JsonFieldType.NUMBER).description("신고당한 사람의 아이디"),
                                 fieldWithPath("reportContent").type(JsonFieldType.STRING).description("신고내용"),
                                 fieldWithPath("reportType").type(JsonFieldType.STRING).description("신고항목: NON_MANNER_USER, DISPUTE, FRAUD, SWEAR_WORD, INAPPROPRIATE_BEHAVIOR")
                         ),
