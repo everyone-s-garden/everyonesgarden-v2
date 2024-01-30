@@ -29,7 +29,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class MyPostRestDocsTest extends RestDocsSupport {
+class MyPostRestDocsTest extends RestDocsSupport {
     PostQueryService postQueryService = mock(PostQueryService.class);
 
     @Override

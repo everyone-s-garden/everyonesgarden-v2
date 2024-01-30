@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class GardenCommandRestDocsTest extends RestDocsSupport {
+class GardenCommandRestDocsTest extends RestDocsSupport {
     GardenCommandService gardenCommandService = mock(GardenCommandService.class);
 
     @Override
