@@ -6,20 +6,22 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-public record GardenChatReportParam (
-        Long reporterId,
-        Long chatRoomId,
-        ChatReportType chatReportType,
-        List<MultipartFile> images,
-        String reportContents
+public record GardenChatReportParam(
+    Long reportedMemberId,
+    Long reporterId,
+    Long chatRoomId,
+    ChatReportType chatReportType,
+    List<MultipartFile> images,
+    String reportContents
 ) {
 
     public GardenChatReportDomainParam toGardenChatReportDomainParam() {
         return new GardenChatReportDomainParam(
-                reporterId,
-                chatRoomId,
-                chatReportType,
-                reportContents
+            reportedMemberId,
+            reporterId,
+            chatRoomId,
+            chatReportType,
+            reportContents
         );
     }
 

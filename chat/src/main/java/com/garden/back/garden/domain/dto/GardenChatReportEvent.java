@@ -4,12 +4,12 @@ import com.garden.back.garden.domain.GardenChatReport;
 import com.garden.back.member.ChatReportEvent;
 
 public record GardenChatReportEvent(
-    Long reporterId,
+    Long reportedMemberId,
     int reportScore
 ) {
     public static ChatReportEvent toChatReportEvent(GardenChatReport gardenChatReport) {
         return new ChatReportEvent(
-            gardenChatReport.getReporterId(),
+            gardenChatReport.getReportedMemberId(),
             (float) gardenChatReport.getReportScore()
         );
     }

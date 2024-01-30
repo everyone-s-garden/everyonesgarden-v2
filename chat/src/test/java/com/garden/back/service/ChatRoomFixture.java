@@ -124,6 +124,7 @@ public class ChatRoomFixture {
 
     public static GardenChatReportParam gardenChatReportParam(Long chatRoomId) {
         return new GardenChatReportParam(
+            2L,
                 1L,
                 chatRoomId,
                 ChatReportType.DISPUTE,

@@ -19,6 +19,9 @@ public class GardenChatReport {
     @Column(name = "chat_report_id")
     private Long chatReportId;
 
+    @Column(name = "reported_member_id")
+    private Long reportedMemberId;
+
     @Column(name = "reporter_id")
     private Long reporterId;
 
@@ -33,10 +36,12 @@ public class GardenChatReport {
     private String reportContents;
 
     private GardenChatReport(
-            Long reporterId,
-            Long roomId,
-            ChatReportType commentReportType,
-            String reportContents) {
+        Long reportedMemberId,
+        Long reporterId,
+        Long roomId,
+        ChatReportType commentReportType,
+        String reportContents) {
+        this.reportedMemberId = reportedMemberId;
         this.reporterId = reporterId;
         this.roomId = roomId;
         this.reportType = commentReportType;
@@ -48,10 +53,11 @@ public class GardenChatReport {
 
     public static GardenChatReport create(GardenChatReportDomainParam param) {
         return new GardenChatReport(
-                param.reporterId(),
-                param.roomId(),
-                param.commentReportType(),
-                param.reportContents());
+            param.reportedMemberId(),
+            param.reporterId(),
+            param.roomId(),
+            param.commentReportType(),
+            param.reportContents());
     }
 
     public int getReportScore() {
