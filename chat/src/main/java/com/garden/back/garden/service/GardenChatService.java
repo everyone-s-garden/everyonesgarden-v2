@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class GardenChatService {
-    private static final int GARDEN_CHAT_MESSAGE_PAGE_SIZE = 10;
     private final GardenChatMessageRepository gardenChatMessageRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
     private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;

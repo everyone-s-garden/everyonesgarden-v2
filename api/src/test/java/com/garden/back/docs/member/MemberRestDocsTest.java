@@ -26,7 +26,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.requestP
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MemberRestDocs extends RestDocsSupport {
+class MemberRestDocsTest extends RestDocsSupport {
 
     MemberService memberService = mock(MemberService.class);
 

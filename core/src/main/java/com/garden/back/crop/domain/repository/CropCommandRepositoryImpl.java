@@ -20,8 +20,6 @@ public class CropCommandRepositoryImpl implements CropCommandRepository {
 
     private static final String DEFAULT_CROP_NOT_FOUND_MESSAGE = "존재하지 않는 작물 게시글 입니다.";
 
-    private static final int DELETE_REPORT_COUNT = 10;
-
 
     public CropCommandRepositoryImpl(
         CropJpaRepository cropJpaRepository,
@@ -97,7 +95,7 @@ public class CropCommandRepositoryImpl implements CropCommandRepository {
     @Override
     @Transactional
     public void deleteCropPostByReport(Long id) {
-        CropPost cropPost = cropJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("존재하지 않는 작물 게시글 입니다."));
+        CropPost cropPost = cropJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(DEFAULT_CROP_NOT_FOUND_MESSAGE));
         Long reportCount = cropPostReportRepository.countByCropPostId(id);
         cropPost.delete(reportCount);
     }

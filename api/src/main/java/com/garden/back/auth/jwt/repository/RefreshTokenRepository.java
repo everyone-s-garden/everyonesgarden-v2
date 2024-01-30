@@ -2,10 +2,10 @@ package com.garden.back.auth.jwt.repository;
 
 import java.util.Optional;
 
-public interface RefreshTokenRepository<T> {
-    void save(T refreshToken);
+public interface RefreshTokenRepository {
+    void save(RefreshToken refreshToken);
 
     void deleteExpiredToken();
 
-    Optional<T> findByKey(String key);
+    Optional<RefreshToken> findByKey(String key);
 }

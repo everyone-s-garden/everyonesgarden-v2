@@ -27,7 +27,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MemberRegionRestDocs extends RestDocsSupport {
+class MemberRegionRestDocsTest extends RestDocsSupport {
     MemberRegionService memberRegionService = mock(MemberRegionService.class);
 
     @Override
