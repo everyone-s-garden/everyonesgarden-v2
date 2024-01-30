@@ -1,7 +1,6 @@
 package com.garden.back.member;
 
 import com.garden.back.member.service.MemberService;
-import com.garden.back.review.CropPostReview;
 import com.garden.back.review.CropPostReviewCreateEvent;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -20,11 +19,9 @@ public class UpdateMemberMannerScoreEventHandler {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
     public void handle(CropPostReviewCreateEvent event) {
-        CropPostReview cropPostReview = event.cropPostReview();
-
         memberService.updateMannerScore(
-            cropPostReview.getReviewReceiverId(),
-            cropPostReview.getReviewScore()
+            event.reviewReceiverId(),
+            event.reviewScore()
         );
     }
 
@@ -32,7 +29,7 @@ public class UpdateMemberMannerScoreEventHandler {
     @Async
     public void handle(ChatReportEvent event) {
         memberService.updateMannerScore(
-            event.reporterId(),
+            event.reportedMemberId(),
             event.score()
         );
     }
