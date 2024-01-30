@@ -5,12 +5,13 @@ import com.garden.back.weather.infra.api.NaverAndOpenAPISupport;
 import com.garden.back.weather.infra.api.open.response.WeatherForecastResponse;
 import com.garden.back.weather.infra.api.open.response.WeekWeatherResponse;
 import com.garden.back.weather.infra.response.AllRegionsWeatherInfo;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
-import java.time.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Set;
@@ -69,19 +70,19 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
         String actual = naverAndOpenAPISupport.getBaseDateForWeeklyForecast();
 
         // when
+        String expected;
         if (now.getHour() < 6) {
             // 예상되는 결과는 전날의 날짜
-            String expected = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            expected = now.minusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
             // then
-            assertThat(actual).isEqualTo(expected);
         } else {
             // 현재 시간이 오전 6시 이후인 경우
             // 예상되는 결과는 현재 날짜
             //then
-            String expected = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            assertThat(actual).isEqualTo(expected);
+            expected = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         }
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Test
@@ -99,7 +100,6 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
         assertThat(actual).isEqualTo(expected);
     }
 
-    @Disabled
     @Test
     @DisplayName("기상청으로 부터 받은 응답 중 TMP, PTY 카테고리의 미래 시간 데이터만을 필터링한다.")
     void testFilterForecastData() {

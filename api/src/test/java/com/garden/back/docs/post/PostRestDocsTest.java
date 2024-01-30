@@ -30,7 +30,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class PostRestDocs extends RestDocsSupport {
+class PostRestDocsTest extends RestDocsSupport {
     PostQueryService postQueryService = mock(PostQueryService.class);
     PostCommandService postCommandService = mock(PostCommandService.class);
 

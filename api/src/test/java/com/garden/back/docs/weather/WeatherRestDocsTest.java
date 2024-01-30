@@ -25,7 +25,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.queryPar
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class WeatherRestDocs extends RestDocsSupport {
+class WeatherRestDocsTest extends RestDocsSupport {
 
     WeatherService weatherService = mock(WeatherService.class);
 

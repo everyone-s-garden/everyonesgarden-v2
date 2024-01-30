@@ -1,7 +1,6 @@
 package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;

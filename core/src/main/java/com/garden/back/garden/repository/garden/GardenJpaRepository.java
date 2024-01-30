@@ -8,7 +8,6 @@ import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberR
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
 import com.garden.back.garden.repository.garden.entity.GardenEntity;
 import jakarta.persistence.EntityNotFoundException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -136,5 +135,9 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
                     """
     )
     List<GardenChatRoomInfoRepositoryResponse> getChatRoomInfo(@Param("gardenId") Long gardenId);
+
+    default GardenEntity getByGardenId(Long gardenId) {
+        return findById(gardenId).orElseThrow(()-> new EntityNotFoundException("존재하지 텃밭 정보"));
+    }
 
 }

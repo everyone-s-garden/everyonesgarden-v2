@@ -25,7 +25,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class ReportRestDocs extends RestDocsSupport {
+class ReportRestDocsTest extends RestDocsSupport {
 
     ReportService reportService = mock(ReportService.class);
 

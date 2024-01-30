@@ -13,16 +13,16 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
 
-@Configuration
+@Component
 public class TokenProvider {
 
     private final JwtProperties jwtProperties;
@@ -99,7 +99,7 @@ public class TokenProvider {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException expiredJwtException) {
-            throw new RuntimeException("만료된 토큰입니다.");
+            throw new IllegalStateException("만료된 토큰입니다.");
         }
     }
 
