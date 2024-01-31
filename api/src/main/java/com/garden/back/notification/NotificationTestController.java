@@ -12,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NotificationTestController {
 
-    private final NotificationApplication notificationApplication;
+    private final NotificationSentApplication notificationSentApplication;
 
     @PostMapping("/test/email")
     public void email(@RequestParam String to) {
-        notificationApplication.toEmail(to, "TEST", "TEST");
+        notificationSentApplication.toEmail(to, "TEST", "TEST");
     }
 
     @PostMapping("/test/slack")
     public void slack() {
-        notificationApplication.toSlack(SlackChannel.BOT, "TEST");
+        notificationSentApplication.toSlack(SlackChannel.BOT, "TEST");
     }
 }
