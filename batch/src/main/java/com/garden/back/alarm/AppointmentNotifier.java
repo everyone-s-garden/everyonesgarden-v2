@@ -25,7 +25,7 @@ public class AppointmentNotifier {
     public void sendAlertToAppointmentUsers() {
         LocalDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime().withSecond(0).withNano(0);
         List<Appointment> appointmentList = appointmentRepository.findAllByAlertTime(now);
-        log.info("현재시간: {}", now);
+
         appointmentList.parallelStream()
             .forEach((appointment -> {
                 log.info("{} 사용자에게 알람 보내기", appointment.getAssignerId());
