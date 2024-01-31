@@ -1,5 +1,7 @@
 package com.garden.back.notification;
 
+import com.garden.back.global.loginuser.CurrentUser;
+import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.notification.domain.slack.SlackChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -15,8 +17,16 @@ public class NotificationTestController {
     private final NotificationSentApplication notificationSentApplication;
 
     @PostMapping("/test/email")
-    public void email(@RequestParam String to) {
-        notificationSentApplication.toEmail(to, "TEST", "TEST");
+    public void email(
+            @CurrentUser LoginUser loginUser,
+            @RequestParam String to
+    ) {
+        notificationSentApplication.toEmail(
+                loginUser.memberId(),
+                to,
+                "TEST",
+                "TEST"
+        );
     }
 
     @PostMapping("/test/slack")
