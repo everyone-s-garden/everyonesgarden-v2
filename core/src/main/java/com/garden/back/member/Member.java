@@ -60,7 +60,7 @@ public class Member {
 
     public void updateMannerScore(Float mannerScore) {
         this.mannerScore += mannerScore;
-        this.memberMannerGrade = MemberMannerGrade.getGradeByScore(mannerScore);
+        this.memberMannerGrade = MemberMannerGrade.getGradeByScore(this.mannerScore);
     }
 
     public void updateProfile(String nickname, String image) {

@@ -1,19 +1,21 @@
 package com.garden.back.garden.service;
 
+import com.garden.back.garden.domain.GardenChatReport;
+import com.garden.back.garden.domain.GardenChatReportImage;
 import com.garden.back.garden.domain.GardenChatRoom;
 import com.garden.back.garden.domain.GardenChatRoomInfo;
 import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
+import com.garden.back.garden.repository.chatreport.GardenChatReportRepository;
+import com.garden.back.garden.repository.chatreport.image.GardenChatReportImageRepository;
 import com.garden.back.garden.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
 import com.garden.back.garden.repository.chatroominfo.dto.GardenChatRoomEnterRepositoryResponse;
-import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
-import com.garden.back.garden.service.dto.request.GardenChatRoomDeleteParam;
-import com.garden.back.garden.service.dto.request.GardenChatRoomEntryParam;
-import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.dto.response.GardenChatRoomEntryResult;
 import com.garden.back.global.exception.EntityNotFoundException;
 import com.garden.back.global.exception.ErrorCode;
+import com.garden.back.global.image.ParallelImageUploader;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,21 +23,28 @@ import java.util.List;
 
 @Service
 public class GardenChatRoomService {
+    private static final String REPORT_IMAGE_DIRECTORY = "report/";
 
     private final GardenChatRoomRepository gardenChatRoomRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
     private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
     private final GardenChatMessageRepository gardenChatMessageRepository;
+    private final GardenChatReportRepository gardenChatReportRepository;
+    private final GardenChatReportImageRepository gardenChatReportImageRepository;
+    private final ParallelImageUploader parallelImageUploader;
 
     public GardenChatRoomService(
             GardenChatRoomRepository gardenChatRoomRepository,
             GardenChatRoomInfoRepository gardenChatRoomInfoRepository,
             GardenChatRoomEntryRepository gardenChatRoomEntryRepository,
-            GardenChatMessageRepository gardenChatMessageRepository) {
+            GardenChatMessageRepository gardenChatMessageRepository, GardenChatReportRepository gardenChatReportRepository, GardenChatReportImageRepository gardenChatReportImageRepository, ParallelImageUploader parallelImageUploader) {
         this.gardenChatRoomRepository = gardenChatRoomRepository;
         this.gardenChatRoomInfoRepository = gardenChatRoomInfoRepository;
         this.gardenChatRoomEntryRepository = gardenChatRoomEntryRepository;
         this.gardenChatMessageRepository = gardenChatMessageRepository;
+        this.gardenChatReportRepository = gardenChatReportRepository;
+        this.gardenChatReportImageRepository = gardenChatReportImageRepository;
+        this.parallelImageUploader = parallelImageUploader;
     }
 
     @Transactional
@@ -88,4 +97,25 @@ public class GardenChatRoomService {
             gardenChatRoomRepository.deleteById(param.chatRoomId());
         }
     }
+
+    @Transactional
+    public Long reportChatRoom(GardenChatReportParam param) {
+        if (gardenChatReportRepository.existsByReporterIdAndRoomId(param.reporterId(), param.chatRoomId())) {
+            throw new IllegalArgumentException("중복된 신고입니다.");
+        }
+        GardenChatReport gardenChatReport
+                = gardenChatReportRepository.save(GardenChatReport.create(param.toGardenChatReportDomainParam()));
+
+        List<String> uploadImageUrls = parallelImageUploader.upload(REPORT_IMAGE_DIRECTORY, param.images());
+        uploadImageUrls.forEach(
+                imageUrl ->
+                        gardenChatReportImageRepository.save(GardenChatReportImage.of(imageUrl, gardenChatReport))
+        );
+
+        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.getById(param.chatRoomId());
+        gardenChatRoom.reportChatRoom();
+
+        return gardenChatReport.getChatReportId();
+    }
+
 }

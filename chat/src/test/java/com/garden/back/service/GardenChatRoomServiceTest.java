@@ -3,16 +3,13 @@ package com.garden.back.service;
 import com.garden.back.garden.domain.GardenChatMessage;
 import com.garden.back.garden.domain.GardenChatRoom;
 import com.garden.back.garden.domain.GardenChatRoomInfo;
-import com.garden.back.garden.service.GardenChatRoomService;
-import com.garden.back.global.exception.EntityNotFoundException;
 import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.repository.chatroom.garden.GardenChatRoomRepository;
 import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
-import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
-import com.garden.back.garden.service.dto.request.GardenChatRoomDeleteParam;
-import com.garden.back.garden.service.dto.request.GardenChatRoomEntryParam;
-import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;
+import com.garden.back.garden.service.GardenChatRoomService;
+import com.garden.back.garden.service.dto.request.*;
+import com.garden.back.global.exception.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +156,38 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
         // Then
         assertThatThrownBy(()-> gardenChatRoomRepository.getById(gardenChatRoomDeleteParam.chatRoomId())).isInstanceOf(EntityNotFoundException.class);
         assertThat(gardenChatRoomInfoRepository.findByRoomId(gardenChatRoomDeleteParam.chatRoomId()).size()).isZero();
+    }
+
+    @DisplayName("채팅방에 대해 신고를 하면 해당 방은 신고된 상태로 전환된다.")
+    @Test
+    void reportChatRoom() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        GardenChatReportParam gardenChatReportParam = ChatRoomFixture.gardenChatReportParam(chatRoomId);
+
+        // When
+        gardenChatRoomService.reportChatRoom(gardenChatReportParam);
+        GardenChatRoom gardenChatRoom = gardenChatRoomRepository.getById(chatRoomId);
+
+        // Then
+        assertThat(gardenChatRoom.isReported()).isTrue();
+    }
+
+    @DisplayName("채팅방에 대해 신고기 중복되면 예외를 던진다.")
+    @Test
+    void reportChatRoom_existed_throwException() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        GardenChatReportParam gardenChatReportParam = ChatRoomFixture.gardenChatReportParam(chatRoomId);
+
+        // When
+        gardenChatRoomService.reportChatRoom(gardenChatReportParam);
+
+        // Then
+        assertThatThrownBy(()-> gardenChatRoomService.reportChatRoom(gardenChatReportParam))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 
 }

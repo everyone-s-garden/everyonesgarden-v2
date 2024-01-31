@@ -1,6 +1,7 @@
 package com.garden.back.docs.chat.garden;
 
 import com.garden.back.chat.gardenchat.controller.GardenChatRoomController;
+import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatReportRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatRoomCreateRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
@@ -11,7 +12,10 @@ import com.garden.back.garden.service.GardenChatRoomService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
+
+import java.nio.charset.StandardCharsets;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -21,8 +25,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.responseH
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,6 +115,46 @@ class ChatDocsTest extends RestDocsSupport {
                         )
                 ));
 
+    }
+
+    @DisplayName("텃밭 분양 관련 채팅방을 신고할 수 있다.")
+    @Test
+    void reportGardenChatRoom() throws Exception {
+        GardenChatReportRequest gardenChatReportRequest = ChatRoomFixture.gardenChatReportRequest();
+        MockMultipartFile reportImages = new MockMultipartFile(
+                "reportImages",
+                "image1.png",
+                "image/png",
+                "image-files".getBytes()
+        );
+        MockMultipartFile gardenChatReportRequestAboutMultipart = new MockMultipartFile(
+                "gardenChatReportRequest",
+                "gardenChatReportRequest",
+                MediaType.APPLICATION_JSON_VALUE,
+                objectMapper.writeValueAsString(gardenChatReportRequest).getBytes(StandardCharsets.UTF_8)
+        );
+        given(gardenChatRoomService.reportChatRoom(any())).willReturn(1L);
+
+        mockMvc.perform(multipart("/garden-chats/{roomId}/report",1L)
+                        .file(reportImages)
+                        .file(gardenChatReportRequestAboutMultipart)
+                        .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                        .content(objectMapper.writeValueAsString(gardenChatReportRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andDo(document("report-garden-chat-room",
+                        requestParts(
+                                partWithName("reportImages").description("신고 이미지 파일들"),
+                                partWithName("gardenChatReportRequest").description("텃밭 채팅방 신고 요청값")
+                        ),
+                        requestPartFields("gardenChatReportRequest",
+                                fieldWithPath("reportedMemberId").type(JsonFieldType.NUMBER).description("신고당한 사람의 아이디"),
+                                fieldWithPath("reportContent").type(JsonFieldType.STRING).description("신고내용"),
+                                fieldWithPath("reportType").type(JsonFieldType.STRING).description("신고항목: NON_MANNER_USER, DISPUTE, FRAUD, SWEAR_WORD, INAPPROPRIATE_BEHAVIOR")
+                        ),
+                        responseFields(
+                                fieldWithPath("reportId").type(JsonFieldType.NUMBER).description("생성된 신고 ID")
+                        )));
     }
 
 }

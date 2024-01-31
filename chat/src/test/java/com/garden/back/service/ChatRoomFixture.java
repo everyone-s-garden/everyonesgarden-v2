@@ -5,6 +5,9 @@ import com.garden.back.garden.domain.GardenChatMessage;
 import com.garden.back.garden.domain.GardenChatRoom;
 import com.garden.back.garden.repository.chatentry.SessionId;
 import com.garden.back.garden.service.dto.request.*;
+import com.garden.back.global.ChatReportType;
+
+import java.util.Collections;
 
 public class ChatRoomFixture {
 
@@ -116,6 +119,17 @@ public class ChatRoomFixture {
         return new GardenChatRoomsFindParam(
                 memberId,
                 0
+        );
+    }
+
+    public static GardenChatReportParam gardenChatReportParam(Long chatRoomId) {
+        return new GardenChatReportParam(
+            2L,
+                1L,
+                chatRoomId,
+                ChatReportType.DISPUTE,
+                Collections.emptyList(),
+                "분쟁이 벌어졌습니다."
         );
     }
 }
