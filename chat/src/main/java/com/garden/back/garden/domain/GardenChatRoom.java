@@ -25,6 +25,9 @@ public class GardenChatRoom {
     @OneToMany(mappedBy = "chatRoom")
     private List<GardenChatRoomInfo> chatRoomInfos = new ArrayList<>();
 
+    @Column(name = "is_reported")
+    private boolean isReported;
+
     public void addChatRoomInfos(GardenChatRoomInfo chatRoomInfo) {
         chatRoomInfos.add(chatRoomInfo);
     }
@@ -55,6 +58,10 @@ public class GardenChatRoom {
                 .size();
 
         return size == MAXIMUM_PEOPLE;
+    }
+
+    public void reportChatRoom(){
+        isReported = true;
     }
 
 }

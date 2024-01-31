@@ -126,6 +126,12 @@ project(':api') {
     }
 }
 
+project(':chat') {
+    dependencies {
+        implementation project(':core')
+    }
+}
+
 // batch 모듈은 core 모듈에 의존
 project(':batch') {
     dependencies {

@@ -72,6 +72,16 @@ include::{snippets}/get-garden-chat-rooms-in-member/http-request.adoc[]
 include::{snippets}/get-garden-chat-rooms-in-member/http-response.adoc[]
 include::{snippets}/get-garden-chat-rooms-in-member/response-fields.adoc[]
 
+=== 텃밭 채팅방 신고
+분양하고자 하는 텃밭 등록할 수 있다.
+
+==== Request
+include::{snippets}/report-garden-chat-room/http-request.adoc[]
+include::{snippets}/report-garden-chat-room/request-parts.adoc[]
+include::{snippets}/report-garden-chat-room/request-part-gardenChatReportRequest-fields.adoc[]
+==== Response (Success)
+include::{snippets}/report-garden-chat-room/http-response.adoc[]
+
 == 작물
 === 작물거래 채팅방 만들기
 작물 거래 채팅방을 만들 수 있다.
