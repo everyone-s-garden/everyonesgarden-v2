@@ -37,4 +37,8 @@ public class PostQueryService {
     public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
         return postQueryRepository.findAllByMyComment(loginUserId, request);
     }
+
+    public FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request) {
+        return postQueryRepository.findAllPopularPosts(request);
+    }
 }

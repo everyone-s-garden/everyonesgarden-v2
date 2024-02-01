@@ -15,4 +15,6 @@ public interface PostQueryRepository {
     FindAllMyPostsResponse findAllMyPosts(Long loginUserId, FindAllMyPostsRepositoryRequest request);
 
     FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request);
+
+    FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request);
 }

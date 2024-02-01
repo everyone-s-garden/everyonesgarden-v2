@@ -1,5 +1,6 @@
 package com.garden.back.post.domain.repository;
 
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.request.*;
 import com.garden.back.post.domain.repository.response.*;
 import com.querydsl.core.types.OrderSpecifier;
@@ -10,9 +11,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Objects;
 
-import static com.garden.back.crop.domain.QCropPost.cropPost;
 import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
@@ -68,7 +71,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .from(post)
             .where(
                 post.deleteStatus.eq(false),
-                contentOrTitleLike(request.searchContent())
+                contentOrTitleLike(request.searchContent()),
+                postTypeSearch(request.postType())
             )
             .orderBy(orderBy)
             .offset(request.offset())
@@ -80,6 +84,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
 
     private BooleanExpression contentOrTitleLike(String searchContent) {
         return !StringUtils.hasText(searchContent) ? null : post.title.contains(searchContent).or(post.content.contains(searchContent));
+    }
+
+    private BooleanExpression postTypeSearch(PostType postType) {
+        return Objects.isNull(postType) ? null : post.postType.eq(postType);
     }
 
     private OrderSpecifier<?> getPostsOrderBy(FindAllPostParamRepositoryRequest.OrderBy orderBy) {
@@ -177,4 +185,29 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
 
         return new FindAllMyCommentPostsResponse(postInfos);
     }
+
+    @Override
+    public FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request) {
+        LocalDateTime recentHour = LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(request.hour());
+
+        List<FindAllPopularPostsResponse.PostInfo> posts = jpaQueryFactory
+            .select(Projections.constructor(FindAllPopularPostsResponse.PostInfo.class,
+                post.id,
+                post.title,
+                post.likesCount,
+                post.commentsCount,
+                post.createdDate))
+            .from(post)
+            .where(
+                post.deleteStatus.eq(false),
+                post.createAt.after(recentHour)
+            )
+            .orderBy(post.likesCount.multiply(3).add(post.commentsCount).desc()) //좋아요 수는 3점, 댓글 수는 1점을 부과하여 인기글 선정
+            .offset(request.offset())
+            .limit(request.limit())
+            .fetch();
+
+        return new FindAllPopularPostsResponse(posts);
+    }
+
 }

@@ -6,6 +6,7 @@ import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.member.Role;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.PostCommentRepository;
 import com.garden.back.post.domain.repository.PostRepository;
 import com.garden.back.post.domain.repository.request.*;
@@ -48,7 +49,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         String imageUrl = "http://example.com/image.jpg";
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
-        Post post = Post.create(title, content, savedMemberId, List.of(imageUrl));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Post savedPost = postRepository.save(post);
 
         FindPostDetailsResponse response = new FindPostDetailsResponse(0L, 0L, nickname, content, title, savedPost.getCreatedDate(), List.of(imageUrl));
@@ -67,11 +68,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post.increaseLikeCount(); // 좋아요 수 많음, 더 최근 게시글
         Long savedPostId1 = postRepository.save(post).getId();
 
-        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post2.increaseCommentCount(); //댓글 수 많음, 더 늦은 게시글
         Long savedPostId2 = postRepository.save(post2).getId();
 
@@ -80,7 +81,36 @@ class PostQueryServiceTest extends IntegrationTestSupport {
             new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
+
+        //when & then
+        FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
+        assertThat(postQueryService.findAllPosts(request)).isEqualTo(expectedResponseForCommentCount);
+    }
+
+    @DisplayName("모든 게시글을 게시글 타입으로 조회할 수 있다.")
+    @Test
+    void findAllPostsByPostType() {
+        //given
+        String content = "내용";
+        String nickname = "닉네임";
+        String title = "제목";
+        Member member = Member.create("asdf@example.com", nickname, Role.USER);
+        Long savedMemberId = memberRepository.save(member).getId();
+
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
+        post.increaseLikeCount(); // 좋아요 수 많음, 더 최근 게시글
+        Long savedPostId1 = postRepository.save(post).getId();
+
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.ETC);
+        post2.increaseCommentCount(); //댓글 수 많음, 더 늦은 게시글
+        Long savedPostId2 = postRepository.save(post2).getId();
+
+        List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
+        );
+
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -97,20 +127,20 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post.increaseLikeCount(); // 좋아요 수 많음, 더 최근 게시글
         Long savedPostId1 = postRepository.save(post).getId();
 
-        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post2.increaseCommentCount(); //댓글 수 많음, 더 늦은 게시글
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(),post.getCreatedDate()), //Post가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()), //Post가 댓글 더 많음
             new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -127,21 +157,21 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post.increaseLikeCount(); // 좋아요 수 많음, 더 최근 게시글
         Long savedPostId1 = postRepository.save(post).getId();
 
-        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post2.increaseCommentCount(); //댓글 수 많음, 더 늦은 게시글
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(),post2.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate()),
             new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post가 더 오래 됨
 
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -158,11 +188,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post.increaseLikeCount(); // 좋아요 수 많음, 더 최근 게시글
         Long savedPostId1 = postRepository.save(post).getId();
 
-        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post2.increaseCommentCount(); //댓글 수 많음, 더 늦은 게시글
         Long savedPostId2 = postRepository.save(post2).getId();
 
@@ -171,7 +201,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
             new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -188,7 +218,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
         Long olderCommentId = postCommentRepository.save(postComment).getId();
@@ -218,7 +248,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
         Long haveLessCommentLikeId = postCommentRepository.save(postComment).getId();
@@ -248,7 +278,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
 
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, savedMemberId, content, savedPostId);
         Long olderCommentId = postCommentRepository.save(postComment).getId();
@@ -278,7 +308,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         String title = "제목";
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), member.getId());
         FindAllMyLikePostsResponse expected = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(post.getId(), post.getTitle())));
@@ -298,7 +328,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         String title = "제목";
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
         FindAllMyPostsResponse expected = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(post.getId(), post.getTitle())));
 
@@ -318,7 +348,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         String title = "제목";
         Member member = Member.create("asdf@example.com", nickname, Role.USER);
         Long savedMemberId = memberRepository.save(member).getId();
-        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"));
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
         postCommandService.createComment(post.getId(), member.getId(), new CommentCreateServiceRequest("내용", null));
         FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(post.getId(), post.getTitle())));
@@ -326,5 +356,32 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         //when & then
         FindAllMyCommentPostsResponse actual = postQueryService.findAllByMyComment(member.getId(), new FindAllMyCommentPostsRepositoryRequest(0L, 10L));
         assertThat(expected).isEqualTo(actual);
+    }
+
+    @DisplayName("실시간 인기 게시글을 조회한다.")
+    @Test
+    void findPopularPosts() {
+        //given
+        String content = "내용";
+        String nickname = "닉네임";
+        String title = "제목";
+        Member member = Member.create("asdf@example.com", nickname, Role.USER);
+        Long savedMemberId = memberRepository.save(member).getId();
+
+        Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
+        post.increaseLikeCount(); // 좋아요 수 많음
+        Long savedPostId1 = postRepository.save(post).getId();
+
+        Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
+        post2.increaseCommentCount(); //댓글 수 많음
+        Long savedPostId2 = postRepository.save(post2).getId();
+
+        //when & then
+        FindAllPopularRepositoryPostsRequest request = new FindAllPopularRepositoryPostsRequest(0L, 10L, 1);
+        FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(
+            new FindAllPopularPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()),
+            new FindAllPopularPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
+        ));
+        assertThat(postQueryService.findAllPopularPosts(request)).isEqualTo(response);
     }
 }

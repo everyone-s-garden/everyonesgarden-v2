@@ -1,6 +1,7 @@
 package com.garden.back.post.request;
 
 import com.garden.back.global.validation.EnumValue;
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.request.FindAllPostParamRepositoryRequest;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -15,12 +16,14 @@ public record FindAllPostParamRequest(
 
     String searchContent,
 
+    PostType postType,
+
     @EnumValue(enumClass = FindAllPostParamRepositoryRequest.OrderBy.class, message = "COMMENT_COUNT, RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요")
     String orderBy
 
 ) {
     public FindAllPostParamRepositoryRequest toRepositoryDto() {
-        return new FindAllPostParamRepositoryRequest(offset, limit, searchContent, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy));
+        return new FindAllPostParamRepositoryRequest(offset, limit, searchContent, postType, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy));
     }
 
 }
