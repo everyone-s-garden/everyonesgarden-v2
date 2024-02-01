@@ -4,14 +4,17 @@ import com.garden.back.ControllerTestSupport;
 import com.garden.back.post.request.CommentCreateRequest;
 import com.garden.back.post.request.CommentUpdateRequest;
 import com.garden.back.post.request.PostCreateRequest;
+import com.garden.back.post.request.PostUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.stream.Stream;
 
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
@@ -45,7 +48,7 @@ class PostControllerTest extends ControllerTestSupport {
     @ParameterizedTest
     @MethodSource("invalidPostCreateRequests")
     void createPostInvalidRequest(String title, String content) throws Exception {
-        PostCreateRequest request = new PostCreateRequest(title, content);
+        PostCreateRequest request = new PostCreateRequest(title, content, "ETC");
         MockMultipartFile mockRequestPart = new MockMultipartFile(
             "texts",
             "content",
@@ -80,7 +83,7 @@ class PostControllerTest extends ControllerTestSupport {
     @ParameterizedTest
     @MethodSource("invalidPostUpdateRequests")
     void updatePostInvalidRequest(String title, String content) throws Exception {
-        PostCreateRequest request = new PostCreateRequest(title, content);
+        PostUpdateRequest request = new PostUpdateRequest(title, content, Collections.EMPTY_LIST, "ETC");
         MockMultipartFile mockRequestPart = new MockMultipartFile(
             "texts",
             "content",
@@ -165,7 +168,27 @@ class PostControllerTest extends ControllerTestSupport {
             new String[]{"-1", "5", "LIKE_COUNT"}, // 잘못된 offset
             new String[]{"0", "-5", "RECENT_DATE"},  // 잘못된 limit
             new String[]{"0", "5", "INVALID_SORT"}   // 잘못된 orderBy
-            // 추가적인 유효하지 않은 파라미터 조합을 여기에 포함시킬 수 있습니다.
         );
     }
+
+    @DisplayName("인기 게시글 조회 유효하지 않은 파라미터 테스트")
+    @ParameterizedTest
+    @MethodSource("invalidGetPopularPostsParameters")
+    void getPopularPostsInvalidParameters(Long offset, Long limit, Integer hour) throws Exception {
+        mockMvc.perform(get("/popular")
+                .param("offset", offset.toString())
+                .param("limit", limit.toString())
+                .param("hour", hour.toString())
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest());
+    }
+
+    private static Stream<Arguments> invalidGetPopularPostsParameters() {
+        return Stream.of(
+            Arguments.of(-1L, 5L, 1),     // 잘못된 offset
+            Arguments.of(0L, -5L, 1),     // 잘못된 limit
+            Arguments.of(0L, 5L, -1)     // 잘못된 hour
+        );
+    }
+
 }

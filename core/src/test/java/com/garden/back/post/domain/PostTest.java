@@ -23,7 +23,7 @@ class PostTest {
         List<String> postUrls = new ArrayList<>();
         postUrls.add("http://example.com/image1.jpg");
         postUrls.add("http://example.com/image2.jpg");
-        post = Post.create("Test Title", "Test Content", 1L, postUrls);
+        post = Post.create("Test Title", "Test Content", 1L, postUrls, PostType.QUESTION);
     }
 
     @Test
@@ -44,11 +44,12 @@ class PostTest {
         List<String> deletedUrls = new ArrayList<>();
         deletedUrls.add("http://example.com/image1.jpg");
 
-        post.update("New Title", "New Content", 1L, deletedUrls, newUrls);
+        post.update("New Title", "New Content", 1L, deletedUrls, newUrls, PostType.GARDEN_SHOWCASE);
 
         assertThat(post.getTitle()).isEqualTo("New Title");
         assertThat(post.getContent()).isEqualTo("New Content");
-        assertThat(post.getPostImages()).hasSize(2); // One added, one removed
+        assertThat(post.getPostImages()).hasSize(2);
+        assertThat(post.getPostType()).isEqualTo(PostType.GARDEN_SHOWCASE);
     }
 
     @Test
@@ -122,16 +123,17 @@ class PostTest {
     @ParameterizedTest
     @MethodSource("provideInvalidPostArguments")
     @DisplayName("게시물 생성 시 유효하지 않은 인자 검증")
-    void testInvalidPostCreation(String title, String content, Long postAuthorId) {
-        assertThatThrownBy(() -> Post.create(title, content, postAuthorId, new ArrayList<>()))
+    void testInvalidPostCreation(String title, String content, Long postAuthorId, PostType postType) {
+        assertThatThrownBy(() -> Post.create(title, content, postAuthorId, new ArrayList<>(), postType))
             .isInstanceOf(IllegalArgumentException.class);
     }
 
     private static Stream<Arguments> provideInvalidPostArguments() {
         return Stream.of(
-            Arguments.of("유효한 제목", "", 1L), // Invalid content (blank)
-            Arguments.of("유효하지 않은 제목".repeat(250), "Valid Content", 1L), // Invalid title (too long)
-            Arguments.of("유효한 제목", "Valid Content", -1L) // Invalid postAuthorId (negative)
+            Arguments.of("유효한 제목", "", 1L, PostType.GARDEN_SHOWCASE), // Invalid content (blank)
+            Arguments.of("유효하지 않은 제목".repeat(250), "Valid Content", 1L, PostType.GARDEN_SHOWCASE), // Invalid title (too long)
+            Arguments.of("유효한 제목", "Valid Content", -1L, PostType.GARDEN_SHOWCASE),
+            Arguments.of("유효한 제목", "Valid Content", 1L, null)
         );
     }
 }

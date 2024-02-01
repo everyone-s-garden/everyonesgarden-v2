@@ -47,7 +47,7 @@ public class PostCommandRepositoryImpl implements PostCommandRepository {
     @Override
     public void updatePost(PostUpdateRepositoryRequest request) {
         Post post = request.post();
-        post.update(request.title(), request.content(), request.memberId(), request.deleteImages(), request.addedImages());
+        post.update(request.title(), request.content(), request.memberId(), request.deleteImages(), request.addedImages(), request.postType());
     }
 
     @Override

@@ -203,3 +203,17 @@ include::{snippets}/get-my-likes-posts/query-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-my-likes-posts/http-response.adoc[]
 
+[[get-popular-posts]]
+=== 인기 게시글 조회
+
+인기게시글 조회 API는 인기게시글의 정보를 조회하는 기능을 제공합니다.
+예를 들어 offset이 0, limit이 10이면 0번째 게시글부터 10개를 조회하게 됩니다. offset이 10, limit이 5면 10번 째 게시글부터 5개를 조회합니다.
+hour이 1이면 최근 1시간을 기준으로 인기 게시글, hour가 2면 최근 2시간을 기준으로 인기 게시글을 조회합니다.
+
+==== Request
+include::{snippets}/get-popular-posts/http-request.adoc[]
+include::{snippets}/get-popular-posts/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-popular-posts/http-response.adoc[]
+include::{snippets}/get-popular-posts/response-fields.adoc[]
