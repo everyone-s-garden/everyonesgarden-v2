@@ -94,17 +94,20 @@ public sealed class NaverAndOpenAPISupport permits OpenAPIAndNaverWeatherFetcher
         return filteredItems.stream()
             .map(item -> item.fcstDate() + item.fcstTime())
             .distinct()
-            .limit(5)
+            .limit(11)
             .collect(Collectors.toSet());
     }
 
     public List<WeekWeatherResponse.Response.Body.Items.WeatherItem> addTomorrowNoonForecast(
-        List<WeekWeatherResponse.Response.Body.Items.WeatherItem> filteredItems) {
+        List<WeekWeatherResponse.Response.Body.Items.WeatherItem> filteredItems
+    ) {
         ZonedDateTime tomorrowNoonSeoul = ZonedDateTime.now(ZoneId.of(SEOUL)).plusDays(1).withHour(12).withMinute(0).withSecond(0).withNano(0);
-        String tomorrowNoonKey = tomorrowNoonSeoul.format(DateTimeFormatter.BASIC_ISO_DATE) + "1200";
-
+        String tomorrowNoonKey = tomorrowNoonSeoul.format(DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         return filteredItems.stream()
-            .filter(item -> (item.fcstDate() + item.fcstTime()).equals(tomorrowNoonKey))
+            .filter(item -> {
+                String itemDateTime = item.fcstDate() + item.fcstTime();
+                return itemDateTime.equals(tomorrowNoonKey);
+            })
             .toList();
     }
 

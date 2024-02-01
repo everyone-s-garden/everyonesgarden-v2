@@ -3,15 +3,18 @@ package com.garden.back.notification
 import com.garden.back.notification.domain.Notification
 import com.garden.back.notification.domain.NotificationType
 import com.garden.back.notification.domain.slack.SlackChannel
+import com.garden.back.notification.entity.NotificationRepository
 import com.garden.back.notification.service.NotificationServiceFactory
+import com.garden.back.notification.utils.NotificationConverter
 import org.springframework.stereotype.Component
 
 @Component
-class NotificationApplication(
+class NotificationSentApplication(
     private val notificationServiceFactory: NotificationServiceFactory,
+    private val notificationRepository: NotificationRepository,
 ) {
-
     fun toEmail(
+        memberId: Long,
         recipient: String,
         title: String,
         content: String,
@@ -21,6 +24,14 @@ class NotificationApplication(
             content = content,
             recipient = recipient,
         )
+
+        NotificationConverter
+            .toEntity(
+                memberId = memberId,
+                type = NotificationType.EMAIL,
+                domain = notification,
+            )
+            .let { notificationRepository.save(it) }
 
         notificationServiceFactory
             .get(NotificationType.EMAIL)
