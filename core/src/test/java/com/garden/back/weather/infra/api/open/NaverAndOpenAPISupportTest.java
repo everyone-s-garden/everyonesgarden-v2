@@ -186,21 +186,37 @@ class NaverAndOpenAPISupportTest extends MockTestSupport {
             .set("response.body.items.item[6].fcstDate", "20231215")
             .set("response.body.items.item[6].fcstTime", "1800")
             .set("response.body.items.item[6].fcstValue", "20") // 20도
+            .set("response.body.items.item[7].category", "TMP")
+            .set("response.body.items.item[7].fcstDate", "20231215")
+            .set("response.body.items.item[7].fcstTime", "1900")
+            .set("response.body.items.item[7].fcstValue", "20") // 20도
+            .set("response.body.items.item[8].category", "TMP")
+            .set("response.body.items.item[8].fcstDate", "20231215")
+            .set("response.body.items.item[8].fcstTime", "2000")
+            .set("response.body.items.item[8].fcstValue", "20") // 20도
+            .set("response.body.items.item[9].category", "TMP")
+            .set("response.body.items.item[9].fcstDate", "20231215")
+            .set("response.body.items.item[9].fcstTime", "2100")
+            .set("response.body.items.item[9].fcstValue", "20") // 20도
+            .set("response.body.items.item[10].category", "TMP")
+            .set("response.body.items.item[10].fcstDate", "20231215")
+            .set("response.body.items.item[10].fcstTime", "2200")
+            .set("response.body.items.item[10].fcstValue", "20") // 20도
             .sample();
 
         //when
         Set<String> actual = naverAndOpenAPISupport.extractTopFiveForecastTimes(given.response().body().items().item());
 
         //then
-        assertThat(actual).hasSize(5);
+        assertThat(actual).hasSize(7);
     }
 
     @DisplayName("기상청으로 받은 주간 예보 중 다음 날 12시의 데이터를 꺼내온다.")
     @Test
     void addTomorrowNoonForecast() {
         //given
-        String tomorrow = now.plusDays(1).format(DateTimeFormatter.BASIC_ISO_DATE);
-        String today = now.format(DateTimeFormatter.BASIC_ISO_DATE);
+        String tomorrow = now.plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String today = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String forecastTime = "1200";
 
         WeekWeatherResponse given = sut
