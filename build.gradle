@@ -16,7 +16,7 @@ sonar {
     }
 }
 
-group = 'com.graden'
+group = 'com.garden'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -123,6 +123,7 @@ project(':api') {
         implementation project(':core')
         implementation project(':chat')
         implementation project(':batch')
+        implementation project(':admin')
     }
 }
 
