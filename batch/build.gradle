@@ -1,6 +1,5 @@
 dependencies {
+    implementation project(':core')
     // geojson
     implementation 'org.geotools:gt-geojson:30.0'
-
-    runtimeOnly 'com.h2database:h2'
 }
