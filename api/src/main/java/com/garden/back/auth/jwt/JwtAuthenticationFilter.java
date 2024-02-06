@@ -10,6 +10,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 @Component
 @Profile("!test")
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
@@ -50,8 +52,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(jwt)) {
             Claims claims = resolveClaims(jwt, response);
             if (claims == null) {
+                log.info("claims null");
                 return;
             }
+
             updateSecurityContext(claims, jwt);
         }
         filterChain.doFilter(request, response);
@@ -63,6 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String role = claims.get(jwtProperties.getAuthorityKey(), String.class);
         UserDetails principal = SecurityUser.of(memberId, role);
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, jwt, principal.getAuthorities());
+        log.info("authentication: {}", authentication.getName());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
