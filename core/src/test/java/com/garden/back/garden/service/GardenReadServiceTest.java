@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -143,8 +144,8 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // When
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(gardenDetailParam);
-        RecentViewGardens recentViewGardens = gardenHistoryManager.getRecentViewGarden(gardenDetailParam.memberId());
-        RecentViewGarden latestViewGarden = recentViewGardens.getRecentViewGardens().recentViewGardens().getFirst();
+        Optional<RecentViewGardens> recentViewGardens = gardenHistoryManager.findRecentViewGarden(gardenDetailParam.memberId());
+        RecentViewGarden latestViewGarden = recentViewGardens.get().getRecentViewGardens().recentViewGardens().getFirst();
 
         // Then
         assertThat(gardenDetail.gardenId()).isEqualTo(savedPrivateGarden.getGardenId());

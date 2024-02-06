@@ -1,6 +1,7 @@
 package com.garden.back.garden.service.recentview;
 
 import org.springframework.stereotype.Component;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -12,12 +13,13 @@ public class RecentViewGardenStorage implements GardenHistoryManager {
     @Override
     public void addRecentViewGarden(Long memberId, RecentViewGarden recentViewGarden) {
         RecentViewGardenStorage.recentViewGardens.computeIfAbsent(memberId, k -> new RecentViewGardens(new ArrayDeque<>()))
-                .addRecentViewGarden(recentViewGarden);
+            .addRecentViewGarden(recentViewGarden);
     }
 
     @Override
     public Optional<RecentViewGardens> findRecentViewGarden(Long memberId) {
-        return Optional.of(recentViewGardens.get(memberId).getRecentViewGardens());
+        return Optional.ofNullable(recentViewGardens.get(memberId))
+            .map(RecentViewGardens::getRecentViewGardens);
     }
 
 }

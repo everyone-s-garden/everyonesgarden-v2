@@ -34,39 +34,39 @@ public class GardenReadService {
 
     public GardenByNameResults getGardensByName(GardenByNameParam gardenByNameParam) {
         return GardenByNameResults.to(gardenRepository.findGardensByName(
-                gardenByNameParam.gardenName(),
-                PageMaker.makePage(gardenByNameParam.pageNumber())));
+            gardenByNameParam.gardenName(),
+            PageMaker.makePage(gardenByNameParam.pageNumber())));
     }
 
     public GardenAllResults getAllGarden(Integer pageNumber) {
         Slice<GardenGetAll> gardens = gardenRepository.getAllGardens(
-                PageMaker.makePage(pageNumber));
+            PageMaker.makePage(pageNumber));
 
         return GardenAllResults.of(gardens);
     }
 
     public GardenByComplexesResults getGardensByComplexes(GardenByComplexesParam param) {
         GardensByComplexes gardensByComplexes
-                = gardenRepository.getGardensByComplexes(GardenByComplexesParam.to(param));
+            = gardenRepository.getGardensByComplexes(GardenByComplexesParam.to(param));
 
         return GardenByComplexesResults.of(gardensByComplexes);
     }
 
     public GardenDetailResult getGardenDetail(GardenDetailParam param) {
         List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(
-                param.memberId(),
-                param.gardenId());
+            param.memberId(),
+            param.gardenId());
         GardenDetailResult gardenDetailResult = GardenDetailResult.to(gardenDetail);
 
         gardenHistoryManager.addRecentViewGarden(
-                param.memberId(),
-                RecentViewGarden.to(gardenDetailResult));
+            param.memberId(),
+            RecentViewGarden.to(gardenDetailResult));
 
         return gardenDetailResult;
     }
 
     public RecentGardenResults getRecentGardens(Long memberId) {
-        return RecentGardenResults.to(gardenHistoryManager.getRecentViewGarden(memberId));
+        return RecentGardenResults.to(gardenHistoryManager.findRecentViewGarden(memberId));
     }
 
     public GardenMineResults getMyGarden(Long memberId) {
@@ -75,7 +75,7 @@ public class GardenReadService {
 
     public GardenLikeByMemberResults getLikeGardensByMember(Long memberId) {
         return GardenLikeByMemberResults.to(
-                gardenRepository.getLikeGardenByMember(memberId));
+            gardenRepository.getLikeGardenByMember(memberId));
     }
 
     public MyManagedGardenGetResults getMyManagedGardens(Long memberId) {
@@ -84,13 +84,13 @@ public class GardenReadService {
 
     public MyManagedGardenDetailResult getDetailMyManagedGarden(Long myManagedGardenId) {
         return MyManagedGardenDetailResult.to(
-                myManagedGardenRepository.getDetailById(myManagedGardenId));
+            myManagedGardenRepository.getDetailById(myManagedGardenId));
     }
 
     public GardenChatRoomInfoResult getGardenChatRoomInfo(Long postId) {
         return GardenChatRoomInfoResult.to(
-                gardenRepository.getChatRoomInfo(postId),
-                postId);
+            gardenRepository.getChatRoomInfo(postId),
+            postId);
     }
 
     public List<String> getGardenImages(Long postId) {
