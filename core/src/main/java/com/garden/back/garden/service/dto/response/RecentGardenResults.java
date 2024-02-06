@@ -3,17 +3,19 @@ package com.garden.back.garden.service.dto.response;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.service.recentview.RecentViewGardens;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public record RecentGardenResults(
         List<RecentGardenResult> recentGardenResults
 ) {
-    public static RecentGardenResults to(RecentViewGardens recentViewGardens) {
-        return new RecentGardenResults(
-                recentViewGardens.getRecentViewGardens().recentViewGardens().stream()
-                        .map(RecentGardenResult::to)
-                        .toList()
-        );
+    public static RecentGardenResults to(Optional<RecentViewGardens> recentViewGardens) {
+        return recentViewGardens.map(viewGardens -> new RecentGardenResults(
+            viewGardens.getRecentViewGardens().recentViewGardens().stream()
+                .map(RecentGardenResult::to)
+                .toList()
+        )).orElseGet(() -> new RecentGardenResults(Collections.emptyList()));
     }
 
     public record RecentGardenResult(
