@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Repository
-public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepository{
+public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepository {
 
     private final GardenChatRoomInfoJpaRepository gardenChatRoomInfoJpaRepository;
 
@@ -47,6 +47,12 @@ public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepos
     @Override
     public List<GardenChatRoomInfo> findAll() {
         return gardenChatRoomInfoJpaRepository.findAll();
+    }
+
+    @Override
+    public Long getChatRoomId(Long memberId, Long postId) {
+        return gardenChatRoomInfoJpaRepository.findChatRoomId(memberId, postId)
+            .orElse(NOT_EXISTED_ROOM_ID);
     }
 
 }

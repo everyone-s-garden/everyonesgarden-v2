@@ -1,13 +1,14 @@
-package com.garden.back.garden;
+package com.garden.back.garden.controller;
 
-import com.garden.back.garden.dto.request.GardenByComplexesRequest;
-import com.garden.back.garden.dto.request.GardenByNameRequest;
-import com.garden.back.garden.dto.request.GardenDetailRequest;
-import com.garden.back.garden.dto.response.*;
+import com.garden.back.garden.controller.dto.request.GardenByComplexesRequest;
+import com.garden.back.garden.controller.dto.request.GardenByNameRequest;
+import com.garden.back.garden.controller.dto.request.GardenDetailRequest;
+import com.garden.back.garden.controller.dto.response.*;
+import com.garden.back.garden.facade.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.GardenFacade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import jakarta.validation.Valid;
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 public class GardenController {
 
     private final GardenReadService gardenReadService;
+    private final GardenFacade gardenFacade;
 
-    public GardenController(GardenReadService gardenReadService) {
+    public GardenController(GardenReadService gardenReadService, GardenFacade gardenFacade) {
         this.gardenReadService = gardenReadService;
+        this.gardenFacade = gardenFacade;
     }
 
     @GetMapping(
@@ -66,7 +69,7 @@ public class GardenController {
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
         @PathVariable @Positive Long gardenId,
         @CurrentUser LoginUser loginUser) {
-        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(
+        GardenDetailFacadeResponse gardenDetail = gardenFacade.getGardenDetail(
             GardenDetailRequest.of(loginUser.memberId(), gardenId));
 
         return ResponseEntity.status(HttpStatus.OK)

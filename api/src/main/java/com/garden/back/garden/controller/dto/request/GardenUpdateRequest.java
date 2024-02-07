@@ -1,6 +1,6 @@
-package com.garden.back.garden.dto.request;
+package com.garden.back.garden.controller.dto.request;
 
-import com.garden.back.garden.dto.request.validation.ValidDate;
+import com.garden.back.garden.controller.dto.request.validation.ValidDate;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.garden.service.dto.request.GardenUpdateParam;

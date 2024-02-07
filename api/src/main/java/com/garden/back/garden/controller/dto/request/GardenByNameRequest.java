@@ -1,4 +1,4 @@
-package com.garden.back.garden.dto.request;
+package com.garden.back.garden.controller.dto.request;
 
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import jakarta.validation.constraints.NotBlank;

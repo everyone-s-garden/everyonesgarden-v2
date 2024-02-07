@@ -1,4 +1,4 @@
-package com.garden.back.garden.dto.request.validation;
+package com.garden.back.garden.controller.dto.request.validation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
