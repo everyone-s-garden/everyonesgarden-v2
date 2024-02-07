@@ -2,6 +2,8 @@ package com.garden.back.docs.post;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.post.PostController;
+import com.garden.back.post.domain.PostType;
+import com.garden.back.post.domain.repository.response.FindAllPopularPostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
 import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
 import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
@@ -43,10 +45,11 @@ class PostRestDocsTest extends RestDocsSupport {
     @Test
     void findAllPosts() throws Exception {
         FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
-        FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "title", "RECENT_DATE");
+        FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "title", PostType.QUESTION, "RECENT_DATE");
         given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts")
+                .param("postType", request.postType().name())
                 .param("searchContent", request.searchContent())
                 .param("offset", String.valueOf(request.offset()))
                 .param("limit", String.valueOf(request.limit()))
@@ -60,6 +63,7 @@ class PostRestDocsTest extends RestDocsSupport {
                     parameterWithName("searchContent").description("검색할 제목 + 내용(해당 검색어로 검색할 경우 제목 또는 내용에 검색어가 포함되어 있을 경우 해당 게시글들을 반환, null일 경우 게시글 전체 조회)").optional(),
                     parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
                     parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
+                    parameterWithName("postType").description("게시글의 타입(INFORMATION_SHARE, GARDEN_SHOWCASE, QUESTION, ETC)").optional(),
                     parameterWithName("orderBy").description("정렬 조건(COMMENT_COUNT, RECENT_DATE, LIKE_COUNT, OLDER_DATE 중 한개를 입력해주세요)")
                 ),
                 responseFields(
@@ -149,6 +153,7 @@ class PostRestDocsTest extends RestDocsSupport {
         PostCreateRequest request = sut.giveMeBuilder(PostCreateRequest.class)
             .set("title", "제목")
             .set("content", "내용")
+            .set("postType", "QUESTION")
             .sample();
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
@@ -169,7 +174,8 @@ class PostRestDocsTest extends RestDocsSupport {
             .andDo(document("create-posts",
                 requestPartFields("texts",
                     fieldWithPath("content").type(STRING).description("게시글 내용"),
-                    fieldWithPath("title").type(STRING).description("게시글 제목")
+                    fieldWithPath("title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postType").type(STRING).description("게시글 타입(INFORMATION_SHARE, GARDEN_SHOWCASE, QUESTION, ETC 중 입력)")
                 ),
                 requestParts(
                     partWithName("texts").description("게시글 내용 texts에는 json 형식으로 위 part 필드들에 대해 요청해주시면 됩니다."),
@@ -214,6 +220,7 @@ class PostRestDocsTest extends RestDocsSupport {
             .set("content", "내용")
             .size("deleteImages", 1)
             .set("deleteImages[0]", "해당 이미지의 url")
+            .set("postType", "QUESTION")
             .sample();
 
         MockMultipartFile mockMultipartFile = new MockMultipartFile(
@@ -242,7 +249,8 @@ class PostRestDocsTest extends RestDocsSupport {
                 requestPartFields("texts",
                     fieldWithPath("content").type(STRING).description("게시글 내용"),
                     fieldWithPath("title").type(STRING).description("게시글 제목"),
-                    fieldWithPath("deleteImages").type(ARRAY).description("삭제할 이미지의 url 목록")
+                    fieldWithPath("deleteImages").type(ARRAY).description("삭제할 이미지의 url 목록"),
+                    fieldWithPath("postType").type(STRING).description("게시글 타입(INFORMATION_SHARE, GARDEN_SHOWCASE, QUESTION, ETC 중 입력)")
                 ),
                 requestParts(
                     partWithName("texts").description("게시글 내용, 제목, 수정할 때 삭제되는 이미지 url들 texts에는 json 형식으로 위 part 필드들에 대해 요청해주시면 됩니다."),
@@ -362,6 +370,38 @@ class PostRestDocsTest extends RestDocsSupport {
             .andDo(document("delete-post-likes",
                 pathParameters(
                     parameterWithName("postId").description("게시글 id")
+                )
+            ));
+    }
+
+    @DisplayName("실시간 인기 게시글 조회 api docs")
+    @Test
+    void findPopularPosts() throws Exception {
+        FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(new FindAllPopularPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
+        FindAllPopularPostsRequest request = new FindAllPopularPostsRequest(0L, 10L, 1);
+        given(postQueryService.findAllPopularPosts(request.toRepositoryRequest())).willReturn(response);
+
+        mockMvc.perform(get("/v1/posts/popular")
+                .param("offset", String.valueOf(request.offset()))
+                .param("limit", String.valueOf(request.limit()))
+                .param("hour", request.hour().toString())
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("get-popular-posts",
+                queryParameters(
+                    parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
+                    parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수"),
+                    parameterWithName("hour").description("최신의 기준 (예를 들어 1을 입력하면 최근 1시간 기준 인기 게시글 조회)")
+                ),
+                responseFields(
+                    fieldWithPath("postInfos").type(ARRAY).description("게시글 정보 목록"),
+                    fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
+                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postInfos[].likeCount").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("postInfos[].commentCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
                 )
             ));
     }

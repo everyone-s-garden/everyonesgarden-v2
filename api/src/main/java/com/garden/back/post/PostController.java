@@ -3,6 +3,7 @@ package com.garden.back.post;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.post.domain.repository.response.FindAllPopularPostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
 import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
 import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
@@ -173,4 +174,11 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+    //실시간 인기 게시글 조회
+    @GetMapping(value = "/popular", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FindAllPopularPostsResponse> getPopularPosts(
+        @ModelAttribute @Valid FindAllPopularPostsRequest request
+    ) {
+        return ResponseEntity.ok(postQueryService.findAllPopularPosts(request.toRepositoryRequest()));
+    }
 }

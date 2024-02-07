@@ -3,6 +3,7 @@ package com.garden.back.post.service;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.CommentLikeRepository;
 import com.garden.back.post.domain.repository.PostCommentRepository;
 import com.garden.back.post.domain.repository.PostLikeRepository;
@@ -84,7 +85,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
@@ -98,7 +99,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         String expectedTitle = "제목";
         String expectedContent = "내용";
 
-        PostUpdateServiceRequest request = new PostUpdateServiceRequest(List.of(mockMultipartFile), expectedTitle, expectedContent, List.of(expectedUrl));
+        PostUpdateServiceRequest request = new PostUpdateServiceRequest(List.of(mockMultipartFile), expectedTitle, expectedContent, List.of(expectedUrl), PostType.QUESTION);
         //when
         postCommandService.updatePost(savedPostId, memberId, request);
 
@@ -115,7 +116,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         //when
@@ -131,7 +132,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         //when & then
@@ -147,7 +148,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         Long expectedLikeCount = 1L;
 
@@ -165,7 +166,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         Long expectedLikeCount = 1L;
 
@@ -186,7 +187,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, memberId, "댓글내용", savedPostId);
         Long savedParentId = postCommentRepository.save(postComment).getId();
@@ -210,7 +211,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
         PostComment postComment = PostComment.create(null, memberId, "댓글내용", savedPostId);
         Long savedParentId = postCommentRepository.save(postComment).getId();
@@ -270,7 +271,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         CommentCreateServiceRequest request = new CommentCreateServiceRequest("제목", null);
@@ -371,7 +372,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         //when
@@ -390,7 +391,7 @@ class PostCommandServiceTest extends IntegrationTestSupport {
         //given
         Long memberId = 1L;
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
-        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl));
+        Post post = Post.create("asdf", "asdf", memberId, List.of(expectedUrl), PostType.QUESTION);
         Long savedPostId = postRepository.save(post).getId();
 
         //when & then

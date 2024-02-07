@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'org.springframework.boot' version '3.2.0'
     id 'io.spring.dependency-management' version '1.1.4'
     id "org.sonarqube" version "4.4.1.3373"
@@ -16,37 +16,22 @@ sonar {
     }
 }
 
-group = 'com.graden'
-version = '0.0.1-SNAPSHOT'
-
-java {
-    sourceCompatibility = '17'
-}
-
-repositories {
-    mavenCentral()
-}
-
-// 루트 프로젝트는 jar 파일을 만들 필요가 없기 때문에 false로 설정
-bootJar {
-    enabled = false
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-compileJava.options.encoding = 'UTF-8'
-
-subprojects {
+allprojects {
     group = 'com.garden'
     version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
 
-    java {
-        sourceCompatibility = '17'
+    repositories {
+        maven { url "https://repo.osgeo.org/repository/release/" }
+        mavenCentral()
     }
+}
 
-    apply plugin: 'java'
+subprojects {
+    bootJar.enabled = false
+    jar.enabled = false
+    compileJava.options.encoding = 'UTF-8'
+
     apply plugin: 'java-library' //하위 모듈이 상위 모듈의 라이브러리를 의존할 수 있게 하는 플러그인
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'org.springframework.boot'
@@ -76,19 +61,7 @@ subprojects {
         }
     }
 
-    ext {
-        set('springCloudVersion', "2023.0.0")
-    }
-
     dependencies {
-        implementation 'org.springframework.boot:spring-boot-starter'
-
-        //feign
-        implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
-
-        //circuitbreaker
-        implementation 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
-
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
         // Lombok
@@ -98,7 +71,7 @@ subprojects {
 
     dependencyManagement {
         imports {
-            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.0"
         }
     }
 
@@ -109,32 +82,7 @@ subprojects {
         asciidoctorExt
     }
 
-    repositories {
-        maven { url "https://repo.osgeo.org/repository/release/" }
-        mavenCentral()
-    }
-
     //ide에 코틀린 플러그인이 적용되어 있어 설정함
     tasks.register("prepareKotlinBuildScriptModel") {}
 }
 
-project(':api') {
-    dependencies {
-        implementation project(':core')
-        implementation project(':chat')
-        implementation project(':batch')
-    }
-}
-
-project(':chat') {
-    dependencies {
-        implementation project(':core')
-    }
-}
-
-// batch 모듈은 core 모듈에 의존
-project(':batch') {
-    dependencies {
-        implementation project(':core')
-    }
-}
