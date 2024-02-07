@@ -190,4 +190,37 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
                 .isInstanceOf(IllegalArgumentException.class);
     }
 
+    @DisplayName("텃밭 분양 게시글의 아이디와 이를 보고 있는 해당 사용자의 아이디가 주어질 때 " +
+        "해당 게시글의 채팅방이 없는 경우 채팅방 아이디로 -1를 반환한다.")
+    @Test
+    void getChatRoomId_notExisted() {
+        // Given
+        GardenChatRoomInfoGetParam gardenChatRoomInfoGetParam = ChatRoomFixture.gardenChatRoomInfoGetParam();
+
+        // When
+        Long roomId = gardenChatRoomService.getRoomId(gardenChatRoomInfoGetParam);
+
+        // Then
+        assertThat(roomId).isEqualTo(-1L);
+    }
+
+    @DisplayName("텃밭 분양 게시글의 아이디와 이를 보고 있는 해당 사용자의 아이디가 주어질 때 " +
+        "해당 게시글의 채팅방이 있는 경우 채팅방 아이디를 반환한다.")
+    @Test
+    void getChatRoomId_existed() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+
+        GardenChatRoomInfoGetParam gardenChatRoomInfoGetParam = new GardenChatRoomInfoGetParam(
+            chatRoomCreateParam.writerId(),
+            chatRoomCreateParam.postId());
+
+        // When
+        Long roomId = gardenChatRoomService.getRoomId(gardenChatRoomInfoGetParam);
+
+        // Then
+        assertThat(roomId).isEqualTo(chatRoomId);
+    }
+
 }
