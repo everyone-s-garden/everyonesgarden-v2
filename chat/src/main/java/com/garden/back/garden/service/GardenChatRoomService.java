@@ -118,4 +118,8 @@ public class GardenChatRoomService {
         return gardenChatReport.getChatReportId();
     }
 
+    public Long getRoomId(GardenChatRoomInfoGetParam param){
+        return gardenChatRoomInfoRepository.getChatRoomId(param.memberId(), param.postId());
+    }
+
 }

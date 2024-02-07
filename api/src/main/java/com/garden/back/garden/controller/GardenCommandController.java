@@ -1,6 +1,6 @@
-package com.garden.back.garden;
+package com.garden.back.garden.controller;
 
-import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;

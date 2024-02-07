@@ -1,4 +1,4 @@
-package com.garden.back.garden.dto.request;
+package com.garden.back.garden.controller.dto.request;
 
 import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,9 @@
 package com.garden.back.docs.garden;
 
 import com.garden.back.docs.RestDocsSupport;
-import com.garden.back.garden.GardenController;
+import com.garden.back.garden.controller.GardenController;
+import com.garden.back.garden.facade.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.GardenFacade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
@@ -23,10 +25,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class GardenRestDocsTest extends RestDocsSupport {
     GardenReadService gardenReadService = mock(GardenReadService.class);
+    GardenFacade gardenFacade = mock(GardenFacade.class);
 
     @Override
     protected Object initController() {
-        return new GardenController(gardenReadService);
+        return new GardenController(gardenReadService, gardenFacade);
     }
 
     @DisplayName("텃밭 이름으로 검색이 가능하다.")
@@ -130,8 +133,8 @@ class GardenRestDocsTest extends RestDocsSupport {
     @Test
     void getGardenDetail() throws Exception {
         Long gardenId = 1L;
-        GardenDetailResult gardenDetailResult = GardenFixture.gardenDetailResult();
-        given(gardenReadService.getGardenDetail(any())).willReturn(gardenDetailResult);
+        GardenDetailFacadeResponse gardenDetailResult = GardenFixture.gardenDetailResult();
+        given(gardenFacade.getGardenDetail(any())).willReturn(gardenDetailResult);
 
         mockMvc.perform(get("/v2/gardens/{gardenId}", gardenId))
                 .andDo(print())
@@ -163,7 +166,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("gardenFacility.isToilet").type(JsonFieldType.BOOLEAN).description("텃밭 화장실 제공 여부"),
                                 fieldWithPath("gardenFacility.isWaterway").type(JsonFieldType.BOOLEAN).description("텃밭 수로 제공 여부"),
                                 fieldWithPath("gardenFacility.isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
-                                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN).description("좋아요 여부")
+                                fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN).description("좋아요 여부"),
+                                fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("해당 게시글에 대한 채팅방 아이디, 만약 채팅방이 없는 경우에는 -1L를 반환합니다.")
                         )));
     }
 

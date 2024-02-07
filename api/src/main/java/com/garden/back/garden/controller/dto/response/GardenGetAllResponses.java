@@ -1,4 +1,4 @@
-package com.garden.back.garden.dto.response;
+package com.garden.back.garden.controller.dto.response;
 
 import com.garden.back.garden.service.dto.response.GardenAllResults;
 

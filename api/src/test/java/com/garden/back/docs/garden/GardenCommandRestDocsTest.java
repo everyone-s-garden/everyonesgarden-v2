@@ -1,8 +1,8 @@
 package com.garden.back.docs.garden;
 
 import com.garden.back.docs.RestDocsSupport;
-import com.garden.back.garden.GardenCommandController;
-import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.controller.GardenCommandController;
+import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.service.GardenCommandService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
