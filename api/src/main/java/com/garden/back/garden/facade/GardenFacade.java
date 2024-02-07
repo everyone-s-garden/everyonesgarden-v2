@@ -3,7 +3,9 @@ package com.garden.back.garden.facade;
 import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import org.springframework.stereotype.Service;
 
+@Service
 public class GardenFacade {
     private final GardenReadService gardenReadService;
     private final GardenChatRoomService gardenChatRoomService;
