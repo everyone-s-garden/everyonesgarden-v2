@@ -132,4 +132,11 @@ public class ChatRoomFixture {
                 "분쟁이 벌어졌습니다."
         );
     }
+
+    public static GardenChatRoomInfoGetParam gardenChatRoomInfoGetParam() {
+        return new GardenChatRoomInfoGetParam(
+            1L,
+            1L
+        );
+    }
 }
