@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface GardenChatRoomInfoRepository {
 
+    Long NOT_EXISTED_ROOM_ID = -1L;
+
     boolean existsByParams(ChatRoomCreateRepositoryParam param);
 
     GardenChatRoomEnterRepositoryResponse findPartnerId(Long chatRoomId,
@@ -20,4 +22,6 @@ public interface GardenChatRoomInfoRepository {
     List<GardenChatRoomInfo> saveAll(List<GardenChatRoomInfo> gardenChatRoomInfos);
 
     List<GardenChatRoomInfo> findAll();
+
+    Long getChatRoomId(Long memberId, Long postId);
 }
