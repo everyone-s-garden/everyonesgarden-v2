@@ -1,8 +1,9 @@
 package com.garden.back.docs.garden;
 
+import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
-import com.garden.back.garden.dto.request.*;
+import com.garden.back.garden.facade.GardenDetailFacadeResponse;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;
@@ -53,8 +54,8 @@ public class GardenFixture {
         return new GardenByComplexesResults(gardenByComplexesResults, false);
     }
 
-    public static GardenDetailResult gardenDetailResult() {
-        return new GardenDetailResult(
+    public static GardenDetailFacadeResponse gardenDetailResult() {
+        return new GardenDetailFacadeResponse(
                 1L,
                 "인천광역시 서구 신현동 222-22",
                 37.4449168,
@@ -78,7 +79,8 @@ public class GardenFixture {
                         true,
                         true
                 ),
-                true
+                true,
+            1L
         );
     }
 
