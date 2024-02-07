@@ -10,7 +10,7 @@ import com.garden.back.crop.service.CropQueryService;
 import com.garden.back.crop.service.CropCommandService;
 import com.garden.back.feedback.FeedbackController;
 import com.garden.back.feedback.service.FeedbackService;
-import com.garden.back.garden.GardenController;
+import com.garden.back.garden.controller.GardenController;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.global.FixtureSupport;

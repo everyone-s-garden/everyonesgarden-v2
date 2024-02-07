@@ -12,6 +12,8 @@ import com.garden.back.garden.service.dto.response.GardenChatMessagesGetResults;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.garden.back.member.MemberMannerGrade.SEED;
+
 public class ChatRoomFixture {
 
     public static GardenChatRoomCreateRequest chatRoomCreateRequest() {
@@ -69,7 +71,8 @@ public class ChatRoomFixture {
                     new GardenChatRoomsFindFacadeResponses.PartnerInfo(
                         1L,
                         "불가사리",
-                        "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+                        "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
+                        SEED.name()
                     ),
                     new GardenChatRoomsFindFacadeResponses.PostInfo(
                         1L,
