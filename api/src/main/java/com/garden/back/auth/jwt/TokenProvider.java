@@ -13,10 +13,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.SneakyThrows;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Collections;
@@ -73,7 +75,7 @@ public class TokenProvider {
     public String generateAccessToken(String refreshTokenKey) {
         long now = (new Date().getTime());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(refreshTokenKey)
-                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 리프레시 토큰 입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
 
         return Jwts.builder()

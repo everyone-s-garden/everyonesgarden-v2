@@ -2,7 +2,9 @@ package com.garden.back.global;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.garden.back.api.question.QuestionController;
+import com.garden.back.api.user.AdminUserController;
 import com.garden.back.domain.question.QuestionService;
+import com.garden.back.domain.user.AdminMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,7 +14,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 @WebMvcTest(
     controllers = {
-        QuestionController.class
+        QuestionController.class,
+        AdminUserController.class
     }
 )
 @ActiveProfiles("test")
@@ -29,5 +32,8 @@ public abstract class ControllerTestSupport {
 
     @MockBean
     protected QuestionService questionService;
+
+    @MockBean
+    protected AdminMemberService adminMemberService;
 
 }
