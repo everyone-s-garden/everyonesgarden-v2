@@ -1,13 +1,13 @@
 package com.garden.back.garden.repository.chatentry.garden;
 
-import com.garden.back.global.exception.ChatRoomAccessException;
-import com.garden.back.garden.repository.chatentry.SessionId;
 import com.garden.back.garden.repository.chatentry.ChatRoomEntry;
-import org.springframework.stereotype.Repository;
+import com.garden.back.garden.repository.chatentry.SessionId;
+import com.garden.back.global.exception.ChatRoomAccessException;
+import org.springframework.stereotype.Component;
 
 import static com.garden.back.global.exception.ErrorCode.CHAT_ROOM_SESSION_ACCESS_ERROR;
 
-@Repository
+@Component
 public class GardenChatRoomEntryRepositoryImpl implements GardenChatRoomEntryRepository{
 
     private final GardenChatRoomRoomEntryLocalRepository gardenChatRoomRoomEntryLocalRepository;

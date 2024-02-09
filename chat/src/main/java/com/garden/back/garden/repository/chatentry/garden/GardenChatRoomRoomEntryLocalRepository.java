@@ -1,7 +1,7 @@
 package com.garden.back.garden.repository.chatentry.garden;
 
-import com.garden.back.garden.repository.chatentry.SessionId;
 import com.garden.back.garden.repository.chatentry.ChatRoomEntry;
+import com.garden.back.garden.repository.chatentry.SessionId;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -24,10 +24,7 @@ public class GardenChatRoomRoomEntryLocalRepository {
     }
 
     public boolean isMemberInRoom(ChatRoomEntry chatRoomEntry) {
-        if (chatEntries.get(chatRoomEntry.sessionId()) == null) {
-            return false;
-        }
-        return chatEntries.get(chatRoomEntry.sessionId()).equals(chatRoomEntry.chatRoomEntryInfo());
+        return chatEntries.get(chatRoomEntry.sessionId()) != null;
     }
 
     public boolean isContainsRoomIdAndMember(Long roomId, Long memberId) {
