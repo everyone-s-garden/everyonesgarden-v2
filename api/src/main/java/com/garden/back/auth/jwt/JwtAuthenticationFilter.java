@@ -46,16 +46,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
     ) throws ServletException, IOException {
-
         String jwt = resolveToken(request);
-
         if (StringUtils.hasText(jwt)) {
             Claims claims = resolveClaims(jwt, response);
             if (claims == null) {
-                log.info("claims null");
                 return;
             }
-
             updateSecurityContext(claims, jwt);
         }
         filterChain.doFilter(request, response);
@@ -67,7 +63,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String role = claims.get(jwtProperties.getAuthorityKey(), String.class);
         UserDetails principal = SecurityUser.of(memberId, role);
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, jwt, principal.getAuthorities());
-        log.info("authentication: {}", authentication.getName());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 

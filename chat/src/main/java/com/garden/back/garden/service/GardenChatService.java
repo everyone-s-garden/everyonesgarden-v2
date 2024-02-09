@@ -7,6 +7,7 @@ import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRep
 import com.garden.back.garden.repository.chatmessage.ChatRoomFindRepositoryResponse;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
 import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
+import com.garden.back.garden.repository.websocketinfo.WebSocketInfoRepository;
 import com.garden.back.garden.service.dto.request.GardenChatRoomsFindParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatMessagesGetParam;
@@ -27,11 +28,13 @@ public class GardenChatService {
     private final GardenChatMessageRepository gardenChatMessageRepository;
     private final GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
     private final GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
+    private final WebSocketInfoRepository webSocketInfoRepository;
 
-    public GardenChatService(GardenChatMessageRepository gardenChatMessageRepository, GardenChatRoomInfoRepository gardenChatRoomInfoRepository, GardenChatRoomEntryRepository gardenChatRoomEntryRepository) {
+    public GardenChatService(GardenChatMessageRepository gardenChatMessageRepository, GardenChatRoomInfoRepository gardenChatRoomInfoRepository, GardenChatRoomEntryRepository gardenChatRoomEntryRepository, WebSocketInfoRepository webSocketInfoRepository) {
         this.gardenChatMessageRepository = gardenChatMessageRepository;
         this.gardenChatRoomInfoRepository = gardenChatRoomInfoRepository;
         this.gardenChatRoomEntryRepository = gardenChatRoomEntryRepository;
+        this.webSocketInfoRepository = webSocketInfoRepository;
     }
 
     @Transactional
@@ -42,22 +45,29 @@ public class GardenChatService {
         Long partnerId = gardenChatRoomInfoRepository.findPartnerId(param.roomId(), param.memberId()).getMemberId();
         if (gardenChatRoomEntryRepository.isContainsRoomIdAndMember(param.roomId(), partnerId)) {
             return GardenChatMessageSendResult.to(
-                    gardenChatMessageRepository.save(
-                            GardenChatMessage.toReadGardenChatMessage(gardenChatMessageDomainParam))
+                gardenChatMessageRepository.save(
+                    GardenChatMessage.toReadGardenChatMessage(gardenChatMessageDomainParam))
             );
         }
 
         return GardenChatMessageSendResult.to(
-                gardenChatMessageRepository.save(
-                        GardenChatMessage.toNotReadGardenChatMessage(gardenChatMessageDomainParam)
-                )
+            gardenChatMessageRepository.save(
+                GardenChatMessage.toNotReadGardenChatMessage(gardenChatMessageDomainParam)
+            )
         );
 
     }
 
-    @Transactional
     public void leaveChatRoom(SessionId sessionId) {
         gardenChatRoomEntryRepository.deleteChatRoomEntryByRoomId(sessionId);
+    }
+
+    public void saveSocketInfo(String sessionId, Long memberId) {
+        webSocketInfoRepository.save(sessionId, memberId);
+    }
+
+    public Long getWebSocketInfo(String sessionId) {
+        return webSocketInfoRepository.getMemberId(sessionId);
     }
 
     @Transactional
@@ -74,10 +84,10 @@ public class GardenChatService {
         Slice<ChatRoomFindRepositoryResponse> chatRooms = gardenChatMessageRepository.findChatRooms(param.memberId(), pageable);
 
         Map<Long, String> messageById = chatRooms.stream()
-                .collect(Collectors.toMap(
-                        ChatRoomFindRepositoryResponse::getChatMessageId,
-                        response -> getMessageContent(response.getChatMessageId())
-                ));
+            .collect(Collectors.toMap(
+                ChatRoomFindRepositoryResponse::getChatMessageId,
+                response -> getMessageContent(response.getChatMessageId())
+            ));
 
         return GardenChatRoomsFindResults.to(chatRooms, messageById);
     }
