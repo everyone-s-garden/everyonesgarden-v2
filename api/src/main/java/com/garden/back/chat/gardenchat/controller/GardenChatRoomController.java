@@ -2,7 +2,6 @@ package com.garden.back.chat.gardenchat.controller;
 
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatReportRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatRoomCreateRequest;
-import com.garden.back.chat.gardenchat.controller.dto.request.GardenSessionCreateRequest;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatReportResponse;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomEnterResponse;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
@@ -61,18 +60,6 @@ public class GardenChatRoomController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(GardenChatRoomEnterResponse.to(
                         chatRoomFacade.enterGardenChatRoom(request)));
-    }
-
-    @PostMapping(
-            path = "/sessions",
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<Void> createSession(
-            @RequestBody @Valid GardenSessionCreateRequest request,
-            @CurrentUser LoginUser loginUser
-    ) {
-        gardenChatRoomService.createSessionInfo(request.to(loginUser));
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping(
