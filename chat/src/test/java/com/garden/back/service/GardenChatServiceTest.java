@@ -3,6 +3,7 @@ package com.garden.back.service;
 import com.garden.back.garden.domain.GardenChatMessage;
 import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
+import com.garden.back.garden.repository.websocketinfo.WebSocketInfoRepository;
 import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
@@ -36,6 +37,9 @@ class GardenChatServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenChatRoomEntryRepository gardenChatRoomEntryRepository;
+
+    @Autowired
+    private WebSocketInfoRepository webSocketInfoRepository;
 
     @DisplayName("텃밭 분양 관련 채팅 메세지를 보낼 때 상대방 유저가 채팅 세션에 접속 중이면 모두 읽음 메세지로 표시된다.")
     @Test
@@ -267,6 +271,20 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         assertThat(gardenChatRoomsFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
         assertThat(gardenChatRoomsFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
         assertThat(gardenChatRoomsFindResult.partnerId()).isEqualTo(partnerId);
+    }
+
+    @DisplayName("session id를 key로 member id를 value로 WebSocketInfo에 저장되는지 확인한다.")
+    @Test
+    void saveSocketInfo() {
+        // Given
+        String sessionId = "aaabbb_123d";
+        Long memberId = 1L;
+
+        // When
+        gardenChatService.saveSocketInfo(sessionId, memberId);
+
+        // Then
+        assertThat(webSocketInfoRepository.getMemberId(sessionId)).isEqualTo(memberId);
     }
 
 }
