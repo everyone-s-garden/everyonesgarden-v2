@@ -29,8 +29,8 @@ dependencies {
 
     //Socket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation group: 'org.webjars', name: 'sockjs-client', version: '1.5.1'
-    implementation group: 'org.webjars', name: 'stomp-websocket', version: '2.3.4'
+    implementation 'org.webjars:sockjs-client:1.5.1'
+    implementation 'org.springframework.security:spring-security-messaging'
 
     // spatial type
     implementation 'org.hibernate:hibernate-spatial:6.3.1.Final'
