@@ -34,6 +34,8 @@ public class ChatRoomFixture {
         return new GardenChatRoomEnterFacadeResponse(
             2L,
             "임이라다",
+            SEED.name(),
+            "https://kr.object.ncloudstorage.com/every-garden/images/garden/myface.jpg",
             1L,
             GardenStatus.ACTIVE.name(),
             "이라네 주말농장",

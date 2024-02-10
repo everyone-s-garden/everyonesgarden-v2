@@ -76,6 +76,8 @@ class ChatDocsTest extends RestDocsSupport {
                         responseFields(
                                 fieldWithPath("partnerId").type(JsonFieldType.NUMBER).description("상대방 아이디"),
                                 fieldWithPath("partnerNickname").type(JsonFieldType.STRING).description("상대방 별명"),
+                                fieldWithPath("partnerMannerGrade").type(JsonFieldType.STRING).description("상대방 매너 등급"),
+                                fieldWithPath("partnerProfileImage").type(JsonFieldType.STRING).description("상대방 프로필 이미지"),
                                 fieldWithPath("postId").type(JsonFieldType.NUMBER).description("게시글 아이디"),
                                 fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                                 fieldWithPath("gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
@@ -83,7 +85,6 @@ class ChatDocsTest extends RestDocsSupport {
                                 fieldWithPath("images").type(JsonFieldType.ARRAY).description("텃밭 이미지들")
                         )));
     }
-
 
     @DisplayName("텃밭 분양 채팅방을 영구적으로 삭제한다.")
     @Test
