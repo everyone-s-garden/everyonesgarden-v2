@@ -69,7 +69,7 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
             .hasSize(17);
     }
 
-    @DisplayName("2일 뒤 날씨부터 6일 뒤 날씨까지 조회할 수 있다.")
+    @DisplayName("2일 뒤 날씨부터 9일 뒤 날씨까지 조회할 수 있다.")
     @Test
     void getWeekWeatherInfo() {
         //given
@@ -85,6 +85,10 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
             .set("response.body.items.item[0].wf5Am", "맑음")
             .set("response.body.items.item[0].wf6Am", "맑음")
             .set("response.body.items.item[0].wf7Am", "맑음")
+            .set("response.body.items.item[0].wf8", "맑음")
+            .set("response.body.items.item[0].wf9", "맑음")
+            .set("response.body.items.item[0].wf10", "맑음")
+
             .sample();
         given(openAPIClient.getMidLandForecast(anyString(), anyInt(), anyInt(), anyString(), anyString(), anyString())).willReturn(midWeatherResponse);
 
@@ -100,6 +104,9 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
             .set("skyStatusFourDaysAfter", "맑음")
             .set("skyStatusFiveDaysAfter", "맑음")
             .set("skyStatusSixDaysAfter", "맑음")
+            .set("skyStatusSevenDaysAfter", "맑음")
+            .set("skyStatusEightDaysAfter", "맑음")
+            .set("skyStatusNineDaysAfter", "맑음")
             .set("regionName", "경기도")
             .sample();
         assertThat(actual).isEqualTo(expected);
