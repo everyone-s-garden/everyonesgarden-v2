@@ -34,12 +34,12 @@ public class ChatRoomFacade {
     public GardenChatRoomEnterFacadeResponse enterGardenChatRoom(GardenChatRoomEnterFacadeRequest request) {
         GardenChatRoomEntryResult gardenChatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(request.to());
         GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(gardenChatRoomEntryResult.postId());
-        String nickname = memberService.findNickname(gardenChatRoomEntryResult.postId());
+        MemberMyPageResult partnerInfo = memberService.getMyMember(gardenChatRoomEntryResult.partnerId());
 
         return GardenChatRoomEnterFacadeResponse.to(
-                gardenChatRoomEntryResult,
-                gardenChatRoomInfo,
-                nickname
+            gardenChatRoomEntryResult,
+            gardenChatRoomInfo,
+            partnerInfo
         );
     }
 
@@ -50,12 +50,12 @@ public class ChatRoomFacade {
         Map<Long, List<String>> imageUrlsById = new HashMap<>();
         Map<Long, MemberMyPageResult> memberInfoById = new HashMap<>();
         chatMessagesInRooms.gardenChatRoomsFindResults()
-                .forEach(
-                        result -> {
-                            imageUrlsById.put(result.chatMessageId(), gardenReadService.getGardenImages(result.postId()));
-                            memberInfoById.put(result.chatMessageId(), memberService.getMyMember(result.partnerId()));
-                        }
-                );
+            .forEach(
+                result -> {
+                    imageUrlsById.put(result.chatMessageId(), gardenReadService.getGardenImages(result.postId()));
+                    memberInfoById.put(result.chatMessageId(), memberService.getMyMember(result.partnerId()));
+                }
+            );
 
         return GardenChatRoomsFindFacadeResponses.to(chatMessagesInRooms, imageUrlsById, memberInfoById);
     }

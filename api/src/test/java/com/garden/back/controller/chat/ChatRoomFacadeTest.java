@@ -21,6 +21,7 @@ import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.Member;
 import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.member.service.MemberService;
+import com.garden.back.member.service.dto.MemberMyPageResult;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,27 +62,28 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
     @Autowired
     private GardenImageRepository gardenImageRepository;
 
-    @DisplayName("채팅방 입장할 때 보여주는 텃밭 분양 정보 및 상대방 별명을 확인할 수 있다.")
+    @DisplayName("채팅방 입장할 때 보여주는 텃밭 분양 정보 및 상대방 별명, 프로필, 등급을 확인할 수 있다.")
     @Test
     void enterGardenChatRoom() {
         // Given
-        Long memberId = 1L;
-
-        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Member savedMe = memberRepository.save(ChatRoomFixture.memberAboutMe());
+        Member savedPartner = memberRepository.save(ChatRoomFixture.memberAboutPartner());
+        GardenChatRoomCreateParam chatRoomCreateParam = new GardenChatRoomCreateParam(
+            savedMe.getId(), savedPartner.getId(), 1L);
         Long chatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
 
         GardenChatRoom gardenChatRoom = gardenChatRoomRepository.findById(chatRoomId).get();
         gardenChatMessageRepository.save(ChatRoomFixture.partnerFirstGardenChatMessage(gardenChatRoom));
         gardenChatMessageRepository.save(ChatRoomFixture.partnerSecondGardenChatMessage(gardenChatRoom));
 
-        GardenChatRoomEnterFacadeRequest request = new GardenChatRoomEnterFacadeRequest(chatRoomId, memberId);
+        GardenChatRoomEnterFacadeRequest request = new GardenChatRoomEnterFacadeRequest(chatRoomId, savedMe.getId());
 
-        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(chatRoomId, memberId);
+        GardenChatRoomEntryParam gardenChatRoomEntryParam = new GardenChatRoomEntryParam(chatRoomId, savedMe.getId());
 
         // When
         GardenChatRoomEnterFacadeResponse response = chatRoomFacade.enterGardenChatRoom(request);
 
-        String nickname = memberService.findNickname(chatRoomCreateParam.viewerId());
+        MemberMyPageResult partnerInfo = memberService.getMyMember(chatRoomCreateParam.viewerId());
         GardenChatRoomInfoResult gardenChatRoomInfo = gardenReadService.getGardenChatRoomInfo(chatRoomCreateParam.postId());
         GardenChatRoomEntryResult gardenChatRoomEntryResult = gardenChatRoomService.enterGardenChatRoom(gardenChatRoomEntryParam);
 
@@ -95,7 +97,9 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
                         gardenChatRoomInfo.imageUrls(),
                         gardenChatRoomInfo.postId()
                 );
-        assertThat(response.partnerNickname()).isEqualTo(nickname);
+        assertThat(response.partnerNickname()).isEqualTo(partnerInfo.nickname());
+        assertThat(response.partnerMannerGrade()).isEqualTo(partnerInfo.memberMannerGrade());
+        assertThat(response.partnerProfileImage()).isEqualTo(partnerInfo.imageUrl());
         assertThat(response.partnerId()).isEqualTo(gardenChatRoomEntryResult.partnerId());
     }
 
