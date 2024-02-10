@@ -8,6 +8,9 @@ public record WeekWeatherInfo(
     String skyStatusFourDaysAfter,
     String skyStatusFiveDaysAfter,
     String skyStatusSixDaysAfter,
+    String skyStatusSevenDaysAfter,
+    String skyStatusEightDaysAfter,
+    String skyStatusNineDaysAfter,
     String regionName
 ) {
 
@@ -24,7 +27,10 @@ public record WeekWeatherInfo(
         String wf5Am = weatherItem.wf5Am();
         String wf6Am = weatherItem.wf6Am();
         String wf7Am = weatherItem.wf7Am();
+        String wf8 = weatherItem.wf8();
+        String wf9 = weatherItem.wf9();
+        String wf10 = weatherItem.wf10();
 
-        return new WeekWeatherInfo(wf3Am, wf4Am, wf5Am, wf6Am, wf7Am, regionName);
+        return new WeekWeatherInfo(wf3Am, wf4Am, wf5Am, wf6Am, wf7Am, wf8, wf9, wf10, regionName);
     }
 }

@@ -15,7 +15,10 @@ public record MidWeatherResponse(Response response) {
                     String wf4Am,
                     String wf5Am,
                     String wf6Am,
-                    String wf7Am
+                    String wf7Am,
+                    String wf8,
+                    String wf9,
+                    String wf10
                 ) {}
             }
         }

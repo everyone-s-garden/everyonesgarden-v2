@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -185,42 +186,34 @@ class WeatherRestDocsTest extends RestDocsSupport {
                         )
                 ));
     }
-    @DisplayName("현재 지역의 2일 뒤 부터 5개의 날씨를 조회하는 API DOCS")
+
+    @DisplayName("현재 지역의 2일 뒤부터 9일뒤 까지의 날씨를 조회하는 API DOCS")
     @Test
     void getWeekWeatherByDate() throws Exception {
-        WeekWeatherApiResponse weekWeatherApiResponse = sut.giveMeBuilder(WeekWeatherApiResponse.class)
-                .set("skyStatusTwoDaysAfter", "맑음")
-                .set("skyStatusThreeDaysAfter", "흐림")
-                .set("skyStatusFourDaysAfter", "맑음")
-                .set("skyStatusFiveDaysAfter", "맑음")
-                .set("skyStatusSixDaysAfter", "맑음")
-                .set("regionName", "서울특별시")
-                .sample();
+        WeekWeatherApiResponse weekWeatherApiResponse = new WeekWeatherApiResponse(
+            Arrays.asList("맑음", "흐림", "흐리고 비", "맑음", "맑음"), // 5개의 날씨 상태만 포함
+            "서울"
+        );
 
         given(weatherService.getWeekSkyStatus(any(), any())).willReturn(weekWeatherApiResponse);
 
         mockMvc.perform(get("/v1/weathers/week")
-                        .queryParam("latitude", "37.289984")
-                        .queryParam("longitude","127.0284288")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .characterEncoding(StandardCharsets.UTF_8))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("get-week-weather",
-                        queryParameters(
-                                parameterWithName("latitude").description("위도"),
-                                parameterWithName("longitude").description("경도")
-                        ),
-                        responseFields(
-                                fieldWithPath("skyStatusTwoDaysAfter").type(JsonFieldType.STRING).description("이틀 후 하늘 상태"),
-                                fieldWithPath("skyStatusThreeDaysAfter").type(JsonFieldType.STRING).description("셋째 날 하늘 상태"),
-                                fieldWithPath("skyStatusFourDaysAfter").type(JsonFieldType.STRING).description("넷째 날 하늘 상태"),
-                                fieldWithPath("skyStatusFiveDaysAfter").type(JsonFieldType.STRING).description("다섯째 날 하늘 상태"),
-                                fieldWithPath("skyStatusSixDaysAfter").type(JsonFieldType.STRING).description("여섯째 날 하늘 상태"),
-                                fieldWithPath("regionName").type(JsonFieldType.STRING).description("지역 이름")
-                        )
-                ));
-
+                .queryParam("latitude", "37.289984")
+                .queryParam("longitude", "127.0284288")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8))
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andDo(document("get-week-weather",
+                queryParameters(
+                    parameterWithName("latitude").description("위도"),
+                    parameterWithName("longitude").description("경도")
+                ),
+                responseFields(
+                    fieldWithPath("status").description("날씨 상태 정보 리스트(n번째 값이 n+2일 뒤의 날씨임 예를 들어 0번째 원소는 2일 뒤 날씨)").type(JsonFieldType.ARRAY),
+                    fieldWithPath("regionName").description("지역 이름").type(JsonFieldType.STRING)
+                )
+            ));
     }
 
 
