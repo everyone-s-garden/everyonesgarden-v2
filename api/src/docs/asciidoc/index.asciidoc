@@ -70,3 +70,8 @@ include::appointment/appointment.adoc[]
 == Region
 지역 검색 API 입니다.
 include::region/region.adoc[]
+
+[[Notification]]
+== Notification
+알림 API 입니다.
+include::notification/notification.adoc[]

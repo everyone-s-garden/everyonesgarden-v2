@@ -3,6 +3,7 @@ package com.garden.back.notification;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.notification.model.GetNotificationResponse;
+import com.garden.back.notification.model.PollResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,10 +44,9 @@ public class NotificationGetController {
     }
 
     @GetMapping("/new/poll")
-    public int poll(
+    public PollResponse poll(
             @CurrentUser LoginUser loginUser
     ) {
-        return notificationGetApplication
-                .pollUnreadCount(loginUser.memberId());
+        return PollResponse.of(notificationGetApplication.pollUnreadCount(loginUser.memberId()));
     }
 }
