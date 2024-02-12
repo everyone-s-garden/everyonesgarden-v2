@@ -108,6 +108,18 @@ public class GardenController {
     }
 
     @GetMapping(
+        value = "/recent-created",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<RecentCreatedGardenResponses> getRecentCreatedGardens(
+        @CurrentUser LoginUser loginUser
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(RecentCreatedGardenResponses.to(
+                gardenReadService.getRecentCreatedGardens(loginUser.memberId())));
+    }
+
+    @GetMapping(
         value = "/my-managed",
         produces = MediaType.APPLICATION_JSON_VALUE
     )
