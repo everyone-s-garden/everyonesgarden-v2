@@ -279,4 +279,27 @@ class GardenRestDocsTest extends RestDocsSupport {
                         )));
     }
 
+    @DisplayName("최근 등록된 텃밭들을 조회한다.")
+    @Test
+    void getRecentCreatedGardens() throws Exception {
+        RecentCreatedGardenResults results = GardenFixture.recentCreatedGardenResults();
+        given(gardenReadService.getRecentCreatedGardens(any())).willReturn(results);
+
+        mockMvc.perform(get("/v2/gardens/recent-created"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("get-recent-created-gardens",
+                responseFields(
+                    fieldWithPath("recentCreatedGardenResponses").type(JsonFieldType.ARRAY).description("텃밭 전체 검색 결과"),
+                    fieldWithPath("recentCreatedGardenResponses[].gardenId").type(JsonFieldType.NUMBER).description("텃밭 아이디"),
+                    fieldWithPath("recentCreatedGardenResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
+                    fieldWithPath("recentCreatedGardenResponses[].address").type(JsonFieldType.STRING).description("텃밭 주소"),
+                    fieldWithPath("recentCreatedGardenResponses[].recruitStartDate").type(JsonFieldType.STRING).description("텃밭 모집 시작일"),
+                    fieldWithPath("recentCreatedGardenResponses[].recruitEndDate").type(JsonFieldType.STRING).description("텃밭 모집 마감일"),
+                    fieldWithPath("recentCreatedGardenResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
+                    fieldWithPath("recentCreatedGardenResponses[].isLiked").type(JsonFieldType.BOOLEAN).description("텃밭 좋아요 여부"),
+                    fieldWithPath("recentCreatedGardenResponses[].imageUrl").type(JsonFieldType.STRING).description("텃밭 이미지 썸네일")
+                )));
+    }
+
 }

@@ -5,10 +5,7 @@ import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
-import com.garden.back.garden.repository.garden.dto.response.GardenChatRoomInfoRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 
@@ -24,8 +21,8 @@ public interface GardenRepository {
     Garden save(Garden garden);
 
     List<GardenDetailRepositoryResponse> getGardenDetail(
-            Long memberId,
-            Long gardenId
+        Long memberId,
+        Long gardenId
     );
 
     Garden getById(Long gardenId);
@@ -37,5 +34,7 @@ public interface GardenRepository {
     List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(Long memberId);
 
     List<GardenChatRoomInfoRepositoryResponse> getChatRoomInfo(Long gardenId);
+
+    List<RecentCreateGardenRepositoryResponse> getRecentCreatedGardens(Long memberId);
 
 }
