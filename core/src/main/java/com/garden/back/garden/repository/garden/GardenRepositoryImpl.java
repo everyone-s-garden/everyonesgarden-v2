@@ -5,10 +5,7 @@ import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
-import com.garden.back.garden.repository.garden.dto.response.GardenChatRoomInfoRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
-import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.*;
 import com.garden.back.garden.repository.garden.entity.GardenEntity;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +27,7 @@ public class GardenRepositoryImpl implements GardenRepository {
 
     @Override
     public Slice<GardenByName> findGardensByName(String gardenName, Pageable pageable) {
-        return gardenJpaRepository.findGardensByName(gardenName,pageable);
+        return gardenJpaRepository.findGardensByName(gardenName, pageable);
     }
 
     @Override
@@ -50,15 +47,15 @@ public class GardenRepositoryImpl implements GardenRepository {
 
     @Override
     public List<GardenDetailRepositoryResponse> getGardenDetail(Long memberId, Long gardenId) {
-        return gardenJpaRepository.getGardenDetail(memberId,gardenId);
+        return gardenJpaRepository.getGardenDetail(memberId, gardenId);
     }
 
     @Override
     public Garden getById(Long gardenId) {
         return gardenJpaRepository.findById(gardenId)
-                .orElseThrow(() ->
-                        new EmptyResultDataAccessException("존재하지 않는 텃밭 분양 정보: " + gardenId, 1 ))
-                .toModel();
+            .orElseThrow(() ->
+                new EmptyResultDataAccessException("존재하지 않는 텃밭 분양 정보: " + gardenId, 1))
+            .toModel();
     }
 
     @Override
@@ -79,6 +76,11 @@ public class GardenRepositoryImpl implements GardenRepository {
     @Override
     public List<GardenChatRoomInfoRepositoryResponse> getChatRoomInfo(Long gardenId) {
         return gardenJpaRepository.getChatRoomInfo(gardenId);
+    }
+
+    @Override
+    public List<RecentCreateGardenRepositoryResponse> getRecentCreatedGardens(Long memberId) {
+        return gardenJpaRepository.getRecentCreatedGardens(memberId);
     }
 
 }
