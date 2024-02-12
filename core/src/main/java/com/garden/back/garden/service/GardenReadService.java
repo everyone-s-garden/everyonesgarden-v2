@@ -4,6 +4,7 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.RecentCreateGardenRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
@@ -95,6 +96,13 @@ public class GardenReadService {
 
     public List<String> getGardenImages(Long postId) {
         return gardenImageRepository.findGardenImageUrls(postId);
+    }
+
+    public RecentCreatedGardenResults getRecentCreatedGardens(Long memberId) {
+        List<RecentCreateGardenRepositoryResponse> recentCreatedGardens
+            = gardenRepository.getRecentCreatedGardens(memberId);
+
+        return RecentCreatedGardenResults.to(recentCreatedGardens);
     }
 
 }
