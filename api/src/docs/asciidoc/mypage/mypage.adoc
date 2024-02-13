@@ -1,4 +1,3 @@
-
 === 마이 페이지에서 회원 정보 조회
 
 마이 페이지에서 회원 정보 조회 api 입니다. 회원 등급은 씨앗, 새싹, 가지, 열매, 수확, 농사꾼이 입니다.
@@ -20,3 +19,13 @@ include::{snippets}/update-member-profile/request-part-texts-fields.adoc[]
 
 ==== Response (Success)
 include::{snippets}/update-member-profile/http-response.adoc[]
+
+=== id로 회원 정보 조회
+
+==== Request
+include::{snippets}/findMemberById/http-request.adoc[]
+include::{snippets}/findMemberById/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/findMemberById/http-response.adoc[]
+

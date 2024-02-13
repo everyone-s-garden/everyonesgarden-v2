@@ -13,6 +13,7 @@ public record FindPostDetailsResponse(
     String title,
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate createdDate,
+    Boolean isLikeClick,
     List<String> images
 ) {
 }

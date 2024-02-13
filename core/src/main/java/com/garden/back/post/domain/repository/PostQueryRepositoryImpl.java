@@ -7,6 +7,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.garden.back.member.QMember.member;
+import static com.garden.back.post.domain.QCommentLike.commentLike;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
 import static com.garden.back.post.domain.QPostImage.postImage;
@@ -32,12 +34,19 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     }
 
     @Override
-    public FindPostDetailsResponse findPostDetails(Long id) {
+    public FindPostDetailsResponse findPostDetails(Long id, Long loginUserId) {
         List<String> imageUrls = jpaQueryFactory
             .select(postImage.imageUrl)
             .from(postImage)
             .where(postImage.post.id.eq(id))
             .fetch();
+
+        BooleanExpression isLikedByUser = JPAExpressions
+            .selectOne()
+            .from(postLike)
+            .where(postLike.postId.eq(id),
+                postLike.likesClickerId.eq(loginUserId))
+            .exists();
 
         return jpaQueryFactory
             .select(Projections.constructor(FindPostDetailsResponse.class,
@@ -47,7 +56,9 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.content,
                 post.title,
                 post.createdDate,
-                Expressions.constant(imageUrls)))
+                isLikedByUser,
+                Expressions.constant(imageUrls)
+                ))
             .from(post)
             .leftJoin(member).on(post.postAuthorId.eq(member.id))
             .where(
@@ -67,6 +78,10 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.title,
                 post.likesCount,
                 post.commentsCount,
+                post.content,
+                JPAExpressions.select(postImage.imageUrl).from(postImage).where(postImage.post.eq(post)).limit(1),
+                post.postAuthorId,
+                post.postType,
                 post.createdDate))
             .from(post)
             .where(
@@ -100,15 +115,23 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     }
 
     @Override
-    public FindPostsAllCommentResponse findPostsAllComments(Long id, FindAllPostCommentsParamRepositoryRequest request) {
+    public FindPostsAllCommentResponse findPostsAllComments(Long id, Long loginUserId, FindAllPostCommentsParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getCommentsOrderBy(request.orderBy());
+
+        List<Long> likedCommentIds = jpaQueryFactory
+            .select(commentLike.commentId)
+            .from(commentLike)
+            .where(commentLike.likesClickerId.eq(loginUserId))
+            .fetch();
+
         List<FindPostsAllCommentResponse.CommentInfo> comments = jpaQueryFactory
             .select(Projections.constructor(FindPostsAllCommentResponse.CommentInfo.class,
                 postComment.id,
                 postComment.parentCommentId,
                 postComment.likesCount,
                 postComment.content,
-                member.nickname
+                member.nickname,
+                postComment.id.in(likedCommentIds)
             ))
             .from(postComment)
             .where(

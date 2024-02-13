@@ -44,7 +44,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("게시글 전체 조회 api docs")
     @Test
     void findAllPosts() throws Exception {
-        FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
+        FindAllPostsResponse response = new FindAllPostsResponse(List.of(new FindAllPostsResponse.PostInfo(1L, "제목", 2L, 3L, "내용", "미리보기 이미지 url", 1L, PostType.QUESTION, LocalDate.now())));
         FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "title", PostType.QUESTION, "RECENT_DATE");
         given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
 
@@ -72,6 +72,10 @@ class PostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
                     fieldWithPath("postInfos[].likeCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("postInfos[].commentCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].content").type(STRING).description("게시글 내용"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("미리보기 이미지"),
+                    fieldWithPath("postInfos[].authorId").type(NUMBER).description("글쓴이 아이디"),
+                    fieldWithPath("postInfos[].postType").type(STRING).description("게시글 종류"),
                     fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
                 )
             ));
@@ -80,8 +84,8 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now(), List.of("이미지 url"));
-        given(postQueryService.findPostById(any())).willReturn(response);
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now(), false, List.of("이미지 url"));
+        given(postQueryService.findPostById(any(), any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -99,7 +103,8 @@ class PostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("content").type(STRING).description("내용"),
                     fieldWithPath("title").type(STRING).description("제목"),
                     fieldWithPath("createdDate").type(STRING).description("생성 일"),
-                    fieldWithPath("images").type(ARRAY).description("이미지 목록")
+                    fieldWithPath("images").type(ARRAY).description("이미지 목록"),
+                    fieldWithPath("isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 게시글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
                 )
             ));
     }
@@ -107,9 +112,9 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("특정 게시글의 댓글 조회 api docs")
     @Test
     void findPostsComments() throws Exception {
-        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", "작성자2"), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", "작성자1")));
+        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", "작성자2", false), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", "작성자1", false)));
         FindAllCommentsParamRequest request = new FindAllCommentsParamRequest(0, 10, "RECENT_DATE");
-        given(postQueryService.findAllCommentsByPostId(any(), any())).willReturn(response);
+        given(postQueryService.findAllCommentsByPostId(any(), any(), any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}/comments", 1L)
                 .param("offset", String.valueOf(request.offset()))
@@ -134,7 +139,8 @@ class PostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("commentInfos[].parentId").description("부모 댓글 ID (대댓글인 경우)").optional(),
                     fieldWithPath("commentInfos[].likeCount").description("좋아요 수"),
                     fieldWithPath("commentInfos[].content").description("댓글 내용"),
-                    fieldWithPath("commentInfos[].author").description("댓글 작성자")
+                    fieldWithPath("commentInfos[].author").description("댓글 작성자"),
+                    fieldWithPath("commentInfos[].isLikeClick").description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
                 )
             ));
     }

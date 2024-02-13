@@ -3,6 +3,7 @@ package com.garden.back.member.service;
 import com.garden.back.global.image.ParallelImageUploader;
 import com.garden.back.member.Member;
 import com.garden.back.member.repository.MemberRepository;
+import com.garden.back.member.repository.response.MemberInfoResponse;
 import com.garden.back.member.service.dto.MemberMyPageResult;
 import com.garden.back.member.service.dto.UpdateProfileServiceRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -50,5 +51,9 @@ public class MemberService {
             imageUploader.delete("/members", List.of(member.getProfileImageUrl()));
         }
         member.updateProfile(serviceRequest.nickname(), uploadedImages.orElse(null));
+    }
+
+    public MemberInfoResponse findMemberById(Long id) {
+        return memberRepository.findMemberById(id);
     }
 }
