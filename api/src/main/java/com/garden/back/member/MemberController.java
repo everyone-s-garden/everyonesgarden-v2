@@ -4,6 +4,7 @@ import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.member.dto.MemberMyPageResponse;
 import com.garden.back.member.dto.UpdateMyProfileRequest;
+import com.garden.back.member.repository.response.MemberInfoResponse;
 import com.garden.back.member.service.MemberService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -42,5 +43,13 @@ public class MemberController {
     ) {
         memberService.updateProfile(request.toServiceRequest(loginUser.memberId(), multipartFile));
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping(
+        path = "/{id}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    ResponseEntity<MemberInfoResponse> findMemberById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(memberService.findMemberById(id));
     }
 }

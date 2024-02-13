@@ -8,6 +8,7 @@ import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
 import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.PostCommentRepository;
+import com.garden.back.post.domain.repository.PostLikeRepository;
 import com.garden.back.post.domain.repository.PostRepository;
 import com.garden.back.post.domain.repository.request.*;
 import com.garden.back.post.domain.repository.response.*;
@@ -39,6 +40,9 @@ class PostQueryServiceTest extends IntegrationTestSupport {
     @Autowired
     PostCommandService postCommandService;
 
+    @Autowired
+    PostLikeRepository postLikeRepository;
+
     @DisplayName("게시글 id로 게시글의 상세를 조회할 수 있다.(댓글 수, 좋아요 수, 작성자, 제목, 내용)")
     @Test
     void findPostById() {
@@ -51,11 +55,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Post savedPost = postRepository.save(post);
-
-        FindPostDetailsResponse response = new FindPostDetailsResponse(0L, 0L, nickname, content, title, savedPost.getCreatedDate(), List.of(imageUrl));
+        postCommandService.addLikeToPost(post.getId(), savedMemberId);
+        FindPostDetailsResponse response = new FindPostDetailsResponse(post.getCommentsCount(), post.getLikesCount(), nickname, content, title, savedPost.getCreatedDate(), true, List.of(imageUrl));
 
         //when & then
-        assertThat(postQueryService.findPostById(savedPost.getId())).isEqualTo(response);
+        assertThat(postQueryService.findPostById(savedPost.getId(), savedMemberId)).isEqualTo(response);
     }
 
     @DisplayName("모든 게시글을 댓글 순으로 정렬해서 조회할 수 있다.")
@@ -77,8 +81,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate()),
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getContent(), post2.getPostImages().stream().findFirst().get().getImageUrl(), post2.getPostAuthorId(), post2.getPostType(), post2.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
@@ -107,7 +111,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post2가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
@@ -136,8 +140,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()), //Post가 댓글 더 많음
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(),post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getContent(), post2.getPostImages().stream().findFirst().get().getImageUrl(), post2.getPostAuthorId(), post2.getPostType(), post2.getCreatedDate())
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
@@ -166,8 +170,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate()),
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()) //Post가 더 오래 됨
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getContent(), post2.getPostImages().stream().findFirst().get().getImageUrl(), post2.getPostAuthorId(), post2.getPostType(), post2.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()) //Post2가 댓글 더 많음
 
         );
 
@@ -197,8 +201,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()), //Post가 더 먼저 생성 됨
-            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
+            new FindAllPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()),
+            new FindAllPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getContent(), post2.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post2.getPostType(), post2.getCreatedDate())
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
@@ -224,18 +228,19 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long olderCommentId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
-        postComment2.increaseLikeCount();
+
         Long recentCommentId = postCommentRepository.save(postComment2).getId();
+        postCommandService.addLikeToComment(recentCommentId, savedMemberId);
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.RECENT_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname, true),
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname, false)
             )
         );
-        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
+        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
 
     @DisplayName("댓글을 좋아요 순으로 정렬해서 조회할 수 있다.")
@@ -254,18 +259,19 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long haveLessCommentLikeId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
-        postComment2.increaseLikeCount();
         Long havMoreLikeCommentId = postCommentRepository.save(postComment2).getId(); // 좋아요 더 많음
+        postCommandService.addLikeToComment(havMoreLikeCommentId, savedMemberId);
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.LIKE_COUNT);
+
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, nickname, true),
+                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, nickname, false)
             )
         );
-        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
+        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
 
     @DisplayName("댓글을 오래된 순으로 최근 순으로 정렬해서 조회할 수 있다.")
@@ -284,18 +290,18 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long olderCommentId = postCommentRepository.save(postComment).getId();
 
         PostComment postComment2 = PostComment.create(null, savedMemberId, content, savedPostId);
-        postComment2.increaseLikeCount();
         Long recentCommentId = postCommentRepository.save(postComment2).getId();
+        postCommandService.addLikeToComment(recentCommentId, savedMemberId);
 
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.OLDER_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname),
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname)
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname, false),
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname, true)
             )
         );
-        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, request)).isEqualTo(response);
+        assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
 
 

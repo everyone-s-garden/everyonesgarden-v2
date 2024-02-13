@@ -1,6 +1,7 @@
 package com.garden.back.member.repository;
 
 import com.garden.back.member.Member;
+import com.garden.back.member.repository.response.MemberInfoResponse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,5 +31,12 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         """
     )
     String findNickName(@Param("memberId") Long memberId);
+
+    @Query("""
+           SELECT new com.garden.back.member.repository.response.MemberInfoResponse(m.nickname, m.profileImageUrl, m.memberMannerGrade)
+           FROM Member m 
+           WHERE m.id = :id
+           """)
+    MemberInfoResponse findMemberById(@Param("id") Long id);
 
 }

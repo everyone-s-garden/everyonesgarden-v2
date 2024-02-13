@@ -2,7 +2,9 @@ package com.garden.back.docs.member;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.member.MemberController;
+import com.garden.back.member.MemberMannerGrade;
 import com.garden.back.member.dto.UpdateMyProfileRequest;
+import com.garden.back.member.repository.response.MemberInfoResponse;
 import com.garden.back.member.service.MemberService;
 import com.garden.back.member.service.dto.MemberMyPageResult;
 import org.junit.jupiter.api.DisplayName;
@@ -21,8 +23,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.multipart;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.partWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -93,5 +94,23 @@ class MemberRestDocsTest extends RestDocsSupport {
                     partWithName("image").description("프로필 이미지").optional()
                 )
             ));
+    }
+
+    @DisplayName("사용자의 정보를 id로 조회한다.")
+    @Test
+    void findMemberById() throws Exception {
+        given(memberService.findMemberById(any())).willReturn(new MemberInfoResponse("닉네임", "이미지 url", MemberMannerGrade.SEED));
+        mockMvc.perform(get("/members/{id}", 1L))
+            .andExpect(status().isOk())
+            .andDo(print())
+            .andDo(document("findMemberById",
+                pathParameters(
+                    parameterWithName("id").description("회원 아이디")
+                ),
+                responseFields(
+                    fieldWithPath("nickname").type(STRING).description("사용자의 별명"),
+                    fieldWithPath("profileImageUrl").type(STRING).description("사용자의 프로필 이미지"),
+                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자의 매너 등급")
+                )));
     }
 }
