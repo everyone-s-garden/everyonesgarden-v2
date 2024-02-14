@@ -84,7 +84,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, "작성자", "내용", "제목", LocalDate.now(), false, List.of("이미지 url"));
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, 1L, "내용", "제목", LocalDate.now(), false, List.of("이미지 url"));
         given(postQueryService.findPostById(any(), any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
@@ -99,7 +99,7 @@ class PostRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("commentCount").type(NUMBER).description("댓글 수"),
                     fieldWithPath("likeCount").type(NUMBER).description("좋아요 수"),
-                    fieldWithPath("author").type(STRING).description("작성자"),
+                    fieldWithPath("authorId").type(NUMBER).description("작성자ID"),
                     fieldWithPath("content").type(STRING).description("내용"),
                     fieldWithPath("title").type(STRING).description("제목"),
                     fieldWithPath("createdDate").type(STRING).description("생성 일"),
@@ -112,7 +112,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("특정 게시글의 댓글 조회 api docs")
     @Test
     void findPostsComments() throws Exception {
-        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", "작성자2", false), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", "작성자1", false)));
+        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", 2L, false), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", 1L, false)));
         FindAllCommentsParamRequest request = new FindAllCommentsParamRequest(0, 10, "RECENT_DATE");
         given(postQueryService.findAllCommentsByPostId(any(), any(), any())).willReturn(response);
 
@@ -134,13 +134,13 @@ class PostRestDocsTest extends RestDocsSupport {
                     parameterWithName("postId").description("게시글 id")
                 ),
                 responseFields(
-                    fieldWithPath("commentInfos").description("댓글 정보 목록"),
-                    fieldWithPath("commentInfos[].commentId").description("댓글 ID"),
-                    fieldWithPath("commentInfos[].parentId").description("부모 댓글 ID (대댓글인 경우)").optional(),
-                    fieldWithPath("commentInfos[].likeCount").description("좋아요 수"),
-                    fieldWithPath("commentInfos[].content").description("댓글 내용"),
-                    fieldWithPath("commentInfos[].author").description("댓글 작성자"),
-                    fieldWithPath("commentInfos[].isLikeClick").description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
+                    fieldWithPath("commentInfos").type(ARRAY).description("댓글 정보 목록"),
+                    fieldWithPath("commentInfos[].commentId").type(NUMBER).description("댓글 ID"),
+                    fieldWithPath("commentInfos[].parentId").type(NUMBER).description("부모 댓글 ID (대댓글인 경우)").optional(),
+                    fieldWithPath("commentInfos[].likeCount").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("commentInfos[].content").type(STRING).description("댓글 내용"),
+                    fieldWithPath("commentInfos[].authorId").type(NUMBER).description("댓글 작성자 ID"),
+                    fieldWithPath("commentInfos[].isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
                 )
             ));
     }
@@ -383,7 +383,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("실시간 인기 게시글 조회 api docs")
     @Test
     void findPopularPosts() throws Exception {
-        FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(new FindAllPopularPostsResponse.PostInfo(1L, "제목", 2L, 3L, LocalDate.now())));
+        FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(new FindAllPopularPostsResponse.PostInfo(1L, "제목", 2L, 3L, "내용", "미리보기 이미지 url", 1L, PostType.QUESTION, LocalDate.now())));
         FindAllPopularPostsRequest request = new FindAllPopularPostsRequest(0L, 10L, 1);
         given(postQueryService.findAllPopularPosts(request.toRepositoryRequest())).willReturn(response);
 
@@ -407,6 +407,10 @@ class PostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
                     fieldWithPath("postInfos[].likeCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("postInfos[].commentCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].content").type(STRING).description("내용"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("미리보기 이미지"),
+                    fieldWithPath("postInfos[].authorId").type(NUMBER).description("글쓴이 아이디"),
+                    fieldWithPath("postInfos[].postType").type(STRING).description("게시글 종류"),
                     fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
                 )
             ));
