@@ -56,7 +56,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Post savedPost = postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), savedMemberId);
-        FindPostDetailsResponse response = new FindPostDetailsResponse(post.getCommentsCount(), post.getLikesCount(), nickname, content, title, savedPost.getCreatedDate(), true, List.of(imageUrl));
+        FindPostDetailsResponse response = new FindPostDetailsResponse(post.getCommentsCount(), post.getLikesCount(), post.getPostAuthorId(), content, title, savedPost.getCreatedDate(), true, List.of(imageUrl));
 
         //when & then
         assertThat(postQueryService.findPostById(savedPost.getId(), savedMemberId)).isEqualTo(response);
@@ -236,8 +236,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.RECENT_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname, true),
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname, false)
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true),
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -267,8 +267,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
 
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, nickname, true),
-                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, nickname, false)
+                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true),
+                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -297,8 +297,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.OLDER_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, nickname, false),
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, nickname, true)
+                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false),
+                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -385,8 +385,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         //when & then
         FindAllPopularRepositoryPostsRequest request = new FindAllPopularRepositoryPostsRequest(0L, 10L, 1);
         FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(
-            new FindAllPopularPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getCreatedDate()),
-            new FindAllPopularPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getCreatedDate())
+            new FindAllPopularPostsResponse.PostInfo(savedPostId1, title, post.getLikesCount(), post.getCommentsCount(), post.getContent(), post.getPostImages().stream().findFirst().get().getImageUrl(), post.getPostAuthorId(), post.getPostType(), post.getCreatedDate()),
+            new FindAllPopularPostsResponse.PostInfo(savedPostId2, title, post2.getLikesCount(), post2.getCommentsCount(), post2.getContent(), post2.getPostImages().stream().findFirst().get().getImageUrl(), post2.getPostAuthorId(), post.getPostType(), post.getCreatedDate())
         ));
         assertThat(postQueryService.findAllPopularPosts(request)).isEqualTo(response);
     }

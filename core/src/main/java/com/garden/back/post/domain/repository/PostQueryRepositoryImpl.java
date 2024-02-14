@@ -17,7 +17,6 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Objects;
 
-import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QCommentLike.commentLike;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
@@ -52,7 +51,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .select(Projections.constructor(FindPostDetailsResponse.class,
                 post.commentsCount,
                 post.likesCount,
-                member.nickname,
+                post.postAuthorId,
                 post.content,
                 post.title,
                 post.createdDate,
@@ -60,7 +59,6 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 Expressions.constant(imageUrls)
                 ))
             .from(post)
-            .leftJoin(member).on(post.postAuthorId.eq(member.id))
             .where(
                 post.id.eq(id),
                 post.deleteStatus.eq(false)
@@ -79,7 +77,15 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.likesCount,
                 post.commentsCount,
                 post.content,
-                JPAExpressions.select(postImage.imageUrl).from(postImage).where(postImage.post.eq(post)).limit(1),
+                JPAExpressions.select(postImage.imageUrl)
+                    .from(postImage)
+                    .where(postImage.post.eq(post)
+                        .and(postImage.id.eq(
+                            JPAExpressions.select(postImage.id.max())
+                                .from(postImage)
+                                .where(postImage.post.eq(post))
+                        ))
+                    ),
                 post.postAuthorId,
                 post.postType,
                 post.createdDate))
@@ -130,7 +136,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 postComment.parentCommentId,
                 postComment.likesCount,
                 postComment.content,
-                member.nickname,
+                postComment.authorId,
                 postComment.id.in(likedCommentIds)
             ))
             .from(postComment)
@@ -138,7 +144,6 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 postComment.postId.eq(id),
                 postComment.deleteStatus.eq(false)
             )
-            .leftJoin(member).on(postComment.authorId.eq(member.id))
             .orderBy(orderBy)
             .offset(request.offset())
             .limit(request.limit())
@@ -219,6 +224,18 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.title,
                 post.likesCount,
                 post.commentsCount,
+                post.content,
+                JPAExpressions.select(postImage.imageUrl)
+                    .from(postImage)
+                    .where(postImage.post.eq(post)
+                        .and(postImage.id.eq(
+                            JPAExpressions.select(postImage.id.max())
+                                .from(postImage)
+                                .where(postImage.post.eq(post))
+                        ))
+                    ),
+                post.postAuthorId,
+                post.postType,
                 post.createdDate))
             .from(post)
             .where(
