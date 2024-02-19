@@ -26,12 +26,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 class GardenReadServiceTest extends IntegrationTestSupport {
@@ -360,5 +362,22 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThat(recentCreatedGardenResults.recentCreatedGardenResults())
             .extracting("isLiked")
             .containsExactly(false, false);
+    }
+
+    @DisplayName("텃밭 아이디를 통해서 텃밭의 위도와 경도를 알 수 있다.")
+    @Test
+    void getGardenLocation_returnLatitudeAndLongitude() {
+        // Given
+        Long notExistedGardenId = savedPrivateGarden.getGardenId()+100L;
+
+        // When
+        GardenLocationResult gardenLocation = gardenReadService.getGardenLocation(savedPrivateGarden.getGardenId());
+
+        // Then
+        assertThat(gardenLocation.latitude()).isEqualTo(savedPrivateGarden.getLatitude());
+        assertThat(gardenLocation.longitude()).isEqualTo(savedPrivateGarden.getLongitude());
+        assertThatThrownBy(() -> gardenReadService.getGardenLocation(notExistedGardenId))
+            .isInstanceOf(EmptyResultDataAccessException.class)
+            .hasMessageContaining("존재하지 않는 텃밭입니다. gardenId : "+notExistedGardenId);
     }
 }
