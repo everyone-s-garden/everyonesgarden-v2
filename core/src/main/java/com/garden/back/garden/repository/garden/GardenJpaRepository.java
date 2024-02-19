@@ -143,6 +143,8 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
                   g.gardenName as gardenName,
                   g.gardenId as gardenId,
                   g.address as address,
+                  g.latitude as latitude,
+                  g.longitude as longitude,
                   g.recruitStartDate as recruitStartDate,
                   g.recruitEndDate as recruitEndDate,
                   g.price as price,
