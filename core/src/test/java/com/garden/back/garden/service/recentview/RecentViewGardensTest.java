@@ -11,14 +11,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class RecentViewGardensTest {
 
-    @DisplayName("최근 본 텃밭의 개수는 항상 "+RecentViewGardens.MAX_RECENT_VIEW_COUNT+"보다 작거나 같다.")
+    @DisplayName("최근 본 텃밭의 개수는 항상 " + RecentViewGardens.MAX_RECENT_VIEW_COUNT + "보다 작거나 같다.")
     @Test
     void addRecentViewGarden_ensureMaxSize() {
         // Given
         RecentViewGardens recentViews = new RecentViewGardens(new ArrayDeque<>());
         for (long i = 0L; i < RecentViewGardens.MAX_RECENT_VIEW_COUNT + 5; i++) {
             RecentViewGarden garden = new RecentViewGarden(
-                    i, "Size", "Name", "Price", List.of("Image"), "Status", "Type");
+                i, 37.123, 127.123, "Size", "Name", "Price", List.of("Image"), "Status", "Type");
             // When
             recentViews.addRecentViewGarden(garden);
         }
@@ -42,6 +42,6 @@ class RecentViewGardensTest {
         // Then
         List<RecentViewGarden> recentViewGardenList = recentViews.getRecentViewGardens().recentViewGardens().stream().toList();
         assertThat(recentViewGardenList).
-                containsExactly(GardenFixture.publicRecentViewGarden(),GardenFixture.privateRecentViewGarden());
+            containsExactly(GardenFixture.publicRecentViewGarden(), GardenFixture.privateRecentViewGarden());
     }
 }
