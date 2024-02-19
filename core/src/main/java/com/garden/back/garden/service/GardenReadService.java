@@ -105,4 +105,9 @@ public class GardenReadService {
         return RecentCreatedGardenResults.to(recentCreatedGardens);
     }
 
+    public GardenLocationResult getGardenLocation(Long gardenId) {
+        return GardenLocationResult.to(
+            gardenRepository.getGardenLocation(gardenId));
+    }
+
 }

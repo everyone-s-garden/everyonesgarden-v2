@@ -6,6 +6,7 @@ import com.garden.back.garden.repository.gardenlike.entity.GardenLikeEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GardenLikeRepositoryImpl implements GardenLikeRepository {
@@ -34,6 +35,16 @@ public class GardenLikeRepositoryImpl implements GardenLikeRepository {
         return gardenLikeJpaRepository.findAll().stream()
                 .map(GardenLikeEntity::toModel)
                 .toList();
+    }
+
+    @Override
+    public Optional<Long> findGardenLikeId(Long memberId, Long gardenId) {
+        return gardenLikeJpaRepository.findGardenLikeId(memberId, gardenId);
+    }
+
+    @Override
+    public boolean isExisted(Long memberId, Long gardenId) {
+        return findGardenLikeId(memberId, gardenId).isPresent();
     }
 
 }

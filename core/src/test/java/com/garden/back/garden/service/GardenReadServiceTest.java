@@ -26,12 +26,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 class GardenReadServiceTest extends IntegrationTestSupport {
@@ -175,6 +177,8 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThat(RecentViewGarden.to(gardenDetail).gardenId()).isEqualTo(latestViewGarden.gardenId());
+        assertThat(RecentViewGarden.to(gardenDetail).latitude()).isEqualTo(latestViewGarden.latitude());
+        assertThat(RecentViewGarden.to(gardenDetail).longitude()).isEqualTo(latestViewGarden.longitude());
         assertThat(RecentViewGarden.to(gardenDetail).gardenName()).isEqualTo(latestViewGarden.gardenName());
         assertThat(RecentViewGarden.to(gardenDetail).gardenStatus()).isEqualTo(latestViewGarden.gardenStatus());
         assertThat(RecentViewGarden.to(gardenDetail).gardenType()).isEqualTo(latestViewGarden.gardenType());
@@ -337,4 +341,44 @@ class GardenReadServiceTest extends IntegrationTestSupport {
             .extracting("isLiked")
             .containsExactly(false, true);
     }
+
+    @DisplayName("로그인 하지 않은 사용자의 경우에는 isLiked가 모두 false로 온다.")
+    @Test
+    void getRecentCreatedGardens_notLogin() {
+        // Given
+        Long notLoginId = 0L;
+
+        Garden publicGarden = GardenFixture.publicGarden();
+        Garden savedPublicGarden = gardenRepository.save(publicGarden);
+
+        // When
+        RecentCreatedGardenResults recentCreatedGardenResults = gardenReadService.getRecentCreatedGardens(notLoginId);
+
+        // Then
+        assertThat(recentCreatedGardenResults.recentCreatedGardenResults())
+            .extracting("gardenId")
+            .containsExactly(savedPublicGarden.getGardenId(), savedPrivateGarden.getGardenId());
+
+        assertThat(recentCreatedGardenResults.recentCreatedGardenResults())
+            .extracting("isLiked")
+            .containsExactly(false, false);
+    }
+
+    @DisplayName("텃밭 아이디를 통해서 텃밭의 위도와 경도를 알 수 있다.")
+    @Test
+    void getGardenLocation_returnLatitudeAndLongitude() {
+        // Given
+        Long notExistedGardenId = savedPrivateGarden.getGardenId()+100L;
+
+        // When
+        GardenLocationResult gardenLocation = gardenReadService.getGardenLocation(savedPrivateGarden.getGardenId());
+
+        // Then
+        assertThat(gardenLocation.latitude()).isEqualTo(savedPrivateGarden.getLatitude());
+        assertThat(gardenLocation.longitude()).isEqualTo(savedPrivateGarden.getLongitude());
+        assertThatThrownBy(() -> gardenReadService.getGardenLocation(notExistedGardenId))
+            .isInstanceOf(EmptyResultDataAccessException.class)
+            .hasMessageContaining("존재하지 않는 텃밭입니다. gardenId : "+notExistedGardenId);
+    }
+    
 }

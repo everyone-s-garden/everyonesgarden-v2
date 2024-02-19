@@ -12,6 +12,7 @@ import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.testutil.garden.GardenFixture;
+import com.sun.jdi.request.DuplicateRequestException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -119,6 +120,8 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
                 .extracting(
                         "isLiked")
                 .contains(true);
+        assertThatThrownBy(()->gardenCommandService.createGardenLike(gardenLikeCreateParam))
+            .isInstanceOf(DuplicateRequestException.class);
     }
 
     @DisplayName("좋아요한 텃밭 게시물의 좋아요를 취소할 수 있다")

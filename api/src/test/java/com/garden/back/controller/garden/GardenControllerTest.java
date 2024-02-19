@@ -5,6 +5,7 @@ import com.garden.back.ControllerTestSupport;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import java.util.List;
 import java.util.stream.Stream;
@@ -86,6 +87,22 @@ class GardenControllerTest extends ControllerTestSupport {
     void getDetail_invalidPathVariable(Long myManagedGardenId) throws Exception {
         mockMvc.perform(get("/v2/gardens/my-managed/{myManagedGardenId}", myManagedGardenId))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("최근 등록된 텃밭을 조회할 때 memberId를 음수에 대해 검증한다.")
+    @ParameterizedTest
+    @ValueSource(longs = {-1L})
+    void getRecentCreated_minusMemberId(Long memberId) throws Exception {
+        mockMvc.perform(get("/v2/gardens/recent-created/{memberId}", memberId))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("최근 등록된 텃밭을 조회할 때 memberId를 null에 대해 검증한다.")
+    @ParameterizedTest
+    @NullSource
+    void getRecentCreated_invalidMemberId(Long memberId) throws Exception {
+        mockMvc.perform(get("/v2/gardens/recent-created/{memberId}", memberId))
+            .andExpect(status().is4xxClientError());
     }
 
     private static Stream<GardenByNameRequest> provideInvalidGardenByNameRequest() {
