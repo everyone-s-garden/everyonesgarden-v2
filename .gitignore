@@ -38,6 +38,7 @@ out/
 
 application-credential.yml
 application-oauth.yml
+application-local.yml
 대한민국행정구역.geojson
 koreanGeo.csv
 # FixtureMonkey가 생성하는 의문의 파일
