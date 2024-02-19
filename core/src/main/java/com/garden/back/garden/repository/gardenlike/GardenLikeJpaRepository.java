@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Optional;
+
 public interface GardenLikeJpaRepository extends JpaRepository<GardenLikeEntity, Long> {
 
     @Modifying(clearAutomatically = true)
@@ -14,5 +16,12 @@ public interface GardenLikeJpaRepository extends JpaRepository<GardenLikeEntity,
             delete from GardenLikeEntity as gl where gl.garden.gardenId =:gardenId and gl.memberId=:memberId
             """)
     void delete(@Param("memberId") Long memberId, @Param("gardenId") Long gardenId);
+
+    @Query(
+        """
+          select gl.gardenLikeId from GardenLikeEntity as gl where gl.garden.gardenId =:gardenId and gl.memberId=:memberId
+        """
+    )
+    Optional<Long> findGardenLikeId(@Param("memberId") Long memberId, @Param("gardenId") Long gardenId);
 
 }
