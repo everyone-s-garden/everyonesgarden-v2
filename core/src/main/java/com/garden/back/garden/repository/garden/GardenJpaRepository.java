@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
 
@@ -143,6 +144,8 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
                   g.gardenName as gardenName,
                   g.gardenId as gardenId,
                   g.address as address,
+                  g.latitude as latitude,
+                  g.longitude as longitude,
                   g.recruitStartDate as recruitStartDate,
                   g.recruitEndDate as recruitEndDate,
                   g.price as price,
@@ -159,5 +162,16 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
             """
     )
     List<RecentCreateGardenRepositoryResponse> getRecentCreatedGardens(@Param("memberId") Long memberId);
+
+    @Query(
+           """
+                select
+                   g.latitude as latitude,
+                   g.longitude as longitude
+                 from GardenEntity as g
+                 where g.gardenId =:gardenId
+            """
+    )
+    Optional<GardenLocationRepositoryResponse> findGardenLocation(@Param("gardenId") Long gardenId);
 
 }

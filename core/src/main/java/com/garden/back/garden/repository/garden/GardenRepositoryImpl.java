@@ -13,6 +13,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GardenRepositoryImpl implements GardenRepository {
@@ -81,6 +82,17 @@ public class GardenRepositoryImpl implements GardenRepository {
     @Override
     public List<RecentCreateGardenRepositoryResponse> getRecentCreatedGardens(Long memberId) {
         return gardenJpaRepository.getRecentCreatedGardens(memberId);
+    }
+
+    @Override
+    public Optional<GardenLocationRepositoryResponse> findGardenLocation(Long gardenId) {
+        return gardenJpaRepository.findGardenLocation(gardenId);
+    }
+
+    @Override
+    public GardenLocationRepositoryResponse getGardenLocation(Long gardenId) {
+        return findGardenLocation(gardenId).orElseThrow(() ->
+            new EmptyResultDataAccessException("존재하지 않는 텃밭입니다. gardenId : "+gardenId,1));
     }
 
 }

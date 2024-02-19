@@ -145,6 +145,7 @@ include::{snippets}/update-garden/http-response.adoc[]
 
 ==== Request
 include::{snippets}/get-recent-created-gardens/http-request.adoc[]
+include::{snippets}/get-recent-created-gardens/query-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/get-recent-created-gardens/http-response.adoc[]
@@ -209,3 +210,15 @@ include::{snippets}/get-detail-my-managed-garden/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-detail-my-managed-garden/http-response.adoc[]
 include::{snippets}/get-detail-my-managed-garden/response-fields.adoc[]
+
+=== 해당 텃밭의 위도, 경도 얻기
+해당 텃밭의 위도, 경도를 알 수 있다. +
+해당 게시글을 누르면 텃밭 상세보기로 이동할 때 보통 사용된다.
+
+==== Request
+include::{snippets}/get-garden-location/http-request.adoc[]
+include::{snippets}/get-garden-location/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-garden-location/http-response.adoc[]
+include::{snippets}/get-garden-location/response-fields.adoc[]
