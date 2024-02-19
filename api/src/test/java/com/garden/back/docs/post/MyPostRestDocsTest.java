@@ -40,7 +40,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
     @DisplayName("내가 작성한 댓글의 게시글 api docs")
     @Test
     void findAllByComment() throws Exception {
-        FindAllMyCommentPostsResponse response = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(1L, "제목")));
+        FindAllMyCommentPostsResponse response = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(1L, "제목", "이미지 url", "댓글 내용")));
         FindAllMyCommentPostsRequest request = new FindAllMyCommentPostsRequest(0L, 10L);
         given(postQueryService.findAllByMyComment(any(), any())).willReturn(response);
 
@@ -59,7 +59,9 @@ class MyPostRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("postInfos").type(ARRAY).description("게시글 정보 목록"),
                     fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목")
+                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("게시글 미리보기 이미지"),
+                    fieldWithPath("postInfos[].content").type(STRING).description("댓글 내용")
                 )
             ));
     }
@@ -67,7 +69,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
     @DisplayName("내가 작성한 게시글 api docs")
     @Test
     void findAllMyPosts() throws Exception {
-        FindAllMyPostsResponse response = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(1L, "제목")));
+        FindAllMyPostsResponse response = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(1L, "제목", "이미지 url")));
         FindAllMyPostsRequest request = new FindAllMyPostsRequest(0L, 10L);
         given(postQueryService.findAllMyPosts(any(), any())).willReturn(response);
 
@@ -86,7 +88,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("postInfos").type(ARRAY).description("게시글 정보 목록"),
                     fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목")
+                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("미리보기 이미지")
                 )
             ));
 
@@ -95,7 +98,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
     @DisplayName("내가 좋아요한 게시글 api docs")
     @Test
     void findAllByLike() throws Exception {
-        FindAllMyLikePostsResponse response = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(1L, "제목")));
+        FindAllMyLikePostsResponse response = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(1L, "제목", "미리보기 이미지")));
         FindAllMyLikePostsRequest request = new FindAllMyLikePostsRequest(0L, 10L);
         given(postQueryService.findAllByMyLike(any(), any())).willReturn(response);
 
@@ -114,7 +117,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("postInfos").type(ARRAY).description("게시글 정보 목록"),
                     fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
-                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목")
+                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("미리보기 이미지")
                 )
             ));
     }

@@ -2,8 +2,8 @@ package com.garden.back.post.service;
 
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.Member;
-import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.member.Role;
+import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
 import com.garden.back.post.domain.PostType;
@@ -18,6 +18,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         Post savedPost = postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), savedMemberId);
-        FindPostDetailsResponse response = new FindPostDetailsResponse(post.getCommentsCount(), post.getLikesCount(), post.getPostAuthorId(), content, title, savedPost.getCreatedDate(), true, List.of(imageUrl));
+        FindPostDetailsResponse response = new FindPostDetailsResponse(post.getCommentsCount(), post.getLikesCount(), post.getPostAuthorId(), content, title, savedPost.getCreatedDate(), true, post.getPostType(), List.of(imageUrl));
 
         //when & then
         assertThat(postQueryService.findPostById(savedPost.getId(), savedMemberId)).isEqualTo(response);
@@ -236,8 +237,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.RECENT_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true),
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false)
+                new FindPostsAllCommentResponse.ParentInfo(recentCommentId, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true, Collections.EMPTY_LIST),
+                new FindPostsAllCommentResponse.ParentInfo(olderCommentId, postComment.getLikesCount(), content, postComment.getAuthorId(), false, Collections.EMPTY_LIST)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -267,8 +268,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
 
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(havMoreLikeCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true),
-                new FindPostsAllCommentResponse.CommentInfo(haveLessCommentLikeId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false)
+                new FindPostsAllCommentResponse.ParentInfo(havMoreLikeCommentId, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true, Collections.EMPTY_LIST),
+                new FindPostsAllCommentResponse.ParentInfo(haveLessCommentLikeId, postComment.getLikesCount(), content, postComment.getAuthorId(), false, Collections.EMPTY_LIST)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -297,8 +298,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.OLDER_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
             List.of(
-                new FindPostsAllCommentResponse.CommentInfo(olderCommentId, null, postComment.getLikesCount(), content, postComment.getAuthorId(), false),
-                new FindPostsAllCommentResponse.CommentInfo(recentCommentId, null, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true)
+                new FindPostsAllCommentResponse.ParentInfo(olderCommentId, postComment.getLikesCount(), content, postComment.getAuthorId(), false, Collections.EMPTY_LIST),
+                new FindPostsAllCommentResponse.ParentInfo(recentCommentId, postComment2.getLikesCount(), content, postComment2.getAuthorId(), true, Collections.EMPTY_LIST)
             )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -317,7 +318,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), member.getId());
-        FindAllMyLikePostsResponse expected = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(post.getId(), post.getTitle())));
+        FindAllMyLikePostsResponse expected = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl())));
 
         //when & then
         FindAllMyLikePostsResponse actual = postQueryService.findAllByMyLike(member.getId(), new FindAllMyLikePostsRepositoryRequest(0L, 10L));
@@ -336,7 +337,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
-        FindAllMyPostsResponse expected = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(post.getId(), post.getTitle())));
+        FindAllMyPostsResponse expected = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl())));
 
         //when & then
         FindAllMyPostsResponse actual = postQueryService.findAllMyPosts(member.getId(), new FindAllMyPostsRepositoryRequest(0L, 10L));
@@ -356,8 +357,9 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
-        postCommandService.createComment(post.getId(), member.getId(), new CommentCreateServiceRequest("내용", null));
-        FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(post.getId(), post.getTitle())));
+        String commentContent = "내용";
+        postCommandService.createComment(post.getId(), member.getId(), new CommentCreateServiceRequest(commentContent, null));
+        FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl(), commentContent)));
 
         //when & then
         FindAllMyCommentPostsResponse actual = postQueryService.findAllByMyComment(member.getId(), new FindAllMyCommentPostsRepositoryRequest(0L, 10L));

@@ -1,5 +1,6 @@
 package com.garden.back.post.domain.repository;
 
+import com.garden.back.post.domain.PostComment;
 import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.request.*;
 import com.garden.back.post.domain.repository.response.*;
@@ -10,12 +11,12 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.garden.back.post.domain.QCommentLike.commentLike;
 import static com.garden.back.post.domain.QPost.post;
@@ -32,6 +33,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindPostDetailsResponse findPostDetails(Long id, Long loginUserId) {
         List<String> imageUrls = jpaQueryFactory
@@ -56,6 +58,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 post.title,
                 post.createdDate,
                 isLikedByUser,
+                post.postType,
                 Expressions.constant(imageUrls)
                 ))
             .from(post)
@@ -66,6 +69,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .fetchOne();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getPostsOrderBy(request.orderBy());
@@ -120,9 +124,17 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         };
     }
 
+    //당근마켓 게시글을 봤을 때 가장 많은 게시글의 댓글이 100개 이하라 모든 댓글을 조회하는 식으로 코드를 작성했습니다.
+    @Transactional(readOnly = true)
     @Override
     public FindPostsAllCommentResponse findPostsAllComments(Long id, Long loginUserId, FindAllPostCommentsParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getCommentsOrderBy(request.orderBy());
+
+        List<PostComment> allComments = jpaQueryFactory
+            .selectFrom(postComment)
+            .where(postComment.postId.eq(id), postComment.deleteStatus.eq(false))
+            .orderBy(orderBy)
+            .fetch();
 
         List<Long> likedCommentIds = jpaQueryFactory
             .select(commentLike.commentId)
@@ -130,26 +142,36 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .where(commentLike.likesClickerId.eq(loginUserId))
             .fetch();
 
-        List<FindPostsAllCommentResponse.CommentInfo> comments = jpaQueryFactory
-            .select(Projections.constructor(FindPostsAllCommentResponse.CommentInfo.class,
-                postComment.id,
-                postComment.parentCommentId,
-                postComment.likesCount,
-                postComment.content,
-                postComment.authorId,
-                postComment.id.in(likedCommentIds)
-            ))
-            .from(postComment)
-            .where(
-                postComment.postId.eq(id),
-                postComment.deleteStatus.eq(false)
-            )
-            .orderBy(orderBy)
-            .offset(request.offset())
-            .limit(request.limit())
-            .fetch();
+        List<FindPostsAllCommentResponse.ParentInfo> parentComments = new ArrayList<>();
+        Map<Long, FindPostsAllCommentResponse.ParentInfo> parentMap = new HashMap<>();
 
-        return new FindPostsAllCommentResponse(comments);
+        // 첫 번째 순회: 부모 댓글만 처리
+        allComments.stream()
+            .filter(comment -> comment.getParentCommentId() == null)
+            .forEach(comment -> {
+                Boolean isLiked = likedCommentIds.contains(comment.getId());
+                FindPostsAllCommentResponse.ParentInfo parentInfo = new FindPostsAllCommentResponse.ParentInfo(
+                    comment.getId(), comment.getLikesCount(), comment.getContent(), comment.getAuthorId(), isLiked, new ArrayList<>());
+                parentMap.put(comment.getId(), parentInfo);
+                parentComments.add(parentInfo);
+            });
+
+        // 두 번째 순회: 자식 댓글 처리 및 부모에 할당
+        allComments.stream()
+            .filter(comment -> comment.getParentCommentId() != null)
+            .forEach(comment -> {
+                Boolean isLiked = likedCommentIds.contains(comment.getId());
+                FindPostsAllCommentResponse.CommentInfo childInfo = new FindPostsAllCommentResponse.CommentInfo(
+                    comment.getId(), comment.getParentCommentId(), comment.getLikesCount(), comment.getContent(), comment.getAuthorId(), isLiked);
+                FindPostsAllCommentResponse.ParentInfo parentInfo = parentMap.get(comment.getParentCommentId());
+                if (parentInfo != null) {
+                    parentInfo.child().add(childInfo);
+                }
+            });
+        int startIndex = request.offset();
+        int endIndex = Math.min(startIndex + request.limit(), parentComments.size());
+
+        return new FindPostsAllCommentResponse(parentComments.subList(startIndex, endIndex));
     }
 
     private OrderSpecifier<?> getCommentsOrderBy(FindAllPostCommentsParamRepositoryRequest.OrderBy orderBy) {
@@ -160,13 +182,22 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         };
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public FindAllMyLikePostsResponse findAllByMyLike(Long loginUserId, FindAllMyLikePostsRepositoryRequest request) {
         List<FindAllMyLikePostsResponse.PostInfo> postInfos =  jpaQueryFactory
             .select(Projections.constructor(FindAllMyLikePostsResponse.PostInfo.class,
                 post.id,
-                post.title
+                post.title,
+                JPAExpressions.select(postImage.imageUrl)
+                    .from(postImage)
+                    .where(postImage.post.eq(post)
+                        .and(postImage.id.eq(
+                            JPAExpressions.select(postImage.id.max())
+                                .from(postImage)
+                                .where(postImage.post.eq(post))
+                        ))
+                    )
             ))
             .from(post)
             .join(postLike).on(post.id.eq(postLike.postId))
@@ -180,10 +211,19 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
 
     @Override
     public FindAllMyPostsResponse findAllMyPosts(Long loginUserId, FindAllMyPostsRepositoryRequest request) {
-        List<FindAllMyPostsResponse.PostInfo> postInfos =  jpaQueryFactory
+        List<FindAllMyPostsResponse.PostInfo> postInfos = jpaQueryFactory
             .select(Projections.constructor(FindAllMyPostsResponse.PostInfo.class,
                 post.id,
-                post.title
+                post.title,
+                JPAExpressions.select(postImage.imageUrl)
+                    .from(postImage)
+                    .where(postImage.post.eq(post)
+                        .and(postImage.id.eq(
+                            JPAExpressions.select(postImage.id.max())
+                                .from(postImage)
+                                .where(postImage.post.eq(post))
+                        ))
+                    )
             ))
             .from(post)
             .where(
@@ -197,12 +237,23 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         return new FindAllMyPostsResponse(postInfos);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
         List<FindAllMyCommentPostsResponse.PostInfo> postInfos =  jpaQueryFactory
             .select(Projections.constructor(FindAllMyCommentPostsResponse.PostInfo.class,
                 post.id,
-                post.title
+                post.title,
+                JPAExpressions.select(postImage.imageUrl)
+                    .from(postImage)
+                    .where(postImage.post.eq(post)
+                        .and(postImage.id.eq(
+                            JPAExpressions.select(postImage.id.max())
+                                .from(postImage)
+                                .where(postImage.post.eq(post))
+                        ))
+                    ),
+                postComment.content
             ))
             .from(post)
             .join(postComment).on(post.id.eq(postComment.postId))
@@ -214,6 +265,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
         return new FindAllMyCommentPostsResponse(postInfos);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request) {
         LocalDateTime recentHour = LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(request.hour());
