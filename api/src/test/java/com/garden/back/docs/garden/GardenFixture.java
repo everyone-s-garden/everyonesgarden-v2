@@ -248,4 +248,11 @@ public class GardenFixture {
         );
     }
 
+    public static GardenLocationResult gardenLocationResult() {
+        return new GardenLocationResult(
+            34.123,
+            127.123
+        );
+    }
+
 }

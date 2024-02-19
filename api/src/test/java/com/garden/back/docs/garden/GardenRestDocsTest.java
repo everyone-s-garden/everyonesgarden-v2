@@ -310,4 +310,24 @@ class GardenRestDocsTest extends RestDocsSupport {
                 )));
     }
 
+    @DisplayName("텃밭의 위도 경도를 알 수 있다.")
+    @Test
+    void getGardenLocation() throws Exception {
+        Long gardenId = 1L;
+        given(gardenReadService.getGardenLocation(any())).willReturn(GardenFixture.gardenLocationResult());
+
+        mockMvc.perform(get("/v2/gardens/{gardenId}/locations", gardenId))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("get-garden-location",
+                pathParameters(
+                    parameterWithName("gardenId").description("텃밭 아이디")
+                ),
+                responseFields(
+                    fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                    fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("텃밭 경도")
+                )
+            ));
+    }
+
 }
