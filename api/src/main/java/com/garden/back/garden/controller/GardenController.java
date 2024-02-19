@@ -143,4 +143,16 @@ public class GardenController {
                 gardenReadService.getDetailMyManagedGarden(myManagedGardenId)));
     }
 
+    @GetMapping(
+        value = "/{gardenId}/locations",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GardenLocationResponse> getGardenLocation(
+        @PathVariable @Positive Long gardenId
+    ) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(GardenLocationResponse.to(gardenReadService.getGardenLocation(gardenId)));
+    }
+
 }
