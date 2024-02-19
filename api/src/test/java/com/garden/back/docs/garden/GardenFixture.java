@@ -227,4 +227,23 @@ public class GardenFixture {
         );
     }
 
+    public static RecentCreatedGardenResults recentCreatedGardenResults() {
+        return new RecentCreatedGardenResults(
+            List.of(
+                new RecentCreatedGardenResults.RecentCreatedGardenResult(
+                    1L,
+                    "건우네 주말농장",
+                    "경기도 오산시 오산동 22",
+                    37.444917,
+                    127.138868,
+                    "2023.12.01",
+                    "2023.12.31",
+                    "20000",
+                    false,
+                    "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+                )
+            )
+        );
+    }
+
 }

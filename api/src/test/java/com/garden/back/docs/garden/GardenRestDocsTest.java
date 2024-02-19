@@ -279,4 +279,33 @@ class GardenRestDocsTest extends RestDocsSupport {
                         )));
     }
 
+    @DisplayName("최근 등록된 텃밭들을 조회한다.")
+    @Test
+    void getRecentCreatedGardens() throws Exception {
+        RecentCreatedGardenResults results = GardenFixture.recentCreatedGardenResults();
+        given(gardenReadService.getRecentCreatedGardens(any())).willReturn(results);
+
+        mockMvc.perform(get("/v2/gardens/recent-created")
+                .param("memberId","0"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("get-recent-created-gardens",
+                queryParameters(
+                    parameterWithName("memberId").description("로그인한 사용자의 Id 없는 경우 0을 보내주세요")
+                ),
+                responseFields(
+                    fieldWithPath("recentCreatedGardenResponses").type(JsonFieldType.ARRAY).description("텃밭 전체 검색 결과"),
+                    fieldWithPath("recentCreatedGardenResponses[].gardenId").type(JsonFieldType.NUMBER).description("텃밭 아이디"),
+                    fieldWithPath("recentCreatedGardenResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
+                    fieldWithPath("recentCreatedGardenResponses[].address").type(JsonFieldType.STRING).description("텃밭 주소"),
+                    fieldWithPath("recentCreatedGardenResponses[].latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
+                    fieldWithPath("recentCreatedGardenResponses[].longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
+                    fieldWithPath("recentCreatedGardenResponses[].recruitStartDate").type(JsonFieldType.STRING).description("텃밭 모집 시작일"),
+                    fieldWithPath("recentCreatedGardenResponses[].recruitEndDate").type(JsonFieldType.STRING).description("텃밭 모집 마감일"),
+                    fieldWithPath("recentCreatedGardenResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
+                    fieldWithPath("recentCreatedGardenResponses[].isLiked").type(JsonFieldType.BOOLEAN).description("텃밭 좋아요 여부"),
+                    fieldWithPath("recentCreatedGardenResponses[].imageUrl").type(JsonFieldType.STRING).description("텃밭 이미지 썸네일")
+                )));
+    }
+
 }
