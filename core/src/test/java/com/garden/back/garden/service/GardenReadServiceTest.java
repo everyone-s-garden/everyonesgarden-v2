@@ -175,6 +175,8 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThat(RecentViewGarden.to(gardenDetail).gardenId()).isEqualTo(latestViewGarden.gardenId());
+        assertThat(RecentViewGarden.to(gardenDetail).latitude()).isEqualTo(latestViewGarden.latitude());
+        assertThat(RecentViewGarden.to(gardenDetail).longitude()).isEqualTo(latestViewGarden.longitude());
         assertThat(RecentViewGarden.to(gardenDetail).gardenName()).isEqualTo(latestViewGarden.gardenName());
         assertThat(RecentViewGarden.to(gardenDetail).gardenStatus()).isEqualTo(latestViewGarden.gardenStatus());
         assertThat(RecentViewGarden.to(gardenDetail).gardenType()).isEqualTo(latestViewGarden.gardenType());
