@@ -112,11 +112,11 @@ public class GardenController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<RecentCreatedGardenResponses> getRecentCreatedGardens(
-        @CurrentUser LoginUser loginUser
+        @RequestParam @PositiveOrZero Long memberId
     ) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(RecentCreatedGardenResponses.to(
-                gardenReadService.getRecentCreatedGardens(loginUser.memberId())));
+                gardenReadService.getRecentCreatedGardens(memberId)));
     }
 
     @GetMapping(
@@ -141,6 +141,18 @@ public class GardenController {
             .status(HttpStatus.OK)
             .body(MyManagedGardenDetailResponse.to(
                 gardenReadService.getDetailMyManagedGarden(myManagedGardenId)));
+    }
+
+    @GetMapping(
+        value = "/{gardenId}/locations",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GardenLocationResponse> getGardenLocation(
+        @PathVariable @Positive Long gardenId
+    ) {
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(GardenLocationResponse.to(gardenReadService.getGardenLocation(gardenId)));
     }
 
 }

@@ -12,6 +12,7 @@ import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenReposito
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.global.image.ImageUploader;
 import com.garden.back.global.image.ParallelImageUploader;
+import com.sun.jdi.request.DuplicateRequestException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,11 +30,11 @@ public class GardenCommandService {
     private final ImageUploader imageUploader;
 
     public GardenCommandService(
-            GardenRepository gardenRepository,
-            GardenImageRepository gardenImageRepository,
-            GardenLikeRepository gardenLikeRepository,
-            MyManagedGardenRepository myManagedGardenRepository,
-            ParallelImageUploader parallelImageUploader, ImageUploader imageUploader) {
+        GardenRepository gardenRepository,
+        GardenImageRepository gardenImageRepository,
+        GardenLikeRepository gardenLikeRepository,
+        MyManagedGardenRepository myManagedGardenRepository,
+        ParallelImageUploader parallelImageUploader, ImageUploader imageUploader) {
         this.gardenRepository = gardenRepository;
         this.gardenImageRepository = gardenImageRepository;
         this.gardenLikeRepository = gardenLikeRepository;
@@ -53,6 +54,10 @@ public class GardenCommandService {
 
     @Transactional
     public Long createGardenLike(GardenLikeCreateParam param) {
+        if (gardenLikeRepository.isExisted(param.memberId(), param.gardenId())) {
+            throw new DuplicateRequestException("이미 등록된 좋아요 합니다.");
+        }
+
         Garden gardenToLike = gardenRepository.getById(param.gardenId());
         GardenLike savedGardenLike = gardenLikeRepository.save(GardenLike.of(param.memberId(), gardenToLike));
 
@@ -89,8 +94,8 @@ public class GardenCommandService {
     private void deleteGardenImages(Long gardenId, List<String> remainGardenImageUrls) {
         List<GardenImage> gardenImages = gardenImageRepository.findByGardenId(gardenId);
         gardenImages.stream()
-                .filter(gardenImage -> !remainGardenImageUrls.contains(gardenImage.getImageUrl()))
-                .forEach(gardenImageRepository::delete);
+            .filter(gardenImage -> !remainGardenImageUrls.contains(gardenImage.getImageUrl()))
+            .forEach(gardenImageRepository::delete);
     }
 
     private void saveNewGardenImages(Garden garden, List<MultipartFile> newImage) {
@@ -107,10 +112,10 @@ public class GardenCommandService {
     public Long createMyManagedGarden(MyManagedGardenCreateParam param) {
         String uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
         MyManagedGardenCreateDomainRequest myManagedGardenCreateDomainRequest = MyManagedGardenCreateParam.to(
-                param,
-                uploadImageUrls);
+            param,
+            uploadImageUrls);
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(
-                MyManagedGarden.to(myManagedGardenCreateDomainRequest));
+            MyManagedGarden.to(myManagedGardenCreateDomainRequest));
 
         return savedMyManagedGarden.getMyManagedGardenId();
     }

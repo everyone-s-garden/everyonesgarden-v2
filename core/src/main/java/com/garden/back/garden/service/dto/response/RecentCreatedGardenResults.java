@@ -17,7 +17,7 @@ public record RecentCreatedGardenResults(
         return new RecentCreatedGardenResults(
             responses.stream()
                 .map(response ->
-                    RecentCreatedGardenResult.to(response, thumbnails.getOrDefault(response.getGardenId(),"")))
+                    RecentCreatedGardenResult.to(response, thumbnails.getOrDefault(response.getGardenId(), "")))
                 .toList()
         );
     }
@@ -26,6 +26,8 @@ public record RecentCreatedGardenResults(
         Long gardenId,
         String gardenName,
         String address,
+        Double latitude,
+        Double longitude,
         String recruitStartDate,
         String recruitEndDate,
         String price,
@@ -39,6 +41,8 @@ public record RecentCreatedGardenResults(
                 response.getGardenId(),
                 response.getGardenName(),
                 response.getAddress(),
+                response.getLatitude(),
+                response.getLongitude(),
                 response.getRecruitStartDate().format(DATE_FORMATTER),
                 response.getRecruitEndDate().format(DATE_FORMATTER),
                 response.getPrice(),
