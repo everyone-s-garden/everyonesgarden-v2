@@ -7,6 +7,7 @@ import com.garden.back.crop.domain.repository.CropJpaRepository;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.PostCommentRepository;
 import com.garden.back.post.domain.repository.PostRepository;
 import com.garden.back.report.domain.comment.CommentReport;
@@ -154,7 +155,7 @@ class ReportServiceTest extends IntegrationTestSupport {
     @Test
     void reportPost() {
         //given
-        Post post = Post.create("제목", "내용", 1L, List.of("https://abc.com"));
+        Post post = Post.create("제목", "내용", 1L, List.of("https://abc.com"), PostType.QUESTION);
         postRepository.save(post);
 
         //when
@@ -170,7 +171,7 @@ class ReportServiceTest extends IntegrationTestSupport {
     @Test
     void reportPostInvalid() {
         //given
-        Post post = Post.create("제목", "내용", 1L, List.of("https://abc.com"));
+        Post post = Post.create("제목", "내용", 1L, List.of("https://abc.com"), PostType.QUESTION);
         postRepository.save(post);
 
         //when & then

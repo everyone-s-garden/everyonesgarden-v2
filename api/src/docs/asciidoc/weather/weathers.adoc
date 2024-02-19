@@ -13,7 +13,7 @@ include::{snippets}/get-all-weather/response-fields.adoc[]
 [[week-weather]]
 === 주간 날씨 조회
 
-오늘로부터 2일, 3일, 4일, 5일, 6일 뒤의 날씨를 조회합니다.
+오늘로부터 2일, 3일, 4일, 5일, 6일, 7일, 8일, 9일 뒤의 날씨를 조회합니다.
 
 ==== Request
 include::{snippets}/get-week-weather/http-request.adoc[]

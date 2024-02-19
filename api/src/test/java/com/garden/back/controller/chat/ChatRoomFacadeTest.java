@@ -141,6 +141,5 @@ class ChatRoomFacadeTest extends IntegrationTestSupport {
         assertThat(chatRoomsInMember.responses().get(0).partnerInfo().partnerId()).isEqualTo(partner.getId());
         assertThat(chatRoomsInMember.responses().get(0).partnerInfo().nickName()).isEqualTo(partner.getNickname());
         assertThat(chatRoomsInMember.responses().get(0).partnerInfo().memberMannerGrade()).isEqualTo(partner.getMemberMannerGrade().toString());
-
     }
 }

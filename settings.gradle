@@ -3,6 +3,6 @@ plugins {
 }
 
 rootProject.name = 'everyone-garden'
-include 'core', 'api', 'batch', 'chat'
+include 'core', 'api', 'batch', 'chat', 'admin'
 
 

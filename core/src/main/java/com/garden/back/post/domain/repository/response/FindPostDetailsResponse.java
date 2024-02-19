@@ -8,11 +8,12 @@ import java.util.List;
 public record FindPostDetailsResponse(
     Long commentCount,
     Long likeCount,
-    String author,
+    Long authorId,
     String content,
     String title,
     @JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate createdDate,
+    Boolean isLikeClick,
     List<String> images
 ) {
 }

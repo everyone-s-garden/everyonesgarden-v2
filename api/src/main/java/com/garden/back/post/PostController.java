@@ -3,6 +3,7 @@ package com.garden.back.post;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.post.domain.repository.response.FindAllPopularPostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
 import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
 import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
@@ -36,9 +37,10 @@ public class PostController {
     //게시글 상세 조회
     @GetMapping(path = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindPostDetailsResponse> findPostDetails(
-        @PathVariable("postId") Long postId
+        @PathVariable("postId") Long postId,
+        @CurrentUser LoginUser loginUser
     ) {
-        return ResponseEntity.ok(postQueryService.findPostById(postId));
+        return ResponseEntity.ok(postQueryService.findPostById(postId, loginUser.memberId()));
     }
 
     //게시글 전체 조회
@@ -53,9 +55,10 @@ public class PostController {
     @GetMapping(value = "/{postId}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindPostsAllCommentResponse> findPostsAllComment(
         @PathVariable("postId") Long postId,
-        @ModelAttribute @Valid FindAllCommentsParamRequest request
+        @ModelAttribute @Valid FindAllCommentsParamRequest request,
+        @CurrentUser LoginUser loginUser
     ) {
-        return ResponseEntity.ok(postQueryService.findAllCommentsByPostId(postId, request.toRepositoryDto()));
+        return ResponseEntity.ok(postQueryService.findAllCommentsByPostId(postId, loginUser.memberId(), request.toRepositoryDto()));
     }
 
     //게시글 생성
@@ -173,4 +176,11 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+    //실시간 인기 게시글 조회
+    @GetMapping(value = "/popular", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FindAllPopularPostsResponse> getPopularPosts(
+        @ModelAttribute @Valid FindAllPopularPostsRequest request
+    ) {
+        return ResponseEntity.ok(postQueryService.findAllPopularPosts(request.toRepositoryRequest()));
+    }
 }

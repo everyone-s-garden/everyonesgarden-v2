@@ -5,6 +5,7 @@ import com.garden.back.member.Member;
 import com.garden.back.member.MemberMannerGrade;
 import com.garden.back.member.Role;
 import com.garden.back.member.repository.MemberRepository;
+import com.garden.back.member.repository.response.MemberInfoResponse;
 import com.garden.back.member.service.dto.MemberMyPageResult;
 import com.garden.back.member.service.dto.UpdateProfileServiceRequest;
 import com.garden.back.testutil.member.MemberFixture;
@@ -101,5 +102,17 @@ class MemberServiceTest extends IntegrationTestSupport {
         assertThat(updatedMember)
             .extracting(Member::getNickname, Member::getProfileImageUrl)
             .containsExactly("닉네임", expectedUrl);
+    }
+
+    @DisplayName("id로 회원 정보를 조회한다.")
+    @Test
+    void test() {
+        //given
+        Member member = MemberFixture.member();
+        Member savedMember = memberRepository.save(member);
+
+        //when & then
+        MemberInfoResponse expected = new MemberInfoResponse(savedMember.getNickname(), savedMember.getProfileImageUrl(), savedMember.getMemberMannerGrade());
+        assertThat(memberService.findMemberById(savedMember.getId())).isEqualTo(expected);
     }
 }

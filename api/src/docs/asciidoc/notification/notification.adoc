@@ -1,0 +1,39 @@
+[[notification-get-all]]
+=== 모든 알림 조회
+
+==== Request
+include::{snippets}/notification-get-all/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/notification-get-all/http-response.adoc[]
+include::{snippets}/notification-get-all/response-fields.adoc[]
+
+[[notification-poll-unread]]
+=== 읽지 않은 알림의 개수 조회
+
+==== Request
+include::{snippets}/notification-poll-unread/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/notification-poll-unread/http-response.adoc[]
+include::{snippets}/notification-poll-unread/response-fields.adoc[]
+
+
+[[notification-get-new]]
+=== 읽지 않은 알림 조회
+
+==== Request
+include::{snippets}/notification-get-new/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/notification-get-new/http-response.adoc[]
+include::{snippets}/notification-get-new/response-fields.adoc[]
+
+[[mark-as-read-unread-notification]]
+=== 읽지 않은 알람 읽음 처리
+==== Request
+include::{snippets}/mark-as-read-unread-notification/http-request.adoc[]
+
+==== Response (Success)
+include::{snippets}/mark-as-read-unread-notification/http-response.adoc[]
+include::{snippets}/mark-as-read-unread-notification/response-fields.adoc[]

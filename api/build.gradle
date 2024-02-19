@@ -7,6 +7,10 @@ configurations {
 }
 
 dependencies {
+    implementation project(':core')
+    implementation project(':chat')
+    implementation project(':batch')
+    implementation project(':admin')
     //Spring MVC
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -56,6 +60,7 @@ asciidoctor {
 }
 
 bootJar {
+    enabled = true
     dependsOn asciidoctor
     from("${asciidoctor.outputDir}") {
         into "static/docs"
@@ -63,5 +68,3 @@ bootJar {
 }
 
 version '1.0.1-SNAPSHOT-'+new Date().format("yyyyMMddHHmmss")
-
-jar.enabled=false

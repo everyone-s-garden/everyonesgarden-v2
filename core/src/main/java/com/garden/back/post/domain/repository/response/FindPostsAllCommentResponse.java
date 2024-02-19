@@ -10,6 +10,7 @@ public record FindPostsAllCommentResponse(
         Long parentId,
         Long likeCount,
         String content,
-        String author
+        Long authorId,
+        Boolean isLikeClick
     ) {}
 }

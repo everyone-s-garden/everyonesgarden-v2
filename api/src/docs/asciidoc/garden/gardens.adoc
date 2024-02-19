@@ -146,6 +146,8 @@ include::{snippets}/update-garden/http-response.adoc[]
 ==== Request
 include::{snippets}/get-recent-created-gardens/http-request.adoc[]
 include::{snippets}/get-recent-created-gardens/query-parameters.adoc[]
+
+>>>>>>> 61033a7d2cb1726be3f5eaa2746180216b7f0da4
 ==== Response (Success)
 include::{snippets}/get-recent-created-gardens/http-response.adoc[]
 include::{snippets}/get-recent-created-gardens/response-fields.adoc[]

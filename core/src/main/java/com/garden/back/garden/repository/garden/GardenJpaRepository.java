@@ -173,4 +173,5 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
             """
     )
     Optional<GardenLocationRepositoryResponse> findGardenLocation(@Param("gardenId") Long gardenId);
+
 }

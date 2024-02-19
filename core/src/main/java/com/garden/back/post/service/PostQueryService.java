@@ -14,16 +14,16 @@ public class PostQueryService {
         this.postQueryRepository = postQueryRepository;
     }
 
-    public FindPostDetailsResponse findPostById(Long id) {
-        return postQueryRepository.findPostDetails(id);
+    public FindPostDetailsResponse findPostById(Long id, Long loginUserId) {
+        return postQueryRepository.findPostDetails(id, loginUserId);
     }
 
     public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
         return postQueryRepository.findAllPosts(request);
     }
 
-    public FindPostsAllCommentResponse findAllCommentsByPostId(Long id, FindAllPostCommentsParamRepositoryRequest request) {
-        return postQueryRepository.findPostsAllComments(id, request);
+    public FindPostsAllCommentResponse findAllCommentsByPostId(Long id, Long loginUserId, FindAllPostCommentsParamRepositoryRequest request) {
+        return postQueryRepository.findPostsAllComments(id, loginUserId, request);
     }
 
     public FindAllMyLikePostsResponse findAllByMyLike(Long loginUserId, FindAllMyLikePostsRepositoryRequest request) {
@@ -36,5 +36,9 @@ public class PostQueryService {
 
     public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
         return postQueryRepository.findAllByMyComment(loginUserId, request);
+    }
+
+    public FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request) {
+        return postQueryRepository.findAllPopularPosts(request);
     }
 }

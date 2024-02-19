@@ -50,6 +50,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
 
+    //feign
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    //circuitbreaker
+    api 'org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.willowtreeapps.assertk:assertk:0.25'

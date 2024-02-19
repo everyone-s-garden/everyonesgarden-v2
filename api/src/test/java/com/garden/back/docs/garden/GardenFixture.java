@@ -229,6 +229,13 @@ public class GardenFixture {
         );
     }
 
+    public static GardenLocationResult gardenLocationResult() {
+        return new GardenLocationResult(
+            34.123,
+            127.123
+        );
+    }
+
     public static RecentCreatedGardenResults recentCreatedGardenResults() {
         return new RecentCreatedGardenResults(
             List.of(
@@ -245,13 +252,6 @@ public class GardenFixture {
                     "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
                 )
             )
-        );
-    }
-
-    public static GardenLocationResult gardenLocationResult() {
-        return new GardenLocationResult(
-            34.123,
-            127.123
         );
     }
 

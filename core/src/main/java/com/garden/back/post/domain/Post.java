@@ -1,6 +1,7 @@
 package com.garden.back.post.domain;
 
 import com.garden.back.global.jpa.BaseTimeEntity;
+import com.mysema.commons.lang.Assert;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -60,10 +61,14 @@ public class Post extends BaseTimeEntity {
     @Column(name = "delete_status")
     private boolean deleteStatus;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "post_type")
+    private PostType postType;
+
     @Transient
     private static final int DELETE_REPORT_COUNT = 10;
 
-    private Post(String title, String content, Long postAuthorId, List<String> postUrls) {
+    private Post(String title, String content, Long postAuthorId, List<String> postUrls, PostType postType) {
         this.commentsCount = 0L;
         this.reportCount = 0L;
         this.likesCount = 0L;
@@ -75,21 +80,22 @@ public class Post extends BaseTimeEntity {
             .collect(Collectors.toSet());
         this.createdDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         this.deleteStatus = false;
+        this.postType = postType;
         validatePostStatus();
     }
 
-    public static Post create(String title, String content, Long postAuthorId, List<String> postUrls) {
-        return new Post(title, content, postAuthorId, postUrls);
+    public static Post create(String title, String content, Long postAuthorId, List<String> postUrls, PostType postType) {
+        return new Post(title, content, postAuthorId, postUrls, postType);
     }
 
-    public void update(String title, String content, Long postAuthorId, List<String> deletedImages, List<String> addedImages) {
+    public void update(String title, String content, Long postAuthorId, List<String> deletedImages, List<String> addedImages, PostType postType) {
         if (!this.postAuthorId.equals(postAuthorId)) {
             throw new IllegalArgumentException("자신이 작성한 게시물만 수정이 가능합니다.");
         }
 
         this.title = title;
         this.content = content;
-
+        this.postType = postType;
         validateUpdatable(addedImages.size(), deletedImages.size());
 
         addedImages.stream()
@@ -140,6 +146,9 @@ public class Post extends BaseTimeEntity {
     }
 
     private void validatePostStatus() {
+
+        Assert.notNull(this.postType, "게시글의 타입을 입력해주세요.");
+
         if (this.title != null && this.title.length() > 255) {
             throw new IllegalArgumentException("제목은 255자를 초과할 수 없으며 null 허용이 안됩니다.");
         }

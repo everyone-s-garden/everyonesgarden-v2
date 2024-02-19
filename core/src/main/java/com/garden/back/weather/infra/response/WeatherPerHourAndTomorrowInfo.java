@@ -26,6 +26,7 @@ public record WeatherPerHourAndTomorrowInfo(
             "1", "비",
             "2", "비/눈",
             "3", "눈",
+            "4", "소나기",
             "5", "빗방울",
             "6", "빗방울눈날림",
             "7", "눈날림"
