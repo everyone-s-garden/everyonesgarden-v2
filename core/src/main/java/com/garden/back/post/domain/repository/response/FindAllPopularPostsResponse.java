@@ -16,7 +16,7 @@ public record FindAllPopularPostsResponse(
         Long commentCount,
         String content,
         String preview,
-        Long authorId,
+        UserResponse userInfo,
         PostType postType,
         @JsonFormat(pattern = "yyyy-MM-dd")
         LocalDate createdDate

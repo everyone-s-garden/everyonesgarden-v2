@@ -9,7 +9,7 @@ import java.util.List;
 public record FindPostDetailsResponse(
     Long commentCount,
     Long likeCount,
-    Long authorId,
+    UserResponse userInfo,
     String content,
     String title,
     @JsonFormat(pattern = "yyyy-MM-dd")
