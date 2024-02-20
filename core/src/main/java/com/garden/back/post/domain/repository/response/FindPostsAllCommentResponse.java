@@ -9,7 +9,7 @@ public record FindPostsAllCommentResponse(
         Long commentId,
         Long likeCount,
         String content,
-        Long authorId,
+        UserResponse userInfo,
         Boolean isLikeClick,
         List<CommentInfo> child
     ) {}
@@ -19,7 +19,7 @@ public record FindPostsAllCommentResponse(
         Long parentId,
         Long likeCount,
         String content,
-        Long authorId,
+        UserResponse userInfo,
         Boolean isLikeClick
     ) {}
 }
