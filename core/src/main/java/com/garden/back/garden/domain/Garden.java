@@ -18,7 +18,8 @@ public class Garden {
 
     private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
-    private static final int MIN_DESCRIPTION_LENGTH = 15;
+    private static final int MAX_DESCRIPTION_LENGTH = 100;
+    private static final String DEFAULT_FIELD = "";
 
     private Long gardenId;
     private String address;
@@ -28,15 +29,12 @@ public class Garden {
     private String gardenName;
     private GardenType gardenType;
     private GardenStatus gardenStatus;
-    private String linkForRequest;
     private String price;
     private String contact;
     private String size;
     private String gardenDescription;
     private LocalDate recruitStartDate;
     private LocalDate recruitEndDate;
-    private LocalDate useStartDate;
-    private LocalDate useEndDate;
     private LocalDate createdAt;
     private LocalDate lastModifiedDate;
     private Boolean isToilet;
@@ -58,37 +56,32 @@ public class Garden {
     }
 
     protected Garden(
-            Long id,
-            String address,
-            Double latitude,
-            Double longitude,
-            Point point,
-            String gardenName,
-            GardenType gardenType,
-            GardenStatus gardenStatus,
-            String linkForRequest,
-            String price,
-            String contact,
-            String size,
-            String gardenDescription,
-            LocalDate recruitStartDate,
-            LocalDate recruitEndDate,
-            LocalDate useStartDate,
-            LocalDate useEndDate,
-            Boolean isToilet,
-            Boolean isWaterway,
-            Boolean isEquipment,
-            Long writerId,
-            boolean isDeleted,
-            int reportedScore) {
+        Long id,
+        String address,
+        Double latitude,
+        Double longitude,
+        Point point,
+        String gardenName,
+        GardenType gardenType,
+        GardenStatus gardenStatus,
+        String price,
+        String contact,
+        String size,
+        String gardenDescription,
+        LocalDate recruitStartDate,
+        LocalDate recruitEndDate,
+        Boolean isToilet,
+        Boolean isWaterway,
+        Boolean isEquipment,
+        Long writerId,
+        boolean isDeleted,
+        int reportedScore) {
 
         Assert.hasLength(address, "address는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(latitude, "latitude는 null일 수 없습니다.");
         Assert.notNull(longitude, "longitude는 null일 수 없습니다.");
         Assert.notNull(point, "point는 null일 수 없습니다.");
         Assert.hasLength(gardenName, "gardenName는 null이거나 빈 값일 수 없습니다.");
-        Assert.hasLength(linkForRequest, "linkForRequest는 null이거나 빈 값일 수 없습니다.");
-        Assert.hasLength(contact, "contact는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(isToilet, "isToilet은 null일 수 없습니다.");
         Assert.notNull(isWaterway, "isWaterway는 null일 수 없습니다.");
         Assert.notNull(isEquipment, "isEquipment는 null일 수 없습니다.");
@@ -96,8 +89,7 @@ public class Garden {
         isNegativeReportedScore(reportedScore);
         isNegativePrice(price);
         isNegativeSize(size);
-        hasDefaultDescriptionLength(gardenDescription);
-        validateDate(useStartDate, useEndDate);
+        isMaxDescriptionLength(gardenDescription);
         validateDate(recruitStartDate, recruitEndDate);
 
         this.gardenId = id;
@@ -108,15 +100,12 @@ public class Garden {
         this.gardenName = gardenName;
         this.gardenType = gardenType;
         this.gardenStatus = gardenStatus;
-        this.linkForRequest = linkForRequest;
         this.price = price;
-        this.contact = contact;
+        this.contact = isNull(contact);
         this.size = size;
-        this.gardenDescription = gardenDescription;
+        this.gardenDescription = isNull(gardenDescription);
         this.recruitStartDate = recruitStartDate;
         this.recruitEndDate = recruitEndDate;
-        this.useStartDate = useStartDate;
-        this.useEndDate = useEndDate;
         this.isToilet = isToilet;
         this.isWaterway = isWaterway;
         this.isEquipment = isEquipment;
@@ -126,88 +115,77 @@ public class Garden {
     }
 
     public static Garden of(
-            Long id,
-            String address,
-            Double latitude,
-            Double longitude,
-            Point point,
-            String gardenName,
-            GardenType gardenType,
-            GardenStatus gardenStatus,
-            String linkForRequest,
-            String price,
-            String contact,
-            String size,
-            String gardenDescription,
-            LocalDate recruitStartDate,
-            LocalDate recruitEndDate,
-            LocalDate useStartDate,
-            LocalDate useEndDate,
-            Boolean isToilet,
-            Boolean isWaterway,
-            Boolean isEquipment,
-            Long writerId,
-            boolean isDeleted,
-            int reportedScore
+        Long id,
+        String address,
+        Double latitude,
+        Double longitude,
+        Point point,
+        String gardenName,
+        GardenType gardenType,
+        GardenStatus gardenStatus,
+        String price,
+        String contact,
+        String size,
+        String gardenDescription,
+        LocalDate recruitStartDate,
+        LocalDate recruitEndDate,
+        Boolean isToilet,
+        Boolean isWaterway,
+        Boolean isEquipment,
+        Long writerId,
+        boolean isDeleted,
+        int reportedScore
     ) {
         return new Garden(
-                id,
-                address,
-                latitude,
-                longitude,
-                point,
-                gardenName,
-                gardenType,
-                gardenStatus,
-                linkForRequest,
-                price,
-                contact,
-                size,
-                gardenDescription,
-                recruitStartDate,
-                recruitEndDate,
-                useStartDate,
-                useEndDate,
-                isToilet,
-                isWaterway,
-                isEquipment,
-                writerId,
-                isDeleted,
-                reportedScore
+            id,
+            address,
+            latitude,
+            longitude,
+            point,
+            gardenName,
+            gardenType,
+            gardenStatus,
+            price,
+            contact,
+            size,
+            gardenDescription,
+            recruitStartDate,
+            recruitEndDate,
+            isToilet,
+            isWaterway,
+            isEquipment,
+            writerId,
+            isDeleted,
+            reportedScore
         );
     }
 
     protected Garden(
-            String address,
-            Double latitude,
-            Double longitude,
-            Point point,
-            String gardenName,
-            GardenType gardenType,
-            GardenStatus gardenStatus,
-            String linkForRequest,
-            String price,
-            String contact,
-            String size,
-            String gardenDescription,
-            LocalDate recruitStartDate,
-            LocalDate recruitEndDate,
-            LocalDate useStartDate,
-            LocalDate useEndDate,
-            Boolean isToilet,
-            Boolean isWaterway,
-            Boolean isEquipment,
-            Long writerId,
-            boolean isDeleted,
-            int reportedScore) {
+        String address,
+        Double latitude,
+        Double longitude,
+        Point point,
+        String gardenName,
+        GardenType gardenType,
+        GardenStatus gardenStatus,
+        String price,
+        String contact,
+        String size,
+        String gardenDescription,
+        LocalDate recruitStartDate,
+        LocalDate recruitEndDate,
+        Boolean isToilet,
+        Boolean isWaterway,
+        Boolean isEquipment,
+        Long writerId,
+        boolean isDeleted,
+        int reportedScore) {
 
         Assert.hasLength(address, "address는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(latitude, "latitude는 null일 수 없습니다.");
         Assert.notNull(longitude, "longitude는 null일 수 없습니다.");
         Assert.notNull(point, "point는 null일 수 없습니다.");
         Assert.hasLength(gardenName, "gardenName는 null이거나 빈 값일 수 없습니다.");
-        Assert.hasLength(linkForRequest, "linkForRequest는 null이거나 빈 값일 수 없습니다.");
-        Assert.hasLength(contact, "contact는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(isToilet, "isToilet은 null일 수 없습니다.");
         Assert.notNull(isWaterway, "isWaterway는 null일 수 없습니다.");
         Assert.notNull(isEquipment, "isEquipment는 null일 수 없습니다.");
@@ -215,8 +193,7 @@ public class Garden {
         isNegativeReportedScore(reportedScore);
         isNegativePrice(price);
         isNegativeSize(size);
-        hasDefaultDescriptionLength(gardenDescription);
-        validateDate(useStartDate, useEndDate);
+        isMaxDescriptionLength(gardenDescription);
         validateDate(recruitStartDate, recruitEndDate);
 
         this.address = address;
@@ -226,15 +203,12 @@ public class Garden {
         this.gardenName = gardenName;
         this.gardenType = gardenType;
         this.gardenStatus = gardenStatus;
-        this.linkForRequest = linkForRequest;
         this.price = price;
-        this.contact = contact;
+        this.contact = isNull(contact);
         this.size = size;
-        this.gardenDescription = gardenDescription;
+        this.gardenDescription = isNull(gardenDescription);
         this.recruitStartDate = recruitStartDate;
         this.recruitEndDate = recruitEndDate;
-        this.useStartDate = useStartDate;
-        this.useEndDate = useEndDate;
         this.isToilet = isToilet;
         this.isWaterway = isWaterway;
         this.isEquipment = isEquipment;
@@ -244,100 +218,88 @@ public class Garden {
     }
 
     public static Garden of(
-            String address,
-            Double latitude,
-            Double longitude,
-            Point point,
-            String gardenName,
-            GardenType gardenType,
-            GardenStatus gardenStatus,
-            String linkForRequest,
-            String price,
-            String contact,
-            String size,
-            String gardenDescription,
-            LocalDate recruitStartDate,
-            LocalDate recruitEndDate,
-            LocalDate useStartDate,
-            LocalDate useEndDate,
-            Boolean isToilet,
-            Boolean isWaterway,
-            Boolean isEquipment,
-            Long writerId,
-            boolean isDeleted,
-            int reportedScore
+        String address,
+        Double latitude,
+        Double longitude,
+        Point point,
+        String gardenName,
+        GardenType gardenType,
+        GardenStatus gardenStatus,
+        String price,
+        String contact,
+        String size,
+        String gardenDescription,
+        LocalDate recruitStartDate,
+        LocalDate recruitEndDate,
+        Boolean isToilet,
+        Boolean isWaterway,
+        Boolean isEquipment,
+        Long writerId,
+        boolean isDeleted,
+        int reportedScore
     ) {
         return new Garden(
-                address,
-                latitude,
-                longitude,
-                point,
-                gardenName,
-                gardenType,
-                gardenStatus,
-                linkForRequest,
-                price,
-                contact,
-                size,
-                gardenDescription,
-                recruitStartDate,
-                recruitEndDate,
-                useStartDate,
-                useEndDate,
-                isToilet,
-                isWaterway,
-                isEquipment,
-                writerId,
-                isDeleted,
-                reportedScore
+            address,
+            latitude,
+            longitude,
+            point,
+            gardenName,
+            gardenType,
+            gardenStatus,
+            price,
+            contact,
+            size,
+            gardenDescription,
+            recruitStartDate,
+            recruitEndDate,
+            isToilet,
+            isWaterway,
+            isEquipment,
+            writerId,
+            isDeleted,
+            reportedScore
         );
     }
 
     public static Garden createPrivateGarden(
-            String address,
-            Double latitude,
-            Double longitude,
-            Point point,
-            String gardenName,
-            GardenStatus gardenStatus,
-            String linkForRequest,
-            String price,
-            String contact,
-            String size,
-            String gardenDescription,
-            LocalDate recruitStartDate,
-            LocalDate recruitEndDate,
-            LocalDate useStartDate,
-            LocalDate useEndDate,
-            Boolean isToilet,
-            Boolean isWaterway,
-            Boolean isEquipment,
-            Long writerId
+        String address,
+        Double latitude,
+        Double longitude,
+        Point point,
+        String gardenName,
+        GardenStatus gardenStatus,
+        String price,
+        String contact,
+        String size,
+        String gardenDescription,
+        LocalDate recruitStartDate,
+        LocalDate recruitEndDate,
+        Boolean isToilet,
+        Boolean isWaterway,
+        Boolean isEquipment,
+        Long writerId
 
-    ){
+    ) {
         return new Garden(
-                address,
-                latitude,
-                longitude,
-                point,
-                gardenName,
-                GardenType.PRIVATE,
-                gardenStatus,
-                linkForRequest,
-                price,
-                contact,
-                size,
-                gardenDescription,
-                recruitStartDate,
-                recruitEndDate,
-                useStartDate,
-                useEndDate,
-                isToilet,
-                isWaterway,
-                isEquipment,
-                writerId,
-                false,
-                DEFAULT_REPORTED_SCORE
+            address,
+            latitude,
+            longitude,
+            point,
+            gardenName,
+            GardenType.PRIVATE,
+            gardenStatus,
+            price,
+            contact,
+            size,
+            gardenDescription,
+            recruitStartDate,
+            recruitEndDate,
+            isToilet,
+            isWaterway,
+            isEquipment,
+            writerId,
+            false,
+            DEFAULT_REPORTED_SCORE
         );
 
     }
@@ -362,10 +324,9 @@ public class Garden {
         }
     }
 
-    private void hasDefaultDescriptionLength(String gardenDescription) {
-        Assert.hasLength(gardenDescription, "gardenDescription는 null이거나 빈 값일 수 없습니다.");
-        if (gardenDescription.length() < MIN_DESCRIPTION_LENGTH) {
-            throw new IllegalArgumentException(String.format("gardenDescription은 최소 %s여야 합니다", MIN_DESCRIPTION_LENGTH));
+    private void isMaxDescriptionLength(String gardenDescription) {
+        if (gardenDescription.length() > MAX_DESCRIPTION_LENGTH) {
+            throw new IllegalArgumentException(String.format("gardenDescription은 최대 %s글자 입니다.", MAX_DESCRIPTION_LENGTH));
         }
     }
 
@@ -389,9 +350,8 @@ public class Garden {
 
         isNegativePrice(request.price());
         isNegativeSize(request.size());
-        hasDefaultDescriptionLength(request.gardenDescription());
+        isMaxDescriptionLength(request.gardenDescription());
         validWriterId(request.writerId());
-        validateDate(request.useStartDate(), request.useEndDate());
         validateDate(request.recruitStartDate(), request.recruitEndDate());
 
         gardenName = request.gardenName();
@@ -399,7 +359,6 @@ public class Garden {
         size = request.size();
         gardenStatus = request.gardenStatus();
         gardenType = request.gardenType();
-        linkForRequest = request.linkForRequest();
         contact = request.contact();
         address = request.address();
         latitude = request.latitude();
@@ -410,8 +369,13 @@ public class Garden {
         gardenDescription = request.gardenDescription();
         recruitStartDate = request.recruitStartDate();
         recruitEndDate = request.recruitEndDate();
-        useStartDate = request.useStartDate();
-        useEndDate = request.useEndDate();
+    }
+
+    private String isNull(String field) {
+        if (field == null) {
+            return DEFAULT_FIELD;
+        }
+        return field;
     }
 
 }

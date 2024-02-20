@@ -6,10 +6,12 @@ import com.garden.back.global.GeometryUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -34,15 +36,12 @@ public class GardenTest {
                             "Beautiful Garden",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "http://example.com/request",
                             "10",
                             "123-456-7890",
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -65,15 +64,12 @@ public class GardenTest {
                             invalidGardenName,
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "http://example.com/request",
                             "10",
                             "123-456-7890",
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -96,15 +92,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            invalidLinkForRequest,
                             "10",
                             "123-456-7890",
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -127,15 +120,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             invalidPrice,
                             "123-456-7890",
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -158,15 +148,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             "20000",
                             invalidContact,
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -189,15 +176,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             "20000",
                             "000-00000-0000",
                             invalidSize,
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -207,36 +191,6 @@ public class GardenTest {
                     ));
         }
 
-        @DisplayName("텃밭의 설명이 null 혹은 빈값이면 예외를 던진다.")
-        @ParameterizedTest
-        @NullAndEmptySource
-        void testInvalidDescription(String invalidDescription) {
-            assertThrows(IllegalArgumentException.class,
-                    () -> new Garden(
-                            "인천시 서구 가정동",
-                            LATITUDE,
-                            LONGITUDE,
-                            GeometryUtil.createPoint(LATITUDE, LONGITUDE),
-                            "진겸이네 텃밭",
-                            GardenType.PUBLIC,
-                            GardenStatus.ACTIVE,
-                            "www.every-garden.com",
-                            "20000",
-                            "000-00000-0000",
-                            "100",
-                            invalidDescription,
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
-                            true,
-                            false,
-                            true,
-                            1L,
-                            false,
-                            0
-                    ));
-        }
     }
 
 
@@ -257,15 +211,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             invalidPrice,
                             "123-456-7890",
                             "Large",
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -288,15 +239,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             "20000",
                             "000-00000-0000",
                             invalidSize,
                             "A wonderful garden",
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -306,9 +254,9 @@ public class GardenTest {
                     ));
         }
 
-        @DisplayName("텃밭의 설명이 최소 글자 수보다 작으면 예외를 던진다.")
+        @DisplayName("텃밭의 설명이 최대 글자 수보다 크면 예외를 던진다.")
         @ParameterizedTest
-        @ValueSource(strings = {"123456789"})
+        @MethodSource("provideInvalidDescriptions")
         void testInvalidDescriptionLength(String invalidDescription) {
             assertThrows(IllegalArgumentException.class,
                     () -> new Garden(
@@ -319,15 +267,12 @@ public class GardenTest {
                             "진겸이네 텃밭",
                             GardenType.PUBLIC,
                             GardenStatus.ACTIVE,
-                            "www.every-garden.com",
                             "20000",
                             "000-00000-0000",
                             "100",
                             invalidDescription,
                             LocalDate.now(),
                             LocalDate.now().plusDays(30),
-                            LocalDate.now(),
-                            LocalDate.now().plusDays(365),
                             true,
                             false,
                             true,
@@ -337,6 +282,16 @@ public class GardenTest {
                     ));
         }
 
+        static Stream<String> provideInvalidDescriptions() {
+            return Stream.of(generateStringWithLength(102));
+        }
 
+        private static String generateStringWithLength(int length) {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < length; i++) {
+                sb.append("a");
+            }
+            return sb.toString();
+        }
     }
 }

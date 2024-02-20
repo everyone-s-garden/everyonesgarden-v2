@@ -146,10 +146,9 @@ public class GardenCommandController {
         @CurrentUser LoginUser loginUser
     ) {
         Long updatedMyManagedGardenId = gardenCommandService.updateMyManagedGarden(
-            MyManagedGardenUpdateRequest.to(
+            request.toMyManagedGardenUpdateParam(
                 myManagedGardenId,
                 newGardenImage,
-                request,
                 loginUser.memberId()
             ));
         URI location = URI.create("/v2/gardens/my-managed/" + updatedMyManagedGardenId);

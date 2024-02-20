@@ -10,14 +10,16 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public record MyManagedGardenUpdateRequest(
-        @Positive
-        Long gardenId,
+    @Positive
+    Long gardenId,
 
-        @ValidDate
-        String useStartDate,
+    @ValidDate
+    String useStartDate,
 
-        @ValidDate
-        String useEndDate
+    @ValidDate
+    String useEndDate,
+
+    String description
 ) {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
@@ -30,21 +32,25 @@ public record MyManagedGardenUpdateRequest(
         return LocalDate.parse(startDate, DATE_FORMATTER).isBefore(LocalDate.parse(endDate, DATE_FORMATTER));
     }
 
-    public static MyManagedGardenUpdateParam to(
-            Long myManagedGardenId,
-            MultipartFile newImage,
-            MyManagedGardenUpdateRequest request,
-            Long memberId
+    public MyManagedGardenUpdateParam toMyManagedGardenUpdateParam(
+        Long myManagedGardenId,
+        MultipartFile newImage,
+        Long memberId
     ) {
         return new MyManagedGardenUpdateParam(
-                newImage,
-                myManagedGardenId,
-                request.gardenId,
-                LocalDate.parse(request.useStartDate, DATE_FORMATTER),
-                LocalDate.parse(request.useEndDate, DATE_FORMATTER),
-                memberId
+            newImage,
+            myManagedGardenId,
+            gardenId,
+            LocalDate.parse(useStartDate, DATE_FORMATTER),
+            LocalDate.parse(useEndDate, DATE_FORMATTER),
+            memberId,
+            isNull(description)
         );
 
+    }
+
+    private static String isNull(String field) {
+        return field == null ? "" : field;
     }
 
 }

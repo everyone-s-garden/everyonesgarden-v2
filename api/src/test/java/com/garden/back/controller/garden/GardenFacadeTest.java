@@ -20,7 +20,7 @@ class GardenFacadeTest extends IntegrationTestSupport {
     private GardenFacade gardenFacade;
 
     @Autowired
-    private  GardenReadService gardenReadService;
+    private GardenReadService gardenReadService;
 
     @Autowired
     private GardenRepository gardenRepository;

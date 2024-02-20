@@ -17,7 +17,6 @@ public record GardenUpdateParam (
         String size,
         GardenStatus gardenStatus,
         GardenType gardenType,
-        String linkForRequest,
         String contact,
         String address,
         Double latitude,
@@ -26,32 +25,27 @@ public record GardenUpdateParam (
         String gardenDescription,
         LocalDate recruitStartDate,
         LocalDate recruitEndDate,
-        LocalDate useStartDate,
-        LocalDate useEndDate,
         Long writerId
 
 ) {
-    public static GardenUpdateDomainRequest of(GardenUpdateParam param) {
+    public GardenUpdateDomainRequest toGardenUpdateDomainRequest() {
         return new GardenUpdateDomainRequest(
-                param.gardenName,
-                param.price,
-                param.size,
-                param.gardenStatus,
-                param.gardenType,
-                param.linkForRequest,
-                param.contact,
-                param.address,
-                param.latitude,
-                param.longitude,
-                param.gardenFacility().isToilet,
-                param.gardenFacility().isWaterway,
-                param.gardenFacility().isEquipment,
-                param.gardenDescription,
-                param.recruitStartDate,
-                param.recruitEndDate,
-                param.useStartDate,
-                param.useEndDate,
-                param.writerId
+                gardenName,
+                price,
+                size,
+                gardenStatus,
+                gardenType,
+                contact,
+                address,
+                latitude,
+                longitude,
+                gardenFacility().isToilet,
+                gardenFacility().isWaterway,
+                gardenFacility().isEquipment,
+                gardenDescription,
+                recruitStartDate,
+                recruitEndDate,
+                writerId
         );
     }
 
