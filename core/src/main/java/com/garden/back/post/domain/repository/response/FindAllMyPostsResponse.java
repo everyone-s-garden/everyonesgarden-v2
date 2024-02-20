@@ -7,6 +7,7 @@ public record FindAllMyPostsResponse(
 ) {
     public record PostInfo(
         Long postId,
-        String title
+        String title,
+        String preview
     ) {}
 }
