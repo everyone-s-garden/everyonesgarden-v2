@@ -14,7 +14,6 @@ public record GardenCreateParam(
         String price,
         String size,
         GardenStatus gardenStatus,
-        String linkForRequest,
         String contact,
         String address,
         Double latitude,
@@ -23,8 +22,6 @@ public record GardenCreateParam(
         String gardenDescription,
         LocalDate recruitStartDate,
         LocalDate recruitEndDate,
-        LocalDate useStartDate,
-        LocalDate useEndDate,
         Long writerId
 
 ) {
@@ -36,15 +33,12 @@ public record GardenCreateParam(
                 GeometryUtil.createPoint(param.latitude(),param.longitude()),
                 param.gardenName(),
                 param.gardenStatus(),
-                param.linkForRequest(),
                 param.price(),
                 param.contact(),
                 param.size(),
                 param.gardenDescription(),
                 param.recruitStartDate(),
                 param.recruitEndDate(),
-                param.useStartDate(),
-                param.useEndDate(),
                 param.gardenFacility().isToilet(),
                 param.gardenFacility().isWaterway(),
                 param.gardenFacility().isEquipment(),

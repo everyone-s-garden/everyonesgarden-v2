@@ -23,9 +23,8 @@ public class GardenFixture {
     private static final double LONGITUDE = 127.1388684;
     private static final LocalDate RECRUIT_START_DATE = LocalDate.of(2023, 11, 1);
     private static final LocalDate RECRUIT_END_DATE = LocalDate.of(2023, 12, 7);
-    private static final LocalDate USE_START_DATE = LocalDate.of(2024, 12, 7);
-    private static final LocalDate USE_END_DATE = LocalDate.of(2024, 12, 15);
-
+    private static final LocalDate USE_START_DATE = LocalDate.of(2023, 11, 1);
+    private static final LocalDate USE_END_DATE = LocalDate.of(2023, 12, 7);
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
     }
@@ -39,15 +38,12 @@ public class GardenFixture {
             "모두의 텃밭",
             GardenType.PRIVATE,
             GardenStatus.ACTIVE,
-            "www.everygarden.me",
             "100",
             "000-000-000",
             "200.23",
             "화장실이 깨끗하고 농기구를 빌려줍니다.",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             true,
             false,
             true,
@@ -66,15 +62,12 @@ public class GardenFixture {
             "김별이네 텃밭",
             GardenType.PUBLIC,
             GardenStatus.ACTIVE,
-            "www.everygarden.me",
             "100",
             "000-000-000",
             "200.23",
             "화장실이 깨끗하고 농기구를 빌려줍니다.",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             true,
             false,
             true,
@@ -134,15 +127,12 @@ public class GardenFixture {
             "별이네 텃밭",
             GardenType.PUBLIC,
             GardenStatus.ACTIVE,
-            "www.everygarden.me",
             "100",
             "000-000-000",
             "200",
             "화장실이 깨끗해요 그리고 시설이 최신식입니다.",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             true,
             false,
             true,
@@ -196,7 +186,6 @@ public class GardenFixture {
             "100",
             "200",
             GardenStatus.ACTIVE,
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             LATITUDE,
@@ -209,8 +198,6 @@ public class GardenFixture {
             "화장실이 깨끗하고 흙이 좋아요",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             1L
         );
     }
@@ -222,7 +209,6 @@ public class GardenFixture {
             "100",
             "200",
             GardenStatus.ACTIVE,
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             LATITUDE,
@@ -235,8 +221,6 @@ public class GardenFixture {
             "화장실이 깨끗하고 흙이 좋아요",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             1L
         );
     }
@@ -253,7 +237,6 @@ public class GardenFixture {
             "200",
             GardenStatus.ACTIVE,
             GardenType.PRIVATE,
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             LATITUDE,
@@ -266,8 +249,6 @@ public class GardenFixture {
             "화장실이 깨끗하고 흙이 좋아요",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             1L
         );
     }
@@ -282,7 +263,6 @@ public class GardenFixture {
             "200",
             GardenStatus.ACTIVE,
             GardenType.PRIVATE,
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             LATITUDE,
@@ -295,8 +275,6 @@ public class GardenFixture {
             "화장실이 깨끗하고 흙이 좋아요",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             1L
         );
     }
@@ -311,7 +289,6 @@ public class GardenFixture {
             "200",
             GardenStatus.ACTIVE,
             GardenType.PRIVATE,
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             LATITUDE,
@@ -324,8 +301,6 @@ public class GardenFixture {
             "화장실이 깨끗하고 흙이 좋아요",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            USE_START_DATE,
-            USE_END_DATE,
             1L
         );
     }

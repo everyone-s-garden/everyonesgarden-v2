@@ -18,102 +18,94 @@ import java.util.Collections;
 import java.util.List;
 
 public record GardenUpdateRequest(
-        List<String> remainGardenImageUrls,
+    List<String> remainGardenImageUrls,
 
-        @NotBlank
-        String gardenName,
+    @NotBlank
+    String gardenName,
 
-        @NotBlank
-        String price,
+    @NotBlank
+    String price,
 
-        @NotBlank
-        String size,
+    @NotBlank
+    String size,
 
-        @NotBlank
-        @EnumValue(enumClass = GardenStatus.class)
-        String gardenStatus,
+    @NotBlank
+    @EnumValue(enumClass = GardenStatus.class)
+    String gardenStatus,
 
-        @NotBlank
-        @EnumValue(enumClass = GardenType.class)
-        String gardenType,
+    @NotBlank
+    @EnumValue(enumClass = GardenType.class)
+    String gardenType,
 
-        String linkForRequest,
-        String contact,
-        @NotBlank
+    String contact,
+    @NotBlank
+    String address,
 
-        String address,
+    @NotBlank
+    @DecimalMin(value = "-90.0", message = "위도는 -90.0 보다 크거나 같아야 한다.")
+    @DecimalMax(value = "90.0", message = "위도는 90.0보다 같거나 작아야 한다.")
+    Double latitude,
 
-        @NotBlank
-        @DecimalMin(value = "-90.0", message = "위도는 -90.0 보다 크거나 같아야 한다.")
-        @DecimalMax(value = "90.0", message = "위도는 90.0보다 같거나 작아야 한다.")
-        Double latitude,
+    @NotBlank
+    @DecimalMin(value = "-180.0", message = "경도는 -180.0 보다 크거나 같아야 한다.")
+    @DecimalMax(value = "180.0", message = "경도는 180.0 보다 같거나 작아야 한다.")
+    Double longitude,
 
-        @NotBlank
-        @DecimalMin(value = "-180.0", message = "경도는 -180.0 보다 크거나 같아야 한다.")
-        @DecimalMax(value = "180.0", message = "경도는 180.0 보다 같거나 작아야 한다.")
-        Double longitude,
+    @NotNull
+    Boolean isToilet,
 
-        @NotNull
-        Boolean isToilet,
+    @NotNull
+    Boolean isWaterway,
 
-        @NotNull
-        Boolean isWaterway,
+    @NotNull
+    Boolean isEquipment,
 
-        @NotNull
-        Boolean isEquipment,
+    @Length(max = 100, message = "텃밭 설명은 최대 100글자입니다.")
+    String gardenDescription,
 
-        @NotBlank
-        @Length(min = 10, message = "텃밭 설명은 최소 10글자입니다.")
-        String gardenDescription,
+    @ValidDate
+    String recruitStartDate,
 
-        @ValidDate
-        String recruitStartDate,
-
-        @ValidDate
-        String recruitEndDate,
-
-        @ValidDate
-        String useStartDate,
-
-        @ValidDate
-        String useEndDate
+    @ValidDate
+    String recruitEndDate
 ) {
-        private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-        public static GardenUpdateParam to(
-                Long gardenId,
-                List<MultipartFile> newGardenImages,
-                GardenUpdateRequest gardenUpdateRequest,
-                Long memberId
-        ) {
-                if (newGardenImages == null) {
-                        newGardenImages = Collections.emptyList();
-                }
-                return new GardenUpdateParam(
-                        gardenId,
-                        gardenUpdateRequest.remainGardenImageUrls,
-                        newGardenImages,
-                        gardenUpdateRequest.gardenName(),
-                        gardenUpdateRequest.price(),
-                        gardenUpdateRequest.size(),
-                        GardenStatus.valueOf(gardenUpdateRequest.gardenStatus),
-                        GardenType.valueOf(gardenUpdateRequest.gardenType),
-                        gardenUpdateRequest.linkForRequest,
-                        gardenUpdateRequest.contact,
-                        gardenUpdateRequest.address,
-                        gardenUpdateRequest.latitude,
-                        gardenUpdateRequest.longitude,
-                        new GardenUpdateParam.GardenFacility(
-                                gardenUpdateRequest.isToilet(),
-                                gardenUpdateRequest.isWaterway(),
-                                gardenUpdateRequest.isEquipment()
-                        ),
-                        gardenUpdateRequest.gardenDescription(),
-                        LocalDate.parse(gardenUpdateRequest.recruitStartDate, DATE_TIME_FORMATTER),
-                        LocalDate.parse(gardenUpdateRequest.recruitEndDate, DATE_TIME_FORMATTER),
-                        LocalDate.parse(gardenUpdateRequest.useStartDate, DATE_TIME_FORMATTER),
-                        LocalDate.parse(gardenUpdateRequest.useEndDate, DATE_TIME_FORMATTER),
-                        memberId
-                );
+    public static GardenUpdateParam to(
+        Long gardenId,
+        List<MultipartFile> newGardenImages,
+        GardenUpdateRequest gardenUpdateRequest,
+        Long memberId
+    ) {
+        if (newGardenImages == null) {
+            newGardenImages = Collections.emptyList();
         }
+        return new GardenUpdateParam(
+            gardenId,
+            gardenUpdateRequest.remainGardenImageUrls,
+            newGardenImages,
+            gardenUpdateRequest.gardenName(),
+            gardenUpdateRequest.price(),
+            gardenUpdateRequest.size(),
+            GardenStatus.valueOf(gardenUpdateRequest.gardenStatus),
+            GardenType.valueOf(gardenUpdateRequest.gardenType),
+            isNull(gardenUpdateRequest.contact),
+            gardenUpdateRequest.address,
+            gardenUpdateRequest.latitude,
+            gardenUpdateRequest.longitude,
+            new GardenUpdateParam.GardenFacility(
+                gardenUpdateRequest.isToilet(),
+                gardenUpdateRequest.isWaterway(),
+                gardenUpdateRequest.isEquipment()
+            ),
+            isNull(gardenUpdateRequest.gardenDescription()),
+            LocalDate.parse(gardenUpdateRequest.recruitStartDate, DATE_TIME_FORMATTER),
+            LocalDate.parse(gardenUpdateRequest.recruitEndDate, DATE_TIME_FORMATTER),
+            memberId
+        );
+    }
+
+    private static String isNull(String field) {
+        return field == null ? "" : field;
+    }
 }

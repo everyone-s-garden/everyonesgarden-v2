@@ -109,7 +109,6 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                         fieldWithPath("price").type(JsonFieldType.STRING).description("텃밭 분양 가격"),
                         fieldWithPath("size").type(JsonFieldType.STRING).description("텃밭 분양 크기"),
                         fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
-                        fieldWithPath("linkForRequest").type(JsonFieldType.STRING).description("텃밭 신청 사이트"),
                         fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처"),
                         fieldWithPath("address").type(JsonFieldType.STRING).description("텃밭 주소"),
                         fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
@@ -119,9 +118,7 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                         fieldWithPath("isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
                         fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명, 최소 10글이상"),
                         fieldWithPath("recruitStartDate").type(JsonFieldType.STRING).description("모집 시작일 yyyy.MM.dd"),
-                        fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd"),
-                        fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
-                        fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                        fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd")
                     ),
                     responseHeaders(
                         headerWithName("Location").description("생성된 텃밭의 id를 포함한 url")
@@ -180,7 +177,6 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                     fieldWithPath("size").type(JsonFieldType.STRING).description("텃밭 분양 크기"),
                     fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                     fieldWithPath("gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)"),
-                    fieldWithPath("linkForRequest").type(JsonFieldType.STRING).description("텃밭 신청 사이트"),
                     fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처"),
                     fieldWithPath("address").type(JsonFieldType.STRING).description("텃밭 주소"),
                     fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("텃밭 위도"),
@@ -190,9 +186,7 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                     fieldWithPath("isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
                     fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명, 최소 10글 이상"),
                     fieldWithPath("recruitStartDate").type(JsonFieldType.STRING).description("모집 시작일 yyyy.MM.dd"),
-                    fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd"),
-                    fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
-                    fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd")
+                    fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일 yyyy.MM.dd")
                 ),
                 responseHeaders(
                     headerWithName("Location").description("수정된 텃밭의 id를 포함한 URL")

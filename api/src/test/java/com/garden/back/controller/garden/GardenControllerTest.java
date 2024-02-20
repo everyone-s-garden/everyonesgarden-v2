@@ -178,7 +178,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "100",
                         "200",
                         "aactive",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -188,16 +187,13 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenCreateRequest(
                         "별이네 텃밭",
                         "100",
                         "200",
                         "ACTIVE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         137.444917,
@@ -207,16 +203,13 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenCreateRequest(
                         "별이네 텃밭",
                         "100",
                         "200",
                         "ACTIVE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -226,16 +219,13 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenCreateRequest(
                         "별이네 텃밭",
                         "100",
                         "200",
                         "ACTIVE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -245,16 +235,13 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenCreateRequest(
                         "별이네 텃밭",
                         "100",
                         "200",
                         "ACTIVE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -264,16 +251,13 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023-12-01",
-                        "2023-12-23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023-12-23"
                 ),
                 new GardenCreateRequest(
                         "별이네 텃밭",
                         "100",
                         "200",
                         "ACTIVE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -283,9 +267,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.11.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.11.23"
                 )
         );
     }
@@ -299,7 +281,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "aactive",
                         "private",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -309,9 +290,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenUpdateRequest(
                         List.of("background.png"),
@@ -320,7 +299,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "ACTIVE",
                         "PRIVATE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         100.444917,
@@ -330,9 +308,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenUpdateRequest(
                         List.of("background.png"),
@@ -341,7 +317,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "ACTIVE",
                         "PRIVATE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -351,9 +326,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenUpdateRequest(
                         List.of("background.png"),
@@ -362,7 +335,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "ACTIVE",
                         "PRIVATE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -372,9 +344,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하",
                         "2023.12.01",
-                        "2023.12.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.12.23"
                 ),
                 new GardenUpdateRequest(
                         List.of("background.png"),
@@ -383,7 +353,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "ACTIVE",
                         "PRIVATE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -393,9 +362,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023-12-01",
-                        "2023-12-23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023-12-23"
                 ),
                 new GardenUpdateRequest(
                         List.of("background.png"),
@@ -404,7 +371,6 @@ class GardenControllerTest extends ControllerTestSupport {
                         "200",
                         "ACTIVE",
                         "PRIVATE",
-                        "www.everygarden.me",
                         "000-000-0000",
                         "인천광역시 서구 만수동 200",
                         37.444917,
@@ -414,9 +380,7 @@ class GardenControllerTest extends ControllerTestSupport {
                         true,
                         "화장실이 깨끗하고 흙이 좋아요",
                         "2023.12.01",
-                        "2023.11.23",
-                        "2023.12.01",
-                        "2023.12.31"
+                        "2023.11.23"
                 )
         );
     }

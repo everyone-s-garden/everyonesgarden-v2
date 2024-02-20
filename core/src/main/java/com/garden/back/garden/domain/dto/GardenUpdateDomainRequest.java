@@ -11,7 +11,6 @@ public record GardenUpdateDomainRequest(
         String size,
         GardenStatus gardenStatus,
         GardenType gardenType,
-        String linkForRequest,
         String contact,
         String address,
         Double latitude,
@@ -22,8 +21,6 @@ public record GardenUpdateDomainRequest(
         String gardenDescription,
         LocalDate recruitStartDate,
         LocalDate recruitEndDate,
-        LocalDate useStartDate,
-        LocalDate useEndDate,
         Long writerId
 ) {
 }
