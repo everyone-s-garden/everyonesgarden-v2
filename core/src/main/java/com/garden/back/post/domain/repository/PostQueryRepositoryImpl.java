@@ -1,6 +1,5 @@
 package com.garden.back.post.domain.repository;
 
-import com.garden.back.post.domain.PostComment;
 import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.request.*;
 import com.garden.back.post.domain.repository.response.*;
@@ -18,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static com.garden.back.member.QMember.member;
 import static com.garden.back.post.domain.QCommentLike.commentLike;
 import static com.garden.back.post.domain.QPost.post;
 import static com.garden.back.post.domain.QPostComment.postComment;
@@ -53,7 +53,12 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .select(Projections.constructor(FindPostDetailsResponse.class,
                 post.commentsCount,
                 post.likesCount,
-                post.postAuthorId,
+                Projections.constructor(UserResponse.class,
+                    member.id,
+                    member.profileImageUrl,
+                    member.nickname,
+                    member.memberMannerGrade
+                    ),
                 post.content,
                 post.title,
                 post.createdDate,
@@ -62,6 +67,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                 Expressions.constant(imageUrls)
                 ))
             .from(post)
+            .join(member).on(post.postAuthorId.eq(member.id))
             .where(
                 post.id.eq(id),
                 post.deleteStatus.eq(false)
@@ -90,10 +96,16 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                                 .where(postImage.post.eq(post))
                         ))
                     ),
-                post.postAuthorId,
+                Projections.constructor(UserResponse.class,
+                    member.id,
+                    member.profileImageUrl,
+                    member.nickname,
+                    member.memberMannerGrade
+                ),
                 post.postType,
                 post.createdDate))
             .from(post)
+            .join(member).on(post.postAuthorId.eq(member.id))
             .where(
                 post.deleteStatus.eq(false),
                 contentOrTitleLike(request.searchContent()),
@@ -129,17 +141,33 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     @Override
     public FindPostsAllCommentResponse findPostsAllComments(Long id, Long loginUserId, FindAllPostCommentsParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getCommentsOrderBy(request.orderBy());
-
-        List<PostComment> allComments = jpaQueryFactory
-            .selectFrom(postComment)
-            .where(postComment.postId.eq(id), postComment.deleteStatus.eq(false))
-            .orderBy(orderBy)
-            .fetch();
-
         List<Long> likedCommentIds = jpaQueryFactory
             .select(commentLike.commentId)
             .from(commentLike)
             .where(commentLike.likesClickerId.eq(loginUserId))
+            .fetch();
+
+        List<FindPostsAllCommentResponse.CommentInfo> allComments = jpaQueryFactory
+            .select(Projections.constructor(FindPostsAllCommentResponse.CommentInfo.class,
+                postComment.id,
+                postComment.parentCommentId,
+                postComment.likesCount,
+                postComment.content,
+                Projections.constructor(UserResponse.class,
+                    member.id,
+                    member.profileImageUrl,
+                    member.nickname,
+                    member.memberMannerGrade
+                ),
+                postComment.id.in(likedCommentIds)
+            ))
+            .from(postComment)
+            .join(member).on(postComment.authorId.eq(member.id))
+            .where(
+                postComment.postId.eq(id),
+                postComment.deleteStatus.eq(false)
+            )
+            .orderBy(orderBy)
             .fetch();
 
         List<FindPostsAllCommentResponse.ParentInfo> parentComments = new ArrayList<>();
@@ -147,27 +175,24 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
 
         // 첫 번째 순회: 부모 댓글만 처리
         allComments.stream()
-            .filter(comment -> comment.getParentCommentId() == null)
+            .filter(comment -> comment.parentId() == null)
             .forEach(comment -> {
-                Boolean isLiked = likedCommentIds.contains(comment.getId());
                 FindPostsAllCommentResponse.ParentInfo parentInfo = new FindPostsAllCommentResponse.ParentInfo(
-                    comment.getId(), comment.getLikesCount(), comment.getContent(), comment.getAuthorId(), isLiked, new ArrayList<>());
-                parentMap.put(comment.getId(), parentInfo);
+                    comment.commentId(), comment.likeCount(), comment.content(), comment.userInfo(), comment.isLikeClick(), new ArrayList<>());
+                parentMap.put(comment.commentId(), parentInfo);
                 parentComments.add(parentInfo);
             });
 
         // 두 번째 순회: 자식 댓글 처리 및 부모에 할당
         allComments.stream()
-            .filter(comment -> comment.getParentCommentId() != null)
+            .filter(comment -> comment.parentId() != null)
             .forEach(comment -> {
-                Boolean isLiked = likedCommentIds.contains(comment.getId());
-                FindPostsAllCommentResponse.CommentInfo childInfo = new FindPostsAllCommentResponse.CommentInfo(
-                    comment.getId(), comment.getParentCommentId(), comment.getLikesCount(), comment.getContent(), comment.getAuthorId(), isLiked);
-                FindPostsAllCommentResponse.ParentInfo parentInfo = parentMap.get(comment.getParentCommentId());
+                FindPostsAllCommentResponse.ParentInfo parentInfo = parentMap.get(comment.parentId());
                 if (parentInfo != null) {
-                    parentInfo.child().add(childInfo);
+                    parentInfo.child().add(comment);
                 }
             });
+
         int startIndex = request.offset();
         int endIndex = Math.min(startIndex + request.limit(), parentComments.size());
 
@@ -286,10 +311,16 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                                 .where(postImage.post.eq(post))
                         ))
                     ),
-                post.postAuthorId,
+                Projections.constructor(UserResponse.class,
+                    member.id,
+                    member.profileImageUrl,
+                    member.nickname,
+                    member.memberMannerGrade
+                ),
                 post.postType,
                 post.createdDate))
             .from(post)
+            .join(member).on(post.postAuthorId.eq(member.id))
             .where(
                 post.deleteStatus.eq(false),
                 post.createAt.after(recentHour)
