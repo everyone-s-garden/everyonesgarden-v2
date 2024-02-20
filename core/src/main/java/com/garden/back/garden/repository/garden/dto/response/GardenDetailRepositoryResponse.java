@@ -12,7 +12,6 @@ public interface GardenDetailRepositoryResponse {
     Double getLongitude();
     String getGardenName();
     GardenType getGardenType();
-    String getLinkForRequest();
     String getPrice();
     String getContact();
     String getSize();
@@ -20,8 +19,6 @@ public interface GardenDetailRepositoryResponse {
     Long getWriterId();
     LocalDate getRecruitStartDate();
     LocalDate getRecruitEndDate();
-    LocalDate getUseStartDate();
-    LocalDate getUseEndDate();
     String getGardenDescription();
     String getImageUrl();
     boolean getIsToilet();
