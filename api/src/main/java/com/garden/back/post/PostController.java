@@ -3,6 +3,7 @@ package com.garden.back.post;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.global.loginuser.OptionalUser;
 import com.garden.back.post.domain.repository.response.FindAllPopularPostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
 import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
@@ -38,7 +39,7 @@ public class PostController {
     @GetMapping(path = "/{postId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindPostDetailsResponse> findPostDetails(
         @PathVariable("postId") Long postId,
-        @CurrentUser LoginUser loginUser
+        @OptionalUser LoginUser loginUser
     ) {
         return ResponseEntity.ok(postQueryService.findPostById(postId, loginUser.memberId()));
     }
@@ -56,7 +57,7 @@ public class PostController {
     public ResponseEntity<FindPostsAllCommentResponse> findPostsAllComment(
         @PathVariable("postId") Long postId,
         @ModelAttribute @Valid FindAllCommentsParamRequest request,
-        @CurrentUser LoginUser loginUser
+        @OptionalUser LoginUser loginUser
     ) {
         return ResponseEntity.ok(postQueryService.findAllCommentsByPostId(postId, loginUser.memberId(), request.toRepositoryDto()));
     }

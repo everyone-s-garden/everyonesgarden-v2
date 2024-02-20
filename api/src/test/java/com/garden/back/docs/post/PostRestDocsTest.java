@@ -84,7 +84,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("게시글 상세 조회 api docs")
     @Test
     void findPostsDetails() throws Exception {
-        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, 1L, "내용", "제목", LocalDate.now(), false, List.of("이미지 url"));
+        FindPostDetailsResponse response = new FindPostDetailsResponse(10L, 1L, 1L, "내용", "제목", LocalDate.now(), false, PostType.QUESTION, List.of("이미지 url"));
         given(postQueryService.findPostById(any(), any())).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/{postId}", 1L)
@@ -104,7 +104,8 @@ class PostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("title").type(STRING).description("제목"),
                     fieldWithPath("createdDate").type(STRING).description("생성 일"),
                     fieldWithPath("images").type(ARRAY).description("이미지 목록"),
-                    fieldWithPath("isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 게시글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
+                    fieldWithPath("postType").type(STRING).description("게시글 타입"),
+                    fieldWithPath("isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 게시글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태, 로그인 하지 않은 사용자인 경우 무조건 false)")
                 )
             ));
     }
@@ -112,7 +113,7 @@ class PostRestDocsTest extends RestDocsSupport {
     @DisplayName("특정 게시글의 댓글 조회 api docs")
     @Test
     void findPostsComments() throws Exception {
-        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", 2L, false), new FindPostsAllCommentResponse.CommentInfo(1L, null, 0L, "댓글", 1L, false)));
+        FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(List.of(new FindPostsAllCommentResponse.ParentInfo(1L, 0L, "댓글", 1L, false, List.of(new FindPostsAllCommentResponse.CommentInfo(2L, 1L, 0L, "대댓글", 2L, false)))));
         FindAllCommentsParamRequest request = new FindAllCommentsParamRequest(0, 10, "RECENT_DATE");
         given(postQueryService.findAllCommentsByPostId(any(), any(), any())).willReturn(response);
 
@@ -134,13 +135,19 @@ class PostRestDocsTest extends RestDocsSupport {
                     parameterWithName("postId").description("게시글 id")
                 ),
                 responseFields(
-                    fieldWithPath("commentInfos").type(ARRAY).description("댓글 정보 목록"),
-                    fieldWithPath("commentInfos[].commentId").type(NUMBER).description("댓글 ID"),
-                    fieldWithPath("commentInfos[].parentId").type(NUMBER).description("부모 댓글 ID (대댓글인 경우)").optional(),
-                    fieldWithPath("commentInfos[].likeCount").type(NUMBER).description("좋아요 수"),
-                    fieldWithPath("commentInfos[].content").type(STRING).description("댓글 내용"),
-                    fieldWithPath("commentInfos[].authorId").type(NUMBER).description("댓글 작성자 ID"),
-                    fieldWithPath("commentInfos[].isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
+                    fieldWithPath("parents").type(ARRAY).description("부모 댓글 정보 목록"),
+                    fieldWithPath("parents[].commentId").type(NUMBER).description("댓글 ID"),
+                    fieldWithPath("parents[].likeCount").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("parents[].content").type(STRING).description("댓글 내용"),
+                    fieldWithPath("parents[].authorId").type(NUMBER).description("댓글 작성자 ID"),
+                    fieldWithPath("parents[].isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)"),
+                    fieldWithPath("parents[].child[]").type(ARRAY).description("부모 댓글에 해당하는 자식 댓글 정보 목록"),
+                    fieldWithPath("parents[].child[].parentId").type(NUMBER).description("부모 댓글의 ID"),
+                    fieldWithPath("parents[].child[].commentId").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("parents[].child[].likeCount").type(NUMBER).description("자식 댓글 정보"),
+                    fieldWithPath("parents[].child[].content").type(STRING).description("댓글 내용"),
+                    fieldWithPath("parents[].child[].authorId").type(NUMBER).description("댓글 작성자 ID"),
+                    fieldWithPath("parents[].child[].isLikeClick").type(BOOLEAN).description("현재 로그인 사용자가 이 댓글을 좋아요 했는지 안했는지에 대한 boolean(true면 좋아요 누른 상태)")
                 )
             ));
     }
