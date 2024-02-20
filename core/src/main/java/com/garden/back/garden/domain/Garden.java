@@ -19,6 +19,7 @@ public class Garden {
     private static final int DEFAULT_REPORTED_SCORE = 0;
     private static final int DELETED_MAX_SCORE = 25;
     private static final int MAX_DESCRIPTION_LENGTH = 100;
+    private static final String DEFAULT_FIELD = "";
 
     private Long gardenId;
     private String address;
@@ -88,7 +89,7 @@ public class Garden {
         isNegativeReportedScore(reportedScore);
         isNegativePrice(price);
         isNegativeSize(size);
-        hasMaxDescriptionLength(gardenDescription);
+        isMaxDescriptionLength(gardenDescription);
         validateDate(recruitStartDate, recruitEndDate);
 
         this.gardenId = id;
@@ -100,9 +101,9 @@ public class Garden {
         this.gardenType = gardenType;
         this.gardenStatus = gardenStatus;
         this.price = price;
-        this.contact = contact == null ? "" : contact;
+        this.contact = isNull(contact);
         this.size = size;
-        this.gardenDescription = gardenDescription == null ? "" : gardenDescription;
+        this.gardenDescription = isNull(gardenDescription);
         this.recruitStartDate = recruitStartDate;
         this.recruitEndDate = recruitEndDate;
         this.isToilet = isToilet;
@@ -192,7 +193,7 @@ public class Garden {
         isNegativeReportedScore(reportedScore);
         isNegativePrice(price);
         isNegativeSize(size);
-        hasMaxDescriptionLength(gardenDescription);
+        isMaxDescriptionLength(gardenDescription);
         validateDate(recruitStartDate, recruitEndDate);
 
         this.address = address;
@@ -203,9 +204,9 @@ public class Garden {
         this.gardenType = gardenType;
         this.gardenStatus = gardenStatus;
         this.price = price;
-        this.contact = contact == null ? "" : contact;
+        this.contact = isNull(contact);
         this.size = size;
-        this.gardenDescription = gardenDescription == null ? "" : gardenDescription;
+        this.gardenDescription = isNull(gardenDescription);
         this.recruitStartDate = recruitStartDate;
         this.recruitEndDate = recruitEndDate;
         this.isToilet = isToilet;
@@ -323,7 +324,7 @@ public class Garden {
         }
     }
 
-    private void hasMaxDescriptionLength(String gardenDescription) {
+    private void isMaxDescriptionLength(String gardenDescription) {
         if (gardenDescription.length() > MAX_DESCRIPTION_LENGTH) {
             throw new IllegalArgumentException(String.format("gardenDescription은 최대 %s글자 입니다.", MAX_DESCRIPTION_LENGTH));
         }
@@ -349,7 +350,7 @@ public class Garden {
 
         isNegativePrice(request.price());
         isNegativeSize(request.size());
-        hasMaxDescriptionLength(request.gardenDescription());
+        isMaxDescriptionLength(request.gardenDescription());
         validWriterId(request.writerId());
         validateDate(request.recruitStartDate(), request.recruitEndDate());
 
@@ -368,6 +369,13 @@ public class Garden {
         gardenDescription = request.gardenDescription();
         recruitStartDate = request.recruitStartDate();
         recruitEndDate = request.recruitEndDate();
+    }
+
+    private String isNull(String field) {
+        if (field == null) {
+            return DEFAULT_FIELD;
+        }
+        return field;
     }
 
 }
