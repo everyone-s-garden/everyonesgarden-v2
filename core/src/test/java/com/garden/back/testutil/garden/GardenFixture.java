@@ -313,7 +313,8 @@ public class GardenFixture {
             1L,
             USE_START_DATE,
             USE_END_DATE,
-            1L
+            1L,
+            "배추를 심었어요"
         );
     }
 
@@ -323,7 +324,8 @@ public class GardenFixture {
             1L,
             USE_START_DATE,
             USE_END_DATE,
-            1L
+            1L,
+            "배추를 심었어요"
         );
     }
 
@@ -339,7 +341,8 @@ public class GardenFixture {
             gardenId,
             USE_START_DATE,
             USE_END_DATE,
-            1L
+            1L,
+            "배추를 심었어요"
         );
     }
 
@@ -352,7 +355,8 @@ public class GardenFixture {
             gardenId,
             USE_START_DATE,
             USE_END_DATE,
-            1L
+            1L,
+            "배추를 심었어요"
         );
     }
 

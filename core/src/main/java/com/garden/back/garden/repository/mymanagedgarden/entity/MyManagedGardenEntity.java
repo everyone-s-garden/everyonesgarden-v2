@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.flywaydb.core.internal.jdbc.TransactionalExecutionTemplate;
 
 import java.time.LocalDate;
 
@@ -34,19 +35,23 @@ public class MyManagedGardenEntity {
     @Column(name = "garden_id")
     private Long gardenId;
 
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+
     public MyManagedGarden toModel() {
         return MyManagedGarden.of(
-                myManagedGardenId,
-                useStartDate,
-                useEndDate,
-                memberId,
-                imageUrl,
-                gardenId
+            myManagedGardenId,
+            useStartDate,
+            useEndDate,
+            memberId,
+            imageUrl,
+            gardenId,
+            description
         );
     }
 
     public static MyManagedGardenEntity from(
-            MyManagedGarden myManagedGarden
+        MyManagedGarden myManagedGarden
     ) {
         MyManagedGardenEntity myManagedGardenEntity = new MyManagedGardenEntity();
         myManagedGardenEntity.myManagedGardenId = myManagedGarden.getMyManagedGardenId();
@@ -55,6 +60,7 @@ public class MyManagedGardenEntity {
         myManagedGardenEntity.memberId = myManagedGarden.getMemberId();
         myManagedGardenEntity.imageUrl = myManagedGarden.getImageUrl();
         myManagedGardenEntity.gardenId = myManagedGarden.getGardenId();
+        myManagedGardenEntity.description = myManagedGarden.getDescription();
 
         return myManagedGardenEntity;
     }

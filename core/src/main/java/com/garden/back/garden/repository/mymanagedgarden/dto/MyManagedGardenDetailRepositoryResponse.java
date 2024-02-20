@@ -9,4 +9,5 @@ public interface MyManagedGardenDetailRepositoryResponse {
     LocalDate getUseStartDate();
     LocalDate getUseEndDate();
     String getImageUrl();
+    String getDescription();
 }

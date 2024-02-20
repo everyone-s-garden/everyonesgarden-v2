@@ -6,35 +6,37 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public record MyManagedGardenGetResults(
-        List<MyManagedGardenGetResult> myManagedGardenGetRespons
+    List<MyManagedGardenGetResult> myManagedGardenGetRespons
 ) {
     public static MyManagedGardenGetResults to(List<MyManagedGardensGetRepositoryResponse> responses) {
         Map<Long, List<String>> imagesPerGardenId = extractImages(responses);
         return new MyManagedGardenGetResults(
-                responses.stream()
-                        .map(response -> MyManagedGardenGetResult.to(response,imagesPerGardenId.get(response.getMyManagedGardenId())))
-                        .toList()
+            responses.stream()
+                .map(response -> MyManagedGardenGetResult.to(response, imagesPerGardenId.get(response.getMyManagedGardenId())))
+                .toList()
         );
     }
 
     public record MyManagedGardenGetResult(
-            Long myManagedGardenId,
-            String gardenName,
-            String useStartDate,
-            String useEndDate,
-            List<String> images
+        Long myManagedGardenId,
+        String gardenName,
+        String useStartDate,
+        String useEndDate,
+        List<String> images,
+        String description
     ) {
         private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
         public static MyManagedGardenGetResult to(
-                MyManagedGardensGetRepositoryResponse response,
-                List<String> images) {
+            MyManagedGardensGetRepositoryResponse response,
+            List<String> images) {
             return new MyManagedGardenGetResult(
-                    response.getMyManagedGardenId(),
-                    response.getGardenName(),
-                    response.getUseStartDate().format(DATE_FORMATTER),
-                    response.getUseEndDate().format(DATE_FORMATTER),
-                    images
+                response.getMyManagedGardenId(),
+                response.getGardenName(),
+                response.getUseStartDate().format(DATE_FORMATTER),
+                response.getUseEndDate().format(DATE_FORMATTER),
+                images,
+                response.getDescription()
             );
         }
 

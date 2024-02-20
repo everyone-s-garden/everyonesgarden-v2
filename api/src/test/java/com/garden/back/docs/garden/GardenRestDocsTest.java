@@ -250,7 +250,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
                     fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                     fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                    fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
+                    fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("myManagedGardenGetResponses[].description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 )));
     }
 
@@ -274,7 +275,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("address").type(JsonFieldType.STRING).description("분양받은 텃밭의 주소"),
                     fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                     fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                    fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
+                    fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 )));
     }
 

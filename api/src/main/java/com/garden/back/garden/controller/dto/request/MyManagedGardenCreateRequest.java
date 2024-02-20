@@ -10,28 +10,31 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public record MyManagedGardenCreateRequest(
-        @Positive
-        Long gardenId,
+    @Positive
+    Long gardenId,
 
-        @ValidDate
-        String useStartDate,
+    @ValidDate
+    String useStartDate,
 
-        @ValidDate
-        String useEndDate
+    @ValidDate
+    String useEndDate,
+
+    String description
 ) {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public static MyManagedGardenCreateParam of(
-            MultipartFile gardenImage,
-            MyManagedGardenCreateRequest request,
-            Long memberId
+        MultipartFile gardenImage,
+        MyManagedGardenCreateRequest request,
+        Long memberId
     ) {
         return new MyManagedGardenCreateParam(
-                gardenImage,
-                request.gardenId,
-                LocalDate.parse(request.useStartDate, DATE_FORMATTER),
-                LocalDate.parse(request.useEndDate, DATE_FORMATTER),
-                memberId
+            gardenImage,
+            request.gardenId,
+            LocalDate.parse(request.useStartDate, DATE_FORMATTER),
+            LocalDate.parse(request.useEndDate, DATE_FORMATTER),
+            memberId,
+            isNull(request.description())
         );
     }
 
@@ -42,5 +45,9 @@ public record MyManagedGardenCreateRequest(
 
     private boolean isBeforeStartDateThanEndDate(String startDate, String endDate) {
         return LocalDate.parse(startDate, DATE_FORMATTER).isBefore(LocalDate.parse(endDate, DATE_FORMATTER));
+    }
+
+    private static String isNull(String field) {
+        return field == null ? "" : field;
     }
 }
