@@ -12,7 +12,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -71,7 +70,6 @@ public class TokenProvider {
         );
     }
 
-    @SneakyThrows
     public String generateAccessToken(String refreshTokenKey) {
         long now = (new Date().getTime());
         RefreshToken refreshToken = refreshTokenRepository.findByKey(refreshTokenKey)

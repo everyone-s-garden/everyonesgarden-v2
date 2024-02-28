@@ -5,8 +5,10 @@ import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -14,6 +16,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.UUID;
 
 @Component
 public class NCPImageUploader implements ImageUploader {
@@ -33,7 +36,7 @@ public class NCPImageUploader implements ImageUploader {
             return EMPTY_IMAGE_URL;
         }
 
-        String originalFilename = multipartFile.getOriginalFilename();
+        String originalFilename = createFileName(multipartFile.getOriginalFilename());
         String contentType = Objects.requireNonNull(multipartFile.getContentType());
 
         ObjectMetadata objectMetadata = new ObjectMetadata();
@@ -47,6 +50,18 @@ public class NCPImageUploader implements ImageUploader {
             return ncpUploader.getUrl(ncpProperties.getBucket(), path).toString();
         } catch (Exception e) {
             throw new AmazonS3Exception("이미지 업로드 중 오류 발생");
+        }
+    }
+
+    private String createFileName(String fileName) {
+        return UUID.randomUUID().toString().concat(getFileExtension(fileName));
+    }
+
+    private String getFileExtension(String fileName) {
+        try {
+            return fileName.substring(fileName.lastIndexOf("."));
+        } catch (StringIndexOutOfBoundsException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "잘못된 형식의 파일(" + fileName + ") 입니다.");
         }
     }
 
