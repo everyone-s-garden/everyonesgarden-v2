@@ -88,6 +88,27 @@ public class MyManagedGarden {
         this.description = DEFAULT_DESCRIPTION;
     }
 
+    protected MyManagedGarden(
+        LocalDate useStartDate,
+        LocalDate useEndDate,
+        Long memberId,
+        String imageUrl,
+        Long gardenId,
+        String description
+    ) {
+        Assert.isTrue(memberId > 0, "member Id는 0보다 커야 합니다.");
+        Assert.isTrue(gardenId > 0, "garden Id는 0보다 커야 합니다.");
+
+        validateDate(useStartDate, useEndDate);
+
+        this.useStartDate = useStartDate;
+        this.useEndDate = useEndDate;
+        this.memberId = memberId;
+        this.imageUrl = imageUrl;
+        this.gardenId = gardenId;
+        this.description = description;
+    }
+
     public static MyManagedGarden of(
         LocalDate useStartDate,
         LocalDate useEndDate,
@@ -112,7 +133,8 @@ public class MyManagedGarden {
             request.useEndDate(),
             request.memberId(),
             request.myManagedGardenImageUrl(),
-            request.memberId()
+            request.memberId(),
+            request.description()
         );
     }
 
