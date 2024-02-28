@@ -106,7 +106,7 @@ public class MyManagedGarden {
         this.memberId = memberId;
         this.imageUrl = imageUrl;
         this.gardenId = gardenId;
-        this.description = description;
+        this.description = description.isBlank() ? DEFAULT_DESCRIPTION : description;
     }
 
     public static MyManagedGarden of(
