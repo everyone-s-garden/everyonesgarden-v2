@@ -11,7 +11,7 @@ public record LocationSearchApiResponses(
         Double longitude
     ) {
         public static LocationSearchResponse from(Region region) {
-            return new LocationSearchResponse(region.getAddress().getFullAddress(), region.getPoint().getX(), region.getPoint().getY());
+            return new LocationSearchResponse(region.getAddress().getFullAddress(), region.getPoint().getY(), region.getPoint().getX());
         }
     }
 
