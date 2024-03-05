@@ -3,6 +3,7 @@ package com.garden.back.feedback.service;
 import com.garden.back.feedback.Feedback;
 import com.garden.back.feedback.FeedbackImages;
 import com.garden.back.feedback.FeedbackRepository;
+import com.garden.back.feedback.FeedbackType;
 import com.garden.back.feedback.service.request.FeedbackCreateServiceRequest;
 import com.garden.back.global.IntegrationTestSupport;
 import org.junit.jupiter.api.Test;
@@ -31,9 +32,11 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/feedback/download.jpg";
         MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
         int expectedSize = 1;
+        FeedbackType feedbackType = FeedbackType.GARDEN;
         FeedbackCreateServiceRequest request = sut.giveMeBuilder(FeedbackCreateServiceRequest.class)
             .size("images", 1)
             .set("images[0]", multipartFile)
+            .set("feedbackType", feedbackType)
             .sample();
 
         given(parallelImageUploader.upload(any(), any())).willReturn(List.of(expectedUrl));
@@ -46,6 +49,7 @@ class FeedbackServiceTest extends IntegrationTestSupport {
         FeedbackImages feedbackImages = actual.getFeedbackImages();
 
         assertAll("Feedback and FeedbackImages",
+            () -> assertThat(actual.getFeedbackType()).isEqualTo(feedbackType),
             () -> assertThat(actual.getContent()).isEqualTo(request.content()),
             () -> assertThat(feedbackImages.getImages().size()).isEqualTo(expectedSize),
             () -> assertThat(feedbackImages.getImages().get(expectedSize - 1).getUrl()).isEqualTo(expectedUrl)
