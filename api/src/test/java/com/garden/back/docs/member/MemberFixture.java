@@ -5,6 +5,6 @@ import com.garden.back.member.service.dto.MemberMyPageResult;
 
 public class MemberFixture {
     public static MemberMyPageResult memberMyPageResult() {
-        return new MemberMyPageResult("불가사리", "프로필이미지 URL", MemberMannerGrade.STEM.name());
+        return new MemberMyPageResult("불가사리", "프로필이미지 URL", MemberMannerGrade.STEM.name(), "test@test.com");
     }
 }

@@ -1,5 +1,6 @@
 package com.garden.back.auth;
 
+import com.garden.back.auth.client.AuthRequest;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.global.IntegrationTestSupport;
 import com.garden.back.member.Member;
@@ -35,10 +36,10 @@ class AuthServiceTest extends IntegrationTestSupport {
             .sample();
         given(tokenProvider.generateTokenDto(any(Member.class))).willReturn(token);
         given(authRegistrations.get(any(AuthProvider.class))).willReturn(kakaoMemberProvider);
-        given(kakaoMemberProvider.getMember(anyString())).willReturn(expected);
+        given(kakaoMemberProvider.getMember(any())).willReturn(expected);
 
         //when
-        authService.login(AuthProvider.KAKAO, "asdfasdf");
+        authService.login(AuthProvider.KAKAO, sut.giveMeOne(AuthRequest.class));
 
         //then
         assertThat(memberRepository.findByEmail(expected.getEmail()))

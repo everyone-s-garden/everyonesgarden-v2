@@ -2,13 +2,11 @@ package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public record GardenByComplexesResults(
-        List<GardenByComplexesResult> gardenByComplexesResults,
+        Set<GardenByComplexesResult> gardenByComplexesResults,
         boolean hasNext
 ) {
     public static GardenByComplexesResults of(GardensByComplexes gardens) {
@@ -16,7 +14,7 @@ public record GardenByComplexesResults(
         return new GardenByComplexesResults(
                 gardens.gardensByComplexes().stream()
                         .map(gardenByComplexes -> GardenByComplexesResult.to(gardenByComplexes, gardenAndImages.get(gardenByComplexes.gardenId()))
-                        ).toList(),
+                        ).collect(Collectors.toSet()),
                 gardens.hasNext()
         );
     }

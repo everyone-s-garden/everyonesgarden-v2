@@ -2,7 +2,9 @@ package com.garden.back.report.domain.garden;
 
 public enum GardenReportType {
 
-    FAKED_SALE("허위 매물", 5),
+    OFF_TRACK("주제에 벗어남",1),
+    INACCURATE_INFORMATION("부정확한 정보",1),
+    FAKED_SALE("광고성 게시글", 5),
     SPAMMING("도배글", 1),
     SWEAR_WORD("욕설", 3),
     SENSATIONAL("선정성", 5),

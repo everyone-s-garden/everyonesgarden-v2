@@ -15,7 +15,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         """
           select m.nickname as nickname,
           m.profileImageUrl as profileImage,
-          m.memberMannerGrade as memberMannerGrade
+          m.memberMannerGrade as memberMannerGrade,
+          m.email as email
           from Member as m
           where m.id =:memberId
         """

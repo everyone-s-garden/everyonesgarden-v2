@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class GardenFacade {
+    private static final Long NOT_LOGIN_USER_ID = -1L;
+    private static final Long NOT_CREATED_CHAT_ROOM_ID = -1L;
     private final GardenReadService gardenReadService;
     private final GardenChatRoomService gardenChatRoomService;
 
@@ -16,8 +18,11 @@ public class GardenFacade {
     }
 
     public GardenDetailFacadeResponse getGardenDetail(GardenDetailFacadeRequest request) {
+        Long roomId = NOT_CREATED_CHAT_ROOM_ID;
         GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(request.toGardenDetailParam());
-        Long roomId = gardenChatRoomService.getRoomId(request.toGardenChatRoomInfoGetParam());
+        if (!request.memberId().equals(NOT_LOGIN_USER_ID)) {
+            roomId = gardenChatRoomService.getRoomId(request.toGardenChatRoomInfoGetParam());
+        }
 
         return GardenDetailFacadeResponse.to(gardenDetail, roomId);
     }
