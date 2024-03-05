@@ -21,7 +21,7 @@ public record FeedbackCreateRequest(
         if (multipartFiles == null) {
             multipartFiles = Collections.EMPTY_LIST;
         }
-
+        
         return FeedbackCreateServiceRequest.of(content, multipartFiles, memberId, FeedbackType.valueOf(feedbackType));
     }
 }
