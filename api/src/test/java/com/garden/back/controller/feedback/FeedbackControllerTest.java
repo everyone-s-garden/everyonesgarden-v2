@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class FeedbackControllerTest extends ControllerTestSupport {
 
-    @DisplayName("피드백을 줄 때 피드백 내용이 비어 있거나 255글자를 넘을 수 없다.")
+    @DisplayName("피드백을 줄 때 피드백 내용이 비어 있거나 255글자를 넘거나 피드백 타입을 제대로 입력해야 한다.")
     @ParameterizedTest
     @MethodSource("contentProvider")
     void createFeedback(FeedbackCreateRequest request) throws Exception {
@@ -42,9 +42,10 @@ class FeedbackControllerTest extends ControllerTestSupport {
 
     private static Stream<Arguments> contentProvider() {
         return Stream.of(
-            Arguments.of(new FeedbackCreateRequest("a".repeat(256))),
-            Arguments.of(new FeedbackCreateRequest("")),
-            Arguments.of(new FeedbackCreateRequest(null))
+            Arguments.of(new FeedbackCreateRequest("GARDEN", "a".repeat(256))),
+            Arguments.of(new FeedbackCreateRequest("GARDEN", "")),
+            Arguments.of(new FeedbackCreateRequest("GARDEN", null)),
+            Arguments.of(new FeedbackCreateRequest("", null))
         );
     }
 
