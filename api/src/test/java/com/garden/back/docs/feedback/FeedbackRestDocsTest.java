@@ -35,9 +35,10 @@ class FeedbackRestDocsTest extends RestDocsSupport {
 
     @DisplayName("어플 불편 사항에 대해 피드백을 주는 API DOCS")
     @Test
-    void reportGarden() throws Exception {
+    void createFeedback() throws Exception {
         FeedbackCreateRequest request = sut.giveMeBuilder(FeedbackCreateRequest.class)
             .set("content", "이 부분이 이상하네요.")
+            .set("feedbackType", "GARDEN")
             .sample();
         MockMultipartFile firstImage = new MockMultipartFile(
             "images",
@@ -63,7 +64,8 @@ class FeedbackRestDocsTest extends RestDocsSupport {
             .andDo(print())
             .andDo(document("create-feedback",
                 requestPartFields("texts",
-                    fieldWithPath("content").type(STRING).description("신고 내용")
+                    fieldWithPath("content").type(STRING).description("신고 내용"),
+                    fieldWithPath("feedbackType").type(STRING).description("피드백 타입(GARDEN, CROP, COMMUNITY, CHAT, MYPAGE, ETC) 중 가능")
                 ),
                 requestParts(
                     partWithName("texts").description("피드백 내용 texts에는 json 형식으로 위 part 필드들에 대해 요청해주시면 됩니다."),
