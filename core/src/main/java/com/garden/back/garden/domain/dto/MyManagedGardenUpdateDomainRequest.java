@@ -7,6 +7,7 @@ public record MyManagedGardenUpdateDomainRequest (
         Long gardenId,
         LocalDate useStartDate,
         LocalDate useEndDate,
-        Long memberId
+        Long memberId,
+        String description
 ) {
 }

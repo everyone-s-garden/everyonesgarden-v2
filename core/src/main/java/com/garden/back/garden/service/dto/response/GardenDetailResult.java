@@ -13,7 +13,6 @@ public record GardenDetailResult(
         Double longitude,
         String gardenName,
         String gardenType,
-        String linkForRequest,
         String price,
         String contact,
         String size,
@@ -21,8 +20,6 @@ public record GardenDetailResult(
         Long writerId,
         String recruitStartDate,
         String recruitEndDate,
-        String useStartDate,
-        String useEndDate,
         String gardenDescription,
         List<String> images,
         GardenFacility gardenFacility,
@@ -41,7 +38,6 @@ public record GardenDetailResult(
                 gardenDetailRepositoryResponse.getLongitude(),
                 gardenDetailRepositoryResponse.getGardenName(),
                 gardenDetailRepositoryResponse.getGardenType().name(),
-                gardenDetailRepositoryResponse.getLinkForRequest(),
                 gardenDetailRepositoryResponse.getPrice(),
                 gardenDetailRepositoryResponse.getContact(),
                 gardenDetailRepositoryResponse.getSize(),
@@ -49,8 +45,6 @@ public record GardenDetailResult(
                 gardenDetailRepositoryResponse.getWriterId(),
                 gardenDetailRepositoryResponse.getRecruitStartDate().format(DATE_FORMATTER),
                 gardenDetailRepositoryResponse.getRecruitEndDate().format(DATE_FORMATTER),
-                gardenDetailRepositoryResponse.getUseStartDate().format(DATE_FORMATTER),
-                gardenDetailRepositoryResponse.getUseEndDate().format(DATE_FORMATTER),
                 gardenDetailRepositoryResponse.getGardenDescription(),
                 gardenDetailRepositoryResponses.stream()
                         .map(GardenDetailRepositoryResponse::getImageUrl)

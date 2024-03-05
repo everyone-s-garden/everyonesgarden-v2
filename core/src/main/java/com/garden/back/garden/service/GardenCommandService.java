@@ -82,7 +82,7 @@ public class GardenCommandService {
     @Transactional
     public Long updateGarden(GardenUpdateParam param) {
         Garden gardenToUpdate = gardenRepository.getById(param.gardenId());
-        gardenToUpdate.updateGarden(GardenUpdateParam.of(param));
+        gardenToUpdate.updateGarden(param.toGardenUpdateDomainRequest());
         gardenRepository.save(gardenToUpdate);
 
         deleteGardenImages(param.gardenId(), param.remainGardenImageUrls());
@@ -127,7 +127,7 @@ public class GardenCommandService {
         deleteGardenImage(myManagedGarden.getImageUrl());
         String uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
 
-        myManagedGarden.update(MyManagedGardenUpdateParam.to(param, uploadImageUrls));
+        myManagedGarden.update(param.toMyManagedGardenUpdateDomainRequest(uploadImageUrls));
         myManagedGardenRepository.save(myManagedGarden);
 
         return myManagedGarden.getMyManagedGardenId();

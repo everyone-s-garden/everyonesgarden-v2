@@ -62,7 +62,6 @@ public class GardenFixture {
             127.1388684,
             "진겸이네 주말농장",
             GardenType.PUBLIC.name(),
-            "www.studay.me",
             "100000",
             "000-0000-0000",
             "1000",
@@ -70,8 +69,6 @@ public class GardenFixture {
             1L,
             "2023.12.01",
             "2023.12.25",
-            "2024.01.01",
-            "2024.12.25",
             "농기구를 빌릴 수 있는 자판기가 있습니다. 작물 키우는 법도 알려드려요",
             List.of("www.garden.com"),
             new GardenDetailResult.GardenFacility(
@@ -148,7 +145,6 @@ public class GardenFixture {
             "100",
             "200",
             "ACTIVE",
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             37.444917,
@@ -158,9 +154,7 @@ public class GardenFixture {
             true,
             "화장실이 깨끗하고 토양의 질이 좋습니다. 모두 놀러오세요",
             "2023.12.01",
-            "2023.12.23",
-            "2023.12.01",
-            "2023.12.31"
+            "2023.12.23"
         );
     }
 
@@ -172,7 +166,6 @@ public class GardenFixture {
             "200",
             "ACTIVE",
             "PRIVATE",
-            "www.everygarden.me",
             "000-000-0000",
             "인천광역시 서구 만수동 200",
             37.444917,
@@ -182,9 +175,7 @@ public class GardenFixture {
             true,
             "화장실이 깨끗하고 흙이 좋아요",
             "2023.12.01",
-            "2023.12.23",
-            "2023.12.01",
-            "2023.12.31"
+            "2023.12.23"
         );
     }
 
@@ -196,7 +187,8 @@ public class GardenFixture {
                     "별이네 주말농장",
                     "2023.12.01",
                     "2023.12.31",
-                    List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg")
+                    List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                    "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )
             )
         );
@@ -206,7 +198,8 @@ public class GardenFixture {
         return new MyManagedGardenCreateRequest(
             1L,
             "2023.12.01",
-            "2023.12.31"
+            "2023.12.31",
+            "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
     }
 
@@ -214,7 +207,8 @@ public class GardenFixture {
         return new MyManagedGardenUpdateRequest(
             1L,
             "2023.12.01",
-            "2023.12.31"
+            "2023.12.31",
+            "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
     }
 
@@ -225,7 +219,8 @@ public class GardenFixture {
             "인천 계양구 계산동 22",
             "2023.12.01",
             "2023.12.31",
-            "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
+            "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
+            "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
     }
 

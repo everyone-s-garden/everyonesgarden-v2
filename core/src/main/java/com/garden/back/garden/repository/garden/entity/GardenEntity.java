@@ -53,9 +53,6 @@ public class GardenEntity extends BaseTimeEntity {
     @Column(name = "garden_status", nullable = false)
     private GardenStatus gardenStatus;
 
-    @Column(name = "link_for_request")
-    private String linkForRequest;
-
     @Column(name = "price")
     private String price;
 
@@ -73,12 +70,6 @@ public class GardenEntity extends BaseTimeEntity {
 
     @Column(name = "recruit_end_date")
     private LocalDate recruitEndDate;
-
-    @Column(name = "use_start_date")
-    private LocalDate useStartDate;
-
-    @Column(name = "use_end_date")
-    private LocalDate useEndDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
@@ -112,15 +103,12 @@ public class GardenEntity extends BaseTimeEntity {
                 gardenName,
                 gardenType,
                 gardenStatus,
-                linkForRequest,
                 price,
                 contact,
                 size,
                 gardenDescription,
                 recruitStartDate,
                 recruitEndDate,
-                useStartDate,
-                useEndDate,
                 isToilet,
                 isWaterway,
                 isEquipment,
@@ -141,15 +129,12 @@ public class GardenEntity extends BaseTimeEntity {
         gardenEntity.gardenName = garden.getGardenName();
         gardenEntity.gardenType = garden.getGardenType();
         gardenEntity.gardenStatus = garden.getGardenStatus();
-        gardenEntity.linkForRequest = garden.getLinkForRequest();
         gardenEntity.price = garden.getPrice();
         gardenEntity.contact = garden.getContact();
         gardenEntity.size = garden.getSize();
         gardenEntity.gardenDescription = garden.getGardenDescription();
         gardenEntity.recruitStartDate = garden.getRecruitStartDate();
         gardenEntity.recruitEndDate = garden.getRecruitEndDate();
-        gardenEntity.useStartDate = garden.getUseStartDate();
-        gardenEntity.useEndDate = garden.getUseEndDate();
         gardenEntity.isToilet = garden.getIsToilet();
         gardenEntity.isWaterway = garden.getIsWaterway();
         gardenEntity.isEquipment = garden.getIsEquipment();

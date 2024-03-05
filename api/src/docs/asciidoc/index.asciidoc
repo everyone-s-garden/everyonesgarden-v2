@@ -76,3 +76,8 @@ include::mypage/myregion.adoc[]
 == Notification
 알림 API 입니다.
 include::notification/notification.adoc[]
+
+[[Feedback]]
+== Feedback
+피드백 API 입니다.
+include::feedback/feedback.asciidoc[]

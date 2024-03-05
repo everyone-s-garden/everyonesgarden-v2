@@ -380,5 +380,5 @@ class GardenReadServiceTest extends IntegrationTestSupport {
             .isInstanceOf(EmptyResultDataAccessException.class)
             .hasMessageContaining("존재하지 않는 텃밭입니다. gardenId : "+notExistedGardenId);
     }
-    
+
 }

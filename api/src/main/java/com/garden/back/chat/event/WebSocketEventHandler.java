@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class WebSocketListenerConfig {
+public class WebSocketEventHandler {
 
     private static final String SUBSCRIBE_URL = "/queue/garden-chats/";
     private final GardenChatService gardenChatService;
     private final GardenChatRoomService gardenChatRoomService;
 
-    public WebSocketListenerConfig(GardenChatService gardenChatService, GardenChatRoomService gardenChatRoomService) {
+    public WebSocketEventHandler(GardenChatService gardenChatService, GardenChatRoomService gardenChatRoomService) {
         this.gardenChatService = gardenChatService;
         this.gardenChatRoomService = gardenChatRoomService;
     }

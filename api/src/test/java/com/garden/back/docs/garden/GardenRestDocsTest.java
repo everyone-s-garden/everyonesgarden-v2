@@ -150,17 +150,14 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("텃밭 경도"),
                     fieldWithPath("gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                     fieldWithPath("gardenType").type(JsonFieldType.STRING).description("텃밭 타입 : PRIVATE(민간), PUBLIC(공공)"),
-                    fieldWithPath("linkForRequest").type(JsonFieldType.STRING).description("텃밭 신청 홈페이지"),
                     fieldWithPath("price").type(JsonFieldType.STRING).description("텃밭 가격"),
-                    fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처"),
+                    fieldWithPath("contact").type(JsonFieldType.STRING).description("연락처이며 빈값 가능"),
                     fieldWithPath("size").type(JsonFieldType.STRING).description("텃밭 크기"),
                     fieldWithPath("gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
                     fieldWithPath("writerId").type(JsonFieldType.NUMBER).description("작성자 아이디"),
                     fieldWithPath("recruitStartDate").type(JsonFieldType.STRING).description("모집 시작일"),
                     fieldWithPath("recruitEndDate").type(JsonFieldType.STRING).description("모집 마감일"),
-                    fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일"),
-                    fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일"),
-                    fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명"),
+                    fieldWithPath("gardenDescription").type(JsonFieldType.STRING).description("텃밭 설명이며 최대 100글자까지 등록 가능하다. 빈값 가능"),
                     fieldWithPath("images").type(JsonFieldType.ARRAY).description("텃밭 사진"),
                     fieldWithPath("gardenFacility").type(JsonFieldType.OBJECT).description("텃밭 설비 정보"),
                     fieldWithPath("gardenFacility.isToilet").type(JsonFieldType.BOOLEAN).description("텃밭 화장실 제공 여부"),
@@ -253,7 +250,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
                     fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                     fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                    fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
+                    fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("myManagedGardenGetResponses[].description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 )));
     }
 
@@ -277,7 +275,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("address").type(JsonFieldType.STRING).description("분양받은 텃밭의 주소"),
                     fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                     fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
-                    fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url")
+                    fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 )));
     }
 
