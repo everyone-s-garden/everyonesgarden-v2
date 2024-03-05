@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 public record FeedbackCreateRequest(
@@ -17,6 +18,10 @@ public record FeedbackCreateRequest(
     String content
 ) {
     public FeedbackCreateServiceRequest toServiceRequest(List<MultipartFile> multipartFiles, Long memberId) {
+        if (multipartFiles == null) {
+            multipartFiles = Collections.EMPTY_LIST;
+        }
+
         return FeedbackCreateServiceRequest.of(content, multipartFiles, memberId, FeedbackType.valueOf(feedbackType));
     }
 }
