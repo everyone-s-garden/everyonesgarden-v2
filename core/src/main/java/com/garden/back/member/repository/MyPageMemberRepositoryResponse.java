@@ -9,4 +9,6 @@ public interface MyPageMemberRepositoryResponse {
     String getProfileImage();
 
     MemberMannerGrade getMemberMannerGrade();
+
+    String getEmail();
 }

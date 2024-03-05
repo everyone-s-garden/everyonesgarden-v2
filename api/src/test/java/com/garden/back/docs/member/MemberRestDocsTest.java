@@ -49,7 +49,8 @@ class MemberRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("nickname").type(STRING).description("사용자의 별명"),
                     fieldWithPath("profileImage").type(STRING).description("사용자의 프로필 이미지"),
-                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자의 매너 등급")
+                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자의 매너 등급"),
+                    fieldWithPath("email").type(STRING).description("사용자의 email")
                 )));
     }
 

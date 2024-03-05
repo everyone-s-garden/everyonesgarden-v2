@@ -5,13 +5,15 @@ import com.garden.back.member.repository.MyPageMemberRepositoryResponse;
 public record MemberMyPageResult(
     String nickname,
     String imageUrl,
-    String memberMannerGrade
+    String memberMannerGrade,
+    String email
 ) {
     public static MemberMyPageResult to(MyPageMemberRepositoryResponse response) {
         return new MemberMyPageResult(
             response.getNickname(),
             response.getProfileImage(),
-            response.getMemberMannerGrade().name()
+            response.getMemberMannerGrade().name(),
+            response.getEmail()
         );
     }
 }
