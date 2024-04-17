@@ -7,6 +7,7 @@ import com.garden.back.garden.facade.GardenDetailFacadeResponse;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;
+import java.util.Set;
 
 public class GardenFixture {
     public static GardenByNameResults gardenByNameResults() {
@@ -37,8 +38,8 @@ public class GardenFixture {
     }
 
     public static GardenByComplexesResults gardenByComplexesResults() {
-        List<GardenByComplexesResults.GardenByComplexesResult> gardenByComplexesResults =
-            List.of(new GardenByComplexesResults.GardenByComplexesResult(
+        Set<GardenByComplexesResults.GardenByComplexesResult> gardenByComplexesResults =
+            Set.of(new GardenByComplexesResults.GardenByComplexesResult(
                     1L,
                     "100",
                     "별이네 텃밭",
