@@ -11,6 +11,7 @@ import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
+import com.garden.back.global.loginuser.OptionalUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -68,7 +69,7 @@ public class GardenController {
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenDetailResponse> getGardenDetail(
         @PathVariable @Positive Long gardenId,
-        @CurrentUser LoginUser loginUser) {
+        @OptionalUser LoginUser loginUser) {
         GardenDetailFacadeResponse gardenDetail = gardenFacade.getGardenDetail(
             GardenDetailRequest.of(loginUser.memberId(), gardenId));
 
