@@ -12,7 +12,7 @@ public class KakaoLoginProperties {
     private final String grantType;
 
     public KakaoLoginProperties(
-            @Value("${oauth2.kakao.client-id}") String clientId,
+            @Value("${oauth2.kakao.client-id:#{null}}") String clientId,
             @Value("${oauth2.kakao.grant-type:authorization_code}") String grantType
     ) {
         this.clientId = clientId;
