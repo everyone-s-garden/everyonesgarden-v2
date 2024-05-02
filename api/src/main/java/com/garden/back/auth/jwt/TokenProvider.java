@@ -72,9 +72,18 @@ public class TokenProvider {
 
     public String generateAccessToken(String refreshTokenKey) {
         long now = (new Date().getTime());
+        Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
+
         RefreshToken refreshToken = refreshTokenRepository.findByKey(refreshTokenKey)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
+
+        String accessToken = Jwts.builder()
+            .setSubject(String.valueOf(member.getId()))
+            .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
+            .setExpiration(accessTokenExpiredDate)
+            .signWith(key, SignatureAlgorithm.HS256)
+            .compact();
 
         return Jwts.builder()
                 .setSubject(String.valueOf(member.getId()))
