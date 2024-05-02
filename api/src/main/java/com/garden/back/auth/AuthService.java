@@ -1,5 +1,6 @@
 package com.garden.back.auth;
 
+import com.garden.back.auth.client.AuthRequest;
 import com.garden.back.auth.client.MemberProvider;
 import com.garden.back.auth.jwt.TokenProvider;
 import com.garden.back.auth.jwt.response.RefreshTokenResponse;
@@ -29,8 +30,8 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse login(AuthProvider authProvider, String accessToken) {
-        Member member = authRegistrations.get(authProvider).getMember(accessToken);
+    public TokenResponse login(AuthProvider authProvider, AuthRequest requestDto) {
+        Member member = authRegistrations.get(authProvider).getMember(requestDto);
         Member savedMember = saveOrUpdate(member);
         return tokenProvider.generateTokenDto(savedMember);
     }
