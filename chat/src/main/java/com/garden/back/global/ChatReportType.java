@@ -8,7 +8,8 @@ public enum ChatReportType {
     DISPUTE("분쟁", -3),
     FRAUD("사기", -10),
     SWEAR_WORD("욕설", -2),
-    INAPPROPRIATE_BEHAVIOR("부적절한 행위", -3);
+    INAPPROPRIATE_BEHAVIOR("부적절한 행위", -3),
+    COMMENTS("기타", -3);
 
     private final String description;
     private final int score;

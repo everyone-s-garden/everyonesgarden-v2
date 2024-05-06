@@ -8,6 +8,8 @@ import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeResponse;
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.docs.chat.global.ChatRoomFixture;
 import com.garden.back.garden.service.GardenChatRoomService;
+import com.garden.back.global.ChatReportType;
+import com.garden.back.report.domain.garden.GardenReportType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -15,6 +17,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.restdocs.payload.JsonFieldType;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -134,7 +138,9 @@ class ChatDocsTest extends RestDocsSupport {
                         requestPartFields("gardenChatReportRequest",
                                 fieldWithPath("reportedMemberId").type(JsonFieldType.NUMBER).description("신고당한 사람의 아이디"),
                                 fieldWithPath("reportContent").type(JsonFieldType.STRING).description("신고내용"),
-                                fieldWithPath("reportType").type(JsonFieldType.STRING).description("신고항목: NON_MANNER_USER, DISPUTE, FRAUD, SWEAR_WORD, INAPPROPRIATE_BEHAVIOR")
+                                fieldWithPath("reportType").type(JsonFieldType.STRING).description("신고항목:"+ Arrays.stream(ChatReportType.values())
+                                    .map(Enum::name)
+                                    .collect(Collectors.joining(", ")))
                         ),
                         responseFields(
                                 fieldWithPath("reportId").type(JsonFieldType.NUMBER).description("생성된 신고 ID")
