@@ -47,10 +47,7 @@ import org.springframework.web.context.WebApplicationContext;
 )
 @Import(TestSecurityConfig.class)
 @ActiveProfiles("test")
-public class ControllerTestSupport extends FixtureSupport {
-
-    @Autowired
-    WebApplicationContext context;
+public abstract class ControllerTestSupport extends FixtureSupport {
 
     @Autowired
     protected MockMvc mockMvc;
