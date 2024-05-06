@@ -189,7 +189,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .forEach(comment -> {
                 FindPostsAllCommentResponse.ParentInfo parentInfo = parentMap.get(comment.parentId());
                 if (parentInfo != null) {
-                    parentInfo.child().add(comment);
+                    parentInfo.subComments().add(comment);
                 }
             });
 
