@@ -18,6 +18,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.chrono.ChronoLocalDateTime;
+import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.List;
 
@@ -467,6 +469,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         )
                 )
         );
+
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
 
