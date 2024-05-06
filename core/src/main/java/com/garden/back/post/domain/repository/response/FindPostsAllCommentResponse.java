@@ -3,7 +3,7 @@ package com.garden.back.post.domain.repository.response;
 import java.util.List;
 
 public record FindPostsAllCommentResponse(
-    List<ParentInfo> parents
+    List<ParentInfo> mainComment
 ) {
     public record ParentInfo(
         Long commentId,
@@ -11,7 +11,7 @@ public record FindPostsAllCommentResponse(
         String content,
         UserResponse userInfo,
         Boolean isLikeClick,
-        List<CommentInfo> child
+        List<CommentInfo> subComments
     ) {}
 
     public record CommentInfo(
