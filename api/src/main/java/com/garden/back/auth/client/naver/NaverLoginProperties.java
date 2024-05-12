@@ -17,7 +17,7 @@ public class NaverLoginProperties {
             @Value("${oauth2.naver.client-id:#{null}}") String clientId,
             @Value("${oauth2.naver.client-secret:#{null}}") String clientSecret,
             @Value("${oauth2.naver.grant-type:authorization_code}") String grantType,
-            @Value("${oauth2.naver.state:RAMDOM_STATE}") String state
+            @Value("${oauth2.naver.state:#{null}") String state
     ) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;

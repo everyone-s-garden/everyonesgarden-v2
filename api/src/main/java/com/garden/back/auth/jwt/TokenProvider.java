@@ -44,33 +44,10 @@ public class TokenProvider {
         long now = (new Date().getTime());
 
         Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
-        String accessToken = Jwts.builder()
-                .setSubject(String.valueOf(member.getId()))
-                .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
-                .setExpiration(accessTokenExpiredDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        Date refreshTokenExpiredDate = new Date(now + jwtProperties.getRefreshTokenExpireTime());
-        String refreshToken = Jwts.builder()
-                .setExpiration(refreshTokenExpiredDate)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-
-        RefreshToken refreshTokenObject = new RefreshToken(refreshToken, member, refreshTokenExpiredDate);
-        refreshTokenRepository.save(refreshTokenObject);
-
-        return new TokenResponse(
-                jwtProperties.getBearerPrefix(),
-                accessToken,
-                refreshToken,
-                accessTokenExpiredDate.getTime(),
-                refreshTokenExpiredDate.getTime(),
-                member.getId()
-        );
+        return getTokenResponse(now, accessTokenExpiredDate, member);
     }
 
-    public String generateAccessToken(String refreshTokenKey) {
+    public TokenResponse generateTokenDto(String refreshTokenKey) {
         long now = (new Date().getTime());
         Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
 
@@ -78,6 +55,10 @@ public class TokenProvider {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
 
+        return getTokenResponse(now, accessTokenExpiredDate, member);
+    }
+
+    private TokenResponse getTokenResponse(long now, Date accessTokenExpiredDate, Member member) {
         String accessToken = Jwts.builder()
             .setSubject(String.valueOf(member.getId()))
             .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
@@ -85,12 +66,23 @@ public class TokenProvider {
             .signWith(key, SignatureAlgorithm.HS256)
             .compact();
 
-        return Jwts.builder()
-                .setSubject(String.valueOf(member.getId()))
-                .claim(jwtProperties.getAuthorityKey(), member.getRole().toString())
-                .setExpiration(new Date(now + jwtProperties.getAccessTokenExpireTime()))
+        Date refreshTokenExpiredDate = new Date(now + jwtProperties.getRefreshTokenExpireTime());
+        String newRefreshToken = Jwts.builder()
+                .setExpiration(refreshTokenExpiredDate)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        RefreshToken refreshTokenObject = new RefreshToken(newRefreshToken, member, refreshTokenExpiredDate);
+        refreshTokenRepository.save(refreshTokenObject);
+
+        return new TokenResponse(
+                jwtProperties.getBearerPrefix(),
+                accessToken,
+                newRefreshToken,
+                accessTokenExpiredDate.getTime(),
+                refreshTokenExpiredDate.getTime(),
+                member.getId()
+        );
     }
 
     public Authentication getAuthentication(String accessToken) {
