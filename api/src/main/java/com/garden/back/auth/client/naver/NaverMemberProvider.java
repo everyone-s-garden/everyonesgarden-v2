@@ -15,6 +15,7 @@ public class NaverMemberProvider implements MemberProvider {
     private final NaverOAuthClient naverClient;
     private final NaverOAuthClient.NaverTokenClient naverTokenClient;
     private final NaverLoginProperties properties;
+
     public NaverMemberProvider(
             NaverOAuthClient naverClient,
             NaverOAuthClient.NaverTokenClient naverTokenClient,
@@ -27,14 +28,15 @@ public class NaverMemberProvider implements MemberProvider {
 
     @Override
     public Member getMember(AuthRequest authRequest) {
-        NaverTokenResponse tokenResponse = naverTokenClient.getToken(new NaverTokenRequest(
+        var request = new NaverTokenRequest(
                 properties.getGrantType(),
                 properties.getClientId(),
-                        properties.getClientSecret(),
-                authRequest.redirectUri(),
-                authRequest.code()));
-        log.info("tokenResponse: {}", tokenResponse);
-        NaverOauth2Response response = naverClient.getUserInfoFromNaver(tokenResponse.access_token());
+                properties.getClientSecret(),
+                authRequest.code(),
+                properties.getState()
+        );
+        NaverTokenResponse tokenResponse = naverTokenClient.getToken(request);
+        NaverOauth2Response response = naverClient.getUserInfoFromNaver("Bearer %s".formatted(tokenResponse.access_token()));
         return response.toEntity();
     }
 }
