@@ -26,13 +26,15 @@ include::{snippets}/login-with-naver/response-fields.adoc[]
 
 [[refresh-access-token]]
 
-=== 리프레시 토큰으로 엑세스 토큰 발급
+=== 리프레시 토큰으로 리프레시 토큰, 엑세스 토큰 발급
 
-리프레시 토큰을 이용해 엑세스 토큰을 발급 받습니다.
+리프레시 토큰을 이용해 리프레시 토큰과 엑세스 토큰을 발급 받습니다.
+로그인 플로우와 같은 응답을 보내기 때문에 로그인과 동일한 응답을 받습니다.
 
 ==== Request
 include::{snippets}/refresh-access-token/http-request.adoc[]
 include::{snippets}/refresh-access-token/request-headers.adoc[]
+include::{snippets}/refresh-access-token/request-cookies.adoc[]
 
 ==== Response (Success)
 include::{snippets}/refresh-access-token/http-response.adoc[]

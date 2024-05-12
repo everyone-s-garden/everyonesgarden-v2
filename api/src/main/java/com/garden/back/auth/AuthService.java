@@ -3,7 +3,6 @@ package com.garden.back.auth;
 import com.garden.back.auth.client.AuthRequest;
 import com.garden.back.auth.client.MemberProvider;
 import com.garden.back.auth.jwt.TokenProvider;
-import com.garden.back.auth.jwt.response.RefreshTokenResponse;
 import com.garden.back.auth.jwt.response.TokenResponse;
 import com.garden.back.member.Member;
 import com.garden.back.member.repository.MemberRepository;
@@ -41,8 +40,7 @@ public class AuthService {
         return memberRepository.save(savedMember);
     }
 
-    public RefreshTokenResponse generateAccessToken(String refreshToken) {
-        String generatedToken = tokenProvider.generateAccessToken(refreshToken);
-        return new RefreshTokenResponse(generatedToken);
+    public TokenResponse generateToken(String refreshToken) {
+        return tokenProvider.generateTokenDto(refreshToken);
     }
 }
