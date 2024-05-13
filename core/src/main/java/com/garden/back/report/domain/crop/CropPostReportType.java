@@ -1,5 +1,8 @@
 package com.garden.back.report.domain.crop;
 
+import lombok.Getter;
+
+@Getter
 public enum CropPostReportType {
     SPAMMING("도배글", 1),
     SWEAR_WORD("욕설", 3),

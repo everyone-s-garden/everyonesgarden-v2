@@ -1,5 +1,8 @@
 package com.garden.back.report.domain.comment;
 
+import lombok.Getter;
+
+@Getter
 public enum CommentReportType {
     SPAMMING("도배글", 1),
     SWEAR_WORD("욕설", 3),
