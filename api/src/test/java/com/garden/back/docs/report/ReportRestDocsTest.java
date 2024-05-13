@@ -48,10 +48,10 @@ class ReportRestDocsTest extends RestDocsSupport {
         ReportGardenRequest request = sut.giveMeBuilder(ReportGardenRequest.class)
             .set("content", "허위로 등록된 텃밭 입니디.")
             .set("reportType", "FAKED_SALE")
-                .sample();
+            .sample();
         mockMvc.perform(post("/v1/reports/gardens/{gardenId}", gardenId)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().isCreated())
             .andDo(print())
             .andDo(document("report-garden",
@@ -62,7 +62,7 @@ class ReportRestDocsTest extends RestDocsSupport {
                     fieldWithPath("content").type(STRING).description("신고 내용"),
                     fieldWithPath("reportType").type(STRING)
                         .description("신고타입:"+Arrays.stream(GardenReportType.values())
-                            .map(Enum::name)
+                            .map(type -> type.name() + " : " + type.getDescription())
                             .collect(Collectors.joining(", ")))
                 ),
                 responseHeaders(
@@ -89,7 +89,7 @@ class ReportRestDocsTest extends RestDocsSupport {
                 requestFields(
                     fieldWithPath("reportType").type(STRING)
                         .description("신고 타입:"+Arrays.stream(CommentReportType.values())
-                            .map(Enum::name)
+                            .map(type -> type.name() + " : " + type.getDescription())
                             .collect(Collectors.joining(", ")))
                 ),
                 responseHeaders(
@@ -115,7 +115,7 @@ class ReportRestDocsTest extends RestDocsSupport {
                 ),
                 requestFields(
                     fieldWithPath("reportType").type(STRING).description("신고 타입:"+Arrays.stream(PostReportType.values())
-                        .map(Enum::name)
+                        .map(type -> type.name() + " : " + type.getDescription())
                         .collect(Collectors.joining(", ")))
                 ),
                 responseHeaders(
@@ -141,7 +141,7 @@ class ReportRestDocsTest extends RestDocsSupport {
                 ),
                 requestFields(
                     fieldWithPath("reportType").type(STRING).description("신고 타입:"+Arrays.stream(CropPostReportType.values())
-                        .map(Enum::name)
+                        .map(type -> type.name() + " : " + type.getDescription())
                         .collect(Collectors.joining(", ")))
                 ),
                 responseHeaders(
