@@ -33,7 +33,6 @@ include::{snippets}/login-with-naver/response-fields.adoc[]
 
 ==== Request
 include::{snippets}/refresh-access-token/http-request.adoc[]
-include::{snippets}/refresh-access-token/request-headers.adoc[]
 include::{snippets}/refresh-access-token/request-cookies.adoc[]
 
 ==== Response (Success)

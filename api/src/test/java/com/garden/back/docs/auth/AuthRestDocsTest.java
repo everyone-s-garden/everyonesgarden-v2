@@ -130,7 +130,7 @@ class AuthRestDocsTest extends RestDocsSupport {
                 .sample();
         given(authService.login(any(), any())).willReturn(response);
 
-        mockMvc.perform(post("/v1/auth/kakao")
+        mockMvc.perform(post("/v1/auth/naver")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(authRequest))
                 )
