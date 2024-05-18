@@ -23,7 +23,7 @@ public record GardenDetailResult(
         String gardenDescription,
         List<String> images,
         GardenFacility gardenFacility,
-        boolean isLiked
+        Long gardenLikeId
 ) {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
@@ -54,7 +54,7 @@ public record GardenDetailResult(
                         gardenDetailRepositoryResponse.getIsWaterway(),
                         gardenDetailRepositoryResponse.getIsEquipment()
                 ),
-                gardenDetailRepositoryResponse.getIsLiked()
+                gardenDetailRepositoryResponse.getGardenLikeId()
         );
     }
 
