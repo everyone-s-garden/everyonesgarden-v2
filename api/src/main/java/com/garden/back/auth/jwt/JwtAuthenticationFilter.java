@@ -90,7 +90,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void expiredTokenResponse(HttpServletResponse response, Exception e) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().println(
             objectMapper.writeValueAsString(
                 Map.of("예외", "토큰 만료", "메시지", e.getMessage())
@@ -100,7 +100,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private void invalidTokenResponse(HttpServletResponse response, Exception e) throws IOException {
         response.setContentType("application/json;charset=UTF-8");
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.getWriter().println(
             objectMapper.writeValueAsString(
                 Map.of("예외", "잘못된 토큰", "메시지", e.getMessage())

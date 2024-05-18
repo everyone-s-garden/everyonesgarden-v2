@@ -52,7 +52,7 @@ public class TokenProvider {
         Date accessTokenExpiredDate = new Date(now + jwtProperties.getAccessTokenExpireTime());
 
         RefreshToken refreshToken = refreshTokenRepository.findByKey(refreshTokenKey)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, "유효하지 않은 리프레시 토큰 입니다."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "유효하지 않은 리프레시 토큰 입니다."));
         Member member = refreshToken.member();
 
         return getTokenResponse(now, accessTokenExpiredDate, member);
