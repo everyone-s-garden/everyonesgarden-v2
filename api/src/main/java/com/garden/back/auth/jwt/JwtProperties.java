@@ -18,7 +18,7 @@ public class JwtProperties {
     private String accessTokenHeader;
 
     public int getAccessTokenExpireTime() {
-        return dayToMilliSec(accessTokenExpireTime);
+        return minuteToMilliSec(accessTokenExpireTime);
     }
 
     public int getRefreshTokenExpireTime() {
@@ -27,5 +27,9 @@ public class JwtProperties {
 
     private int dayToMilliSec(int day) {
         return 1000 * 60 * 60 * 24 * day;
+    }
+
+    private int minuteToMilliSec(int minute) {
+        return 1000 * 60 * minute;
     }
 }
