@@ -1,6 +1,7 @@
 package com.garden.back.garden.controller;
 
 import com.garden.back.garden.controller.dto.request.*;
+import com.garden.back.garden.controller.dto.response.GardenLikeCreateResponse;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
 import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
@@ -21,7 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v2/gardens")
 public class GardenCommandController {
-    private static final String GARDEN_DEFAULT_URL = "/v2/gardens";
+    private static final String GARDEN_DEFAULT_URL = "/v2/gardens/";
     private final GardenCommandService gardenCommandService;
 
     public GardenCommandController(GardenCommandService gardenCommandService) {
@@ -47,13 +48,14 @@ public class GardenCommandController {
         path = "/likes",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createGardenLike(
+    public ResponseEntity<GardenLikeCreateResponse> createGardenLike(
         @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest,
         @CurrentUser LoginUser loginUser) {
         Long gardenLikeId = gardenCommandService.createGardenLike(
             GardenLikeCreateRequest.of(loginUser.memberId(), gardenLikeCreateRequest));
 
-        return ResponseEntity.created(URI.create(GARDEN_DEFAULT_URL + gardenLikeId)).build();
+        return ResponseEntity.created(URI.create(GARDEN_DEFAULT_URL+"/likes/" + gardenLikeId))
+            .body(GardenLikeCreateResponse.to(gardenLikeId));
     }
 
     @DeleteMapping(
