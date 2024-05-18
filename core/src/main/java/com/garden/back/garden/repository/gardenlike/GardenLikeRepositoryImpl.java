@@ -26,8 +26,8 @@ public class GardenLikeRepositoryImpl implements GardenLikeRepository {
     }
 
     @Override
-    public void delete(Long memberId, Long gardenId) {
-        gardenLikeJpaRepository.delete(memberId, gardenId);
+    public void delete(Long memberId, Long gardenLikeId) {
+        gardenLikeJpaRepository.delete(memberId, gardenLikeId);
     }
 
     @Override
