@@ -66,7 +66,7 @@ public class GardenCommandService {
 
     @Transactional
     public void deleteGardenLike(GardenLikeDeleteParam param) {
-        gardenLikeRepository.delete(param.memberId(), param.gardenId());
+        gardenLikeRepository.delete(param.memberId(), param.gardenLikeId());
     }
 
     @Transactional

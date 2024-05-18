@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface GardenLikeRepository {
     GardenLike save(GardenLike gardenLike);
 
-    void delete(Long memberId, Long gardenId);
+    void delete(Long memberId, Long gardenLikeId);
 
     List<GardenLike> findAll();
 

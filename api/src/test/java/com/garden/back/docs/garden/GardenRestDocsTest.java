@@ -163,7 +163,7 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("gardenFacility.isToilet").type(JsonFieldType.BOOLEAN).description("텃밭 화장실 제공 여부"),
                     fieldWithPath("gardenFacility.isWaterway").type(JsonFieldType.BOOLEAN).description("텃밭 수로 제공 여부"),
                     fieldWithPath("gardenFacility.isEquipment").type(JsonFieldType.BOOLEAN).description("농기구 제공 여부"),
-                    fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN).description("좋아요 여부"),
+                    fieldWithPath("gardenLikeId").type(JsonFieldType.NUMBER).description("해당 텃밭 찜하기 ID, 텃밭을 찜하지 않았다면 0을 반환하고 텃밭을 찜했다면 0보다 큰 수를 응답한다."),
                     fieldWithPath("roomId").type(JsonFieldType.NUMBER).description("해당 게시글에 대한 채팅방 아이디, 만약 채팅방이 없는 경우에는 -1L를 반환합니다.")
                 )));
     }

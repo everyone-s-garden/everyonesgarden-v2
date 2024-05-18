@@ -22,7 +22,7 @@ public record GardenDetailResponse(
     String gardenDescription,
     List<String> images,
     GardenDetailResult.GardenFacility gardenFacility,
-    boolean isLiked,
+    Long gardenLikeId,
     Long roomId
 ) {
     public static GardenDetailResponse to(GardenDetailFacadeResponse result) {
@@ -43,7 +43,7 @@ public record GardenDetailResponse(
             result.gardenDescription(),
             result.images(),
             result.gardenFacility(),
-            result.isLiked(),
+            result.gardenLikeId(),
             result.roomId()
         );
     }

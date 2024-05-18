@@ -40,17 +40,15 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
     @DisplayName("텃밭을 찜할 수 있다.")
     @Test
     void createLikeGarden() throws Exception {
-        GardenLikeCreateRequest gardenLikeCreateRequest = GardenFixture.gardenLikeCreateRequest();
         given(gardenCommandService.createGardenLike(any())).willReturn(1L);
 
-        mockMvc.perform(post("/v2/gardens/likes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(gardenLikeCreateRequest)))
+        mockMvc.perform(post("/v2/gardens/{gardenId}/likes",1L)
+                .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isCreated())
             .andDo(document("create-like-garden",
-                requestFields(
-                    fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("찜하고자 하는 텃밭 아이디")
+                pathParameters(
+                    parameterWithName("gardenId").description("해당 텃밭 게시글의 ID")
                 ),
                 responseFields(
                     fieldWithPath("gardenLikeId").type(JsonFieldType.NUMBER).description("텃밭의 찜하기 ID")
@@ -63,16 +61,13 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
     @DisplayName("텃밭을 삭제할 수 있다.")
     @Test
     void deleteLikeGarden() throws Exception {
-        GardenLikeDeleteRequest gardenLikeDeleteRequest = GardenFixture.gardenLikeDeleteRequest();
-
-        mockMvc.perform(delete("/v2/gardens/likes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(gardenLikeDeleteRequest)))
+        mockMvc.perform(delete("/v2/gardens/likes/{gardenLikeId}",1L)
+                .contentType(MediaType.APPLICATION_JSON))
             .andDo(print())
             .andExpect(status().isOk())
             .andDo(document("delete-like",
-                requestFields(
-                    fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("찜하기를 취소하고자 하는 텃밭 아이디")
+                pathParameters(
+                    parameterWithName("gardenLikeId").description("텃밭 찜하기 ID")
                 )));
     }
 

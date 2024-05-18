@@ -24,5 +24,5 @@ public interface GardenDetailRepositoryResponse {
     boolean getIsToilet();
     boolean getIsWaterway();
     boolean getIsEquipment();
-    boolean getIsLiked();
+    Long getGardenLikeId();
 }

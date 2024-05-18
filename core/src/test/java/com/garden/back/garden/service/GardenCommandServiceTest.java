@@ -2,6 +2,7 @@ package com.garden.back.garden.service;
 
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.GardenLike;
 import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
@@ -65,12 +66,12 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     void deleteGarden_throwException_notExistedGarden() {
         // Given
         GardenDeleteParam notExistedGardenDetailParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId(),
-                savedPrivateGarden.getGardenId() + 100L);
+            savedPrivateGarden.getWriterId(),
+            savedPrivateGarden.getGardenId() + 100L);
 
         // When_Then
         assertThatThrownBy(() -> gardenCommandService.deleteGarden(notExistedGardenDetailParam))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+            .isInstanceOf(EmptyResultDataAccessException.class);
     }
 
     @DisplayName("내가 작성한 텃밭 게시물이 아닌 경우 예외를 던진다.")
@@ -78,12 +79,12 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     void deleteGarden_throwException_notWriter() {
         // Given
         GardenDeleteParam notWriterGardenDetailParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId() + 1L,
-                savedPrivateGarden.getGardenId());
+            savedPrivateGarden.getWriterId() + 1L,
+            savedPrivateGarden.getGardenId());
 
         // When_Then
         assertThatThrownBy(() -> gardenCommandService.deleteGarden(notWriterGardenDetailParam))
-                .isInstanceOf(IllegalArgumentException.class);
+            .isInstanceOf(IllegalArgumentException.class);
     }
 
     @DisplayName("내가 작성한 텃밭을 삭제할 수 있으며 삭제할 때 텃밭 이미지도 함께 삭제된다.")
@@ -91,17 +92,17 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     void deleteGarden() {
         // Given
         GardenDeleteParam gardenDeleteParam = new GardenDeleteParam(
-                savedPrivateGarden.getWriterId(),
-                savedPrivateGarden.getGardenId());
+            savedPrivateGarden.getWriterId(),
+            savedPrivateGarden.getGardenId());
 
         // When
         gardenCommandService.deleteGarden(gardenDeleteParam);
 
         // Then
         assertThatThrownBy(() -> gardenRepository.getById(savedPrivateGarden.getGardenId()))
-                .isInstanceOf(EmptyResultDataAccessException.class);
+            .isInstanceOf(EmptyResultDataAccessException.class);
         assertThat(gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).size())
-                .isEqualTo(0);
+            .isEqualTo(0);
 
     }
 
@@ -112,25 +113,27 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         GardenLikeCreateParam gardenLikeCreateParam = new GardenLikeCreateParam(2L, savedPrivateGarden.getGardenId());
 
         // When
-        gardenCommandService.createGardenLike(gardenLikeCreateParam);
+        Long gardenLikeId = gardenCommandService.createGardenLike(gardenLikeCreateParam);
         List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(2L, savedPrivateGarden.getGardenId());
 
         // Then
         assertThat(gardenDetail)
-                .extracting(
-                        "isLiked")
-                .contains(true);
-        assertThatThrownBy(()->gardenCommandService.createGardenLike(gardenLikeCreateParam))
+            .extracting(
+                "gardenLikeId")
+            .contains(gardenLikeId);
+        assertThatThrownBy(() -> gardenCommandService.createGardenLike(gardenLikeCreateParam))
             .isInstanceOf(DuplicateRequestException.class);
     }
 
     @DisplayName("좋아요한 텃밭 게시물의 좋아요를 취소할 수 있다")
     @Test
     void deleteGardenLike() {
-        // Then
-        GardenLikeCreateParam gardenLikeCreateParam = new GardenLikeCreateParam(2L, savedPrivateGarden.getGardenId());
-        gardenCommandService.createGardenLike(gardenLikeCreateParam);
-        GardenLikeDeleteParam gardenLikeDeleteParam = new GardenLikeDeleteParam(2L, savedPrivateGarden.getGardenId());
+        // Given
+        Long memberId = 2L;
+        GardenLikeCreateParam gardenLikeCreateParam = new GardenLikeCreateParam(memberId, savedPrivateGarden.getGardenId());
+        Long gardenLikeId = gardenCommandService.createGardenLike(gardenLikeCreateParam);
+
+        GardenLikeDeleteParam gardenLikeDeleteParam = new GardenLikeDeleteParam(memberId, gardenLikeId);
 
         // When
         gardenCommandService.deleteGardenLike(gardenLikeDeleteParam);
@@ -214,8 +217,8 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(updatedGarden.getIsEquipment()).isEqualTo(gardenUpdateParam.gardenFacility().isEquipment());
 
         assertThat(updatedGardenImages).extracting("imageUrl")
-                .contains(expectedUrl)
-                .contains(gardenUpdateParam.remainGardenImageUrls().toArray());
+            .contains(expectedUrl)
+            .contains(gardenUpdateParam.remainGardenImageUrls().toArray());
     }
 
     @DisplayName("텃밭을 수정할 때 새롭게 등록할 파일을 하나도 올리지 않으면 기존의 파일이 그대로 유지된다.")
@@ -231,7 +234,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         gardenImageRepository.save(secondGardenImage);
 
         List<String> expectedUrl = Collections.emptyList();
-        given(parallelImageUploader.upload(any(),any())).willReturn(expectedUrl);
+        given(parallelImageUploader.upload(any(), any())).willReturn(expectedUrl);
         GardenUpdateParam gardenUpdateParam = GardenFixture.gardenUpdateParamWithoutImageToDelete(savedGarden.getGardenId());
 
         //When
@@ -240,7 +243,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         //Then
         assertThat(updatedGardenImages).extracting("imageUrl")
-                        .contains(firstGardenImage.getImageUrl(), secondGardenImage.getImageUrl());
+            .contains(firstGardenImage.getImageUrl(), secondGardenImage.getImageUrl());
         assertThat(updatedGardenImages.size()).isEqualTo(2);
     }
 
@@ -251,9 +254,9 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenDeleteParam myManagedGardenDeleteParam
-                = new MyManagedGardenDeleteParam(
-                savedMyManagedGarden.getMyManagedGardenId(),
-                savedMyManagedGarden.getMemberId());
+            = new MyManagedGardenDeleteParam(
+            savedMyManagedGarden.getMyManagedGardenId(),
+            savedMyManagedGarden.getMemberId());
 
         // When
         gardenCommandService.deleteMyManagedGarden(myManagedGardenDeleteParam);
@@ -313,9 +316,9 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
-                expectedUrl,
-                savedPublicGarden.getGardenId(),
-                savedMyManagedGarden.getMyManagedGardenId()
+            expectedUrl,
+            savedPublicGarden.getGardenId(),
+            savedMyManagedGarden.getMyManagedGardenId()
         );
 
         // When
@@ -343,8 +346,8 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParamWithoutImage(
-                savedPublicGarden.getGardenId(),
-                savedMyManagedGarden.getMyManagedGardenId()
+            savedPublicGarden.getGardenId(),
+            savedMyManagedGarden.getMyManagedGardenId()
         );
 
         // When

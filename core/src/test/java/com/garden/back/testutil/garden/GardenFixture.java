@@ -2,6 +2,7 @@ package com.garden.back.testutil.garden;
 
 import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.domain.GardenImage;
+import com.garden.back.garden.domain.GardenLike;
 import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
@@ -25,6 +26,7 @@ public class GardenFixture {
     private static final LocalDate RECRUIT_END_DATE = LocalDate.of(2023, 12, 7);
     private static final LocalDate USE_START_DATE = LocalDate.of(2023, 11, 1);
     private static final LocalDate USE_END_DATE = LocalDate.of(2023, 12, 7);
+
     private GardenFixture() {
         throw new RuntimeException("생성자를 통해 객체를 만들 수 없습니다.");
     }
@@ -368,6 +370,10 @@ public class GardenFixture {
             "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
             gardenId
         );
+    }
+
+    public static GardenLike gardenLike(Garden garden, Long memberId) {
+        return GardenLike.of(memberId, garden);
     }
 
 }

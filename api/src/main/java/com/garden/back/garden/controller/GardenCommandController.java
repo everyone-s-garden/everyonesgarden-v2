@@ -4,11 +4,14 @@ import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.controller.dto.response.GardenLikeCreateResponse;
 import com.garden.back.garden.service.GardenCommandService;
 import com.garden.back.garden.service.dto.request.GardenDeleteParam;
+import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
+import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import com.garden.back.garden.service.dto.request.MyManagedGardenDeleteParam;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,28 +48,35 @@ public class GardenCommandController {
     }
 
     @PostMapping(
-        path = "/likes",
+        path = "/{gardenId}/likes",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenLikeCreateResponse> createGardenLike(
-        @RequestBody @Valid GardenLikeCreateRequest gardenLikeCreateRequest,
+        @PathVariable
+        @Positive(message = "gardenId는 양수여아 합니다.")
+        @NotNull(message = "gardenId는 null일 수 없습니다.")
+        Long gardenId,
         @CurrentUser LoginUser loginUser) {
         Long gardenLikeId = gardenCommandService.createGardenLike(
-            GardenLikeCreateRequest.of(loginUser.memberId(), gardenLikeCreateRequest));
+            GardenLikeCreateParam.to(loginUser.memberId(), gardenId));
 
-        return ResponseEntity.created(URI.create(GARDEN_DEFAULT_URL+"/likes/" + gardenLikeId))
+        return ResponseEntity.created(
+                URI.create(String.format(GARDEN_DEFAULT_URL + "/%d/likes/%d", gardenId, gardenLikeId)))
             .body(GardenLikeCreateResponse.to(gardenLikeId));
     }
 
     @DeleteMapping(
-        path = "/likes",
+        path = "/likes/{gardenLikeId}",
         consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> deleteGardenLike(
-        @RequestBody @Valid GardenLikeDeleteRequest gardenLikeDeleteRequest,
+        @PathVariable
+        @Positive(message = "gardenLikeId는 양수여아 합니다.")
+        @NotNull(message = "gardenLikeId는 null일 수 없습니다.")
+        Long gardenLikeId,
         @CurrentUser LoginUser loginUser) {
         gardenCommandService.deleteGardenLike(
-            GardenLikeDeleteRequest.of(loginUser.memberId(), gardenLikeDeleteRequest));
+            GardenLikeDeleteParam.to(loginUser.memberId(), gardenLikeId));
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

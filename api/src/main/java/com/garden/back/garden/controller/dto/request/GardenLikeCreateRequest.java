@@ -5,14 +5,13 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public record GardenLikeCreateRequest (
-        @NotNull
-        @Positive
         Long gardenId
 ) {
-    public static GardenLikeCreateParam of(Long memberId, GardenLikeCreateRequest gardenLikeCreateRequest) {
+    public static GardenLikeCreateParam of(Long memberId,
+                                           Long gardenId) {
         return new GardenLikeCreateParam(
                 memberId,
-                gardenLikeCreateRequest.gardenId()
+                gardenId
         );
     }
 }
