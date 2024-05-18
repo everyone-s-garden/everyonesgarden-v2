@@ -52,6 +52,9 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                 requestFields(
                     fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("찜하고자 하는 텃밭 아이디")
                 ),
+                responseFields(
+                    fieldWithPath("gardenLikeId").type(JsonFieldType.NUMBER).description("텃밭의 찜하기 ID")
+                ),
                 responseHeaders(
                     headerWithName("Location").description("생성된 찜한 텃밭의 id를 포함한 url")
                 )));
