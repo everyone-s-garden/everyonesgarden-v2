@@ -21,7 +21,7 @@ public record GardenDetailFacadeResponse (
     String gardenDescription,
     List<String> images,
     GardenDetailResult.GardenFacility gardenFacility,
-    boolean isLiked,
+    Long gardenLikeId,
     Long roomId
 ) {
 
@@ -45,7 +45,7 @@ public record GardenDetailFacadeResponse (
             result.gardenDescription(),
             result.images(),
             result.gardenFacility(),
-            result.isLiked(),
+            result.gardenLikeId(),
             roomId
         );
     }
