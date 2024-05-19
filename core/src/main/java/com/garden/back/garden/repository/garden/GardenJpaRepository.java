@@ -64,7 +64,7 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
                 g.gardenDescription as gardenDescription,
                 gi.imageUrl as imageUrl,
                 CASE
-                        WHEN l.garden.gardenId IS NOT NULL THEN l.garden.gardenId
+                        WHEN l.gardenLikeId IS NOT NULL THEN l.gardenLikeId
                         ELSE 0
                     END as gardenLikeId,
                 g.isToilet as isToilet,
