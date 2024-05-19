@@ -375,5 +375,4 @@ public class GardenFixture {
     public static GardenLike gardenLike(Garden garden, Long memberId) {
         return GardenLike.of(memberId, garden);
     }
-
 }
