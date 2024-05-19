@@ -66,9 +66,7 @@ public class GardenCommandController {
     }
 
     @DeleteMapping(
-        path = "/likes/{gardenLikeId}",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+        path = "/likes/{gardenLikeId}")
     public ResponseEntity<Void> deleteGardenLike(
         @PathVariable
         @Positive(message = "gardenLikeId는 양수여아 합니다.")
