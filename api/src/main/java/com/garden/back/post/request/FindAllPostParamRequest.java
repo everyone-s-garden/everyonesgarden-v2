@@ -22,8 +22,8 @@ public record FindAllPostParamRequest(
     String orderBy
 
 ) {
-    public FindAllPostParamRepositoryRequest toRepositoryDto() {
-        return new FindAllPostParamRepositoryRequest(offset, limit, searchContent, postType, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy));
+    public FindAllPostParamRepositoryRequest toRepositoryDto(Long memberId) {
+        return new FindAllPostParamRepositoryRequest(offset, limit, searchContent, postType, FindAllPostParamRepositoryRequest.OrderBy.valueOf(orderBy), memberId);
     }
 
 }

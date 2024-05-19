@@ -79,6 +79,12 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     @Override
     public FindAllPostsResponse findAllPosts(FindAllPostParamRepositoryRequest request) {
         OrderSpecifier<?> orderBy = getPostsOrderBy(request.orderBy());
+        BooleanExpression isLikedByUser = JPAExpressions
+                .selectOne()
+                .from(postLike)
+                .where(postLike.postId.eq(post.id),
+                        postLike.likesClickerId.eq(request.memberId()))
+                .exists();
 
         List<FindAllPostsResponse.PostInfo> posts = jpaQueryFactory
                 .select(Projections.constructor(FindAllPostsResponse.PostInfo.class,
@@ -103,7 +109,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                                 member.memberMannerGrade
                         ),
                         post.postType,
-                        post.createdDate))
+                        post.createdDate,
+                        isLikedByUser))
                 .from(post)
                 .join(member).on(post.postAuthorId.eq(member.id))
                 .where(
@@ -296,6 +303,13 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     public FindAllPopularPostsResponse findAllPopularPosts(FindAllPopularRepositoryPostsRequest request) {
         LocalDateTime recentHour = LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(request.hour());
 
+        BooleanExpression isLikedByUser = JPAExpressions
+                .selectOne()
+                .from(postLike)
+                .where(postLike.postId.eq(post.id),
+                        postLike.likesClickerId.eq(request.memberId()))
+                .exists();
+
         List<FindAllPopularPostsResponse.PostInfo> posts = jpaQueryFactory
                 .select(Projections.constructor(FindAllPopularPostsResponse.PostInfo.class,
                         post.id,
@@ -319,7 +333,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                                 member.memberMannerGrade
                         ),
                         post.postType,
-                        post.createdDate))
+                        post.createdDate,
+                        isLikedByUser))
                 .from(post)
                 .join(member).on(post.postAuthorId.eq(member.id))
                 .where(

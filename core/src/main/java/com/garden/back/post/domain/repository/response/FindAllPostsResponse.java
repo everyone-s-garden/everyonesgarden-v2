@@ -19,6 +19,7 @@ public record FindAllPostsResponse(
        UserResponse userInfo,
        PostType postType,
        @JsonFormat(pattern = "yyyy-MM-dd")
-       LocalDate createdDate
+       LocalDate createdDate,
+       Boolean isLikeClick
     ) {}
 }

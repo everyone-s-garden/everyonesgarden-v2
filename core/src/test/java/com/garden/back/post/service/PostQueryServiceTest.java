@@ -6,6 +6,7 @@ import com.garden.back.member.Role;
 import com.garden.back.member.repository.MemberRepository;
 import com.garden.back.post.domain.Post;
 import com.garden.back.post.domain.PostComment;
+import com.garden.back.post.domain.PostLike;
 import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.PostCommentRepository;
 import com.garden.back.post.domain.repository.PostLikeRepository;
@@ -18,8 +19,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.chrono.ChronoLocalDateTime;
-import java.time.temporal.ChronoField;
 import java.util.Collections;
 import java.util.List;
 
@@ -113,7 +112,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post2.getPostType(),
-                        post2.getCreatedDate()
+                        post2.getCreatedDate(),
+                        false
                 ),
                 new FindAllPostsResponse.PostInfo(
                         savedPostId1,
@@ -129,11 +129,12 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()
+                        post.getCreatedDate(),
+                        false
                 ) //Post2가 댓글 더 많음
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT, -1L);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -173,10 +174,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()) //Post2가 댓글 더 많음
+                        post.getCreatedDate(),
+                        false) //Post2가 댓글 더 많음
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT, -1L);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -216,7 +218,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()),
+                        post.getCreatedDate(),
+                        false),
                 new FindAllPostsResponse.PostInfo(
                         savedPostId2,
                         title,
@@ -231,11 +234,12 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post2.getPostType(),
-                        post2.getCreatedDate()
+                        post2.getCreatedDate(),
+                        false
                 )
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT, -1L);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -275,7 +279,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post2.getPostType(),
-                        post2.getCreatedDate()),
+                        post2.getCreatedDate(),
+                        false),
                 new FindAllPostsResponse.PostInfo(
                         savedPostId1,
                         title,
@@ -290,11 +295,12 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()
+                        post.getCreatedDate(),
+                        false
                 ) //Post2가 댓글 더 많음
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE, -1L);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -334,7 +340,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()),
+                        post.getCreatedDate(),
+                        false),
                 new FindAllPostsResponse.PostInfo(
                         savedPostId2,
                         title,
@@ -349,10 +356,11 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post2.getPostType(),
-                        post2.getCreatedDate())
+                        post2.getCreatedDate(),
+                        false)
         );
 
-        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE);
+        FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE, -1L);
 
         //when & then
         FindAllPostsResponse expectedResponseForCommentCount = new FindAllPostsResponse(postInfosForCommentCount);
@@ -607,9 +615,10 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post2 = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         post2.increaseCommentCount(); //댓글 수 많음
         Long savedPostId2 = postRepository.save(post2).getId();
+        postLikeRepository.save(PostLike.create(savedMemberId, post.getId()));
 
         //when & then
-        FindAllPopularRepositoryPostsRequest request = new FindAllPopularRepositoryPostsRequest(0L, 10L, 1);
+        FindAllPopularRepositoryPostsRequest request = new FindAllPopularRepositoryPostsRequest(0L, 10L, 1, savedMemberId);
         FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(
                 new FindAllPopularPostsResponse.PostInfo(
                         savedPostId1,
@@ -625,7 +634,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate()),
+                        post.getCreatedDate(),
+                        true),
                 new FindAllPopularPostsResponse.PostInfo(
                         savedPostId2,
                         title,
@@ -640,7 +650,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                                 member.getMemberMannerGrade()
                         ),
                         post.getPostType(),
-                        post.getCreatedDate())
+                        post.getCreatedDate(),
+                        false)
         ));
         assertThat(postQueryService.findAllPopularPosts(request)).isEqualTo(response);
     }

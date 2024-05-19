@@ -58,10 +58,11 @@ class PostRestDocsTest extends RestDocsSupport {
                                 MemberMannerGrade.SEED
                         ),
                         PostType.QUESTION,
-                        LocalDate.now())
+                        LocalDate.now(),
+                        false)
         ));
         FindAllPostParamRequest request = new FindAllPostParamRequest(0, 10, "title", PostType.QUESTION, "RECENT_DATE");
-        given(postQueryService.findAllPosts(request.toRepositoryDto())).willReturn(response);
+        given(postQueryService.findAllPosts(request.toRepositoryDto(any()))).willReturn(response);
 
         mockMvc.perform(get("/v1/posts")
                         .param("postType", request.postType().name())
@@ -95,7 +96,8 @@ class PostRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("postInfos[].userInfo.name").type(STRING).description("글쓴이 닉네임"),
                                 fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("글쓴이 매너 등급"),
                                 fieldWithPath("postInfos[].postType").type(STRING).description("게시글 종류"),
-                                fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
+                                fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일"),
+                                fieldWithPath("postInfos[].isLikeClick").type(BOOLEAN).description("좋아요 클릭 여부(로그인 상태가 아니면 항상 false)")
                         )
                 ));
     }
@@ -485,9 +487,10 @@ class PostRestDocsTest extends RestDocsSupport {
                                         MemberMannerGrade.SEED
                                 ),
                                 PostType.QUESTION,
-                                LocalDate.now())));
+                                LocalDate.now(),
+                                false)));
         FindAllPopularPostsRequest request = new FindAllPopularPostsRequest(0L, 10L, 1);
-        given(postQueryService.findAllPopularPosts(request.toRepositoryRequest())).willReturn(response);
+        given(postQueryService.findAllPopularPosts(request.toRepositoryRequest(any()))).willReturn(response);
 
         mockMvc.perform(get("/v1/posts/popular")
                         .param("offset", String.valueOf(request.offset()))
@@ -517,7 +520,8 @@ class PostRestDocsTest extends RestDocsSupport {
                                 fieldWithPath("postInfos[].userInfo.name").type(STRING).description("글쓴이 닉네임"),
                                 fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("글쓴이 매너 등급"),
                                 fieldWithPath("postInfos[].postType").type(STRING).description("게시글 종류"),
-                                fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일")
+                                fieldWithPath("postInfos[].createdDate").type(STRING).description("생성 일"),
+                                fieldWithPath("postInfos[].isLikeClick").type(BOOLEAN).description("좋아요 클릭 여부(로그인 상태가 아니면 항상 false)")
                         )
                 ));
     }

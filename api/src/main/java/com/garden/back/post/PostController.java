@@ -47,9 +47,10 @@ public class PostController {
     //게시글 전체 조회
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindAllPostsResponse> findAllPosts(
-        @ModelAttribute @Valid FindAllPostParamRequest request
+        @ModelAttribute @Valid FindAllPostParamRequest request,
+        @OptionalUser LoginUser loginUser
     ) {
-        return ResponseEntity.ok(postQueryService.findAllPosts(request.toRepositoryDto()));
+        return ResponseEntity.ok(postQueryService.findAllPosts(request.toRepositoryDto(loginUser.memberId())));
     }
 
     //게시글 댓글 조회
@@ -180,8 +181,9 @@ public class PostController {
     //실시간 인기 게시글 조회
     @GetMapping(value = "/popular", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FindAllPopularPostsResponse> getPopularPosts(
-        @ModelAttribute @Valid FindAllPopularPostsRequest request
+        @ModelAttribute @Valid FindAllPopularPostsRequest request,
+        @OptionalUser LoginUser loginUser
     ) {
-        return ResponseEntity.ok(postQueryService.findAllPopularPosts(request.toRepositoryRequest()));
+        return ResponseEntity.ok(postQueryService.findAllPopularPosts(request.toRepositoryRequest(loginUser.memberId())));
     }
 }

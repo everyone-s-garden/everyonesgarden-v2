@@ -14,7 +14,7 @@ public record FindAllPopularPostsRequest(
     @Positive(message = "양수를 입력해 주세요.")
     Integer hour
 ) {
-    public FindAllPopularRepositoryPostsRequest toRepositoryRequest() {
-        return new FindAllPopularRepositoryPostsRequest(offset, limit, hour);
+    public FindAllPopularRepositoryPostsRequest toRepositoryRequest(Long memberId) {
+        return new FindAllPopularRepositoryPostsRequest(offset, limit, hour, memberId);
     }
 }

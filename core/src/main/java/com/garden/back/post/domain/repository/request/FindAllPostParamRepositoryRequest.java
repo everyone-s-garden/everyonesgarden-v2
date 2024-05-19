@@ -7,7 +7,8 @@ public record FindAllPostParamRepositoryRequest(
     Integer limit,
     String searchContent,
     PostType postType,
-    OrderBy orderBy
+    OrderBy orderBy,
+    Long memberId
 ) {
 
     public enum OrderBy {
