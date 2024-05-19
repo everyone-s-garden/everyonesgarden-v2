@@ -11,6 +11,8 @@ import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
+import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
+import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
@@ -51,6 +53,9 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private GardenReadService gardenReadService;
+
+    @Autowired
+    private GardenCommandService gardenCommandService;
 
     @Autowired
     private GardenHistoryManager gardenHistoryManager;
@@ -153,6 +158,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThat(gardenDetail.gardenStatus()).isEqualTo(savedPrivateGarden.getGardenStatus().name());
         assertThat(gardenDetail.gardenType()).isEqualTo(savedPrivateGarden.getGardenType().name());
         assertThat(gardenDetail.address()).isEqualTo(savedPrivateGarden.getAddress());
+        assertThat(gardenDetail.gardenLikeId()).isZero();
 
         assertThat(RecentViewGarden.to(gardenDetail).gardenId()).isEqualTo(latestViewGarden.gardenId());
         assertThat(RecentViewGarden.to(gardenDetail).gardenName()).isEqualTo(latestViewGarden.gardenName());
@@ -160,6 +166,32 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThat(RecentViewGarden.to(gardenDetail).gardenType()).isEqualTo(latestViewGarden.gardenType());
         assertThat(RecentViewGarden.to(gardenDetail).size()).isEqualTo(latestViewGarden.size());
         assertThat(RecentViewGarden.to(gardenDetail).price()).isEqualTo(latestViewGarden.price());
+    }
+
+    @DisplayName("텃밭을 조회할 때 텃밭 상세 내용을 확인할 수 있고 텃밭 찜하기를 한 경우 텃밭 찜하기의 ID를 출력한다.")
+    @Test
+    void getGardenDetail_withGardenLikeId() {
+        // Given
+        GardenDetailParam gardenDetailParam = GardenFixture.gardenDetailParam(savedPrivateGarden.getGardenId());
+        gardenImageRepository.save(GardenImageFixture.gardenImage(savedPrivateGarden));
+
+        Long gardenLikeIdToDelete = gardenCommandService.createGardenLike(
+            new GardenLikeCreateParam(gardenDetailParam.memberId(), savedPrivateGarden.getGardenId()));
+        gardenCommandService.deleteGardenLike(new GardenLikeDeleteParam(gardenDetailParam.memberId(),gardenLikeIdToDelete));
+        Long gardenLikeId = gardenCommandService.createGardenLike(
+            new GardenLikeCreateParam(gardenDetailParam.memberId(), savedPrivateGarden.getGardenId()));
+
+        // When
+        GardenDetailResult gardenDetail = gardenReadService.getGardenDetail(gardenDetailParam);
+
+        // Then
+        assertThat(gardenDetail.gardenId()).isEqualTo(savedPrivateGarden.getGardenId());
+        assertThat(gardenDetail.gardenDescription()).isEqualTo(savedPrivateGarden.getGardenDescription());
+        assertThat(gardenDetail.gardenName()).isEqualTo(savedPrivateGarden.getGardenName());
+        assertThat(gardenDetail.gardenStatus()).isEqualTo(savedPrivateGarden.getGardenStatus().name());
+        assertThat(gardenDetail.gardenType()).isEqualTo(savedPrivateGarden.getGardenType().name());
+        assertThat(gardenDetail.address()).isEqualTo(savedPrivateGarden.getAddress());
+        assertThat(gardenDetail.gardenLikeId()).isEqualTo(gardenLikeId);
     }
 
     @DisplayName("최근 본 텃밭 조회 내력을 확인할 수 있다.")
