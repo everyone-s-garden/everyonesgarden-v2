@@ -3,10 +3,12 @@ package com.garden.back.chat.gardenchat.controller;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatReportRequest;
 import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatRoomCreateRequest;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatReportResponse;
+import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomCreateResponse;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomEnterResponse;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeRequest;
 import com.garden.back.garden.service.GardenChatRoomService;
+import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatRoomDeleteParam;
 import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
@@ -37,15 +39,16 @@ public class GardenChatRoomController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Void> createGardenChatRoom(
+    public ResponseEntity<GardenChatRoomCreateResponse> createGardenChatRoom(
             @RequestBody @Valid GardenChatRoomCreateRequest request,
             @CurrentUser LoginUser loginUser
     ) {
-        URI location = LocationBuilder.buildLocation(
-                gardenChatRoomService.createGardenChatRoom(request.to(loginUser)
-                ));
+        Long chatRoomId = gardenChatRoomService.createGardenChatRoom(request.to(loginUser));
+        URI location = LocationBuilder.buildLocation(chatRoomId);
 
-        return ResponseEntity.created(location).build();
+        return ResponseEntity
+            .created(location)
+            .body(GardenChatRoomCreateResponse.to(chatRoomId));
     }
 
     @PatchMapping(
