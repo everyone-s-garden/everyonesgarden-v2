@@ -1,6 +1,6 @@
 [[텃밭분양정보]]
 
-==== 텃밭을 등록할 때 이름으로 검색하기
+=== 텃밭을 등록할 때 이름으로 검색하기
 
 텃밭을 등록할 때 기존에 등록된 텃밭 중에서 이름으로 검색해서 찾는 기능입니다.
 
@@ -24,7 +24,18 @@ include::{snippets}/get-all-gardens/query-parameters.adoc[]
 include::{snippets}/get-all-gardens/http-response.adoc[]
 include::{snippets}/get-all-gardens/response-fields.adoc[]
 
-=== 텃밭 타입과 위치에 따른 조회하기
+=== 텃밭 타입과 위치에 따라 무한 스크롤로 조회하기
+화면의 북서쪽과 남동쪽의 위도 및 경도 그리고 텃밭 타입에 따른 결과를 무한 스크롤으로 반환합니다.
+
+==== Request
+include::{snippets}/get-gardens-by-complexes-with-scroll/http-request.adoc[]
+include::{snippets}/get-gardens-by-complexes-with-scroll/query-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-gardens-by-complexes-with-scroll/http-response.adoc[]
+include::{snippets}/get-gardens-by-complexes-with-scroll/response-fields.adoc[]
+
+=== 텃밭 타입과 위치에 따라 지도 조회하기
 화면의 북서쪽과 남동쪽의 위도 및 경도 그리고 텃밭 타입에 따른 결과를 반환합니다.
 
 ==== Request
