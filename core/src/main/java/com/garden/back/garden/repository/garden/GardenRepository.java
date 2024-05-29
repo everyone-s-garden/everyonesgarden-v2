@@ -4,7 +4,9 @@ import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
+import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
+import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesWithScrollRepositoryRequest;
 import com.garden.back.garden.repository.garden.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -17,7 +19,7 @@ public interface GardenRepository {
 
     Slice<GardenGetAll> getAllGardens(Pageable pageable);
 
-    GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request);
+    GardensByComplexesWithScroll getGardensByComplexesWithScroll(GardenByComplexesWithScrollRepositoryRequest request);
 
     Garden save(Garden garden);
 
@@ -41,5 +43,7 @@ public interface GardenRepository {
     Optional<GardenLocationRepositoryResponse> findGardenLocation(Long gardenId);
 
     GardenLocationRepositoryResponse getGardenLocation(Long gardenId);
+
+    GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request);
 
 }

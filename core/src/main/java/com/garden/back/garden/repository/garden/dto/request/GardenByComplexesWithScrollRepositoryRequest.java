@@ -1,5 +1,5 @@
 package com.garden.back.garden.repository.garden.dto.request;
-public record GardenByComplexesRepositoryRequest(
+public record GardenByComplexesWithScrollRepositoryRequest(
         String gardenTypes,
         String diagonal,
         int pageSize,

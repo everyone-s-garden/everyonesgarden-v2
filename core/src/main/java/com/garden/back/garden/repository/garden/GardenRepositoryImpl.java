@@ -4,7 +4,9 @@ import com.garden.back.garden.domain.Garden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
+import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
+import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesWithScrollRepositoryRequest;
 import com.garden.back.garden.repository.garden.dto.response.*;
 import com.garden.back.garden.repository.garden.entity.GardenEntity;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -37,8 +39,8 @@ public class GardenRepositoryImpl implements GardenRepository {
     }
 
     @Override
-    public GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request) {
-        return gardenCustomRepository.getGardensByComplexes(request);
+    public GardensByComplexesWithScroll getGardensByComplexesWithScroll(GardenByComplexesWithScrollRepositoryRequest request) {
+        return gardenCustomRepository.getGardensByComplexesWithScroll(request);
     }
 
     @Override
@@ -92,7 +94,12 @@ public class GardenRepositoryImpl implements GardenRepository {
     @Override
     public GardenLocationRepositoryResponse getGardenLocation(Long gardenId) {
         return findGardenLocation(gardenId).orElseThrow(() ->
-            new EmptyResultDataAccessException("존재하지 않는 텃밭입니다. gardenId : "+gardenId,1));
+            new EmptyResultDataAccessException("존재하지 않는 텃밭입니다. gardenId : " + gardenId, 1));
+    }
+
+    @Override
+    public GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request) {
+        return gardenCustomRepository.getGardensByComplexes(request);
     }
 
 }

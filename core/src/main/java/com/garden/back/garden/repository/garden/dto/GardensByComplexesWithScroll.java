@@ -2,21 +2,21 @@ package com.garden.back.garden.repository.garden.dto;
 
 import java.util.List;
 
-public record GardensByComplexes(
-        List<GardenByComplexes> gardensByComplexes,
+public record GardensByComplexesWithScroll(
+        List<GardenByComplexesWithScroll> gardensByComplexes,
         boolean hasNext
 ) {
-    public static GardensByComplexes of(
-            List<GardenByComplexes> gardensByComplexes,
+    public static GardensByComplexesWithScroll of(
+            List<GardenByComplexesWithScroll> gardensByComplexes,
             boolean hasNext
     ) {
-        return new GardensByComplexes(
+        return new GardensByComplexesWithScroll(
                 gardensByComplexes,
                 hasNext
         );
     }
 
-    public record GardenByComplexes(
+    public record GardenByComplexesWithScroll(
             Long gardenId,
             String size,
             String price,
