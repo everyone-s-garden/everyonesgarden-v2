@@ -1,6 +1,6 @@
 package com.garden.back.garden.service.dto.response;
 
-import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
+import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ public record GardenByComplexesResults(
         Set<GardenByComplexesResult> gardenByComplexesResults,
         boolean hasNext
 ) {
-    public static GardenByComplexesResults of(GardensByComplexes gardens) {
+    public static GardenByComplexesResults of(GardensByComplexesWithScroll gardens) {
         Map<Long, List<String>> gardenAndImages = parseGardenAndImage(gardens);
         return new GardenByComplexesResults(
                 gardens.gardensByComplexes().stream()
@@ -19,7 +19,7 @@ public record GardenByComplexesResults(
         );
     }
 
-    private static Map<Long, List<String>> parseGardenAndImage(GardensByComplexes gardensGetAll) {
+    private static Map<Long, List<String>> parseGardenAndImage(GardensByComplexesWithScroll gardensGetAll) {
         Map<Long, List<String>> gardenAndImages = new HashMap<>();
 
         gardensGetAll.gardensByComplexes().forEach(gardenGetAll ->
@@ -43,7 +43,7 @@ public record GardenByComplexesResults(
             Double longitude
 
     ) {
-        public static GardenByComplexesResult to(GardensByComplexes.GardenByComplexes garden, List<String> gardenImages) {
+        public static GardenByComplexesResult to(GardensByComplexesWithScroll.GardenByComplexesWithScroll garden, List<String> gardenImages) {
             return new GardenByComplexesResult(
                     garden.gardenId(),
                     garden.size(),

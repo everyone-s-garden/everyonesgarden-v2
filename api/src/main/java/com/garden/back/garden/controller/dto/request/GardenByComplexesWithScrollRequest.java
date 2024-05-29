@@ -1,6 +1,6 @@
 package com.garden.back.garden.controller.dto.request;
 
-import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
 import com.garden.back.global.validation.EnumValue;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -31,8 +31,8 @@ public record GardenByComplexesRequest(
         @DecimalMax(value = "180.0", message = "경도는 180.0 보다 같거나 작아야 한다.")
         Double endLong
 ) {
-    public static GardenByComplexesParam to(GardenByComplexesRequest request) {
-        return new GardenByComplexesParam(
+    public static GardenByComplexesWithScrollParam to(GardenByComplexesRequest request) {
+        return new GardenByComplexesWithScrollParam(
                 request.gardenType(),
                 request.pageNumber(),
                 request.startLat(),

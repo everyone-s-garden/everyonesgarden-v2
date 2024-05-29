@@ -1,6 +1,6 @@
 package com.garden.back.garden.controller.dto.response;
 
-import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
+import com.garden.back.garden.service.dto.response.GardenByComplexesWithScrollResults;
 
 import java.util.List;
 
@@ -8,9 +8,9 @@ public record GardenByComplexesResponses(
         List<GardenByComplexesResponse> gardenByComplexesResponses,
         boolean hasNext
 ) {
-    public static GardenByComplexesResponses to(GardenByComplexesResults results) {
+    public static GardenByComplexesResponses to(GardenByComplexesWithScrollResults results) {
         return new GardenByComplexesResponses(
-                results.gardenByComplexesResults().stream()
+                results.gardenByComplexesWithScrollResults().stream()
                         .map(GardenByComplexesResponse::to)
                         .toList(),
                 results.hasNext()
@@ -29,7 +29,7 @@ public record GardenByComplexesResponses(
             Double longitude
 
     ) {
-        public static GardenByComplexesResponse to(GardenByComplexesResults.GardenByComplexesResult result) {
+        public static GardenByComplexesResponse to(GardenByComplexesWithScrollResults.GardenByComplexesWithScrollResult result) {
             return new GardenByComplexesResponse(
                     result.gardenId(),
                     result.size(),
