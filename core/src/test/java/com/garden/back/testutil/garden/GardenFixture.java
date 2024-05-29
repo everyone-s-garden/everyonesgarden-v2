@@ -87,8 +87,8 @@ public class GardenFixture {
         return GardenImage.of(SECOND_GARDEN_IMAGE_URL, garden);
     }
 
-    public static GardenByComplexesParam publicGardenByComplexesParam() {
-        return new GardenByComplexesParam(
+    public static GardenByComplexesWithScrollParam publicGardenByComplexesParam() {
+        return new GardenByComplexesWithScrollParam(
             GardenType.PUBLIC.name(),
             0,
             LATITUDE,
@@ -98,8 +98,8 @@ public class GardenFixture {
         );
     }
 
-    public static GardenByComplexesParam allGardenByComplexesParam() {
-        return new GardenByComplexesParam(
+    public static GardenByComplexesWithScrollParam allGardenByComplexesParam() {
+        return new GardenByComplexesWithScrollParam(
             GardenType.ALL.name(),
             0,
             LATITUDE,
@@ -109,8 +109,8 @@ public class GardenFixture {
         );
     }
 
-    public static GardenByComplexesParam privateGardenByComplexesParam() {
-        return new GardenByComplexesParam(
+    public static GardenByComplexesWithScrollParam privateGardenByComplexesParam() {
+        return new GardenByComplexesWithScrollParam(
             GardenType.PRIVATE.name(),
             0,
             LATITUDE,

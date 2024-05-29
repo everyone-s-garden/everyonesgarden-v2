@@ -1,6 +1,7 @@
 package com.garden.back.global;
 
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -20,7 +21,7 @@ public class GeometryUtil {
     }
 
     public static String makeDiagonalByLineString(
-            GardenByComplexesParam param
+            GardenByComplexesWithScrollParam param
     ) {
         return String.format(
                 LINESTRING_SQL,
@@ -28,6 +29,19 @@ public class GeometryUtil {
                 param.endLong(),
                 param.startLat(),
                 param.startLong()
+        );
+
+    }
+
+    public static String makeDiagonalByLineString(
+        GardenByComplexesParam param
+    ) {
+        return String.format(
+            LINESTRING_SQL,
+            param.endLat(),
+            param.endLong(),
+            param.startLat(),
+            param.startLong()
         );
 
     }

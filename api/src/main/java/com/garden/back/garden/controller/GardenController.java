@@ -1,6 +1,7 @@
 package com.garden.back.garden.controller;
 
 import com.garden.back.garden.controller.dto.request.GardenByComplexesRequest;
+import com.garden.back.garden.controller.dto.request.GardenByComplexesWithScrollRequest;
 import com.garden.back.garden.controller.dto.request.GardenByNameRequest;
 import com.garden.back.garden.controller.dto.request.GardenDetailRequest;
 import com.garden.back.garden.controller.dto.response.*;
@@ -9,6 +10,7 @@ import com.garden.back.garden.facade.GardenFacade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
+import com.garden.back.garden.service.dto.response.GardenByComplexesWithScrollResults;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.global.loginuser.OptionalUser;
@@ -55,10 +57,22 @@ public class GardenController {
     @GetMapping(
         path = "/by-complexes",
         produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GardenByComplexesWithScrollResponses> getGardensByComplexesWithScroll(
+        @ModelAttribute @Valid GardenByComplexesWithScrollRequest request) {
+        GardenByComplexesWithScrollResults gardensByComplexes
+            = gardenReadService.getGardensByComplexesWithScroll(request.toGardenByComplexesWithScrollParam());
+
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(GardenByComplexesWithScrollResponses.to(gardensByComplexes));
+    }
+
+    @GetMapping(
+        path = "/by-complexes/all",
+        produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenByComplexesResponses> getGardensByComplexes(
         @ModelAttribute @Valid GardenByComplexesRequest request) {
         GardenByComplexesResults gardensByComplexes
-            = gardenReadService.getGardensByComplexes(GardenByComplexesRequest.to(request));
+            = gardenReadService.getGardensByComplexes(request.toGardenByComplexesParam());
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(GardenByComplexesResponses.to(gardensByComplexes));

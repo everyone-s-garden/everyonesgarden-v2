@@ -26,11 +26,20 @@ class GardenControllerTest extends ControllerTestSupport {
             .andExpect(status().is4xxClientError());
     }
 
-    @DisplayName("텃밭 위치에 따른 검색 요청값에 대해 검증한다.")
+    @DisplayName("텃밭 위치에 따른 무한 스크롤 검색 요청값에 대해 검증한다.")
+    @ParameterizedTest
+    @MethodSource("provideInvalidGardenByComplexesWithScrollRequest")
+    void getGardensByComplexesWithScroll_invalidRequest(GardenByComplexesWithScrollRequest request) throws Exception {
+        mockMvc.perform(get("/v2/gardens/by-complexes")
+                .content(objectMapper.writeValueAsString(request)))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @DisplayName("텃밭 위치에 따른 지도 검색 요청값에 대해 검증한다.")
     @ParameterizedTest
     @MethodSource("provideInvalidGardenByComplexesRequest")
     void getGardensByComplexes_invalidRequest(GardenByComplexesRequest request) throws Exception {
-        mockMvc.perform(get("/v2/gardens/by-complexes")
+        mockMvc.perform(get("/v2/gardens/by-complexes/all")
                 .content(objectMapper.writeValueAsString(request)))
             .andExpect(status().is4xxClientError());
     }
@@ -127,9 +136,9 @@ class GardenControllerTest extends ControllerTestSupport {
         );
     }
 
-    private static Stream<GardenByComplexesRequest> provideInvalidGardenByComplexesRequest() {
+    private static Stream<GardenByComplexesWithScrollRequest> provideInvalidGardenByComplexesWithScrollRequest() {
         return Stream.of(
-            new GardenByComplexesRequest(
+            new GardenByComplexesWithScrollRequest(
                 "",
                 0,
                 37.444917,
@@ -137,7 +146,7 @@ class GardenControllerTest extends ControllerTestSupport {
                 39.444917,
                 129.138868
             ),
-            new GardenByComplexesRequest(
+            new GardenByComplexesWithScrollRequest(
                 null,
                 0,
                 37.444917,
@@ -145,7 +154,7 @@ class GardenControllerTest extends ControllerTestSupport {
                 39.444917,
                 129.138868
             ),
-            new GardenByComplexesRequest(
+            new GardenByComplexesWithScrollRequest(
                 "ALL",
                 -1,
                 37.444917,
@@ -153,7 +162,7 @@ class GardenControllerTest extends ControllerTestSupport {
                 39.444917,
                 129.138868
             ),
-            new GardenByComplexesRequest(
+            new GardenByComplexesWithScrollRequest(
                 "ALL",
                 1,
                 137.444917,
@@ -161,9 +170,43 @@ class GardenControllerTest extends ControllerTestSupport {
                 39.444917,
                 129.138868
             ),
-            new GardenByComplexesRequest(
+            new GardenByComplexesWithScrollRequest(
                 "ALL",
                 1,
+                37.444917,
+                1127.138868,
+                39.444917,
+                129.138868
+            )
+        );
+    }
+
+    private static Stream<GardenByComplexesRequest> provideInvalidGardenByComplexesRequest() {
+        return Stream.of(
+            new GardenByComplexesRequest(
+                "",
+                37.444917,
+                127.138868,
+                39.444917,
+                129.138868
+            ),
+            new GardenByComplexesRequest(
+                null,
+                37.444917,
+                127.138868,
+                39.444917,
+                129.138868
+            ),
+            new GardenByComplexesRequest(
+                "ALL",
+                37.444917,
+                127.138868,
+                39.444917,
+                129.138868
+            ),
+
+            new GardenByComplexesRequest(
+                "ALL",
                 37.444917,
                 1127.138868,
                 39.444917,

@@ -37,6 +37,24 @@ public class GardenFixture {
         return new GardenAllResults(gardenAllResults, false);
     }
 
+    public static GardenByComplexesWithScrollResults gardenByComplexesWithScrollResults() {
+        Set<GardenByComplexesWithScrollResults.GardenByComplexesWithScrollResult> gardenByComplexesWithScrollResults =
+            Set.of(new GardenByComplexesWithScrollResults.GardenByComplexesWithScrollResult(
+                    1L,
+                    "100",
+                    "별이네 텃밭",
+                    "100000",
+                    List.of("www.garden.com"),
+                    GardenStatus.ACTIVE.name(),
+                    GardenType.PUBLIC.name(),
+                    37.4449168,
+                    127.1388684
+                )
+            );
+
+        return new GardenByComplexesWithScrollResults(gardenByComplexesWithScrollResults, false);
+    }
+
     public static GardenByComplexesResults gardenByComplexesResults() {
         Set<GardenByComplexesResults.GardenByComplexesResult> gardenByComplexesResults =
             Set.of(new GardenByComplexesResults.GardenByComplexesResult(
@@ -52,7 +70,7 @@ public class GardenFixture {
                 )
             );
 
-        return new GardenByComplexesResults(gardenByComplexesResults, false);
+        return new GardenByComplexesResults(gardenByComplexesResults);
     }
 
     public static GardenDetailFacadeResponse gardenDetailResult() {

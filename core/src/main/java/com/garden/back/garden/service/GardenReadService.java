@@ -3,11 +3,13 @@ package com.garden.back.garden.service;
 import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.GardensByComplexes;
+import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll;
 import com.garden.back.garden.repository.garden.dto.response.GardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.RecentCreateGardenRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
 import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;
 import com.garden.back.garden.service.dto.response.*;
@@ -48,9 +50,16 @@ public class GardenReadService {
 
     public GardenByComplexesResults getGardensByComplexes(GardenByComplexesParam param) {
         GardensByComplexes gardensByComplexes
-            = gardenRepository.getGardensByComplexes(GardenByComplexesParam.to(param));
+            = gardenRepository.getGardensByComplexes(param.toGardenByComplexesRepositoryRequest());
 
         return GardenByComplexesResults.of(gardensByComplexes);
+    }
+
+    public GardenByComplexesWithScrollResults getGardensByComplexesWithScroll(GardenByComplexesWithScrollParam param) {
+        GardensByComplexesWithScroll gardensByComplexesWithScroll
+            = gardenRepository.getGardensByComplexesWithScroll(GardenByComplexesWithScrollParam.to(param));
+
+        return GardenByComplexesWithScrollResults.of(gardensByComplexesWithScroll);
     }
 
     public GardenDetailResult getGardenDetail(GardenDetailParam param) {

@@ -5,22 +5,18 @@ import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRep
 import com.garden.back.global.GeometryUtil;
 
 public record GardenByComplexesParam(
-        String gardenType,
-        Integer pageNumber,
-        Double startLat,
-        Double startLong,
-        Double endLat,
-        Double endLong
+    String gardenType,
+    Double startLat,
+    Double startLong,
+    Double endLat,
+    Double endLong
 ) {
-    private static final int GARDEN_BY_PAGE_SIZE = 10;
 
-    public static GardenByComplexesRepositoryRequest to(GardenByComplexesParam param) {
-        return new GardenByComplexesRepositoryRequest(
-                GardenType.isAllType(param.gardenType),
-                GeometryUtil.makeDiagonalByLineString(param),
-                GARDEN_BY_PAGE_SIZE,
-                param.pageNumber()
-        );
-    }
+public GardenByComplexesRepositoryRequest toGardenByComplexesRepositoryRequest() {
+    return new GardenByComplexesRepositoryRequest(
+        GardenType.isAllType(gardenType),
+        GeometryUtil.makeDiagonalByLineString(this)
+    );
+}
 
 }
