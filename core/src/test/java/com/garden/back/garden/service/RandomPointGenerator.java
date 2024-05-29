@@ -1,6 +1,6 @@
 package com.garden.back.garden.service;
 
-import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
+import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
 import com.garden.back.global.GeometryUtil;
 import org.locationtech.jts.geom.Point;
 
@@ -15,7 +15,7 @@ public class RandomPointGenerator {
     }
     private static final int DEFAULT_COUNT = 5;
 
-    public static List<Point> generateRandomPoint(GardenByComplexesParam param) {
+    public static List<Point> generateRandomPoint(GardenByComplexesWithScrollParam param) {
         List<Point> coordinates = new ArrayList<>();
         Random random = new Random();
 
