@@ -4,20 +4,20 @@ import com.garden.back.garden.service.dto.response.GardenByComplexesWithScrollRe
 
 import java.util.List;
 
-public record GardenByComplexesResponses(
-        List<GardenByComplexesResponse> gardenByComplexesResponses,
+public record GardenByComplexesWithScrollResponses(
+        List<GardenByComplexesWithScrollResponse> gardenByComplexesWithScrollResponses,
         boolean hasNext
 ) {
-    public static GardenByComplexesResponses to(GardenByComplexesWithScrollResults results) {
-        return new GardenByComplexesResponses(
+    public static GardenByComplexesWithScrollResponses to(GardenByComplexesWithScrollResults results) {
+        return new GardenByComplexesWithScrollResponses(
                 results.gardenByComplexesWithScrollResults().stream()
-                        .map(GardenByComplexesResponse::to)
+                        .map(GardenByComplexesWithScrollResponse::to)
                         .toList(),
                 results.hasNext()
         );
     }
 
-    public record GardenByComplexesResponse(
+    public record GardenByComplexesWithScrollResponse(
             Long gardenId,
             String size,
             String gardenName,
@@ -29,8 +29,8 @@ public record GardenByComplexesResponses(
             Double longitude
 
     ) {
-        public static GardenByComplexesResponse to(GardenByComplexesWithScrollResults.GardenByComplexesWithScrollResult result) {
-            return new GardenByComplexesResponse(
+        public static GardenByComplexesWithScrollResponse to(GardenByComplexesWithScrollResults.GardenByComplexesWithScrollResult result) {
+            return new GardenByComplexesWithScrollResponse(
                     result.gardenId(),
                     result.size(),
                     result.gardenName(),

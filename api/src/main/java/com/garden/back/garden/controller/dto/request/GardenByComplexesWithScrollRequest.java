@@ -7,7 +7,7 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
-public record GardenByComplexesRequest(
+public record GardenByComplexesWithScrollRequest(
         @NotBlank
         @EnumValue(enumClass = GardenType.class)
         String gardenType,
@@ -31,14 +31,14 @@ public record GardenByComplexesRequest(
         @DecimalMax(value = "180.0", message = "경도는 180.0 보다 같거나 작아야 한다.")
         Double endLong
 ) {
-    public static GardenByComplexesWithScrollParam to(GardenByComplexesRequest request) {
+    public GardenByComplexesWithScrollParam toGardenByComplexesWithScrollParam() {
         return new GardenByComplexesWithScrollParam(
-                request.gardenType(),
-                request.pageNumber(),
-                request.startLat(),
-                request.startLong(),
-                request.endLat(),
-                request.endLong()
+                gardenType,
+                pageNumber,
+                startLat,
+                startLong,
+                endLat,
+                endLong
         );
     }
 }
