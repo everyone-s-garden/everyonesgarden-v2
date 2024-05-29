@@ -5,15 +5,15 @@ import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll
 import java.util.*;
 import java.util.stream.Collectors;
 
-public record GardenByComplexesResults(
-        Set<GardenByComplexesResult> gardenByComplexesResults,
+public record GardenByComplexesWithScrollResults(
+        Set<GardenByComplexesWithScrollResult> gardenByComplexesWithScrollResults,
         boolean hasNext
 ) {
-    public static GardenByComplexesResults of(GardensByComplexesWithScroll gardens) {
+    public static GardenByComplexesWithScrollResults of(GardensByComplexesWithScroll gardens) {
         Map<Long, List<String>> gardenAndImages = parseGardenAndImage(gardens);
-        return new GardenByComplexesResults(
+        return new GardenByComplexesWithScrollResults(
                 gardens.gardensByComplexes().stream()
-                        .map(gardenByComplexes -> GardenByComplexesResult.to(gardenByComplexes, gardenAndImages.get(gardenByComplexes.gardenId()))
+                        .map(gardenByComplexes -> GardenByComplexesWithScrollResult.to(gardenByComplexes, gardenAndImages.get(gardenByComplexes.gardenId()))
                         ).collect(Collectors.toSet()),
                 gardens.hasNext()
         );
@@ -31,7 +31,7 @@ public record GardenByComplexesResults(
         return gardenAndImages;
     }
 
-    public record GardenByComplexesResult(
+    public record GardenByComplexesWithScrollResult(
             Long gardenId,
             String size,
             String gardenName,
@@ -43,8 +43,8 @@ public record GardenByComplexesResults(
             Double longitude
 
     ) {
-        public static GardenByComplexesResult to(GardensByComplexesWithScroll.GardenByComplexesWithScroll garden, List<String> gardenImages) {
-            return new GardenByComplexesResult(
+        public static GardenByComplexesWithScrollResult to(GardensByComplexesWithScroll.GardenByComplexesWithScroll garden, List<String> gardenImages) {
+            return new GardenByComplexesWithScrollResult(
                     garden.gardenId(),
                     garden.size(),
                     garden.gardenName(),
