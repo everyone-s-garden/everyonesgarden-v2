@@ -113,7 +113,7 @@ public class GardenCustomRepositoryImpl implements GardenCustomRepository {
                 .addScalar("imageUrl", StandardBasicTypes.STRING)
                 .addScalar("gardenType",StandardBasicTypes.STRING)
                 .setResultTransformer((tuple, alias) ->
-                    new GardensByComplexesWithScroll.GardenByComplexesWithScroll(
+                    new GardensByComplexes.GardenByComplexes(
                         (Long) tuple[0],
                         (String) tuple[1],
                         (String) tuple[2],
