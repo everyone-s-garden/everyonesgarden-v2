@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 public record MyManagedGardenUpdateRequest(
     @Positive
@@ -37,6 +38,10 @@ public record MyManagedGardenUpdateRequest(
         MultipartFile newImage,
         Long memberId
     ) {
+        if (newImage == null ) {
+            newImage = (MultipartFile) Collections.emptyList();
+        }
+
         return new MyManagedGardenUpdateParam(
             newImage,
             myManagedGardenId,
