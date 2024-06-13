@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 
 public record MyManagedGardenCreateRequest(
     @Positive
@@ -28,6 +29,10 @@ public record MyManagedGardenCreateRequest(
         MyManagedGardenCreateRequest request,
         Long memberId
     ) {
+        if (gardenImage == null ) {
+            gardenImage = (MultipartFile) Collections.emptyList();
+        }
+
         return new MyManagedGardenCreateParam(
             gardenImage,
             request.gardenId,

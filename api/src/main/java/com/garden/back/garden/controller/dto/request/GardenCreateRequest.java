@@ -70,9 +70,10 @@ public record GardenCreateRequest(
         GardenCreateRequest gardenCreateRequest,
         Long writerId
     ) {
-        if (multipartFiles == null) {
-            multipartFiles = Collections.emptyList();
+        if (multipartFiles == null || multipartFiles.isEmpty()) {
+            throw new IllegalArgumentException("텃밭에 등록하는 사진은 빈 값일 수 없습니다. 최소 한 장이상의 사진을 등록해주세요");
         }
+
         return new GardenCreateParam(
             multipartFiles,
             gardenCreateRequest.gardenName,

@@ -82,7 +82,7 @@ public class GardenCommandController {
     @PostMapping(
         consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> createGarden(
-        @RequestPart(value = "gardenImages", required = false) List<MultipartFile> gardenImages,
+        @RequestPart(value = "gardenImages") List<MultipartFile> gardenImages,
         @RequestPart(value = "gardenCreateRequest") @Valid GardenCreateRequest gardenCreateRequest,
         @CurrentUser LoginUser loginUser
     ) {
@@ -98,7 +98,7 @@ public class GardenCommandController {
         consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateGarden(
         @PathVariable @Positive Long gardenId,
-        @RequestPart(value = "newGardenImages", required = false) List<MultipartFile> newGardenImages,
+        @RequestPart(value = "newGardenImages") List<MultipartFile> newGardenImages,
         @RequestPart(value = "gardenUpdateRequest") @Valid GardenUpdateRequest gardenUpdateRequest,
         @CurrentUser LoginUser loginUser
     ) {
