@@ -229,7 +229,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                 .toList();
 
         // When
-        GardenMineResults myGarden = gardenReadService.getMyGarden(savedPrivateGarden.getWriterId());
+        GardenMineResults myGarden = gardenReadService.getMyGarden(GardenFixture.myGardenGetParamAboutFirst(savedPrivateGarden.getWriterId()));
 
         // Then
         assertThat(myGarden.gardenMineResults())
@@ -243,6 +243,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                     savedPrivateGarden.getPrice(),
                     savedPrivateGarden.getGardenStatus().name(),
                     gardenImages));
+        assertThat(myGarden.hasNext()).isFalse();
     }
 
     @DisplayName("내가 좋아요한 텃밭 게시물을 조회할 수 있다.")

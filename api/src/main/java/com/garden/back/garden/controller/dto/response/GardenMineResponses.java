@@ -5,13 +5,17 @@ import com.garden.back.garden.service.dto.response.GardenMineResults;
 import java.util.List;
 
 public record GardenMineResponses(
-        List<GardenMineResponse> gardenMineResponses
+        List<GardenMineResponse> gardenMineResponses,
+        Long nextGardenId,
+        boolean hasNext
 ) {
     public static GardenMineResponses to(GardenMineResults gardenMineResults) {
         return new GardenMineResponses(
                 gardenMineResults.gardenMineResults().stream()
                         .map(GardenMineResponse::to)
-                        .toList()
+                        .toList(),
+            gardenMineResults.nextGardenId(),
+            gardenMineResults.hasNext()
         );
     }
 

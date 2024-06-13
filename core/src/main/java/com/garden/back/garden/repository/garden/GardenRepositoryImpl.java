@@ -67,8 +67,10 @@ public class GardenRepositoryImpl implements GardenRepository {
     }
 
     @Override
-    public List<GardenMineRepositoryResponse> findByWriterId(Long writerId) {
-        return gardenJpaRepository.findByWriterId(writerId);
+    public GardenMineRepositoryResponses findByWriterId(Long writerId, Long nextGardenId, Pageable pageable) {
+        return GardenMineRepositoryResponses.of(
+            gardenJpaRepository.findByWriterId(writerId, nextGardenId, pageable),
+            pageable);
     }
 
     @Override

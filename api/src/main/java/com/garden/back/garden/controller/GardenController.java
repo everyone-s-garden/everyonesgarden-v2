@@ -1,9 +1,6 @@
 package com.garden.back.garden.controller;
 
-import com.garden.back.garden.controller.dto.request.GardenByComplexesRequest;
-import com.garden.back.garden.controller.dto.request.GardenByComplexesWithScrollRequest;
-import com.garden.back.garden.controller.dto.request.GardenByNameRequest;
-import com.garden.back.garden.controller.dto.request.GardenDetailRequest;
+import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.controller.dto.response.*;
 import com.garden.back.garden.facade.GardenDetailFacadeResponse;
 import com.garden.back.garden.facade.GardenFacade;
@@ -105,10 +102,16 @@ public class GardenController {
         path = "/mine",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenMineResponses> getMyGarden(
-        @CurrentUser LoginUser loginUser
+        @CurrentUser
+        LoginUser loginUser,
+        @RequestParam
+        @PositiveOrZero(message = "넥스트 키는 음수일 수 없습니다.")
+        Long nextGardenId
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(GardenMineResponses.to(gardenReadService.getMyGarden(loginUser.memberId())));
+            .body(GardenMineResponses.to(
+                gardenReadService.getMyGarden(
+                    MyGardenGetRequest.toMyGardenGetParam(loginUser, nextGardenId))));
     }
 
     @GetMapping(
