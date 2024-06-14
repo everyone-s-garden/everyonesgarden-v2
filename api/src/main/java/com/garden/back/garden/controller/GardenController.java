@@ -6,6 +6,7 @@ import com.garden.back.garden.facade.GardenDetailFacadeResponse;
 import com.garden.back.garden.facade.GardenFacade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
+import com.garden.back.garden.service.dto.request.MyManagedGardenGetParam;
 import com.garden.back.garden.service.dto.response.GardenByComplexesResults;
 import com.garden.back.garden.service.dto.response.GardenByComplexesWithScrollResults;
 import com.garden.back.global.loginuser.CurrentUser;
@@ -142,10 +143,15 @@ public class GardenController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<MyManagedGardenGetResponses> getMyManagedGardens(
-        @CurrentUser LoginUser loginUser
+        @CurrentUser
+        LoginUser loginUser,
+        @RequestParam
+        @PositiveOrZero(message = "넥스트 키는 음수일 수 없습니다.")
+        Long nextMyManagedGardenId
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGardens(loginUser.memberId())));
+            .body(MyManagedGardenGetResponses.to(gardenReadService.getMyManagedGardens(
+                MyManagedGardenGetRequest.toMyManagedGardenGetParam(loginUser, nextMyManagedGardenId))));
     }
 
     @GetMapping(

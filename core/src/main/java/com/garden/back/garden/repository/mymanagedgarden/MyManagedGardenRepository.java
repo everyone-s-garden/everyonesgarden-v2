@@ -2,14 +2,14 @@ package com.garden.back.garden.repository.mymanagedgarden;
 
 import com.garden.back.garden.domain.MyManagedGarden;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenDetailRepositoryResponse;
-import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
+import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryParam;
+import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponses;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface MyManagedGardenRepository {
 
-    List<MyManagedGardensGetRepositoryResponse> getByMemberId(Long memberId);
+    MyManagedGardensGetRepositoryResponses getByMemberId(MyManagedGardensGetRepositoryParam param);
 
     MyManagedGarden getById(Long myManagedGardenId);
 

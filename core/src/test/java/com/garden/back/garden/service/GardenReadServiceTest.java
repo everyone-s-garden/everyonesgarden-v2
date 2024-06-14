@@ -285,10 +285,10 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // When
         MyManagedGardenGetResults myManagedGardenGetResults
-            = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
+            = gardenReadService.getMyManagedGardens(GardenFixture.myManagedGardenGetParamAboutFirst(myManagedGarden.getMemberId()));
 
         // Then
-        assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
+        assertThat(myManagedGardenGetResults.myManagedGardenGetResponse())
             .extracting("gardenName", "images")
             .contains(
                 Tuple.tuple(
@@ -296,6 +296,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                     List.of(myManagedGarden.getImageUrl())
                 )
             );
+        assertThat(myManagedGardenGetResults.hasNext()).isFalse();
     }
 
     @DisplayName("내가 가꾸는 텃밭을 상세하게 볼 수 있다.")

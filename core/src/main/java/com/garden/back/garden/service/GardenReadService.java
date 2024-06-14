@@ -88,8 +88,9 @@ public class GardenReadService {
             gardenRepository.getLikeGardenByMember(memberId));
     }
 
-    public MyManagedGardenGetResults getMyManagedGardens(Long memberId) {
-        return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(memberId));
+    public MyManagedGardenGetResults getMyManagedGardens(MyManagedGardenGetParam param) {
+        return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(
+            param.toMyManagedGardensGetRepositoryParam(pageable)));
     }
 
     public MyManagedGardenDetailResult getDetailMyManagedGarden(Long myManagedGardenId) {

@@ -5,13 +5,17 @@ import com.garden.back.garden.service.dto.response.MyManagedGardenGetResults;
 import java.util.List;
 
 public record MyManagedGardenGetResponses(
-    List<MyManagedGardenGetResponse> myManagedGardenGetResponses
+    List<MyManagedGardenGetResponse> myManagedGardenGetResponses,
+    Long nextMyManagedGardenId,
+    boolean hasNext
 ) {
     public static MyManagedGardenGetResponses to(MyManagedGardenGetResults results) {
         return new MyManagedGardenGetResponses(
-            results.myManagedGardenGetRespons().stream()
+            results.myManagedGardenGetResponse().stream()
                 .map(MyManagedGardenGetResponse::to)
-                .toList()
+                .toList(),
+            results.nextManagedId(),
+            results.hasNext()
         );
     }
 
