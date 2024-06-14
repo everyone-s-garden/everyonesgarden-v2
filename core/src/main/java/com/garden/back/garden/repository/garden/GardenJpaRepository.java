@@ -97,9 +97,12 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
         from GardenEntity as g
         left join
          GardenImageEntity as gi on g.gardenId = gi.garden.gardenId
-        where g.writerId=:writerId
+        where g.writerId=:writerId and g.gardenId >:nextGardenId
         """)
-    List<GardenMineRepositoryResponse> findByWriterId(@Param("writerId") Long writerId);
+    List<GardenMineRepositoryResponse> findByWriterId(
+        @Param("writerId") Long writerId,
+        @Param("nextGardenId") Long nextGardenId,
+        Pageable pageable);
 
     @Query(
         """
@@ -164,7 +167,7 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
     List<RecentCreateGardenRepositoryResponse> getRecentCreatedGardens(@Param("memberId") Long memberId);
 
     @Query(
-           """
+        """
                 select
                    g.latitude as latitude,
                    g.longitude as longitude

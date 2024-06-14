@@ -375,4 +375,13 @@ public class GardenFixture {
     public static GardenLike gardenLike(Garden garden, Long memberId) {
         return GardenLike.of(memberId, garden);
     }
+
+    public static MyGardenGetParam myGardenGetParamAboutFirst(Long memberId) {
+        return new MyGardenGetParam(memberId, 0L);
+    }
+
+    public static MyManagedGardenGetParam myManagedGardenGetParamAboutFirst(Long memberId) {
+        return new MyManagedGardenGetParam(memberId, 0L);
+    }
+
 }

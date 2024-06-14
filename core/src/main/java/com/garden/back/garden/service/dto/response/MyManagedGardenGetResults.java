@@ -1,19 +1,24 @@
 package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
+import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponses;
 
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public record MyManagedGardenGetResults(
-    List<MyManagedGardenGetResult> myManagedGardenGetRespons
+    List<MyManagedGardenGetResult> myManagedGardenGetResponse,
+    Long nextManagedId,
+    boolean hasNext
 ) {
-    public static MyManagedGardenGetResults to(List<MyManagedGardensGetRepositoryResponse> responses) {
+    public static MyManagedGardenGetResults to(MyManagedGardensGetRepositoryResponses responses) {
         Map<Long, List<String>> imagesPerGardenId = extractImages(responses);
         return new MyManagedGardenGetResults(
-            responses.stream()
+            responses.responses().stream()
                 .map(response -> MyManagedGardenGetResult.to(response, imagesPerGardenId.get(response.getMyManagedGardenId())))
-                .toList()
+                .toList(),
+            responses.nextManagedGardenId(),
+            responses.hasNext()
         );
     }
 
@@ -42,10 +47,10 @@ public record MyManagedGardenGetResults(
 
     }
 
-    private static Map<Long, List<String>> extractImages(List<MyManagedGardensGetRepositoryResponse> responses) {
+    private static Map<Long, List<String>> extractImages(MyManagedGardensGetRepositoryResponses responses) {
         Map<Long, List<String>> imagesPerGardenId = new HashMap<>();
 
-        responses.forEach(response -> {
+        responses.responses().forEach(response -> {
             Long gardenId = response.getMyManagedGardenId();
             String imageUrl = response.getImageUrl();
 

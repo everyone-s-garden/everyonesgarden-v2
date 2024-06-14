@@ -129,7 +129,9 @@ public class GardenFixture {
                     GardenStatus.ACTIVE.name(),
                     List.of("www.garden.com")
                 )
-            )
+            ),
+            2L,
+            false
         );
     }
 
@@ -209,7 +211,9 @@ public class GardenFixture {
                     List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
                     "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )
-            )
+            ),
+            0L,
+            false
         );
     }
 

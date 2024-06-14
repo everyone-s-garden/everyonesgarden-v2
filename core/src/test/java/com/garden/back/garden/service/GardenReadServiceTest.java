@@ -229,7 +229,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                 .toList();
 
         // When
-        GardenMineResults myGarden = gardenReadService.getMyGarden(savedPrivateGarden.getWriterId());
+        GardenMineResults myGarden = gardenReadService.getMyGarden(GardenFixture.myGardenGetParamAboutFirst(savedPrivateGarden.getWriterId()));
 
         // Then
         assertThat(myGarden.gardenMineResults())
@@ -243,6 +243,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                     savedPrivateGarden.getPrice(),
                     savedPrivateGarden.getGardenStatus().name(),
                     gardenImages));
+        assertThat(myGarden.hasNext()).isFalse();
     }
 
     @DisplayName("내가 좋아요한 텃밭 게시물을 조회할 수 있다.")
@@ -284,10 +285,10 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // When
         MyManagedGardenGetResults myManagedGardenGetResults
-            = gardenReadService.getMyManagedGardens(myManagedGarden.getMemberId());
+            = gardenReadService.getMyManagedGardens(GardenFixture.myManagedGardenGetParamAboutFirst(myManagedGarden.getMemberId()));
 
         // Then
-        assertThat(myManagedGardenGetResults.myManagedGardenGetRespons())
+        assertThat(myManagedGardenGetResults.myManagedGardenGetResponse())
             .extracting("gardenName", "images")
             .contains(
                 Tuple.tuple(
@@ -295,6 +296,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
                     List.of(myManagedGarden.getImageUrl())
                 )
             );
+        assertThat(myManagedGardenGetResults.hasNext()).isFalse();
     }
 
     @DisplayName("내가 가꾸는 텃밭을 상세하게 볼 수 있다.")

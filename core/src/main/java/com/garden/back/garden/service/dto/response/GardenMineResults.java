@@ -1,6 +1,7 @@
 package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenMineRepositoryResponses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,26 +9,30 @@ import java.util.List;
 import java.util.Map;
 
 public record GardenMineResults(
-        List<GardenMineResult> gardenMineResults
+        List<GardenMineResult> gardenMineResults,
+        Long nextGardenId,
+        boolean hasNext
 ) {
-    public static GardenMineResults to(List<GardenMineRepositoryResponse> gardenMineRepositoryResponses) {
+    public static GardenMineResults to(GardenMineRepositoryResponses gardenMineRepositoryResponses) {
         Map<Long, List<String>> gardenAndImages = parseGardenAndImage(gardenMineRepositoryResponses);
         return new GardenMineResults(
-                gardenMineRepositoryResponses.stream()
+                gardenMineRepositoryResponses.response().stream()
                         .map(gardenMineRepositoryResponse ->
                                 GardenMineResult.to(
                                         gardenMineRepositoryResponse,
                                         gardenAndImages.get(gardenMineRepositoryResponse.getGardenId())
                                 )
                         )
-                        .toList());
-
+                        .toList(),
+            gardenMineRepositoryResponses.nextGardenId(),
+            gardenMineRepositoryResponses.hasNext());
     }
 
-    private static Map<Long, List<String>> parseGardenAndImage(List<GardenMineRepositoryResponse> GardenMineRepositoryResponses) {
+    private static Map<Long, List<String>> parseGardenAndImage(
+        GardenMineRepositoryResponses gardenMineRepositoryResponses) {
         Map<Long, List<String>> gardenAndImages = new HashMap<>();
 
-        GardenMineRepositoryResponses.forEach(gardenMineRepositoryResponse ->
+        gardenMineRepositoryResponses.response().forEach(gardenMineRepositoryResponse ->
                 gardenAndImages
                         .computeIfAbsent(gardenMineRepositoryResponse.getGardenId(), k -> new ArrayList<>())
                         .add(gardenMineRepositoryResponse.getImageUrl())

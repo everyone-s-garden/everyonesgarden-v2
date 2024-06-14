@@ -8,14 +8,13 @@ import com.garden.back.garden.repository.garden.dto.response.GardenDetailReposit
 import com.garden.back.garden.repository.garden.dto.response.RecentCreateGardenRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
-import com.garden.back.garden.service.dto.request.GardenByComplexesParam;
-import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
-import com.garden.back.garden.service.dto.request.GardenByNameParam;
-import com.garden.back.garden.service.dto.request.GardenDetailParam;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
 import com.garden.back.garden.util.PageMaker;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +26,7 @@ public class GardenReadService {
     private final MyManagedGardenRepository myManagedGardenRepository;
     private final GardenHistoryManager gardenHistoryManager;
     private final GardenImageRepository gardenImageRepository;
+    private final Pageable pageable = PageRequest.of(0, 10);
 
     public GardenReadService(GardenRepository gardenRepository, MyManagedGardenRepository myManagedGardenRepository, GardenHistoryManager gardenHistoryManager, GardenImageRepository gardenImageRepository) {
         this.gardenRepository = gardenRepository;
@@ -79,8 +79,8 @@ public class GardenReadService {
         return RecentGardenResults.to(gardenHistoryManager.findRecentViewGarden(memberId));
     }
 
-    public GardenMineResults getMyGarden(Long memberId) {
-        return GardenMineResults.to(gardenRepository.findByWriterId(memberId));
+    public GardenMineResults getMyGarden(MyGardenGetParam param) {
+        return GardenMineResults.to(gardenRepository.findByWriterId(param.memberId(), param.nextGardenId(), pageable));
     }
 
     public GardenLikeByMemberResults getLikeGardensByMember(Long memberId) {
@@ -88,8 +88,9 @@ public class GardenReadService {
             gardenRepository.getLikeGardenByMember(memberId));
     }
 
-    public MyManagedGardenGetResults getMyManagedGardens(Long memberId) {
-        return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(memberId));
+    public MyManagedGardenGetResults getMyManagedGardens(MyManagedGardenGetParam param) {
+        return MyManagedGardenGetResults.to(myManagedGardenRepository.getByMemberId(
+            param.toMyManagedGardensGetRepositoryParam(pageable)));
     }
 
     public MyManagedGardenDetailResult getDetailMyManagedGarden(Long myManagedGardenId) {

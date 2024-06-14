@@ -32,7 +32,7 @@ public interface GardenRepository {
 
     void deleteById(Long gardenId);
 
-    List<GardenMineRepositoryResponse> findByWriterId(Long writerId);
+    GardenMineRepositoryResponses findByWriterId(Long writerId,Long nextGardenId, Pageable pageable);
 
     List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(Long memberId);
 

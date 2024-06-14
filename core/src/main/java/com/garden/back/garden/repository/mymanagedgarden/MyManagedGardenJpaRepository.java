@@ -3,6 +3,7 @@ package com.garden.back.garden.repository.mymanagedgarden;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardenDetailRepositoryResponse;
 import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponse;
 import com.garden.back.garden.repository.mymanagedgarden.entity.MyManagedGardenEntity;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,9 +25,13 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
                     from MyManagedGardenEntity as mmg
                     inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.memberId =:memberId
+                    and mmg.myManagedGardenId >:nextManagedGardenId
                     """
     )
-    List<MyManagedGardensGetRepositoryResponse> getByMemberId(@Param("memberId") Long memberId);
+    List<MyManagedGardensGetRepositoryResponse> getByMemberId(
+        @Param("memberId") Long memberId,
+        @Param("nextManagedGardenId") Long nextManagedGardenId,
+        Pageable pageable);
 
     @Modifying(clearAutomatically = true)
     @Query(
