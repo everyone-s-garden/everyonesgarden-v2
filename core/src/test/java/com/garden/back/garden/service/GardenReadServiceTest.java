@@ -415,4 +415,27 @@ class GardenReadServiceTest extends IntegrationTestSupport {
             .hasMessageContaining("존재하지 않는 텃밭입니다. gardenId : "+notExistedGardenId);
     }
 
+    @DisplayName("상대방이 가꾸는 텃밭에 대한 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherManagedGarden() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+            GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        OtherManagedGardenGetResults otherManagedGardenGetResults
+            = gardenReadService.visitOtherManagedGarden(GardenFixture.otherManagedGardenGetParamAboutFirst(myManagedGarden.getMemberId()));
+
+        // Then
+        assertThat(otherManagedGardenGetResults.otherManagedGardenGetResponse())
+            .extracting("gardenName", "images")
+            .contains(
+                Tuple.tuple(
+                    savedPrivateGarden.getGardenName(),
+                    List.of(myManagedGarden.getImageUrl())
+                )
+            );
+        assertThat(otherManagedGardenGetResults.hasNext()).isFalse();
+    }
+
 }
