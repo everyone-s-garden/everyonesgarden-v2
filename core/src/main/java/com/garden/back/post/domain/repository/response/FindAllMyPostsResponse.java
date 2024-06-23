@@ -8,6 +8,10 @@ public record FindAllMyPostsResponse(
     public record PostInfo(
         Long postId,
         String title,
-        String preview
+        String preview,
+        String content,
+        Long likesCount,
+        Long commentsCount,
+        UserResponse userInfo
     ) {}
 }

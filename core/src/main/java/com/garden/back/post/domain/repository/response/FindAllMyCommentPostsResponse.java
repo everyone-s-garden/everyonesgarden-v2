@@ -9,6 +9,9 @@ public record FindAllMyCommentPostsResponse(
         Long postId,
         String title,
         String preview,
-        String content
+        String content,
+        Long likesCount,
+        Long commentsCount,
+        UserResponse userInfo
     ) {}
 }

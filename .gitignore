@@ -42,3 +42,4 @@ application-oauth.yml
 koreanGeo.csv
 # FixtureMonkey가 생성하는 의문의 파일
 *.jqwik-database
+/.system/

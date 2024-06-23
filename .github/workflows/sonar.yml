@@ -1,8 +1,8 @@
 name: SonarCloud
 on:
   push:
-    branches:      
-      - '*'      
+    branches:
+      - '*'
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
@@ -15,11 +15,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: jdk 세팅
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
-          distribution: 'temurin'
-          java-options: '-Duser.timezone=Asia/Seoul'
+          distribution: 'corretto'
+
       - name: gradlew 실행 권한 부여
         run: chmod +x ./gradlew
 

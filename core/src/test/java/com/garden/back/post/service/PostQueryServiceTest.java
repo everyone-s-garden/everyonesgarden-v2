@@ -59,20 +59,20 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post savedPost = postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), savedMemberId);
         FindPostDetailsResponse response = new FindPostDetailsResponse(
-                post.getCommentsCount(),
-                post.getLikesCount(),
-                new UserResponse(
-                        member.getId(),
-                        member.getProfileImageUrl(),
-                        member.getNickname(),
-                        member.getMemberMannerGrade()
-                ),
-                content,
-                title,
-                savedPost.getCreatedDate(),
-                true,
-                post.getPostType(),
-                List.of(imageUrl)
+            post.getCommentsCount(),
+            post.getLikesCount(),
+            new UserResponse(
+                member.getId(),
+                member.getProfileImageUrl(),
+                member.getNickname(),
+                member.getMemberMannerGrade()
+            ),
+            content,
+            title,
+            savedPost.getCreatedDate(),
+            true,
+            post.getPostType(),
+            List.of(imageUrl)
         );
 
         //when & then
@@ -98,40 +98,40 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId2,
-                        title,
-                        post2.getLikesCount(),
-                        post2.getCommentsCount(),
-                        post2.getContent(),
-                        post2.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post2.getPostType(),
-                        post2.getCreatedDate(),
-                        false
+            new FindAllPostsResponse.PostInfo(
+                savedPostId2,
+                title,
+                post2.getLikesCount(),
+                post2.getCommentsCount(),
+                post2.getContent(),
+                post2.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
                 ),
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false
-                ) //Post2가 댓글 더 많음
+                post2.getPostType(),
+                post2.getCreatedDate(),
+                false
+            ),
+            new FindAllPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false
+            ) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT, -1L);
@@ -160,22 +160,22 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false) //Post2가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.COMMENT_COUNT, -1L);
@@ -204,39 +204,39 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false),
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId2,
-                        title,
-                        post2.getLikesCount(),
-                        post2.getCommentsCount(),
-                        post2.getContent(),
-                        post2.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post2.getPostType(),
-                        post2.getCreatedDate(),
-                        false
-                )
+            new FindAllPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false),
+            new FindAllPostsResponse.PostInfo(
+                savedPostId2,
+                title,
+                post2.getLikesCount(),
+                post2.getCommentsCount(),
+                post2.getContent(),
+                post2.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post2.getPostType(),
+                post2.getCreatedDate(),
+                false
+            )
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.LIKE_COUNT, -1L);
@@ -265,39 +265,39 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId2,
-                        title,
-                        post2.getLikesCount(),
-                        post2.getCommentsCount(),
-                        post2.getContent(),
-                        post2.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post2.getPostType(),
-                        post2.getCreatedDate(),
-                        false),
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false
-                ) //Post2가 댓글 더 많음
+            new FindAllPostsResponse.PostInfo(
+                savedPostId2,
+                title,
+                post2.getLikesCount(),
+                post2.getCommentsCount(),
+                post2.getContent(),
+                post2.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post2.getPostType(),
+                post2.getCreatedDate(),
+                false),
+            new FindAllPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false
+            ) //Post2가 댓글 더 많음
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, null, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.RECENT_DATE, -1L);
@@ -326,38 +326,38 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedPostId2 = postRepository.save(post2).getId();
 
         List<FindAllPostsResponse.PostInfo> postInfosForCommentCount = List.of(
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false),
-                new FindAllPostsResponse.PostInfo(
-                        savedPostId2,
-                        title,
-                        post2.getLikesCount(),
-                        post2.getCommentsCount(),
-                        post2.getContent(),
-                        post2.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post2.getPostType(),
-                        post2.getCreatedDate(),
-                        false)
+            new FindAllPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false),
+            new FindAllPostsResponse.PostInfo(
+                savedPostId2,
+                title,
+                post2.getLikesCount(),
+                post2.getCommentsCount(),
+                post2.getContent(),
+                post2.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post2.getPostType(),
+                post2.getCreatedDate(),
+                false)
         );
 
         FindAllPostParamRepositoryRequest request = new FindAllPostParamRepositoryRequest(0, 10, title, PostType.QUESTION, FindAllPostParamRepositoryRequest.OrderBy.OLDER_DATE, -1L);
@@ -390,36 +390,36 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.RECENT_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
-                List.of(
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                recentCommentId,
-                                postComment2.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                true,
-                                Collections.EMPTY_LIST,
-                                postComment2.getCreateAt()
-                        ),
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                olderCommentId,
-                                postComment.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                false,
-                                Collections.EMPTY_LIST,
-                                postComment.getCreateAt()
-                        )
+            List.of(
+                new FindPostsAllCommentResponse.ParentInfo(
+                    recentCommentId,
+                    postComment2.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    true,
+                    Collections.EMPTY_LIST,
+                    postComment2.getCreateAt()
+                ),
+                new FindPostsAllCommentResponse.ParentInfo(
+                    olderCommentId,
+                    postComment.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    false,
+                    Collections.EMPTY_LIST,
+                    postComment.getCreateAt()
                 )
+            )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
@@ -447,35 +447,35 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.LIKE_COUNT);
 
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
-                List.of(
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                havMoreLikeCommentId,
-                                postComment2.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                true,
-                                Collections.EMPTY_LIST,
-                                postComment2.getCreateAt()),
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                haveLessCommentLikeId,
-                                postComment.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                false,
-                                Collections.EMPTY_LIST,
-                                postComment.getCreateAt()
-                        )
+            List.of(
+                new FindPostsAllCommentResponse.ParentInfo(
+                    havMoreLikeCommentId,
+                    postComment2.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    true,
+                    Collections.EMPTY_LIST,
+                    postComment2.getCreateAt()),
+                new FindPostsAllCommentResponse.ParentInfo(
+                    haveLessCommentLikeId,
+                    postComment.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    false,
+                    Collections.EMPTY_LIST,
+                    postComment.getCreateAt()
                 )
+            )
         );
 
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
@@ -503,36 +503,36 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         //when & then
         FindAllPostCommentsParamRepositoryRequest request = new FindAllPostCommentsParamRepositoryRequest(0, 10, FindAllPostCommentsParamRepositoryRequest.OrderBy.OLDER_DATE);
         FindPostsAllCommentResponse response = new FindPostsAllCommentResponse(
-                List.of(
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                olderCommentId,
-                                postComment.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                false,
-                                Collections.EMPTY_LIST,
-                                postComment.getCreateAt()
-                        ),
-                        new FindPostsAllCommentResponse.ParentInfo(
-                                recentCommentId,
-                                postComment2.getLikesCount(),
-                                content,
-                                new UserResponse(
-                                        member.getId(),
-                                        member.getProfileImageUrl(),
-                                        member.getNickname(),
-                                        member.getMemberMannerGrade()
-                                ),
-                                true,
-                                Collections.EMPTY_LIST,
-                                postComment2.getCreateAt()
-                        )
+            List.of(
+                new FindPostsAllCommentResponse.ParentInfo(
+                    olderCommentId,
+                    postComment.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    false,
+                    Collections.EMPTY_LIST,
+                    postComment.getCreateAt()
+                ),
+                new FindPostsAllCommentResponse.ParentInfo(
+                    recentCommentId,
+                    postComment2.getLikesCount(),
+                    content,
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                    ),
+                    true,
+                    Collections.EMPTY_LIST,
+                    postComment2.getCreateAt()
                 )
+            )
         );
         assertThat(postQueryService.findAllCommentsByPostId(savedPostId, savedMemberId, request)).isEqualTo(response);
     }
@@ -550,7 +550,24 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
         postCommandService.addLikeToPost(post.getId(), member.getId());
-        FindAllMyLikePostsResponse expected = new FindAllMyLikePostsResponse(List.of(new FindAllMyLikePostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl())));
+        FindAllMyLikePostsResponse expected =
+            new FindAllMyLikePostsResponse(
+                List.of(
+                    new FindAllMyLikePostsResponse.PostInfo(
+                        post.getId(),
+                        post.getTitle(),
+                        post.getPostImages().stream().findFirst().get().getImageUrl(),
+                        post.getContent(),
+                        post.getLikesCount(),
+                        post.getCommentsCount(),
+                        new UserResponse(
+                            member.getId(),
+                            member.getProfileImageUrl(),
+                            member.getNickname(),
+                            member.getMemberMannerGrade()
+                    )
+                )
+            ));
 
         //when & then
         FindAllMyLikePostsResponse actual = postQueryService.findAllByMyLike(member.getId(), new FindAllMyLikePostsRepositoryRequest(0L, 10L));
@@ -569,7 +586,23 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         Long savedMemberId = memberRepository.save(member).getId();
         Post post = Post.create(title, content, savedMemberId, List.of("http://example.com/image.jpg"), PostType.QUESTION);
         postRepository.save(post);
-        FindAllMyPostsResponse expected = new FindAllMyPostsResponse(List.of(new FindAllMyPostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl())));
+        FindAllMyPostsResponse expected = new FindAllMyPostsResponse(
+            List.of(
+                new FindAllMyPostsResponse.PostInfo(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getPostImages().stream().findFirst().get().getImageUrl(),
+                    post.getContent(),
+                    post.getLikesCount(),
+                    post.getCommentsCount(),
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                )
+            )
+        ));
 
         //when & then
         FindAllMyPostsResponse actual = postQueryService.findAllMyPosts(member.getId(), new FindAllMyPostsRepositoryRequest(0L, 10L));
@@ -591,7 +624,23 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         postRepository.save(post);
         String commentContent = "내용";
         postCommandService.createComment(post.getId(), member.getId(), new CommentCreateServiceRequest(commentContent, null));
-        FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(List.of(new FindAllMyCommentPostsResponse.PostInfo(post.getId(), post.getTitle(), post.getPostImages().stream().findFirst().get().getImageUrl(), commentContent)));
+        FindAllMyCommentPostsResponse expected = new FindAllMyCommentPostsResponse(
+            List.of(
+                new FindAllMyCommentPostsResponse.PostInfo(
+                    post.getId(),
+                    post.getTitle(),
+                    post.getPostImages().stream().findFirst().get().getImageUrl(),
+                    commentContent,
+                    post.getLikesCount(),
+                    post.getCommentsCount(),
+                    new UserResponse(
+                        member.getId(),
+                        member.getProfileImageUrl(),
+                        member.getNickname(),
+                        member.getMemberMannerGrade()
+                )
+            )
+        ));
 
         //when & then
         FindAllMyCommentPostsResponse actual = postQueryService.findAllByMyComment(member.getId(), new FindAllMyCommentPostsRepositoryRequest(0L, 10L));
@@ -620,38 +669,38 @@ class PostQueryServiceTest extends IntegrationTestSupport {
         //when & then
         FindAllPopularRepositoryPostsRequest request = new FindAllPopularRepositoryPostsRequest(0L, 10L, 1, savedMemberId);
         FindAllPopularPostsResponse response = new FindAllPopularPostsResponse(List.of(
-                new FindAllPopularPostsResponse.PostInfo(
-                        savedPostId1,
-                        title,
-                        post.getLikesCount(),
-                        post.getCommentsCount(),
-                        post.getContent(),
-                        post.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        true),
-                new FindAllPopularPostsResponse.PostInfo(
-                        savedPostId2,
-                        title,
-                        post2.getLikesCount(),
-                        post2.getCommentsCount(),
-                        post2.getContent(),
-                        post2.getPostImages().stream().findFirst().get().getImageUrl(),
-                        new UserResponse(
-                                member.getId(),
-                                member.getProfileImageUrl(),
-                                member.getNickname(),
-                                member.getMemberMannerGrade()
-                        ),
-                        post.getPostType(),
-                        post.getCreatedDate(),
-                        false)
+            new FindAllPopularPostsResponse.PostInfo(
+                savedPostId1,
+                title,
+                post.getLikesCount(),
+                post.getCommentsCount(),
+                post.getContent(),
+                post.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                true),
+            new FindAllPopularPostsResponse.PostInfo(
+                savedPostId2,
+                title,
+                post2.getLikesCount(),
+                post2.getCommentsCount(),
+                post2.getContent(),
+                post2.getPostImages().stream().findFirst().get().getImageUrl(),
+                new UserResponse(
+                    member.getId(),
+                    member.getProfileImageUrl(),
+                    member.getNickname(),
+                    member.getMemberMannerGrade()
+                ),
+                post.getPostType(),
+                post.getCreatedDate(),
+                false)
         ));
         assertThat(postQueryService.findAllPopularPosts(request)).isEqualTo(response);
     }
