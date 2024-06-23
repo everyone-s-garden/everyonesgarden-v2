@@ -1,8 +1,7 @@
 name: 배포자동화
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch
+  
 jobs:
   deploy:
     runs-on: ubuntu-latest
