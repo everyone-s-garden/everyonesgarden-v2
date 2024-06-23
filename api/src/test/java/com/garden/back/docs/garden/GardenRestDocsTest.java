@@ -236,7 +236,7 @@ class GardenRestDocsTest extends RestDocsSupport {
         given(gardenReadService.getMyGarden(any())).willReturn(gardenMineResults);
 
         mockMvc.perform(get("/v2/gardens/mine")
-            .param("nextGardenId", "0"))
+                .param("nextGardenId", "0"))
             .andDo(print())
             .andExpect(status().isOk())
             .andDo(document("get-my-gardens",
@@ -260,7 +260,7 @@ class GardenRestDocsTest extends RestDocsSupport {
     @Test
     void getLikeGardens() throws Exception {
         GardenLikeByMemberResults gardenLikeByMemberResults = GardenFixture.gardenLikeByMemberResults();
-        given(gardenReadService.getLikeGardensByMember(any(),any())).willReturn(gardenLikeByMemberResults);
+        given(gardenReadService.getLikeGardensByMember(any(), any())).willReturn(gardenLikeByMemberResults);
 
         mockMvc.perform(get("/v2/gardens/likes")
                 .param("nextGardenId", "0"))
@@ -290,7 +290,7 @@ class GardenRestDocsTest extends RestDocsSupport {
         given(gardenReadService.getMyManagedGardens(any())).willReturn(myManagedGardenGetResults);
 
         mockMvc.perform(get("/v2/gardens/my-managed")
-            .param("nextMyManagedGardenId", "0"))
+                .param("nextMyManagedGardenId", "0"))
             .andDo(print())
             .andExpect(status().isOk())
             .andDo(document("get-my-managed-gardens",
@@ -382,6 +382,35 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("텃밭 경도")
                 )
             ));
+    }
+
+    @DisplayName("상대방이 가꾸는 텃밭 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherManagedGardens() throws Exception {
+        OtherManagedGardenGetResults result = GardenFixture.otherManagedGardenGetResults();
+        given(gardenReadService.visitOtherManagedGarden(any())).willReturn(result);
+
+        mockMvc.perform(get("/v2/gardens/other-managed")
+                .param("otherMemberIdToVisit", "1")
+                .param("nextManagedGardenId", "0"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("visit-other-managed-gardens",
+                queryParameters(
+                    parameterWithName("otherMemberIdToVisit").description("방문하고자 하는 상대의 Member Id, 0이거나 음수일 수 없습니다."),
+                    parameterWithName("nextManagedGardenId").description("상대방이 가꾸는 텃밭 넥스트 키 , 처음에는 다음 텃밭 키를 모르기 때문에 0을 보내주세요")
+                ),
+                responseFields(
+                    fieldWithPath("otherManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("상대방이 가꾸는 텃밭 목록"),
+                    fieldWithPath("otherManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("상대방의 가꾸는 텃밭 아이디"),
+                    fieldWithPath("otherManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
+                    fieldWithPath("otherManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
+                    fieldWithPath("otherManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                    fieldWithPath("otherManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("otherManagedGardenGetResponses[].description").type(JsonFieldType.STRING).description("상대방이 가꾸는 텃밭 자랑할 만한 내용 또는 기록"),
+                    fieldWithPath("nextManagedGardenId").type(JsonFieldType.NUMBER).description("상대방이 가꾸는 텃밭 넥스트 키"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
+                )));
     }
 
 }
