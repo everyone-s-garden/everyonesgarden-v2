@@ -260,7 +260,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         gardenLikeRepository.save(gardenLike);
 
         // When
-        GardenLikeByMemberResults likeGardensByMember = gardenReadService.getLikeGardensByMember(gardenLike.getMemberId());
+        GardenLikeByMemberResults likeGardensByMember = gardenReadService.getLikeGardensByMember(gardenLike.getMemberId(),0L);
 
         // Then
         assertThat(likeGardensByMember.gardenLikeByMemberResults())

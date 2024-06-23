@@ -1,6 +1,7 @@
 package com.garden.back.garden.service.dto.response;
 
 import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponse;
+import com.garden.back.garden.repository.garden.dto.response.GardenLikeByMemberRepositoryResponses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,25 +9,29 @@ import java.util.List;
 import java.util.Map;
 
 public record GardenLikeByMemberResults(
-        List<GardenLikeByMemberResult> gardenLikeByMemberResults
+        List<GardenLikeByMemberResult> gardenLikeByMemberResults,
+        Long nextGardenId,
+        Boolean hasNext
 ) {
-    public static GardenLikeByMemberResults to(List<GardenLikeByMemberRepositoryResponse> gardenLikeByMemberRepositoryResponses) {
+    public static GardenLikeByMemberResults to(GardenLikeByMemberRepositoryResponses gardenLikeByMemberRepositoryResponses) {
         Map<Long, List<String>> gardenAndImages = parseGardenAndImage(gardenLikeByMemberRepositoryResponses);
         return new GardenLikeByMemberResults(
-                gardenLikeByMemberRepositoryResponses.stream()
+                gardenLikeByMemberRepositoryResponses.response().stream()
                         .map(gardenLikeByMemberRepositoryResponse
                                 -> GardenLikeByMemberResult.to(
                                 gardenLikeByMemberRepositoryResponse,
                                 gardenAndImages.get(gardenLikeByMemberRepositoryResponse.getGardenId()))
                         )
-                        .toList()
+                        .toList(),
+            gardenLikeByMemberRepositoryResponses.nextGardenId(),
+            gardenLikeByMemberRepositoryResponses.hasNext()
         );
     }
 
-    private static Map<Long, List<String>> parseGardenAndImage(List<GardenLikeByMemberRepositoryResponse> gardenLikeByMemberRepositoryResponses) {
+    private static Map<Long, List<String>> parseGardenAndImage(GardenLikeByMemberRepositoryResponses gardenLikeByMemberRepositoryResponses) {
         Map<Long, List<String>> gardenAndImages = new HashMap<>();
 
-        gardenLikeByMemberRepositoryResponses.forEach(gardenLikeByMemberRepositoryResponse ->
+        gardenLikeByMemberRepositoryResponses.response().forEach(gardenLikeByMemberRepositoryResponse ->
                 gardenAndImages
                         .computeIfAbsent(gardenLikeByMemberRepositoryResponse.getGardenId(), k -> new ArrayList<>())
                         .add(gardenLikeByMemberRepositoryResponse.getImageUrl())
