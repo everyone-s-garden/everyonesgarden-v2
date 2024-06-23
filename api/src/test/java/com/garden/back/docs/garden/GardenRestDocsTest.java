@@ -260,12 +260,16 @@ class GardenRestDocsTest extends RestDocsSupport {
     @Test
     void getLikeGardens() throws Exception {
         GardenLikeByMemberResults gardenLikeByMemberResults = GardenFixture.gardenLikeByMemberResults();
-        given(gardenReadService.getLikeGardensByMember(any())).willReturn(gardenLikeByMemberResults);
+        given(gardenReadService.getLikeGardensByMember(any(),any())).willReturn(gardenLikeByMemberResults);
 
-        mockMvc.perform(get("/v2/gardens/likes"))
+        mockMvc.perform(get("/v2/gardens/likes")
+                .param("nextGardenId", "0"))
             .andDo(print())
             .andExpect(status().isOk())
             .andDo(document("get-like-gardens",
+                queryParameters(
+                    parameterWithName("nextGardenId").description("텃밭 넥스트 키 , 처음에는 다음 텃밭 키를 모르기 때문에 0을 보내주세요")
+                ),
                 responseFields(
                     fieldWithPath("gardenLikeByMemberResponses").type(JsonFieldType.ARRAY).description("내가 찜한 텃밭 목록"),
                     fieldWithPath("gardenLikeByMemberResponses[].gardenId").type(JsonFieldType.NUMBER).description("내가 찜한 텃밭 아이디"),
@@ -273,7 +277,9 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("gardenLikeByMemberResponses[].gardenName").type(JsonFieldType.STRING).description("텃밭 이름"),
                     fieldWithPath("gardenLikeByMemberResponses[].price").type(JsonFieldType.STRING).description("텃밭 가격"),
                     fieldWithPath("gardenLikeByMemberResponses[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태 : ACTIVE(모집중), INACTIVE(마감)"),
-                    fieldWithPath("gardenLikeByMemberResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 사진")
+                    fieldWithPath("gardenLikeByMemberResponses[].images").type(JsonFieldType.ARRAY).description("텃밭 사진"),
+                    fieldWithPath("nextGardenId").type(JsonFieldType.NUMBER).description("텃밭 넥스트 키"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
                 )));
     }
 

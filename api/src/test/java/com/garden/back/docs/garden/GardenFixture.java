@@ -146,7 +146,9 @@ public class GardenFixture {
                     GardenStatus.ACTIVE.name(),
                     List.of("www.garden.com")
                 )
-            )
+            ),
+            0L,
+            false
         );
     }
 
