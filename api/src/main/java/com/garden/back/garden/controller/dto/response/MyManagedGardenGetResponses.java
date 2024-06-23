@@ -14,7 +14,7 @@ public record MyManagedGardenGetResponses(
             results.myManagedGardenGetResponse().stream()
                 .map(MyManagedGardenGetResponse::to)
                 .toList(),
-            results.nextManagedId(),
+            results.nextManagedGardenId(),
             results.hasNext()
         );
     }
