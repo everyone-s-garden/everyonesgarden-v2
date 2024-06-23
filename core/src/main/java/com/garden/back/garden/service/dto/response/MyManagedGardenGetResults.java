@@ -8,7 +8,7 @@ import java.util.*;
 
 public record MyManagedGardenGetResults(
     List<MyManagedGardenGetResult> myManagedGardenGetResponse,
-    Long nextManagedId,
+    Long nextManagedGardenId,
     boolean hasNext
 ) {
     public static MyManagedGardenGetResults to(MyManagedGardensGetRepositoryResponses responses) {

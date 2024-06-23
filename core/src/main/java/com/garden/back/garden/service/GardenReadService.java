@@ -120,4 +120,8 @@ public class GardenReadService {
             gardenRepository.getGardenLocation(gardenId));
     }
 
+    public OtherManagedGardenGetResults visitOtherManagedGarden(OtherManagedGardenGetParam param) {
+        return OtherManagedGardenGetResults.to(getMyManagedGardens(param.toMyManagedGardenGetParam()));
+    }
+
 }
