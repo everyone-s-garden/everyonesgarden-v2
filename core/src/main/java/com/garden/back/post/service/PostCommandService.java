@@ -36,7 +36,7 @@ public class PostCommandService {
         PostCreateServiceRequest request,
         Long memberId
     ) {
-        List<String> urls = parallelImageUploader.upload(IMAGE_DIRECTORY, request.images());
+        List<String> urls = parallelImageUploader.uploadWithOrder(IMAGE_DIRECTORY, request.images());
         Post post = request.toEntity(memberId, urls);
         return postCommandRepository.savePost(post);
     }
@@ -44,7 +44,7 @@ public class PostCommandService {
     @Transactional
     public void updatePost(Long id, Long memberId, PostUpdateServiceRequest request) {
         Post post = postCommandValidator.validatePostUpdatable(id, request.addedImagesCount(), request.deletedImagesCount());
-        List<String> addedUrls = parallelImageUploader.upload(IMAGE_DIRECTORY, request.addedImages());
+        List<String> addedUrls = parallelImageUploader.uploadWithOrder(IMAGE_DIRECTORY, request.addedImages());
         parallelImageUploader.delete(IMAGE_DIRECTORY, request.deleteImages());
         postCommandRepository.updatePost(request.toRepositoryRequest(post, memberId, addedUrls));
     }

@@ -37,6 +37,15 @@ public class ParallelImageUploader {
         return gatherFileNamesFromFutures(directory, futures);
     }
 
+    public List<String> uploadWithOrder(String directory, List<MultipartFile> multipartFiles) {
+        if (multipartFiles.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return multipartFiles.stream()
+                .map(multipartFile -> imageUploader.upload(directory, multipartFile))
+                .toList();
+    }
+
     private List<String> gatherFileNamesFromFutures(String directory, List<CompletableFuture<String>> futures) {
         List<String> fileNames = new ArrayList<>();
         AtomicBoolean catchException = new AtomicBoolean(false);

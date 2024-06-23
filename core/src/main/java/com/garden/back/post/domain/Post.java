@@ -12,9 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,7 +48,7 @@ public class Post extends BaseTimeEntity {
     private Long postAuthorId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "post")
-    private Set<PostImage> postImages;
+    private List<PostImage> postImages = new ArrayList<>();
 
     @LastModifiedDate
     @Column(name = "updated_at")
@@ -75,9 +74,7 @@ public class Post extends BaseTimeEntity {
         this.title = title;
         this.content = content;
         this.postAuthorId = postAuthorId;
-        this.postImages = postUrls.stream()
-            .map(postUrl -> PostImage.create(postUrl, this))
-            .collect(Collectors.toSet());
+        this.postImages = postUrls.stream().map(postUrl -> PostImage.create(postUrl, this)).toList();
         this.createdDate = LocalDate.now(ZoneId.of("Asia/Seoul"));
         this.deleteStatus = false;
         this.postType = postType;
@@ -98,13 +95,19 @@ public class Post extends BaseTimeEntity {
         this.postType = postType;
         validateUpdatable(addedImages.size(), deletedImages.size());
 
+        // 기존 리스트를 변경 가능한 리스트로 복사
+        List<PostImage> modifiablePostImages = new ArrayList<>(this.postImages);
+
         addedImages.stream()
             .map(url -> PostImage.create(url, this))
-            .forEach(this.postImages::add);
+            .forEach(modifiablePostImages::add);
 
         deletedImages.forEach(url ->
-            postImages.removeIf(postImage -> postImage.hasUrl(url))
+            modifiablePostImages.removeIf(postImage -> postImage.hasUrl(url))
         );
+
+        // 변경된 리스트를 다시 할당
+        this.postImages = modifiablePostImages;
 
         validatePostStatus();
     }
