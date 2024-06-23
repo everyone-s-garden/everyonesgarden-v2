@@ -10,6 +10,8 @@ public record GardenMineRepositoryResponses(
     Long nextGardenId,
     boolean hasNext
 ) {
+    private static final Long EMPTY_LAST_ID = 0L;
+
     public static GardenMineRepositoryResponses of(
         List<GardenMineRepositoryResponse> response,
         Pageable pageable) {
@@ -21,6 +23,9 @@ public record GardenMineRepositoryResponses(
     }
 
     private static Long getLastId(List<GardenMineRepositoryResponse> response) {
+        if (response.isEmpty()) {
+            return EMPTY_LAST_ID;
+        }
         return response.get(response.size() - 1).getGardenId();
     }
 
