@@ -260,7 +260,7 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         gardenLikeRepository.save(gardenLike);
 
         // When
-        GardenLikeByMemberResults likeGardensByMember = gardenReadService.getLikeGardensByMember(gardenLike.getMemberId());
+        GardenLikeByMemberResults likeGardensByMember = gardenReadService.getLikeGardensByMember(gardenLike.getMemberId(),0L);
 
         // Then
         assertThat(likeGardensByMember.gardenLikeByMemberResults())
@@ -413,6 +413,29 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThatThrownBy(() -> gardenReadService.getGardenLocation(notExistedGardenId))
             .isInstanceOf(EmptyResultDataAccessException.class)
             .hasMessageContaining("존재하지 않는 텃밭입니다. gardenId : "+notExistedGardenId);
+    }
+
+    @DisplayName("상대방이 가꾸는 텃밭에 대한 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherManagedGarden() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+            GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId()));
+
+        // When
+        OtherManagedGardenGetResults otherManagedGardenGetResults
+            = gardenReadService.visitOtherManagedGarden(GardenFixture.otherManagedGardenGetParamAboutFirst(myManagedGarden.getMemberId()));
+
+        // Then
+        assertThat(otherManagedGardenGetResults.otherManagedGardenGetResponse())
+            .extracting("gardenName", "images")
+            .contains(
+                Tuple.tuple(
+                    savedPrivateGarden.getGardenName(),
+                    List.of(myManagedGarden.getImageUrl())
+                )
+            );
+        assertThat(otherManagedGardenGetResults.hasNext()).isFalse();
     }
 
 }

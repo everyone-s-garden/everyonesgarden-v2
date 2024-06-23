@@ -1,28 +1,28 @@
 package com.garden.back.garden.repository.garden.dto.response;
 
-
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public record GardenMineRepositoryResponses(
-    List<GardenMineRepositoryResponse> response,
+public record GardenLikeByMemberRepositoryResponses(
+    List<GardenLikeByMemberRepositoryResponse> response,
     Long nextGardenId,
     boolean hasNext
 ) {
+
     private static final Long EMPTY_LAST_ID = 0L;
 
-    public static GardenMineRepositoryResponses of(
-        List<GardenMineRepositoryResponse> response,
+    public static GardenLikeByMemberRepositoryResponses of(
+        List<GardenLikeByMemberRepositoryResponse> response,
         Pageable pageable) {
-        return new GardenMineRepositoryResponses(
+        return new GardenLikeByMemberRepositoryResponses(
             response,
             getLastId(response),
             hasNext(response, pageable)
         );
     }
 
-    private static Long getLastId(List<GardenMineRepositoryResponse> response) {
+    private static Long getLastId(List<GardenLikeByMemberRepositoryResponse> response) {
         if (response.isEmpty()) {
             return EMPTY_LAST_ID;
         }
@@ -30,9 +30,8 @@ public record GardenMineRepositoryResponses(
     }
 
     private static boolean hasNext(
-        List<GardenMineRepositoryResponse> response,
+        List<GardenLikeByMemberRepositoryResponse> response,
         Pageable pageable) {
         return response.size() == pageable.getPageSize();
     }
-
 }

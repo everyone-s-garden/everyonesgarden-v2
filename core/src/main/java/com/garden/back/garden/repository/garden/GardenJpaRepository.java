@@ -98,6 +98,7 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
         left join
          GardenImageEntity as gi on g.gardenId = gi.garden.gardenId
         where g.writerId=:writerId and g.gardenId >:nextGardenId
+        order by g.gardenId
         """)
     List<GardenMineRepositoryResponse> findByWriterId(
         @Param("writerId") Long writerId,
@@ -118,9 +119,14 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
              GardenLikeEntity as gl on g.gardenId = gl.garden.gardenId and gl.memberId =:memberId
             left join
              GardenImageEntity as gi on g.gardenId = gi.garden.gardenId
+            where g.gardenId >:nextGardenId
+            order by g.gardenId
             """
     )
-    List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(@Param("memberId") Long memberId);
+    List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(
+        @Param("memberId") Long memberId,
+        @Param("nextGardenId") Long nextGardenId,
+        Pageable pageable);
 
     @Query(
         """

@@ -26,6 +26,7 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
                     inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.memberId =:memberId
                     and mmg.myManagedGardenId >:nextManagedGardenId
+                    order by mmg.myManagedGardenId
                     """
     )
     List<MyManagedGardensGetRepositoryResponse> getByMemberId(

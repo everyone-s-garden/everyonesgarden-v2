@@ -384,4 +384,8 @@ public class GardenFixture {
         return new MyManagedGardenGetParam(memberId, 0L);
     }
 
+    public static OtherManagedGardenGetParam otherManagedGardenGetParamAboutFirst(Long memberId) {
+        return new OtherManagedGardenGetParam(memberId, 0L);
+    }
+
 }

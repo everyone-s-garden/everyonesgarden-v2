@@ -83,9 +83,9 @@ public class GardenReadService {
         return GardenMineResults.to(gardenRepository.findByWriterId(param.memberId(), param.nextGardenId(), pageable));
     }
 
-    public GardenLikeByMemberResults getLikeGardensByMember(Long memberId) {
+    public GardenLikeByMemberResults getLikeGardensByMember(Long memberId, Long nextGardenId) {
         return GardenLikeByMemberResults.to(
-            gardenRepository.getLikeGardenByMember(memberId));
+            gardenRepository.getLikeGardenByMember(memberId, nextGardenId, pageable));
     }
 
     public MyManagedGardenGetResults getMyManagedGardens(MyManagedGardenGetParam param) {
@@ -118,6 +118,10 @@ public class GardenReadService {
     public GardenLocationResult getGardenLocation(Long gardenId) {
         return GardenLocationResult.to(
             gardenRepository.getGardenLocation(gardenId));
+    }
+
+    public OtherManagedGardenGetResults visitOtherManagedGarden(OtherManagedGardenGetParam param) {
+        return OtherManagedGardenGetResults.to(getMyManagedGardens(param.toMyManagedGardenGetParam()));
     }
 
 }

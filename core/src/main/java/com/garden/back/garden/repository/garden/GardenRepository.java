@@ -34,7 +34,7 @@ public interface GardenRepository {
 
     GardenMineRepositoryResponses findByWriterId(Long writerId,Long nextGardenId, Pageable pageable);
 
-    List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(Long memberId);
+    GardenLikeByMemberRepositoryResponses getLikeGardenByMember(Long memberId, Long nextGardenId, Pageable pageable);
 
     List<GardenChatRoomInfoRepositoryResponse> getChatRoomInfo(Long gardenId);
 

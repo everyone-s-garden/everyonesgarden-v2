@@ -67,15 +67,24 @@ public class GardenRepositoryImpl implements GardenRepository {
     }
 
     @Override
-    public GardenMineRepositoryResponses findByWriterId(Long writerId, Long nextGardenId, Pageable pageable) {
+    public GardenMineRepositoryResponses findByWriterId(
+        Long writerId,
+        Long nextGardenId,
+        Pageable pageable) {
         return GardenMineRepositoryResponses.of(
             gardenJpaRepository.findByWriterId(writerId, nextGardenId, pageable),
             pageable);
     }
 
     @Override
-    public List<GardenLikeByMemberRepositoryResponse> getLikeGardenByMember(Long memberId) {
-        return gardenJpaRepository.getLikeGardenByMember(memberId);
+    public GardenLikeByMemberRepositoryResponses getLikeGardenByMember(
+        Long memberId,
+        Long nextGardenId,
+        Pageable pageable) {
+        return GardenLikeByMemberRepositoryResponses.of(
+            gardenJpaRepository.getLikeGardenByMember(memberId, nextGardenId, pageable),
+            pageable
+        );
     }
 
     @Override

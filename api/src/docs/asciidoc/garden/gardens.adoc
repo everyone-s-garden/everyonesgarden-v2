@@ -233,3 +233,16 @@ include::{snippets}/get-garden-location/path-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-garden-location/http-response.adoc[]
 include::{snippets}/get-garden-location/response-fields.adoc[]
+
+
+=== 상대방이 가꾸는 텃밭 목록 조회
+상대방이 가꾸는 텃밭 목록 조회한다.
+
+==== Request
+include::{snippets}/visit-other-managed-gardens/http-request.adoc[]
+include::{snippets}/visit-other-managed-gardens/query-parameters.adoc[]
+
+
+==== Response (Success)
+include::{snippets}/visit-other-managed-gardens/http-response.adoc[]
+include::{snippets}/visit-other-managed-gardens/response-fields.adoc[]

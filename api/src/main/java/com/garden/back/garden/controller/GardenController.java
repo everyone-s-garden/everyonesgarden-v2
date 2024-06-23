@@ -119,11 +119,14 @@ public class GardenController {
         path = "/likes",
         produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<GardenLikeByMemberResponses> getLikeGardenByMember(
-        @CurrentUser LoginUser loginUser
+        @CurrentUser LoginUser loginUser,
+        @RequestParam
+        @PositiveOrZero(message = "넥스트 키는 음수일 수 없습니다.")
+        Long nextGardenId
     ) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(GardenLikeByMemberResponses.to(
-                gardenReadService.getLikeGardensByMember(loginUser.memberId())));
+                gardenReadService.getLikeGardensByMember(loginUser.memberId(), nextGardenId)));
     }
 
     @GetMapping(
@@ -177,6 +180,18 @@ public class GardenController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(GardenLocationResponse.to(gardenReadService.getGardenLocation(gardenId)));
+    }
+
+    @GetMapping(
+        value = "/other-managed",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<OtherManagedGardenGetResponses> visitOtherManagedGarden(
+        @ModelAttribute @Valid OtherManagedGardenGetRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(OtherManagedGardenGetResponses.to(gardenReadService.visitOtherManagedGarden(
+                request.toOtherManagedGardenGetParam())));
     }
 
 }

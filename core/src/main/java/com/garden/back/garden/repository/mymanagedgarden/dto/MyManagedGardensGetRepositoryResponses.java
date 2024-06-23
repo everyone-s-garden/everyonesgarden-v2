@@ -9,6 +9,8 @@ public record MyManagedGardensGetRepositoryResponses(
     Long nextManagedGardenId,
     boolean hasNext
 ) {
+    private static final Long EMPTY_LAST_ID = 0L;
+
     public static MyManagedGardensGetRepositoryResponses to(
         List<MyManagedGardensGetRepositoryResponse> responses,
         Pageable pageable) {
@@ -21,6 +23,9 @@ public record MyManagedGardensGetRepositoryResponses(
     }
 
     private static Long getLastId(List<MyManagedGardensGetRepositoryResponse> responses) {
+        if (responses.isEmpty()) {
+            return EMPTY_LAST_ID;
+        }
         return responses.get(responses.size() - 1).getMyManagedGardenId();
     }
 
