@@ -525,4 +525,61 @@ class PostRestDocsTest extends RestDocsSupport {
                         )
                 ));
     }
+
+    @DisplayName("작성자 id로 게시글 조회하기 api docs")
+    @Test
+    void findAllMyPosts() throws Exception {
+        FindAllMyPostsResponse response = new FindAllMyPostsResponse(
+            List.of(
+                new FindAllMyPostsResponse.PostInfo(
+                    1L,
+                    "제목",
+                    "이미지 url",
+                    "내용",
+                    0L,
+                    0L,
+                    new UserResponse(
+                        1L,
+                        "이름",
+                        "닉네임",
+                        MemberMannerGrade.SEED
+                    )
+                )
+            )
+        );
+        FindAllMyPostsRequest request = new FindAllMyPostsRequest(0L, 10L);
+        given(postQueryService.findAllMyPosts(any(), any())).willReturn(response);
+
+        mockMvc.perform(get("/v1/posts/author/{authorId}", 1L)
+                .param("offset", String.valueOf(request.offset()))
+                .param("limit", String.valueOf(request.limit()))
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("get-posts-by-author-id",
+                pathParameters(
+                    parameterWithName("authorId").description("작성자 id")
+                ),
+                queryParameters(
+                    parameterWithName("offset").description("조회를 시작할 데이터의 위치"),
+                    parameterWithName("limit").description("해당 페이지에서 조회할 데이터의 개수")
+                ),
+                responseFields(
+                    fieldWithPath("postInfos").type(ARRAY).description("게시글 정보 목록"),
+                    fieldWithPath("postInfos[].postId").type(NUMBER).description("게시글 ID"),
+                    fieldWithPath("postInfos[].title").type(STRING).description("게시글 제목"),
+                    fieldWithPath("postInfos[].preview").type(STRING).description("미리보기 이미지"),
+                    fieldWithPath("postInfos[].content").type(STRING).description("게시글 내용"),
+                    fieldWithPath("postInfos[].likesCount").type(NUMBER).description("좋아요 수"),
+                    fieldWithPath("postInfos[].commentsCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].userInfo").type(OBJECT).description("작성자 정보"),
+                    fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
+                    fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
+                    fieldWithPath("postInfos[].userInfo.profile").type(STRING).description("작성자 프로필 이미지"),
+                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급")
+                )
+            ));
+
+    }
 }

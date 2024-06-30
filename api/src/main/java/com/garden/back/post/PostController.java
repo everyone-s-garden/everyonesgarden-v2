@@ -4,10 +4,7 @@ import com.garden.back.global.LocationBuilder;
 import com.garden.back.global.loginuser.CurrentUser;
 import com.garden.back.global.loginuser.LoginUser;
 import com.garden.back.global.loginuser.OptionalUser;
-import com.garden.back.post.domain.repository.response.FindAllPopularPostsResponse;
-import com.garden.back.post.domain.repository.response.FindAllPostsResponse;
-import com.garden.back.post.domain.repository.response.FindPostDetailsResponse;
-import com.garden.back.post.domain.repository.response.FindPostsAllCommentResponse;
+import com.garden.back.post.domain.repository.response.*;
 import com.garden.back.post.request.*;
 import com.garden.back.post.service.PostCommandService;
 import com.garden.back.post.service.PostQueryService;
@@ -185,5 +182,18 @@ public class PostController {
         @OptionalUser LoginUser loginUser
     ) {
         return ResponseEntity.ok(postQueryService.findAllPopularPosts(request.toRepositoryRequest(loginUser.memberId())));
+    }
+
+
+    //회원아이디를 통해 상대방 게시글 조회하기
+    @GetMapping(
+        value = "/author/{authorId:[0-9]{1,10}}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<FindAllMyPostsResponse> findAllPostsByAuthorId(
+        @PathVariable("authorId") Long authorId,
+        @ModelAttribute @Valid FindAllMyPostsRequest request
+    ) {
+        return ResponseEntity.ok(postQueryService.findAllMyPosts(authorId, request.toRepositoryDto()));
     }
 }

@@ -217,3 +217,17 @@ include::{snippets}/get-popular-posts/query-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/get-popular-posts/http-response.adoc[]
 include::{snippets}/get-popular-posts/response-fields.adoc[]
+
+[[get-posts-by-author-id]]
+=== 작성자 아이디로 게시글 조회
+
+작성자 id로 게시글을 조회합니다.
+
+==== Request
+include::{snippets}/get-posts-by-author-id/http-request.adoc[]
+include::{snippets}/get-posts-by-author-id/query-parameters.adoc[]
+include::{snippets}/get-posts-by-author-id/path-parameters.adoc[]
+
+==== Response (Success)
+include::{snippets}/get-posts-by-author-id/http-response.adoc[]
+include::{snippets}/get-posts-by-author-id/response-fields.adoc[]
