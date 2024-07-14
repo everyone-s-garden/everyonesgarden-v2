@@ -6,6 +6,7 @@ public record UserResponse(
     Long userId,
     String profile,
     String name,
-    MemberMannerGrade memberMannerGrade
+    MemberMannerGrade memberMannerGrade,
+    String email
 ) {
 }

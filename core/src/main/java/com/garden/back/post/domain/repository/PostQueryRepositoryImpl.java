@@ -58,7 +58,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
                 ),
                 post.content,
                 post.title,
@@ -106,7 +107,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
                 ),
                 post.postType,
                 post.createdDate,
@@ -163,7 +165,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
                 ),
                 postComment.id.in(likedCommentIds),
                 postComment.createAt
@@ -236,7 +239,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
 
             )))
             .from(post)
@@ -275,7 +279,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
             )))
             .from(post)
             .where(
@@ -312,7 +317,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
                 )))
             .from(post)
             .where(
@@ -359,7 +365,8 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
                     member.id,
                     member.profileImageUrl,
                     member.nickname,
-                    member.memberMannerGrade
+                    member.memberMannerGrade,
+                    member.email
                 ),
                 post.postType,
                 post.createdDate,

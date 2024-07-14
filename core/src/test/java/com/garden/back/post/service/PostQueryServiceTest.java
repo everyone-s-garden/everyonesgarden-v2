@@ -65,7 +65,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                 member.getId(),
                 member.getProfileImageUrl(),
                 member.getNickname(),
-                member.getMemberMannerGrade()
+                member.getMemberMannerGrade(),
+                member.getEmail()
             ),
             content,
             title,
@@ -109,7 +110,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post2.getPostType(),
                 post2.getCreatedDate(),
@@ -126,7 +128,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -171,7 +174,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -215,7 +219,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -231,7 +236,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post2.getPostType(),
                 post2.getCreatedDate(),
@@ -276,7 +282,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post2.getPostType(),
                 post2.getCreatedDate(),
@@ -292,7 +299,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -337,7 +345,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -353,7 +362,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post2.getPostType(),
                 post2.getCreatedDate(),
@@ -399,7 +409,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     true,
                     Collections.EMPTY_LIST,
@@ -413,7 +424,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     false,
                     Collections.EMPTY_LIST,
@@ -456,7 +468,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     true,
                     Collections.EMPTY_LIST,
@@ -469,7 +482,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     false,
                     Collections.EMPTY_LIST,
@@ -512,7 +526,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     false,
                     Collections.EMPTY_LIST,
@@ -526,7 +541,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                     ),
                     true,
                     Collections.EMPTY_LIST,
@@ -564,7 +580,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                             member.getId(),
                             member.getProfileImageUrl(),
                             member.getNickname(),
-                            member.getMemberMannerGrade()
+                            member.getMemberMannerGrade(),
+                            member.getEmail()
                     )
                 )
             ));
@@ -599,7 +616,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                 )
             )
         ));
@@ -637,7 +655,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         member.getId(),
                         member.getProfileImageUrl(),
                         member.getNickname(),
-                        member.getMemberMannerGrade()
+                        member.getMemberMannerGrade(),
+                        member.getEmail()
                 )
             )
         ));
@@ -680,7 +699,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),
@@ -696,7 +716,8 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     member.getId(),
                     member.getProfileImageUrl(),
                     member.getNickname(),
-                    member.getMemberMannerGrade()
+                    member.getMemberMannerGrade(),
+                    member.getEmail()
                 ),
                 post.getPostType(),
                 post.getCreatedDate(),

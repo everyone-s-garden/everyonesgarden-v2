@@ -55,7 +55,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                         1L,
                         "이름",
                         "닉네임",
-                        MemberMannerGrade.SEED
+                        MemberMannerGrade.SEED,
+                        "abc@email.com"
                     )
                 )
             )
@@ -87,7 +88,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
                     fieldWithPath("postInfos[].userInfo.profile").type(STRING).description("작성자 프로필 이미지"),
-                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급")
+                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급"),
+                    fieldWithPath("postInfos[].userInfo.email").type(STRING).description("작성자 email")
                 )
             ));
     }
@@ -108,7 +110,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                         1L,
                         "이름",
                         "닉네임",
-                        MemberMannerGrade.SEED
+                        MemberMannerGrade.SEED,
+                        "abc@emailc.om"
                     )
                 )
             )
@@ -140,7 +143,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
                     fieldWithPath("postInfos[].userInfo.profile").type(STRING).description("작성자 프로필 이미지"),
-                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급")
+                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급"),
+                    fieldWithPath("postInfos[].userInfo.email").type(STRING).description("작성자 email")
                 )
             ));
 
@@ -162,7 +166,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                         1L,
                         "이름",
                         "닉네임",
-                        MemberMannerGrade.SEED
+                        MemberMannerGrade.SEED,
+                        "abc@eamil.com"
                     )
                 )
             )
@@ -194,7 +199,8 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
                     fieldWithPath("postInfos[].userInfo.profile").type(STRING).description("작성자 프로필 이미지"),
-                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급")
+                    fieldWithPath("postInfos[].userInfo.memberMannerGrade").type(STRING).description("작성자 매너 점수 등급"),
+                    fieldWithPath("postInfos[].userInfo.email").type(STRING).description("작성자 email")
                 )
             ));
     }
