@@ -10,5 +10,5 @@ import org.springframework.web.bind.annotation.GetMapping;
 public interface OpenAPIGardenInfoClient {
 
     @GetMapping
-    FarmResponse getFarmFromOpnAPI();
+    FarmResponse getFarmFromOpenAPI();
 }
