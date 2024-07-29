@@ -71,7 +71,7 @@ public class GardenCommandService {
 
     @Transactional
     public Long createGarden(GardenCreateParam param) {
-        Garden savedGarden = gardenRepository.save(GardenCreateParam.toEntity(param));
+        Garden savedGarden = gardenRepository.save(param.toEntity());
 
         List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, param.gardenImages());
         uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, savedGarden)));
@@ -139,6 +139,22 @@ public class GardenCommandService {
 
     private void deleteGardenImage(String imageUrl) {
         imageUploader.delete(GARDEN_IMAGE_DIRECTORY, imageUrl);
+    }
+
+    @Transactional
+    public void updateGardenFromOpenAPI(GardenUpdateFromOpenAPIParams params) {
+        params.params().forEach(
+            param -> {
+                int resourceHashId = param.resourceHashId();
+                if (Boolean.TRUE.equals(gardenRepository.isExisted(resourceHashId))) {
+                    Garden gardenToUpdate = gardenRepository.getGardenEntity(resourceHashId);
+                    gardenToUpdate.updateGarden(param.toGardenUpdateDomainRequest());
+                    gardenRepository.save(gardenToUpdate);
+                } else {
+                    gardenRepository.save(param.toEntity());
+                }
+            }
+        );
     }
 
 }
