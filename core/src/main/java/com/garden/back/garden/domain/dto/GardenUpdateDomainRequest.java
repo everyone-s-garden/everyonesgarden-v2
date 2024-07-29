@@ -15,12 +15,10 @@ public record GardenUpdateDomainRequest(
         String address,
         Double latitude,
         Double longitude,
-        boolean isToilet,
-        boolean isWaterway,
-        boolean isEquipment,
+        String gardenFacilities,
         String gardenDescription,
-        LocalDate recruitStartDate,
-        LocalDate recruitEndDate,
+        String recruitStartDate,
+        String recruitEndDate,
         Long writerId
 ) {
 }
