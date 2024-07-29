@@ -13,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Getter
 @EntityListeners(AuditingEntityListener.class)
@@ -66,23 +67,17 @@ public class GardenEntity extends BaseTimeEntity {
     private String gardenDescription;
 
     @Column(name = "recruit_start_date")
-    private LocalDate recruitStartDate;
+    private String recruitStartDate;
 
     @Column(name = "recruit_end_date")
-    private LocalDate recruitEndDate;
+    private String recruitEndDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
     private LocalDate lastModifiedDate;
 
-    @Column(name = "is_toilet")
-    private Boolean isToilet;
-
-    @Column(name = "is_waterway")
-    private Boolean isWaterway;
-
-    @Column(name = "is_equipment")
-    private Boolean isEquipment;
+    @Column(name = "garden_facilities")
+    private String gardenFacilities;
 
     @Column(name = "writer_id")
     private Long writerId;
@@ -93,29 +88,29 @@ public class GardenEntity extends BaseTimeEntity {
     @Column(name = "reported_score")
     private int reportedScore;
 
+    @Column(name = "resource_hash_id")
+    private int resourceHashId;
+
     public Garden toModel() {
         return Garden.of(
-                gardenId,
-                address,
-                latitude,
-                longitude,
-                point,
-                gardenName,
-                gardenType,
-                gardenStatus,
-                price,
-                contact,
-                size,
-                gardenDescription,
-                recruitStartDate,
-                recruitEndDate,
-                isToilet,
-                isWaterway,
-                isEquipment,
-                writerId,
-                isDeleted,
-                reportedScore
-
+            gardenId,
+            address,
+            latitude,
+            longitude,
+            point,
+            gardenName,
+            gardenType,
+            gardenStatus,
+            price,
+            contact,
+            size,
+            gardenDescription,
+            recruitStartDate,
+            recruitEndDate,
+            gardenFacilities,
+            writerId,
+            isDeleted,
+            reportedScore
         );
     }
 
@@ -135,15 +130,13 @@ public class GardenEntity extends BaseTimeEntity {
         gardenEntity.gardenDescription = garden.getGardenDescription();
         gardenEntity.recruitStartDate = garden.getRecruitStartDate();
         gardenEntity.recruitEndDate = garden.getRecruitEndDate();
-        gardenEntity.isToilet = garden.getIsToilet();
-        gardenEntity.isWaterway = garden.getIsWaterway();
-        gardenEntity.isEquipment = garden.getIsEquipment();
+        gardenEntity.gardenFacilities = garden.getGardenFacilities();
         gardenEntity.writerId = garden.getWriterId();
         gardenEntity.isDeleted = garden.isDeleted();
         gardenEntity.reportedScore = garden.getReportedScore();
+        gardenEntity.resourceHashId = garden.getResourceHashId();
 
         return gardenEntity;
     }
 
 }
-
