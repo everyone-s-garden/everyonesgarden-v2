@@ -20,9 +20,10 @@ public record GardenDetailFacadeResponse (
     String recruitEndDate,
     String gardenDescription,
     List<String> images,
-    GardenDetailResult.GardenFacility gardenFacility,
+    String gardenFacilities,
     Long gardenLikeId,
-    Long roomId
+    Long roomId,
+    String openAPIResourceId
 ) {
 
     public static GardenDetailFacadeResponse to(
@@ -44,9 +45,10 @@ public record GardenDetailFacadeResponse (
             result.recruitEndDate(),
             result.gardenDescription(),
             result.images(),
-            result.gardenFacility(),
+            result.gardenFacilities(),
             result.gardenLikeId(),
-            roomId
+            roomId,
+            result.openAPIGardenId()
         );
     }
 }
