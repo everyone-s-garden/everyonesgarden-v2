@@ -210,11 +210,9 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         assertThat(updatedGarden.getGardenName()).isEqualTo(gardenUpdateParam.gardenName());
         assertThat(updatedGarden.getContact()).isEqualTo(gardenUpdateParam.contact());
         assertThat(updatedGarden.getAddress()).isEqualTo(gardenUpdateParam.address());
-        assertThat(updatedGarden.getRecruitStartDate()).isEqualTo(gardenUpdateParam.recruitStartDate());
-        assertThat(updatedGarden.getRecruitEndDate()).isEqualTo(gardenUpdateParam.recruitEndDate());
-        assertThat(updatedGarden.getIsToilet()).isEqualTo(gardenUpdateParam.gardenFacility().isToilet());
-        assertThat(updatedGarden.getIsWaterway()).isEqualTo(gardenUpdateParam.gardenFacility().isWaterway());
-        assertThat(updatedGarden.getIsEquipment()).isEqualTo(gardenUpdateParam.gardenFacility().isEquipment());
+        assertThat(updatedGarden.getRecruitStartDate()).isEqualTo(gardenUpdateParam.recruitStartDate().toString());
+        assertThat(updatedGarden.getRecruitEndDate()).isEqualTo(gardenUpdateParam.recruitEndDate().toString());
+        assertThat(updatedGarden.getGardenFacilities()).isEqualTo(gardenUpdateParam.gardenFacility().getGardenFacilities());
 
         assertThat(updatedGardenImages).extracting("imageUrl")
             .contains(expectedUrl)
