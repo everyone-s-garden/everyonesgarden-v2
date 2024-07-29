@@ -90,13 +90,10 @@ public class GardenFixture {
             "2023.12.25",
             "농기구를 빌릴 수 있는 자판기가 있습니다. 작물 키우는 법도 알려드려요",
             List.of("www.garden.com"),
-            new GardenDetailResult.GardenFacility(
-                false,
-                true,
-                true
-            ),
+            "화장실 등",
             1L,
-            1L
+            1L,
+            "4567"
         );
     }
 
