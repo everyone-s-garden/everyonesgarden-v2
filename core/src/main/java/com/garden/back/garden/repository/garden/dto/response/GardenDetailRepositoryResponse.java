@@ -21,8 +21,8 @@ public interface GardenDetailRepositoryResponse {
     LocalDate getRecruitEndDate();
     String getGardenDescription();
     String getImageUrl();
-    boolean getIsToilet();
-    boolean getIsWaterway();
-    boolean getIsEquipment();
+    String getGardenFacilities();
     Long getGardenLikeId();
+
+    int getResourceHashId();
 }
