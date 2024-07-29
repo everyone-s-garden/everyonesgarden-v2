@@ -8,6 +8,7 @@ import com.garden.back.garden.repository.garden.dto.response.GardenDetailReposit
 import com.garden.back.garden.repository.garden.dto.response.RecentCreateGardenRepositoryResponse;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
+import com.garden.back.garden.repository.openapigarden.OpenAPIGardenRepository;
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
@@ -22,14 +23,22 @@ import java.util.List;
 
 @Service
 public class GardenReadService {
+    private static final int GARDEN_DETAIL_INDEX = 0;
+    private static final String NOT_FROM_OPEN_API_ID = "";
     private final GardenRepository gardenRepository;
+    private final OpenAPIGardenRepository openAPIGardenRepository;
     private final MyManagedGardenRepository myManagedGardenRepository;
     private final GardenHistoryManager gardenHistoryManager;
     private final GardenImageRepository gardenImageRepository;
     private final Pageable pageable = PageRequest.of(0, 10);
 
-    public GardenReadService(GardenRepository gardenRepository, MyManagedGardenRepository myManagedGardenRepository, GardenHistoryManager gardenHistoryManager, GardenImageRepository gardenImageRepository) {
+    public GardenReadService(GardenRepository gardenRepository,
+                             OpenAPIGardenRepository openAPIGardenRepository,
+                             MyManagedGardenRepository myManagedGardenRepository,
+                             GardenHistoryManager gardenHistoryManager,
+                             GardenImageRepository gardenImageRepository) {
         this.gardenRepository = gardenRepository;
+        this.openAPIGardenRepository = openAPIGardenRepository;
         this.myManagedGardenRepository = myManagedGardenRepository;
         this.gardenHistoryManager = gardenHistoryManager;
         this.gardenImageRepository = gardenImageRepository;
@@ -63,10 +72,12 @@ public class GardenReadService {
     }
 
     public GardenDetailResult getGardenDetail(GardenDetailParam param) {
-        List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(
-            param.memberId(),
-            param.gardenId());
-        GardenDetailResult gardenDetailResult = GardenDetailResult.to(gardenDetail);
+        List<GardenDetailRepositoryResponse> gardenDetail = gardenRepository.getGardenDetail(param.memberId(), param.gardenId());
+
+        String openAPIGardenId = openAPIGardenRepository
+            .findOpenAPIGardenId(gardenDetail.get(GARDEN_DETAIL_INDEX).getResourceHashId())
+            .orElse(NOT_FROM_OPEN_API_ID);
+        GardenDetailResult gardenDetailResult = GardenDetailResult.to(gardenDetail, openAPIGardenId);
 
         gardenHistoryManager.addRecentViewGarden(
             param.memberId(),
