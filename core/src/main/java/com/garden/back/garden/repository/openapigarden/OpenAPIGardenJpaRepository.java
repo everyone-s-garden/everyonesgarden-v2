@@ -1,4 +1,4 @@
-package com.garden.back.garden.repository.publicgarden;
+package com.garden.back.garden.repository.openapigarden;
 
 import com.garden.back.garden.domain.OpenAPIGarden;
 import org.springframework.data.jpa.repository.JpaRepository;
