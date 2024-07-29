@@ -7,3 +7,32 @@ forecast:
   weekly:
     publish:
       time: "0600"
+
+api:
+  mafra:
+    url: ""
+    name: ""
+  weather:
+    url: ""
+    baseUrl: ""
+    name: ""
+    secret: ""
+  weatherAll:
+    url: ""
+  weatherWeek:
+    url: ""
+  reverseGeo:
+    name: ""
+    url: ""
+    id: ""
+    secret: ""
+  slack:
+    bot: ""
+cloud:
+  ncp:
+    url: ""
+    region: ""
+    accessKey: ""
+    secretKey: ""
+    bucket: ""
+    baseDirectory: ""
