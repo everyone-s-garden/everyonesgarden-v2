@@ -17,6 +17,7 @@ import com.garden.back.global.GeometryUtil;
 import com.garden.back.global.MessageType;
 import com.garden.back.member.Member;
 import com.garden.back.member.Role;
+import org.locationtech.jts.geom.Point;
 
 import java.time.LocalDate;
 
@@ -117,9 +118,7 @@ public class ChatRoomFixture {
             "화장실이 깨끗하고 농기구를 빌려줍니다.",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            true,
-            false,
-            true,
+            "화장실 등",
             writerId,
             false,
             0

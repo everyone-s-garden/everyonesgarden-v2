@@ -33,9 +33,7 @@ public class GardenFixture {
             "화장실이 깨끗하고 농기구를 빌려줍니다.",
             RECRUIT_START_DATE,
             RECRUIT_END_DATE,
-            true,
-            false,
-            true,
+            "화장실 등",
             1L,
             false,
             0
