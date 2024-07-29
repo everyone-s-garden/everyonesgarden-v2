@@ -1,5 +1,6 @@
 package com.garden.back.garden.repository.garden;
 
+import com.garden.back.garden.domain.OpenAPIGarden;
 import com.garden.back.garden.repository.garden.dto.GardenByName;
 import com.garden.back.garden.repository.garden.dto.GardenGetAll;
 import com.garden.back.garden.repository.garden.dto.response.*;
@@ -67,9 +68,8 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
                         WHEN l.gardenLikeId IS NOT NULL THEN l.gardenLikeId
                         ELSE 0
                     END as gardenLikeId,
-                g.isToilet as isToilet,
-                g.isWaterway as isWaterway,
-                g.isEquipment as isEquipment
+                g.gardenFacilities as gardenFacilities,
+                g.resourceHashId as resourceHashId
             FROM
                 GardenEntity g
             LEFT JOIN
@@ -182,5 +182,26 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
             """
     )
     Optional<GardenLocationRepositoryResponse> findGardenLocation(@Param("gardenId") Long gardenId);
+
+    @Query(
+        """
+            SELECT CASE WHEN EXISTS (
+                SELECT 1
+                FROM GardenEntity g
+                WHERE g.resourceHashId = :resourceHashId
+            ) THEN true ELSE false END
+            """
+    )
+    Boolean isExisted(@Param("resourceHashId") int resourceHashId);
+
+
+    @Query(
+        """
+            SELECT g
+            FROM GardenEntity g
+            WHERE g.resourceHashId = :resourceHashId
+            """
+    )
+    Optional<GardenEntity> find(@Param("resourceHashId") int resourceHashId);
 
 }

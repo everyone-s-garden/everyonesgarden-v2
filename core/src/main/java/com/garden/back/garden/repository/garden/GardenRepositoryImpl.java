@@ -15,6 +15,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Repository
@@ -111,6 +112,20 @@ public class GardenRepositoryImpl implements GardenRepository {
     @Override
     public GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request) {
         return gardenCustomRepository.getGardensByComplexes(request);
+    }
+
+    @Override
+    public Boolean isExisted(int resourceHashId) {
+        return gardenJpaRepository.isExisted(resourceHashId);
+    }
+
+    @Override
+    public Garden getGardenEntity(int resourceHashId) {
+        return gardenJpaRepository.find(resourceHashId)
+            .map(GardenEntity::toModel)
+            .orElseThrow(() -> new NoSuchElementException(
+                String.format("해당 식별자 %d를 가지는 텃밭이 존재하지 않습니다.", resourceHashId)
+            ));
     }
 
 }

@@ -8,8 +8,11 @@ import com.garden.back.garden.repository.garden.dto.GardensByComplexesWithScroll
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesRepositoryRequest;
 import com.garden.back.garden.repository.garden.dto.request.GardenByComplexesWithScrollRepositoryRequest;
 import com.garden.back.garden.repository.garden.dto.response.*;
+import com.garden.back.garden.repository.garden.entity.GardenEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +35,7 @@ public interface GardenRepository {
 
     void deleteById(Long gardenId);
 
-    GardenMineRepositoryResponses findByWriterId(Long writerId,Long nextGardenId, Pageable pageable);
+    GardenMineRepositoryResponses findByWriterId(Long writerId, Long nextGardenId, Pageable pageable);
 
     GardenLikeByMemberRepositoryResponses getLikeGardenByMember(Long memberId, Long nextGardenId, Pageable pageable);
 
@@ -45,5 +48,9 @@ public interface GardenRepository {
     GardenLocationRepositoryResponse getGardenLocation(Long gardenId);
 
     GardensByComplexes getGardensByComplexes(GardenByComplexesRepositoryRequest request);
+
+    Boolean isExisted(int resourceHashId);
+
+    Garden getGardenEntity(int resourceHashId);
 
 }
