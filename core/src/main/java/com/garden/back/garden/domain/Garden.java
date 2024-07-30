@@ -80,6 +80,7 @@ public class Garden {
         Assert.notNull(point, "point는 null일 수 없습니다.");
         Assert.hasLength(gardenName, "gardenName는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(gardenFacilities, "gardenFacilities은 null일 수 없습니다.");
+        Assert.notNull(contact, "contact는 null일 수 없습니다.");
 
         isNegativeReportedScore(reportedScore);
         hasSize(size);
@@ -179,6 +180,7 @@ public class Garden {
         Assert.notNull(point, "point는 null일 수 없습니다.");
         Assert.hasLength(gardenName, "gardenName는 null이거나 빈 값일 수 없습니다.");
         Assert.notNull(gardenFacilities, "gardenFacilities은 null일 수 없습니다.");
+        Assert.notNull(contact, "contact는 null일 수 없습니다.");
 
         isNegativeReportedScore(reportedScore);
         hasSize(size);
@@ -329,6 +331,7 @@ public class Garden {
         Assert.notNull(request.latitude(), "latitude는 null일 수 없습니다.");
         Assert.notNull(request.longitude(), "longitude는 null일 수 없습니다.");
         Assert.hasLength(request.gardenName(), "gardenName는 null이거나 빈 값일 수 없습니다.");
+        Assert.notNull(contact, "contact는 null일 수 없습니다.");
 
         hasSize(request.size());
         isMaxDescriptionLength(request.gardenDescription());

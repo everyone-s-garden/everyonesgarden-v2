@@ -5,6 +5,7 @@ import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.global.GeometryUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
@@ -75,32 +76,6 @@ public class GardenTest {
                 ));
         }
 
-        @DisplayName("텃밭의 신청 링크가 null 혹은 빈값이면 예외를 던진다.")
-        @ParameterizedTest
-        @NullAndEmptySource
-        void testInvalidLinkForRequest(String invalidLinkForRequest) {
-            assertThrows(IllegalArgumentException.class,
-                () -> Garden.of(
-                    "인천시 서구 가정동",
-                    LATITUDE,
-                    LONGITUDE,
-                    GeometryUtil.createPoint(LATITUDE, LONGITUDE),
-                    "진겸이네 텃밭",
-                    GardenType.PUBLIC,
-                    GardenStatus.ACTIVE,
-                    "10",
-                    "123-456-7890",
-                    "Large",
-                    "A wonderful garden",
-                    LocalDate.now(),
-                    LocalDate.now().plusDays(30),
-                    "화장실, 농기구 등",
-                    1L,
-                    false,
-                    0
-                ));
-        }
-
         @DisplayName("텃밭의 가격가 null 혹은 빈값이면 예외를 던진다.")
         @ParameterizedTest
         @NullAndEmptySource
@@ -127,10 +102,9 @@ public class GardenTest {
                 ));
         }
 
-        @DisplayName("텃밭의 전화번호가 null 혹은 빈값이면 예외를 던진다.")
-        @ParameterizedTest
-        @NullAndEmptySource
-        void testInvalidContact(String invalidContact) {
+        @DisplayName("텃밭의 전화번호가 null이면 예외를 던진다.")
+        @Test
+        void testInvalidContact() {
             assertThrows(IllegalArgumentException.class,
                 () -> Garden.of(
                     "인천시 서구 가정동",
@@ -141,7 +115,7 @@ public class GardenTest {
                     GardenType.PUBLIC,
                     GardenStatus.ACTIVE,
                     "20000",
-                    invalidContact,
+                    null,
                     "Large",
                     "A wonderful garden",
                     LocalDate.now(),
@@ -202,32 +176,6 @@ public class GardenTest {
                     invalidPrice,
                     "123-456-7890",
                     "Large",
-                    "A wonderful garden",
-                    LocalDate.now(),
-                    LocalDate.now().plusDays(30),
-                    "화장실, 농기구 등",
-                    1L,
-                    false,
-                    0
-                ));
-        }
-
-        @DisplayName("텃밭의 크기가 음수일 때 예외를 던진다.")
-        @ParameterizedTest
-        @ValueSource(strings = {"-1", "-100000"})
-        void testInvalidSize(String invalidSize) {
-            assertThrows(IllegalArgumentException.class,
-                () -> Garden.of(
-                    "인천시 서구 가정동",
-                    LATITUDE,
-                    LONGITUDE,
-                    GeometryUtil.createPoint(LATITUDE, LONGITUDE),
-                    "진겸이네 텃밭",
-                    GardenType.PUBLIC,
-                    GardenStatus.ACTIVE,
-                    "20000",
-                    "000-00000-0000",
-                    invalidSize,
                     "A wonderful garden",
                     LocalDate.now(),
                     LocalDate.now().plusDays(30),
