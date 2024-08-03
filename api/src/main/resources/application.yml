@@ -2,6 +2,35 @@ spring:
   profiles:
     active: local
     include: credential, feign, async, oauth
+  application:
+    name: "everyonesgarden"
+  jpa:
+    hibernate:
+      ddl-auto: none
+  datasource:
+    hikari:
+      jdbc-url:
+      username:
+      password:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+  flyway:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    user:
+    password:
+    baseline-on-migrate: true
+    enabled: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 forecast:
   weekly:
@@ -10,29 +39,48 @@ forecast:
 
 api:
   mafra:
-    url: ""
-    name: ""
+    url:
+    name: "openAPIGarden"
   weather:
-    url: ""
-    baseUrl: ""
-    name: ""
-    secret: ""
+    url: http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst
+    baseUrl: "http://apis.data.go.kr/1360000"
+    name: "openAPI"
+    secret:
   weatherAll:
-    url: ""
+    url: http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst
   weatherWeek:
-    url: ""
+    url: http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst
   reverseGeo:
-    name: ""
-    url: ""
-    id: ""
-    secret: ""
+    name: "naverGeo"
+    url: https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc
+    id:
+    secret:
   slack:
-    bot: ""
+    bot:
 cloud:
   ncp:
-    url: ""
-    region: ""
-    accessKey: ""
-    secretKey: ""
-    bucket: ""
-    baseDirectory: ""
+    url: "https://kr.object.ncloudstorage.com"
+    region:
+    accessKey:
+    secretKey:
+    bucket:
+    baseDirectory:
+
+oauth2:
+  kakao:
+    name: "kakaoOAuth"
+    url: "https://kapi.kakao.com/v2/user/me"
+    client-id:
+  naver:
+    name: "naverOAuth"
+    url: "https://openapi.naver.com/v1/nid/me"
+    client-id:
+    client-secret:
+  jwt:
+    token-secret:
+    access-token-expire-time:
+    bearer-prefix: "Bearer"
+    authority-key:
+    refresh-token-expire-time:
+    access-token-header:
+
