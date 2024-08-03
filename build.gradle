@@ -18,7 +18,7 @@ sonar {
 
 allprojects {
     group = 'com.garden'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
     sourceCompatibility = '17'
 
     repositories {
@@ -47,6 +47,11 @@ subprojects {
     test {
         useJUnitPlatform()
         finalizedBy jacocoTestReport
+        systemProperties = [
+            "junit.jupiter.execution.parallel.enabled"         : "true",
+            "junit.jupiter.execution.parallel.mode.default"    : "concurrent",
+            "junit.jupiter.execution.parallel.config.strategy" : "dynamic"
+        ]
     }
 
     jacocoTestReport {

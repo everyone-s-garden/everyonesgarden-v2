@@ -5,7 +5,10 @@ import assertk.assertions.isFalse
 import assertk.assertions.isTrue
 import com.garden.back.notification.utils.EmailUtils
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.parallel.Execution
+import org.junit.jupiter.api.parallel.ExecutionMode
 
+@Execution(ExecutionMode.CONCURRENT)
 class EmailUtilsTest {
 
     @Test

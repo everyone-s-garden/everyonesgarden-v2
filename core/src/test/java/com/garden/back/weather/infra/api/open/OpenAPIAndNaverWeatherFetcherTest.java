@@ -29,12 +29,6 @@ import static org.mockito.BDDMockito.given;
 class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
 
     @Autowired
-    RegionProvider regionProvider;
-
-    @Autowired
-    NaverAndOpenAPISupport naverAndOpenAPISupport;
-
-    @Autowired
     OpenAPIAndNaverWeatherFetcher weatherFetcher;
 
     @DisplayName("현재 시간 기준으로 모든 지역의 하늘 상태, 온도를 조회할 수 있다.")
@@ -78,6 +72,7 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
             .size("results", 1)
             .set("results[0].region.area1.name", "경기도")
             .sample();
+
         given(naverGeoClient.getGeoInfoByLongitudeAndLatitude(anyString(), anyString(), anyString(), anyString())).willReturn(geoResponse);
         MidWeatherResponse midWeatherResponse = sut.giveMeBuilder(MidWeatherResponse.class)
             .size("response.body.items.item", 1)
@@ -110,8 +105,8 @@ class OpenAPIAndNaverWeatherFetcherTest extends IntegrationTestSupport {
             .set("skyStatusNineDaysAfter", "맑음")
             .set("regionName", "경기도")
             .sample();
-        assertThat(actual).isEqualTo(expected);
 
+        assertThat(actual).isEqualTo(expected);
     }
 
     @Disabled("11시 되면 안되는 테스트.. 원인 찾아볼게요")

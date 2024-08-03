@@ -49,6 +49,11 @@ test {
     jvmArgs '-Duser.timezone=Asia/Seoul'
     outputs.dir snippetsDir
     useJUnitPlatform()
+    systemProperties = [
+        "junit.jupiter.execution.parallel.enabled"         : "true",
+        "junit.jupiter.execution.parallel.mode.default"    : "concurrent",
+        "junit.jupiter.execution.parallel.config.strategy" : "dynamic"
+    ]
 }
 
 asciidoctor {
@@ -65,6 +70,7 @@ bootJar {
     from("${asciidoctor.outputDir}") {
         into "static/docs"
     }
+    destinationDirectory = file("$rootDir/$jarDestDir")
 }
 
-version '1.0.1-SNAPSHOT-' + new Date().format("yyyyMMddHHmmss")
+version '1.0.1-' + new Date().format("yyyyMMddHHmmss")

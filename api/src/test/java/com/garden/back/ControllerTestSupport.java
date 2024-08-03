@@ -25,6 +25,8 @@ import com.garden.back.crop.service.CropChatRoomService;
 import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.weather.WeatherController;
 import com.garden.back.weather.service.WeatherService;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

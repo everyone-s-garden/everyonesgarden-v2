@@ -7,6 +7,8 @@ import com.garden.back.global.image.NCPProperties;
 import com.garden.back.global.image.ParallelImageUploader;
 import com.garden.back.weather.infra.api.naver.NaverGeoClient;
 import com.garden.back.weather.infra.api.open.OpenAPIClient;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
@@ -15,6 +17,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = NONE)
+@Execution(ExecutionMode.SAME_THREAD)
 public abstract class IntegrationTestSupport extends FixtureSupport {
 
     @MockBean
