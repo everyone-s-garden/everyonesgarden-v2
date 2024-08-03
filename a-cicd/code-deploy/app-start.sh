@@ -29,8 +29,7 @@ echo "> $JAR_NAME 실행"
 
 nohup java -jar \
 -Dspring.profiles.active=$IDLE_PROFILE \
--Dspring.config.location=classpath:application.yml,/home/ec2-user/app/config/
-application-credential.yml,/home/ec2-user/app/config/application-oauth.yml \
+-Dspring.config.location=classpath:application.yml
 $JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
 
 echo "> Jar 파일 실행 후 헬스체크"

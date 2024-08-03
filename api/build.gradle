@@ -61,7 +61,7 @@ asciidoctor {
     baseDirFollowsSourceFile()
     inputs.dir snippetsDir
     dependsOn test
-    outputDir file('build/docs/asciidoc')
+    outputDir file("$buildDir/docs/asciidoc")
 }
 
 bootJar {
