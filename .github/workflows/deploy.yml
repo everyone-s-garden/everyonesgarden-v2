@@ -88,6 +88,7 @@ jobs:
           NCP_SECRET_KEY: ${{ secrets.NCP_SECRET_KEY }}
           NCP_BUCKET_NAME: ${{ secrets.NCP_BUCKET_NAME }}
           NCP_BASE_DIRECTORY: ${{ secrets.NCP_BASE_DIRECTORY }}
+          LOG_PATH: ${{ env.DEPLOY_SH_LOCATION }}/logs
 
       - name: 빌드 & 앱 이름 설정
         run: |

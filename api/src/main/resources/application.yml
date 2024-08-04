@@ -84,3 +84,8 @@ oauth2:
     refresh-token-expire-time:
     access-token-header:
 
+log:
+  config:
+    path: .system/logs/api/
+    name: api
+
