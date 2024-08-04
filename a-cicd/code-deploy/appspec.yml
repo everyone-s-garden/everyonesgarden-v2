@@ -18,5 +18,5 @@ hooks:
     - location: ${AFTER_INSTALL_SH}
       timeout: 900
   ApplicationStart:
-    - location: ${AFTER_INSTALL_SH}
+    - location: ${APP_START_SH}
       timeout: 900

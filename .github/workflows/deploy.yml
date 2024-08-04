@@ -8,9 +8,9 @@ on:
         required: false
         default: 'false'
         type: boolean
-#  push:
-#    branches:
-#      - main
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write
@@ -29,35 +29,13 @@ env:
   APP_START_SH: app-start.sh
 
 jobs:
-  test:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 최근 커밋 해시 가져오기
-        id: last_commit
-        run: echo "::set-output name=message::$(git log -1 --pretty=%H)"
-        shell: bash
-
-      - name: 현재 브랜치 이름 가져오기
-        id: branch_name
-        run: echo "::set-output name=branch::$(echo ${{ github.ref }} | awk -F/ '{print $3}')"
-        shell: bash
-
-      - name: Ensure cache directory exists
-        run: mkdir -p ~/.gradle/caches
-        shell: bash
-
-      - name: 캐시에서 값 가져오기
-        id: cache-restore
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ steps.branch_name.outputs.branch }}-${{ steps.last_commit.outputs.message }}
-
       - name: Set up JDK 17
-        if: steps.cache-restore.outputs.cache-hit != 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '17'
@@ -124,7 +102,7 @@ jobs:
           envsubst < ${{ env.CODE_DEPLOY_DIR }}/appspec.yml > ${{ env.DEPLOY_DIR }}/appspec.yml
           s=$(cat ${{ env.DEPLOY_DIR }}/appspec.yml)
           echo "치환 결과 (appspec.yml): ${s}"
-          envsubst < ${{ env.CODE_DEPLOY_DIR }}/${{ env.APP_START_SH }}> ${{ env.DEPLOY_DIR }}/${{ env.APP_START_SH }}
+          cp ${{ env.CODE_DEPLOY_DIR }}/${{ env.APP_START_SH }} ${{ env.DEPLOY_DIR }}/${{ env.APP_START_SH }}
           a=$(cat ${{ env.DEPLOY_DIR }}/${{ env.APP_START_SH }})
           echo "치환 결과 (start.sh): ${a}"
           cp ${{ env.CODE_DEPLOY_DIR }}/after-install.sh ${{ env.DEPLOY_DIR }}/

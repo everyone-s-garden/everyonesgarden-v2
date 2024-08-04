@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
 }
@@ -78,4 +80,7 @@ bootJar {
     destinationDirectory = file("$rootDir/$jarDestDir")
 }
 
-version '1.0.1-' + new Date().format("yyyyMMddHHmmss")
+version = '1.0.1-' + new SimpleDateFormat("yyyyMMddHHmmss").with {
+    it.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
+    it.format(new Date())
+}
