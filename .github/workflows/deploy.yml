@@ -112,8 +112,8 @@ jobs:
 
       - name: 빌드 & 앱 이름 설정
         run: |
-          ./gradlew bootJar -x test
           app_name=$(ls ${{ env.BUILD_DIR }}/*.jar | xargs -n 1 basename | sed 's/\.jar$//')
+          ./gradlew bootJar -PRestdocs # 어쩔 수 없이 rest docs 테스트를 실행해야 함
           echo "app_name=$app_name" >> $GITHUB_ENV
           echo "app_name: $app_name"
 

@@ -43,6 +43,7 @@ dependencies {
 
 ext { // 전역 변수
     snippetsDir = file('build/generated-snippets')
+    restDocsProperty = project.hasProperty('RestDocs')
 }
 
 test {
@@ -54,6 +55,10 @@ test {
         "junit.jupiter.execution.parallel.mode.default"    : "concurrent",
         "junit.jupiter.execution.parallel.config.strategy" : "dynamic"
     ]
+    if (restDocsProperty) {
+        // 필터링 조건: "docstest"를 포함한 테스트만 실행
+        include '**/*docstest*'
+    }
 }
 
 asciidoctor {
