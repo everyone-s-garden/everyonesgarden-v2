@@ -1,0 +1,22 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: ${DEPLOY_SH_LOCATION}
+    overwrite: yes
+file_exists_behavior: OVERWRITE
+
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+    mode: 755
+
+hooks:
+  AfterInstall:
+    - location: ${AFTER_INSTALL_SH}
+      timeout: 900
+  ApplicationStart:
+    - location: ${AFTER_INSTALL_SH}
+      timeout: 900

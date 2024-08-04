@@ -1,0 +1,146 @@
+name: 배포자동화
+
+on:
+  workflow_dispatch:
+    inputs:
+      test:
+        description: '테스트 포함할까요?(체크 안했을 경우: false)'
+        required: false
+        default: 'false'
+        type: boolean
+#  push:
+#    branches:
+#      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  CODE_DEPLOY_DIR: a-cicd/code-deploy
+  BUILD_DIR: .build/jar
+  DEPLOY_DIR: deploy
+  S3_BUCKET: everyones-garden
+  S3_PATH: jar
+  DEPLOY_SH_LOCATION: /home/ec2-user/everyonesgarden
+  AFTER_INSTALL_SH: after-install.sh
+  APPLICATION_START_SH: start.sh
+  SECRET_YML_PATH: api/src/main/resources/secret.yml
+  APP_START_SH: app-start.sh
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 최근 커밋 해시 가져오기
+        id: last_commit
+        run: echo "::set-output name=message::$(git log -1 --pretty=%H)"
+        shell: bash
+
+      - name: 현재 브랜치 이름 가져오기
+        id: branch_name
+        run: echo "::set-output name=branch::$(echo ${{ github.ref }} | awk -F/ '{print $3}')"
+        shell: bash
+
+      - name: Ensure cache directory exists
+        run: mkdir -p ~/.gradle/caches
+        shell: bash
+
+      - name: 캐시에서 값 가져오기
+        id: cache-restore
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ steps.branch_name.outputs.branch }}-${{ steps.last_commit.outputs.message }}
+
+      - name: Set up JDK 17
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'corretto'
+
+      - name: test
+        if: steps.cache-restore.outputs.cache-hit != 'true' && github.event.inputs.include_tests == 'true'
+        run: |
+            chmod +x ./gradlew
+            ./gradlew clean test -parallel
+
+      - name: Save cache
+        if: steps.cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ steps.branch_name.outputs.branch }}-${{ steps.last_commit.outputs.message }}
+
+      - name: AWS 권한 획득
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ secrets.CODE_DEPLOY_AWS_REGION }}
+
+      - name: 환경변수 주입
+        run: |
+          envsubst < ${{ env.SECRET_YML_PATH }} > ${{ env.SECRET_YML_PATH }}.temp
+          mv ${{ env.SECRET_YML_PATH }}.temp ${{ env.SECRET_YML_PATH }}
+        env:
+          JDBC_URL: ${{ secrets.JDBC_URL }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_SECRET: ${{ secrets.DB_SECRET }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_SECRET: ${{ secrets.MAIL_SECRET }}
+          KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+          JWT_TOKEN_SECRET: ${{ secrets.JWT_TOKEN_SECRET }}
+          JWT_ACCESS_TOKEN_EXPIRE_TIME: ${{ secrets.JWT_ACCESS_TOKEN_EXPIRE_TIME }}
+          AUTHORITY_KEY: ${{ secrets.AUTHORITY_KEY }}
+          JWT_REFRESH_TOKEN_EXPIRE_TIME: ${{ secrets.JWT_REFRESH_TOKEN_EXPIRE_TIME }}
+          ACCESS_TOKEN_HEADER: ${{ secrets.ACCESS_TOKEN_HEADER }}
+          PUBLIC_GARDEN_API_SECRET_KEY: ${{ secrets.PUBLIC_GARDEN_API_SECRET_KEY }}
+          PUBLIC_WEATHER_API_SECRET_KEY: ${{ secrets.PUBLIC_WEATHER_API_SECRET_KEY }}
+          NAVER_OPEN_API_ID: ${{ secrets.NAVER_OPEN_API_ID }}
+          NAVER_OPEN_API_SECRET: ${{ secrets.NAVER_OPEN_API_SECRET }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          NCP_REGION: ${{ secrets.NCP_REGION }}
+          NCP_ACCESS_KEY: ${{ secrets.NCP_ACCESS_KEY }}
+          NCP_SECRET_KEY: ${{ secrets.NCP_SECRET_KEY }}
+          NCP_BUCKET_NAME: ${{ secrets.NCP_BUCKET_NAME }}
+          NCP_BASE_DIRECTORY: ${{ secrets.NCP_BASE_DIRECTORY }}
+
+      - name: 빌드 & 앱 이름 설정
+        run: |
+          ./gradlew bootJar -PRestdocs # 어쩔 수 없이 rest docs 테스트를 실행해야 함
+          app_name=$(ls ${{ env.BUILD_DIR }}/*.jar | xargs -n 1 basename | sed 's/\.jar$//')
+          echo "app_name=$app_name" >> $GITHUB_ENV
+          echo "app_name: $app_name"
+
+      - name: tar 파일 생성
+        run: |
+          mkdir -p ${{ env.DEPLOY_DIR }}
+          envsubst < ${{ env.CODE_DEPLOY_DIR }}/appspec.yml > ${{ env.DEPLOY_DIR }}/appspec.yml
+          s=$(cat ${{ env.DEPLOY_DIR }}/appspec.yml)
+          echo "치환 결과 (appspec.yml): ${s}"
+          envsubst < ${{ env.CODE_DEPLOY_DIR }}/${{ env.APP_START_SH }}> ${{ env.DEPLOY_DIR }}/${{ env.APP_START_SH }}
+          a=$(cat ${{ env.DEPLOY_DIR }}/${{ env.APP_START_SH }})
+          echo "치환 결과 (start.sh): ${a}"
+          cp ${{ env.CODE_DEPLOY_DIR }}/after-install.sh ${{ env.DEPLOY_DIR }}/
+          cp ${{ env.BUILD_DIR }}/${{ env.app_name }}.jar ${{ env.DEPLOY_DIR }}/
+          tar -cvf ${{ env.BUILD_DIR }}/${{ env.app_name }}.tar -C ${{ env.DEPLOY_DIR }} .
+
+      - name: s3 업로드
+        run: |
+          aws s3 cp ${{ env.BUILD_DIR }}/${{ env.app_name }}.tar s3://${{ env.S3_BUCKET }}/${{ env.S3_PATH }}/${{ env.app_name }}.tar
+
+      - name: CodeDeploy 배포
+        run: |
+          aws deploy create-deployment \
+            --application-name ${{ secrets.CODE_DEPLOY_APP_NAME }} \
+            --deployment-config-name CodeDeployDefault.OneAtATime \
+            --deployment-group-name ${{ secrets.CODE_DEPLOY_DEPLOY_GROUP }} \
+            --s3-location bucket=${{ env.S3_BUCKET }},bundleType=tar,key=${{ env.S3_PATH }}/${{ env.app_name }}.tar \
+            --region ${{ secrets.CODE_DEPLOY_AWS_REGION }} \
+            --description "Deploy ${{ env.app_name }} from GitHub Actions"

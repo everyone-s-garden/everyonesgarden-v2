@@ -1,8 +1,10 @@
-name: 배포자동화
+name: 배포자동화 (구버전)
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
+#  push:
+#    branches:
+#      - main
 jobs:
   deploy:
     runs-on: ubuntu-latest
