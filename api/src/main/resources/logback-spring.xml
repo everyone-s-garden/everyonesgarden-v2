@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+  <conversionRule conversionWord="myclr" converterClass="com.garden.back.global.log.LogColorConverter" />
+  <!-- log file path -->
+  <springProperty scope="context" name="LOG_PATH" source="log.config.path"/>
+  <!-- log file name -->
+  <springProperty scope="context" name="LOG_FILE_NAME" source="log.config.name"/>
+
+  <!-- pattern -->
+  <springProfile name="!local">
+    <property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} [%thread] [%-5level] [%logger{36}] - %m%n"/>
+  </springProfile>
+  <!-- 로컬에서만 색깔 들어감 -->
+  <springProfile name="local">
+    <property name="LOG_PATTERN" value="%myclr(%d{HH:mm:ss.SSS}) [%myclr(%thread)] [%myclr(%-5level)] [%cyan(%logger{36})] - %m%n"/>
+  </springProfile>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>${LOG_PATTERN}</Pattern>
+    </layout>
+  </appender>
+
+  <springProfile name="!ignore-file-logging">
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+      <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
+      <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <timeZone>Asia/Seoul</timeZone>
+        <pattern>${LOG_PATTERN}</pattern>
+      </encoder>
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd, ${logback.timezone:-Asia/Seoul}}_%i.zip</fileNamePattern>
+        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+          <maxFileSize>10MB</maxFileSize>
+        </timeBasedFileNamingAndTriggeringPolicy>
+        <!-- Set file permissions -->
+        <filePermissions>rw-r--r--</filePermissions>
+      </rollingPolicy>
+    </appender>
+  </springProfile>
+
+  <root level="INFO">
+    <appender-ref ref="CONSOLE"/>
+    <springProfile name="!ignore-file-logging">
+      <appender-ref ref="FILE"/>
+    </springProfile>
+  </root>
+</configuration>

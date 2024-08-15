@@ -1,0 +1,29 @@
+{
+    "agent": {
+        "metrics_collection_interval": 10,
+        "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
+        "region": "ap-northeast-2"
+    },
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/var/log/aws/codedeploy-agent/codedeploy-agent.log",
+                        "log_group_name": "everyonesgarden-api-log",
+                        "log_stream_name": "{instance_id}-codeDeploy-log",
+                        "retention_in_days": 1,
+                        "timezone": "LOCAL"
+                    },
+                    {
+                        "file_path": "/home/ec2-user/everyonesgarden/logs/api.log",
+                        "log_group_name": "everyonesgarden-api-log",
+                        "log_stream_name": "{instance_id}-api-log",
+                        "retention_in_days": 1,
+                        "timezone": "LOCAL"
+                    }
+                ]
+            }
+        }
+    }
+}

@@ -9,6 +9,7 @@ spring:
         highlight_sql: true
         format_sql: true
         use_sql_comments: true
+        dialect: com.garden.back.global.jpa.CustomH2Dialect
     hibernate:
       ddl-auto: create
   datasource:
