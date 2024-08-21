@@ -1,5 +1,6 @@
 package com.garden.back.garden.domain;
 
+import com.garden.back.global.jpa.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
@@ -11,7 +12,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @Table(name = "openAPI_gardens")
-public class OpenAPIGarden {
+public class OpenAPIGarden extends BaseTimeEntity {
 
     protected OpenAPIGarden() {
     }
@@ -133,7 +134,7 @@ public class OpenAPIGarden {
         this.price = price;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.uniqueHash = Objects.hash(latitude, longitude, gardenName);
+        this.uniqueHash = Objects.hash(Double.parseDouble(latitude), Double.parseDouble(longitude), gardenName);
     }
 
     public static OpenAPIGarden of(

@@ -288,8 +288,8 @@ public class Garden {
             false,
             DEFAULT_REPORTED_SCORE
         );
-
     }
+
 
     private void isNegativeReportedScore(int reportedScore) {
         if (reportedScore < 0) {
