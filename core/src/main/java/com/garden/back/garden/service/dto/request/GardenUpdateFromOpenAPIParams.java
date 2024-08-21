@@ -6,7 +6,6 @@ import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
 import com.garden.back.global.GeometryUtil;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public record GardenUpdateFromOpenAPIParams(
@@ -27,7 +26,6 @@ public record GardenUpdateFromOpenAPIParams(
         String gardenDescription,
         String recruitStartDate,
         String recruitEndDate,
-
         int resourceHashId,
         Long writerId
     ) {

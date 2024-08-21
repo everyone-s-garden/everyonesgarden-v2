@@ -50,7 +50,6 @@ public record OpenAPIAllGardenResults(
 
 
         public static OpenAPIAllGardenResult toOpenAPIAllGardenResult(OpenAPIGarden openAPIGarden) {
-            System.out.println(openAPIGarden.getId());
 
             return new OpenAPIAllGardenResult(
                 openAPIGarden.getGardenName(),
