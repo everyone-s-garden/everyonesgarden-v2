@@ -20,6 +20,16 @@ public enum GardenType {
                 GardenType.PUBLIC, GardenType.PRIVATE, GardenType.EVERY_FARM_PUBLIC, GardenType.EVERY_FARM_PRIVATE);
         }
 
+        if (gardenType.equals(GardenType.PRIVATE.name())) {
+            return String.format("'%s','%s'",
+                 GardenType.PRIVATE, GardenType.EVERY_FARM_PRIVATE);
+        }
+
+        if (gardenType.equals(GardenType.PUBLIC.name())) {
+            return String.format("'%s','%s'",
+                GardenType.PUBLIC, GardenType.EVERY_FARM_PUBLIC);
+        }
+
         return String.format("'%s'", GardenType.valueOf(gardenType));
     }
 
