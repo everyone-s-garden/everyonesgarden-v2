@@ -17,8 +17,8 @@ public interface GardenDetailRepositoryResponse {
     String getSize();
     GardenStatus getGardenStatus();
     Long getWriterId();
-    LocalDate getRecruitStartDate();
-    LocalDate getRecruitEndDate();
+    String getRecruitStartDate();
+    String getRecruitEndDate();
     String getGardenDescription();
     String getImageUrl();
     String getGardenFacilities();

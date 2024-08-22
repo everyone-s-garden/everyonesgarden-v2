@@ -26,7 +26,6 @@ public record GardenDetailResult(
     Long gardenLikeId,
     String openAPIGardenId
 ) {
-    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
     public static GardenDetailResult to(
         List<GardenDetailRepositoryResponse> gardenDetailRepositoryResponses,
@@ -47,8 +46,8 @@ public record GardenDetailResult(
             gardenDetailRepositoryResponse.getSize(),
             gardenDetailRepositoryResponse.getGardenStatus().name(),
             gardenDetailRepositoryResponse.getWriterId(),
-            gardenDetailRepositoryResponse.getRecruitStartDate().format(DATE_FORMATTER),
-            gardenDetailRepositoryResponse.getRecruitEndDate().format(DATE_FORMATTER),
+            gardenDetailRepositoryResponse.getRecruitStartDate(),
+            gardenDetailRepositoryResponse.getRecruitEndDate(),
             gardenDetailRepositoryResponse.getGardenDescription(),
             gardenDetailRepositoryResponses.stream()
                 .map(GardenDetailRepositoryResponse::getImageUrl)
