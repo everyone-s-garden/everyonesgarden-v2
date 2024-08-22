@@ -43,8 +43,8 @@ public record RecentCreatedGardenResults(
                 response.getAddress(),
                 response.getLatitude(),
                 response.getLongitude(),
-                response.getRecruitStartDate().format(DATE_FORMATTER),
-                response.getRecruitEndDate().format(DATE_FORMATTER),
+                response.getRecruitStartDate(),
+                response.getRecruitEndDate(),
                 response.getPrice(),
                 response.getIsLiked(),
                 thumbnail

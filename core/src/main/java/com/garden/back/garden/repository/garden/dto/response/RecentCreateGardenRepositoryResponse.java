@@ -14,9 +14,9 @@ public interface RecentCreateGardenRepositoryResponse {
 
     Double getLongitude();
 
-    LocalDate getRecruitStartDate();
+    String getRecruitStartDate();
 
-    LocalDate getRecruitEndDate();
+    String getRecruitEndDate();
 
     String getPrice();
 
