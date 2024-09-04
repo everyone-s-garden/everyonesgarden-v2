@@ -10,3 +10,15 @@ include::{snippets}/search-regions/query-parameters.adoc[]
 
 ==== Response (Success)
 include::{snippets}/search-regions/http-response.adoc[]
+
+[[search-regions-geocode]]
+=== 주소에 대한 위도 및 경도 검색 API
+주소에 대한 위도 및 경도 검색 API
+
+==== Request
+include::{snippets}/search-regions-geocode/http-request.adoc[]
+include::{snippets}/search-regions-geocode/query-parameters.adoc[]
+
+
+==== Response (Success)
+include::{snippets}/search-regions-geocode/http-response.adoc[]

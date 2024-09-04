@@ -3,10 +3,7 @@ package com.garden.back.region;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/regions")
@@ -20,5 +17,14 @@ public class RegionController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<LocationSearchApiResponses> findByRegionName(@ModelAttribute @Valid LocationSearchApiRequest request) {
         return ResponseEntity.ok(regionService.autoCompleteRegion(request.toServiceRequest()));
+    }
+
+    @GetMapping(
+        value = "/geocode",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<GeoResponse> getLatitudeAndLongitude(
+        @RequestParam String fullAddress ) {
+        return ResponseEntity.ok(
+            GeoResponse.of(regionService.getLatitudeAndLongitude(fullAddress)));
     }
 }

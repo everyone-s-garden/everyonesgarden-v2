@@ -1,5 +1,6 @@
 package com.garden.back.region;
 
+import com.garden.back.region.infra.api.NaverGeoCodeClient;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -7,8 +8,12 @@ public class RegionService {
 
     private final RegionRepository regionRepository;
 
-    public RegionService(RegionRepository regionRepository) {
+    private final NaverGeoCodeClient naverGeoCodeClient;
+
+    public RegionService(RegionRepository regionRepository,
+                         NaverGeoCodeClient naverGeoCodeClient) {
         this.regionRepository = regionRepository;
+        this.naverGeoCodeClient = naverGeoCodeClient;
     }
 
     public LocationSearchApiResponses autoCompleteRegion(LocationSearchServiceRequest request) {
@@ -18,5 +23,9 @@ public class RegionService {
                 .map(LocationSearchApiResponses.LocationSearchResponse::from)
                 .toList()
         );
+    }
+
+    public GeoResult getLatitudeAndLongitude(String fullAddress) {
+        return GeoResult.of(naverGeoCodeClient.getLatitudeAndLongitude(fullAddress));
     }
 }
