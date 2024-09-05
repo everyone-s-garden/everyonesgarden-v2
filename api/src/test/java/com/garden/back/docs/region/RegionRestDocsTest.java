@@ -69,4 +69,26 @@ class RegionRestDocsTest extends RestDocsSupport {
                 )
             ));
     }
+
+    @DisplayName("지역명에 대한 위도 경도 반환 API")
+    @Test
+    void getLatitudeAndLongitude() throws Exception {
+        given(regionService.getLatitudeAndLongitude(any())).willReturn(RegionFixture.geoResult());
+
+        mockMvc.perform(get("/v1/regions/geocode")
+                .param("fullAddress", "인천광역시 서구 가정로 334")
+                .contentType(MediaType.APPLICATION_JSON)
+                .characterEncoding(StandardCharsets.UTF_8))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("search-regions-geocode",
+                queryParameters(
+                    parameterWithName("fullAddress").description("조회할 주소")
+                ),
+                responseFields(
+                    fieldWithPath("latitude").type(STRING).description("위도"),
+                    fieldWithPath("longitude").type(STRING).description("경도")
+                )
+            ));
+    }
 }
