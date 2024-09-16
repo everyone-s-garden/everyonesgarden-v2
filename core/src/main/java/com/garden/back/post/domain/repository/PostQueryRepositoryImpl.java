@@ -298,7 +298,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
     @Override
     public FindAllMyCommentPostsResponse findAllByMyComment(Long loginUserId, FindAllMyCommentPostsRepositoryRequest request) {
         List<FindAllMyCommentPostsResponse.PostInfo> postInfos = jpaQueryFactory
-            .select(Projections.constructor(FindAllMyCommentPostsResponse.PostInfo.class,
+            .selectDistinct(Projections.constructor(FindAllMyCommentPostsResponse.PostInfo.class,
                 post.id,
                 post.title,
                 JPAExpressions.select(postImage.imageUrl)
