@@ -9,10 +9,7 @@ import com.garden.back.garden.repository.garden.GardenRepository;
 import com.garden.back.garden.repository.gardenimage.GardenImageRepository;
 import com.garden.back.garden.repository.gardenlike.GardenLikeRepository;
 import com.garden.back.garden.repository.mymanagedgarden.MyManagedGardenRepository;
-import com.garden.back.garden.service.dto.request.GardenByComplexesWithScrollParam;
-import com.garden.back.garden.service.dto.request.GardenDetailParam;
-import com.garden.back.garden.service.dto.request.GardenLikeCreateParam;
-import com.garden.back.garden.service.dto.request.GardenLikeDeleteParam;
+import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.garden.service.dto.response.*;
 import com.garden.back.garden.service.recentview.GardenHistoryManager;
 import com.garden.back.garden.service.recentview.RecentViewGarden;
@@ -437,5 +434,44 @@ class GardenReadServiceTest extends IntegrationTestSupport {
             );
         assertThat(otherManagedGardenGetResults.hasNext()).isFalse();
     }
+
+    @DisplayName("로그인 하지 않은 사용자는 상대방의 분양하는 텃밭 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherGarden() {
+        // Given
+        OtherGardenGetParam otherGardenGetParam = GardenFixture.otherGardenGetParam(savedPrivateGarden.getWriterId());
+
+        // When
+        OtherGardenGetResults otherGardenGetResults = gardenReadService.visitOtherGarden(otherGardenGetParam);
+
+        // Then
+        assertThat(otherGardenGetResults.otherGardenGetResponse())
+            .extracting("isLiked")
+            .contains(false);
+        assertThat(otherGardenGetResults.hasNext()).isFalse();
+    }
+
+    @DisplayName("로그인 한 사용자는 상대방의 분양하는 텃밭 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherGardenWithLoginUser() {
+        // Given
+        OtherGardenGetParam otherGardenGetParam = GardenFixture.otherGardenGetParamWithLoginUser(savedPrivateGarden.getWriterId());
+        gardenLikeRepository.save(GardenLikeFixture.gardenLikeToVisit(savedPrivateGarden));
+
+        // When
+        OtherGardenGetResults otherGardenGetResults = gardenReadService.visitOtherGarden(otherGardenGetParam);
+        OtherGardenGetResults.OtherGardenGetResult result = otherGardenGetResults.otherGardenGetResponse().get(0);
+
+        // Then
+        assertThat(otherGardenGetResults.otherGardenGetResponse())
+            .extracting("isLiked")
+            .contains(true);
+        assertThat(otherGardenGetResults.hasNext()).isFalse();
+        assertThat(result.gardenId()).isEqualTo(savedPrivateGarden.getGardenId());
+        assertThat(result.gardenName()).isEqualTo(savedPrivateGarden.getGardenName());
+        assertThat(result.gardenStatus()).isEqualTo(savedPrivateGarden.getGardenStatus());
+        assertThat(result.price()).isEqualTo(savedPrivateGarden.getPrice());
+    }
+
 
 }
