@@ -11,4 +11,11 @@ public class GardenLikeFixture {
                 garden
         );
     }
+
+    public static GardenLike gardenLikeToVisit (Garden garden) {
+        return GardenLike.of(
+            garden.getWriterId()+1,
+            garden
+        );
+    }
 }

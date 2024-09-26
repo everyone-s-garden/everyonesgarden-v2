@@ -194,4 +194,17 @@ public class GardenController {
                 request.toOtherManagedGardenGetParam())));
     }
 
+    @GetMapping(
+        value = "/other",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<OtherGardenGetResponses> visitOtherGarden(
+        @ModelAttribute @Valid OtherGardenGetRequest request,
+        @OptionalUser LoginUser loginUser
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(OtherGardenGetResponses.to(gardenReadService.visitOtherGarden(
+                request.toOtherGardenGetParam(loginUser.memberId()))));
+    }
+
 }

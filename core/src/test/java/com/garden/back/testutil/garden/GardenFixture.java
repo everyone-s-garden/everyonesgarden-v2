@@ -382,4 +382,12 @@ public class GardenFixture {
         return new OtherManagedGardenGetParam(memberId, 0L);
     }
 
+    public static OtherGardenGetParam otherGardenGetParam(Long otherMemberId) {
+        return new OtherGardenGetParam(otherMemberId, 0L, -1L);
+    }
+
+    public static OtherGardenGetParam otherGardenGetParamWithLoginUser(Long otherMemberId) {
+        return new OtherGardenGetParam(otherMemberId, 0L, otherMemberId+1);
+    }
+
 }

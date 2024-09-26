@@ -134,5 +134,7 @@ public class GardenReadService {
     public OtherManagedGardenGetResults visitOtherManagedGarden(OtherManagedGardenGetParam param) {
         return OtherManagedGardenGetResults.to(getMyManagedGardens(param.toMyManagedGardenGetParam()));
     }
-
+    public OtherGardenGetResults visitOtherGarden(OtherGardenGetParam param) {
+        return OtherGardenGetResults.to(gardenRepository.findByWriterId(param.otherMemberId(), param.nextGardenId(), param.myMemberId(), pageable));
+    }
 }

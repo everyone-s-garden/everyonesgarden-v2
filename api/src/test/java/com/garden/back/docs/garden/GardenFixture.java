@@ -289,4 +289,20 @@ public class GardenFixture {
         );
     }
 
+    public static OtherGardenGetResults otherGardenGetResults() {
+        return new OtherGardenGetResults(
+            List.of(
+                new OtherGardenGetResults.OtherGardenGetResult(
+                    1L,
+                    "별이네 주말농장",
+                    "2023.12.01",
+                    GardenStatus.ACTIVE,
+                    List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                    false
+                )
+            ),
+            0L,
+            false
+        );
+    }
 }

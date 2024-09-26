@@ -412,4 +412,33 @@ class GardenRestDocsTest extends RestDocsSupport {
                 )));
     }
 
+    @DisplayName("상대방이 분양하는 텃밭 목록을 조회할 수 있다.")
+    @Test
+    void visitOtherGardens() throws Exception {
+        OtherGardenGetResults result = GardenFixture.otherGardenGetResults();
+        given(gardenReadService.visitOtherGarden(any())).willReturn(result);
+
+        mockMvc.perform(get("/v2/gardens/other")
+                .param("otherMemberIdToVisit", "1")
+                .param("nextManagedGardenId", "0"))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("visit-other-gardens",
+                queryParameters(
+                    parameterWithName("otherMemberIdToVisit").description("방문하고자 하는 상대의 Member Id, 0이거나 음수일 수 없습니다."),
+                    parameterWithName("nextManagedGardenId").description("상대방이 가꾸는 텃밭 넥스트 키 , 처음에는 다음 텃밭 키를 모르기 때문에 0을 보내주세요")
+                ),
+                responseFields(
+                    fieldWithPath("otherGardenGetResponse").type(JsonFieldType.ARRAY).description("상대방이 분양하는 텃밭 목록"),
+                    fieldWithPath("otherGardenGetResponse[].gardenId").type(JsonFieldType.NUMBER).description("상대방이 분양하는 텃밭 아이디"),
+                    fieldWithPath("otherGardenGetResponse[].gardenName").type(JsonFieldType.STRING).description("분양하는 텃밭의 농장 이름"),
+                    fieldWithPath("otherGardenGetResponse[].price").type(JsonFieldType.STRING).description("가격"),
+                    fieldWithPath("otherGardenGetResponse[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태"),
+                    fieldWithPath("otherGardenGetResponse[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("otherGardenGetResponse[].isLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요 했는지 여부"),
+                    fieldWithPath("nextGardenId").type(JsonFieldType.NUMBER).description("상대방이 분양하는 텃밭 넥스트 키"),
+                    fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
+                )));
+    }
+
 }

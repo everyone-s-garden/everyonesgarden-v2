@@ -53,4 +53,6 @@ public interface GardenRepository {
 
     Garden getGardenEntity(int resourceHashId);
 
+    OtherGardenRepositoryResponses findByWriterId(Long writerId, Long nextGardenId, Long visitedMemberId, Pageable pageable);
+
 }
