@@ -128,4 +128,10 @@ public class GardenRepositoryImpl implements GardenRepository {
             ));
     }
 
+    @Override
+    public OtherGardenRepositoryResponses findByWriterId(Long writerId, Long nextGardenId, Long visitedMemberId, Pageable pageable) {
+        return OtherGardenRepositoryResponses.of(
+            gardenJpaRepository.findByWriterId(writerId, nextGardenId, visitedMemberId, pageable), pageable);
+    }
+
 }

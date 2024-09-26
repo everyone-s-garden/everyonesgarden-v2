@@ -105,6 +105,28 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
         @Param("nextGardenId") Long nextGardenId,
         Pageable pageable);
 
+    @Query("""
+        select
+         g.gardenId as gardenId,
+         g.gardenName as gardenName,
+         g.price as price,
+         gi.imageUrl as imageUrl,
+         g.gardenStatus as gardenStatus,
+         case when gl.memberId =:visitedMemberId then true else false end as isLiked
+        from GardenEntity as g
+        left join
+         GardenImageEntity as gi on g.gardenId = gi.garden.gardenId
+        left join
+          GardenLikeEntity as gl on g.gardenId = gl.garden.gardenId
+        where g.writerId=:writerId and g.gardenId >:nextGardenId
+        order by g.gardenId
+        """)
+    List<OtherGardenRepositoryResponse> findByWriterId(
+        @Param("writerId") Long writerId,
+        @Param("nextGardenId") Long nextGardenId,
+        @Param("visitedMemberId") Long visitedMemberId,
+        Pageable pageable);
+
     @Query(
         """
             select
