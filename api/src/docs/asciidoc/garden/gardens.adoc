@@ -246,3 +246,15 @@ include::{snippets}/visit-other-managed-gardens/query-parameters.adoc[]
 ==== Response (Success)
 include::{snippets}/visit-other-managed-gardens/http-response.adoc[]
 include::{snippets}/visit-other-managed-gardens/response-fields.adoc[]
+
+=== 상대방이 분양하는 텃밭 목록 조회
+상대방이 분양하는 텃밭 목록 조회한다.
+
+==== Request
+include::{snippets}/visit-other-gardens/http-request.adoc[]
+include::{snippets}/visit-other-gardens/query-parameters.adoc[]
+
+
+==== Response (Success)
+include::{snippets}/visit-other-gardens/http-response.adoc[]
+include::{snippets}/visit-other-gardens/response-fields.adoc[]
