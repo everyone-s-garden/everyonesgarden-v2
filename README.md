@@ -82,7 +82,7 @@
 - CI 액션(SonarCloud)을 추가하여 매번 pr을 올렸을 때 코드 스멜, 보안 위배 요소, 중복 코드, 테스트 커버리지를 분석 받아 코드 품질 관리
 
 # 운영중인 사이트
-<a href=https://everyonesgarden.vercel.app/>모두의 텃밭</a>
+<a href=https://www.everyones-garden.com/>모두의 텃밭</a>
 
 # 농림축산 식품부 창업 경진대회 우수상
 농림축산 식품부에서 주최한 창업 경진대회에서 우수상을 수상하여 광고비 지원, `경농` 이라는 중견기업에서 연락 제의를 받았습니다.
