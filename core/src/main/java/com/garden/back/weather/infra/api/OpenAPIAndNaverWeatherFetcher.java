@@ -93,10 +93,6 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
     * */
     @Override
     public WeatherPerHourAndTomorrowInfo getWeatherPerHourAndTomorrowInfo(String longitude, String latitude) {
-        if (System.currentTimeMillis() % 2 == 0) {
-            throw new RuntimeException("날씨 정보 조회 실패");
-        }
-
         String regionName = naverGeoClient.getGeoInfoByLongitudeAndLatitude(longitude + "," + latitude, "JSON", naverApiId, naverApiSecret).results().get(0).region().area1().name();
 
         //현재 시간 이후의 매 정시 날씨를 조회하기 위한 시간 값
