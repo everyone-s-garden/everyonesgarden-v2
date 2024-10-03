@@ -14,8 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 @FeignClient(
     name = "${api.weather.name}",
-    url = "${api.weather.baseUrl}",
-    fallbackFactory = OpenAPIClient.WeatherClientFallback.class
+    url = "${api.weather.baseUrl}"
+//    fallbackFactory = OpenAPIClient.WeatherClientFallback.class
 )
 public interface OpenAPIClient {
 

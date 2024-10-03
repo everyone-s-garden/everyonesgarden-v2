@@ -1,5 +1,6 @@
 package com.garden.back.weather.infra.api;
 
+import com.garden.back.global.cache.FallbackResponse;
 import com.garden.back.weather.infra.WeatherFetcher;
 import com.garden.back.weather.infra.api.naver.NaverGeoClient;
 import com.garden.back.weather.infra.api.open.OpenAPIClient;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Set;
 
 @Component
+@FallbackResponse
 public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISupport implements WeatherFetcher {
 
     @Value("${api.weather.secret}")
@@ -71,9 +73,9 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
             .toList();
     }
 
-    /*
-    * 2일 뒤 날씨부터 6일 뒤 날씨까지 제공하는 api
-    * */
+    /**
+     * 2일 뒤 날씨부터 6일 뒤 날씨까지 제공하는 api
+     */
     @Override
     public WeekWeatherInfo getWeekWeatherInfo(String longitude, String latitude) {
         //주간 예보 발표 시간에 맞춰 baseDate를 오늘로 할지 내일로 할지 결정
@@ -91,6 +93,9 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
     * */
     @Override
     public WeatherPerHourAndTomorrowInfo getWeatherPerHourAndTomorrowInfo(String longitude, String latitude) {
+        if (System.currentTimeMillis() % 2 == 0) {
+            throw new RuntimeException("날씨 정보 조회 실패");
+        }
 
         String regionName = naverGeoClient.getGeoInfoByLongitudeAndLatitude(longitude + "," + latitude, "JSON", naverApiId, naverApiSecret).results().get(0).region().area1().name();
 
