@@ -34,8 +34,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     String findNickName(@Param("memberId") Long memberId);
 
     @Query("""
-           SELECT new com.garden.back.member.repository.response.MemberInfoResponse(m.nickname, m.profileImageUrl, m.memberMannerGrade)
-           FROM Member m 
+           SELECT new com.garden.back.member.repository.response.MemberInfoResponse(m.nickname, m.profileImageUrl, m.memberMannerGrade, m.email)
+           FROM Member m
            WHERE m.id = :id
            """)
     MemberInfoResponse findMemberById(@Param("id") Long id);

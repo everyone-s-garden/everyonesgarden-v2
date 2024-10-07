@@ -5,6 +5,7 @@ import com.garden.back.member.MemberMannerGrade;
 public record MemberInfoResponse(
     String nickname,
     String profileImageUrl,
-    MemberMannerGrade memberMannerGrade
+    MemberMannerGrade memberMannerGrade,
+    String email
 ) {
 }
