@@ -112,7 +112,7 @@ class MemberServiceTest extends IntegrationTestSupport {
         Member savedMember = memberRepository.save(member);
 
         //when & then
-        MemberInfoResponse expected = new MemberInfoResponse(savedMember.getNickname(), savedMember.getProfileImageUrl(), savedMember.getMemberMannerGrade());
+        MemberInfoResponse expected = new MemberInfoResponse(savedMember.getNickname(), savedMember.getProfileImageUrl(), savedMember.getMemberMannerGrade(), savedMember.getEmail());
         assertThat(memberService.findMemberById(savedMember.getId())).isEqualTo(expected);
     }
 }

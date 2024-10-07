@@ -100,7 +100,7 @@ class MemberRestDocsTest extends RestDocsSupport {
     @DisplayName("사용자의 정보를 id로 조회한다.")
     @Test
     void findMemberById() throws Exception {
-        given(memberService.findMemberById(any())).willReturn(new MemberInfoResponse("닉네임", "이미지 url", MemberMannerGrade.SEED));
+        given(memberService.findMemberById(any())).willReturn(new MemberInfoResponse("닉네임", "이미지 url", MemberMannerGrade.SEED, "email"));
         mockMvc.perform(get("/members/{id}", 1L))
             .andExpect(status().isOk())
             .andDo(print())
@@ -111,7 +111,8 @@ class MemberRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("nickname").type(STRING).description("사용자의 별명"),
                     fieldWithPath("profileImageUrl").type(STRING).description("사용자의 프로필 이미지"),
-                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자의 매너 등급")
+                    fieldWithPath("memberMannerGrade").type(STRING).description("사용자의 매너 등급"),
+                    fieldWithPath("email").type(STRING).description("사용자의 email")
                 )));
     }
 }
