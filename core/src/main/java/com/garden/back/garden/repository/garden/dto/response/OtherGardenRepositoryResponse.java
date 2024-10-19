@@ -6,6 +6,7 @@ public interface OtherGardenRepositoryResponse {
     Long getGardenId();
     String getGardenName();
     String getPrice();
+    String getContact();
     String getImageUrl();
     GardenStatus getGardenStatus();
     Boolean getIsLiked();

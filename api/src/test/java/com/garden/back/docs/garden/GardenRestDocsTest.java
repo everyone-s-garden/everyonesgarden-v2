@@ -433,6 +433,7 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("otherGardenGetResponse[].gardenId").type(JsonFieldType.NUMBER).description("상대방이 분양하는 텃밭 아이디"),
                     fieldWithPath("otherGardenGetResponse[].gardenName").type(JsonFieldType.STRING).description("분양하는 텃밭의 농장 이름"),
                     fieldWithPath("otherGardenGetResponse[].price").type(JsonFieldType.STRING).description("가격"),
+                    fieldWithPath("otherGardenGetResponse[].contact").type(JsonFieldType.STRING).description("연락처"),
                     fieldWithPath("otherGardenGetResponse[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태"),
                     fieldWithPath("otherGardenGetResponse[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
                     fieldWithPath("otherGardenGetResponse[].isLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요 했는지 여부"),

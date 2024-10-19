@@ -12,7 +12,8 @@ public interface CropChatRoomInfoJpaRepository extends JpaRepository<CropChatRoo
                     select cri
                     from CropChatRoomInfo as cri
                     where cri.postId = :#{#param.postId}
-                      and cri.memberId = :#{#param.writerId}
+                      and isWriter = false
+                      and cri.memberId = :#{#param.viewerId}
            ) then true else false end
            """)
     boolean existsByParams(@Param("param") ChatRoomCreateRepositoryParam param);

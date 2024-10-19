@@ -296,6 +296,7 @@ public class GardenFixture {
                     1L,
                     "별이네 주말농장",
                     "2023.12.01",
+                    "010-0000-0000",
                     GardenStatus.ACTIVE,
                     List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
                     false
