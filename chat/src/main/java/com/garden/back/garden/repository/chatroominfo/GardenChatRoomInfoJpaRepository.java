@@ -17,7 +17,8 @@ public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenCha
                  select cri
                  from GardenChatRoomInfo as cri
                  where cri.postId = :#{#param.postId}
-                   and cri.memberId = :#{#param.writerId}
+                   and cri.is_writer = false
+                   and cri.memberId = :#{#param.memberId}
         ) then true else false end
         """)
     boolean existsByParams(@Param("param") ChatRoomCreateRepositoryParam param);

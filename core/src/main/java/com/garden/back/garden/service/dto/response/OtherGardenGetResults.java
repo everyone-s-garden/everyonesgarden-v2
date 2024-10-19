@@ -30,6 +30,7 @@ public record OtherGardenGetResults(
         Long gardenId,
         String gardenName,
         String price,
+        String contact,
         GardenStatus gardenStatus,
         List<String> images,
         boolean isLiked
@@ -42,6 +43,7 @@ public record OtherGardenGetResults(
                 response.getGardenId(),
                 response.getGardenName(),
                 response.getPrice(),
+                response.getContact(),
                 response.getGardenStatus(),
                 images,
                 response.getIsLiked()

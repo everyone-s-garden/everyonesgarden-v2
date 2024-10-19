@@ -32,7 +32,7 @@ public record GardenChatRoomCreateParam(
     public ChatRoomCreateRepositoryParam toChatRoomCreateRepositoryParam() {
         return new ChatRoomCreateRepositoryParam(
                 postId,
-                writerId
+                viewerId
         );
     }
 }
