@@ -3,7 +3,6 @@ package com.garden.back.garden.service.dto.response;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.repository.garden.dto.response.OtherGardenRepositoryResponse;
 import com.garden.back.garden.repository.garden.dto.response.OtherGardenRepositoryResponses;
-import com.garden.back.garden.repository.mymanagedgarden.dto.MyManagedGardensGetRepositoryResponses;
 
 import java.util.ArrayList;
 import java.util.HashMap;

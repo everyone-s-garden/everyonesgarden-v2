@@ -110,7 +110,7 @@ public interface GardenJpaRepository extends JpaRepository<GardenEntity, Long> {
          g.gardenId as gardenId,
          g.gardenName as gardenName,
          g.price as price,
-         g.contact as contact
+         g.contact as contact,
          gi.imageUrl as imageUrl,
          g.gardenStatus as gardenStatus,
          case when gl.memberId =:visitedMemberId then true else false end as isLiked
