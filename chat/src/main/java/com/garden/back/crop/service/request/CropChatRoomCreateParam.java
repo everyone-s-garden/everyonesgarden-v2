@@ -32,7 +32,7 @@ public record CropChatRoomCreateParam(
     public ChatRoomCreateRepositoryParam toChatRoomCreateRepositoryParam() {
         return new ChatRoomCreateRepositoryParam(
                 postId,
-                writerId
+                viewerId
         );
     }
 }
