@@ -2,8 +2,9 @@ package com.garden.back.docs.garden;
 
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.garden.controller.GardenController;
-import com.garden.back.garden.facade.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.dto.GardenDetailFacadeResponse;
 import com.garden.back.garden.facade.GardenFacade;
+import com.garden.back.garden.facade.dto.OtherGardenGetFacadeResponses;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.response.*;
 import org.junit.jupiter.api.DisplayName;
@@ -415,8 +416,8 @@ class GardenRestDocsTest extends RestDocsSupport {
     @DisplayName("상대방이 분양하는 텃밭 목록을 조회할 수 있다.")
     @Test
     void visitOtherGardens() throws Exception {
-        OtherGardenGetResults result = GardenFixture.otherGardenGetResults();
-        given(gardenReadService.visitOtherGarden(any())).willReturn(result);
+        OtherGardenGetFacadeResponses result = GardenFixture.otherGardenGetFacadeResponses();
+        given(gardenFacade.visitOtherGarden(any())).willReturn(result);
 
         mockMvc.perform(get("/v2/gardens/other")
                 .param("otherMemberIdToVisit", "1")
@@ -436,6 +437,7 @@ class GardenRestDocsTest extends RestDocsSupport {
                     fieldWithPath("otherGardenGetResponse[].contact").type(JsonFieldType.STRING).description("연락처"),
                     fieldWithPath("otherGardenGetResponse[].gardenStatus").type(JsonFieldType.STRING).description("텃밭 상태"),
                     fieldWithPath("otherGardenGetResponse[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
+                    fieldWithPath("otherGardenGetResponse[].chatRoomId").type(JsonFieldType.NUMBER).description("해당 게시글에 대한 채팅방 아이디, 만약에 존재하지 않으면 -1L을 반환"),
                     fieldWithPath("otherGardenGetResponse[].isLiked").type(JsonFieldType.BOOLEAN).description("내가 좋아요 했는지 여부"),
                     fieldWithPath("nextGardenId").type(JsonFieldType.NUMBER).description("상대방이 분양하는 텃밭 넥스트 키"),
                     fieldWithPath("hasNext").type(JsonFieldType.BOOLEAN).description("다음 페이지 존재 여부")
