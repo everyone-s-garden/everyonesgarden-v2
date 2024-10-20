@@ -3,7 +3,8 @@ package com.garden.back.docs.garden;
 import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.domain.vo.GardenStatus;
 import com.garden.back.garden.domain.vo.GardenType;
-import com.garden.back.garden.facade.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.dto.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.dto.OtherGardenGetFacadeResponses;
 import com.garden.back.garden.service.dto.response.*;
 
 import java.util.List;
@@ -289,16 +290,17 @@ public class GardenFixture {
         );
     }
 
-    public static OtherGardenGetResults otherGardenGetResults() {
-        return new OtherGardenGetResults(
+    public static OtherGardenGetFacadeResponses otherGardenGetFacadeResponses() {
+        return new OtherGardenGetFacadeResponses(
             List.of(
-                new OtherGardenGetResults.OtherGardenGetResult(
+                new OtherGardenGetFacadeResponses.OtherGardenGetFacadeResponse(
                     1L,
                     "별이네 주말농장",
                     "2023.12.01",
                     "010-0000-0000",
                     GardenStatus.ACTIVE,
                     List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                    1L,
                     false
                 )
             ),

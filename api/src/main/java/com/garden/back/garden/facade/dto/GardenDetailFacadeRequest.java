@@ -1,4 +1,4 @@
-package com.garden.back.garden.facade;
+package com.garden.back.garden.facade.dto;
 
 import com.garden.back.garden.service.dto.request.GardenChatRoomInfoGetParam;
 import com.garden.back.garden.service.dto.request.GardenDetailParam;

@@ -1,5 +1,6 @@
 package com.garden.back.garden.controller.dto.request;
 
+import com.garden.back.garden.facade.dto.OtherGardenGetFacadeRequest;
 import com.garden.back.garden.service.dto.request.OtherGardenGetParam;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -12,8 +13,8 @@ public record OtherGardenGetRequest(
     Long nextManagedGardenId
 ) {
 
-    public OtherGardenGetParam toOtherGardenGetParam(Long myMemberId) {
-        return new OtherGardenGetParam(
+    public OtherGardenGetFacadeRequest toOtherGardenGetParam(Long myMemberId) {
+        return new OtherGardenGetFacadeRequest(
             otherMemberIdToVisit,
             nextManagedGardenId,
             myMemberId

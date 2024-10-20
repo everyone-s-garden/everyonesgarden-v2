@@ -2,7 +2,7 @@ package com.garden.back.garden.controller;
 
 import com.garden.back.garden.controller.dto.request.*;
 import com.garden.back.garden.controller.dto.response.*;
-import com.garden.back.garden.facade.GardenDetailFacadeResponse;
+import com.garden.back.garden.facade.dto.GardenDetailFacadeResponse;
 import com.garden.back.garden.facade.GardenFacade;
 import com.garden.back.garden.service.GardenReadService;
 import com.garden.back.garden.service.dto.request.GardenByNameParam;
@@ -202,7 +202,7 @@ public class GardenController {
         @OptionalUser LoginUser loginUser
     ) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(OtherGardenGetResponses.to(gardenReadService.visitOtherGarden(
+            .body(OtherGardenGetResponses.to(gardenFacade.visitOtherGarden(
                 request.toOtherGardenGetParam(loginUser.memberId()))));
     }
 

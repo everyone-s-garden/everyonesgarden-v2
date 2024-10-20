@@ -1,7 +1,6 @@
 package com.garden.back.garden.controller.dto.response;
 
-import com.garden.back.garden.facade.GardenDetailFacadeResponse;
-import com.garden.back.garden.service.dto.response.GardenDetailResult;
+import com.garden.back.garden.facade.dto.GardenDetailFacadeResponse;
 
 import java.util.List;
 
