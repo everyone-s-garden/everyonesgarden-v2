@@ -7,7 +7,7 @@ public record GardenChatRoomsFindFacadeRequest(
         Long memberId,
         Integer pageNumber
 ) {
-    public GardenChatRoomsFindParam to() {
+    public GardenChatRoomsFindParam toGardenChatRoomsFindParam() {
         return new GardenChatRoomsFindParam(
                 memberId,
                 pageNumber

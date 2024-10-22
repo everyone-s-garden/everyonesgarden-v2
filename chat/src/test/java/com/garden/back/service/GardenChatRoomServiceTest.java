@@ -223,4 +223,35 @@ class GardenChatRoomServiceTest extends IntegrationTestSupport{
         assertThat(roomId).isEqualTo(chatRoomId);
     }
 
+    @DisplayName("상대방이 나간 상태라면 나갔다고 응답한다.")
+    @Test
+    void isExitedPartner_exitPartner() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long partnerId = chatRoomCreateParam.viewerId();
+
+        //when
+        gardenChatRoomService.deleteChatRoom(new GardenChatRoomDeleteParam(gardenChatRoomId, partnerId));
+        boolean exitedPartner = gardenChatRoomService.isExitedPartner(gardenChatRoomId);
+
+        // Then
+        assertThat(exitedPartner).isTrue();
+    }
+
+    @DisplayName("상대방이 나가지 않았다면 나가지 않았다고 응답한다.")
+    @Test
+    void isExitedPartner_notExitPartner() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long partnerId = chatRoomCreateParam.viewerId();
+
+        //when
+        boolean exitedPartner = gardenChatRoomService.isExitedPartner(gardenChatRoomId);
+
+        // Then
+        assertThat(exitedPartner).isFalse();
+    }
+
 }

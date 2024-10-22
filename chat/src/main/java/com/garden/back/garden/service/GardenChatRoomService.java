@@ -122,4 +122,9 @@ public class GardenChatRoomService {
         return gardenChatRoomInfoRepository.getChatRoomId(param.memberId(), param.postId());
     }
 
+    public boolean isExitedPartner(Long chatRoomId) {
+        int exitedChatRoomMember = gardenChatRoomInfoRepository.getExitedChatRoomMember(chatRoomId);
+        return exitedChatRoomMember == 1;
+    }
+
 }

@@ -24,4 +24,6 @@ public interface GardenChatRoomInfoRepository {
     List<GardenChatRoomInfo> findAll();
 
     Long getChatRoomId(Long memberId, Long postId);
+
+    int getExitedChatRoomMember(Long chatRoomId);
 }
