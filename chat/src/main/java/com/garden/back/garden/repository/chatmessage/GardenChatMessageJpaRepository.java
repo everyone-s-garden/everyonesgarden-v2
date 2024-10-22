@@ -28,7 +28,7 @@ public interface GardenChatMessageJpaRepository extends JpaRepository<GardenChat
             select gm
             from GardenChatMessage as gm
             where gm.chatRoom.chatRoomId =:chatRoomId
-            order by gm.createdAt desc    
+            order by gm.createdAt desc
             """
     )
     Slice<GardenChatMessage> getGardenChatMessage(@Param("chatRoomId") Long chatRoomId, Pageable pageable);
@@ -46,7 +46,7 @@ public interface GardenChatMessageJpaRepository extends JpaRepository<GardenChat
                                         GardenChatRoomInfo AS gcrim
                             JOIN
                                         GardenChatRoomInfo AS gcri ON gcrim.chatRoom.chatRoomId = gcri.chatRoom.chatRoomId
-                                    and gcrim.memberId =:myId and gcrim.memberId != gcri.memberId
+                                    and gcrim.memberId =:myId and gcrim.memberId != gcri.memberId and gcrim.isDeleted = false
                             JOIN
                                 GardenChatMessage AS gm ON gm.chatRoom.chatRoomId = gcri.chatRoom.chatRoomId
                             group by gm.chatRoom.chatRoomId

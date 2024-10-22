@@ -5,6 +5,7 @@ import com.garden.back.chat.gardenchat.controller.dto.request.GardenChatRoomCrea
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatReportResponse;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomCreateResponse;
 import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomEnterResponse;
+import com.garden.back.chat.gardenchat.controller.dto.response.GardenChatRoomGetExitedResponse;
 import com.garden.back.chat.gardenchat.facade.ChatRoomFacade;
 import com.garden.back.chat.gardenchat.facade.GardenChatRoomEnterFacadeRequest;
 import com.garden.back.garden.service.GardenChatRoomService;
@@ -37,11 +38,11 @@ public class GardenChatRoomController {
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE
+        consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<GardenChatRoomCreateResponse> createGardenChatRoom(
-            @RequestBody @Valid GardenChatRoomCreateRequest request,
-            @CurrentUser LoginUser loginUser
+        @RequestBody @Valid GardenChatRoomCreateRequest request,
+        @CurrentUser LoginUser loginUser
     ) {
         Long chatRoomId = gardenChatRoomService.createGardenChatRoom(request.to(loginUser));
         URI location = LocationBuilder.buildLocation(chatRoomId);
@@ -52,55 +53,69 @@ public class GardenChatRoomController {
     }
 
     @PatchMapping(
-            path = "/{roomId}",
-            produces = MediaType.APPLICATION_JSON_VALUE
+        path = "/{roomId}",
+        produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<GardenChatRoomEnterResponse> enterGardenChatRoom(
-            @PathVariable @Positive Long roomId,
-            @CurrentUser LoginUser loginUser
+        @PathVariable @Positive Long roomId,
+        @CurrentUser LoginUser loginUser
     ) {
         GardenChatRoomEnterFacadeRequest request = GardenChatRoomEnterFacadeRequest.to(roomId, loginUser);
         return ResponseEntity.status(HttpStatus.OK)
-                .body(GardenChatRoomEnterResponse.to(
-                        chatRoomFacade.enterGardenChatRoom(request)));
+            .body(GardenChatRoomEnterResponse.to(
+                chatRoomFacade.enterGardenChatRoom(request)));
     }
 
     @DeleteMapping(
-            path = "/{roomId}"
+        path = "/{roomId}"
     )
     public ResponseEntity<Void> deleteChatRoom(
-            @PathVariable @Positive Long roomId,
-            @CurrentUser LoginUser loginUser
+        @PathVariable @Positive Long roomId,
+        @CurrentUser LoginUser loginUser
     ) {
         gardenChatRoomService.deleteChatRoom(
-                GardenChatRoomDeleteParam.of(
-                        roomId,
-                        loginUser.memberId()
-                )
+            GardenChatRoomDeleteParam.of(
+                roomId,
+                loginUser.memberId()
+            )
         );
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping(
-            path = "/{roomId}/report",
-            produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
+        path = "/{roomId}/report",
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<GardenChatReportResponse> repostGardenChat(
-            @PathVariable Long roomId,
-            @RequestPart(value = "reportImages", required = false) List<MultipartFile> multipartFiles,
-            @RequestPart @Valid GardenChatReportRequest gardenChatReportRequest,
-            @CurrentUser LoginUser loginUser
+        @PathVariable Long roomId,
+        @RequestPart(value = "reportImages", required = false) List<MultipartFile> multipartFiles,
+        @RequestPart @Valid GardenChatReportRequest gardenChatReportRequest,
+        @CurrentUser LoginUser loginUser
     ) {
         Long reportId = gardenChatRoomService.reportChatRoom(gardenChatReportRequest.toGardenChatReportRequest(
-                loginUser,
-                roomId,
-                multipartFiles
+            loginUser,
+            roomId,
+            multipartFiles
         ));
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(GardenChatReportResponse.of(reportId));
+            .body(GardenChatReportResponse.of(reportId));
+    }
+
+
+    @GetMapping(
+        path = "/{roomId}/members",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<GardenChatRoomGetExitedResponse> isExitedPartner(
+        @PathVariable Long roomId
+    ) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(GardenChatRoomGetExitedResponse.of(
+                gardenChatRoomService.isExitedPartner(roomId)
+            ));
     }
 
 }

@@ -1,13 +1,16 @@
 package com.garden.back.service;
 
 import com.garden.back.garden.domain.GardenChatMessage;
+import com.garden.back.garden.domain.GardenChatRoomInfo;
 import com.garden.back.garden.repository.chatentry.garden.GardenChatRoomEntryRepository;
 import com.garden.back.garden.repository.chatmessage.GardenChatMessageRepository;
+import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoRepository;
 import com.garden.back.garden.repository.websocketinfo.WebSocketInfoRepository;
 import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.garden.service.GardenChatService;
 import com.garden.back.garden.service.dto.request.GardenChatMessageSendParam;
 import com.garden.back.garden.service.dto.request.GardenChatRoomCreateParam;
+import com.garden.back.garden.service.dto.request.GardenChatRoomDeleteParam;
 import com.garden.back.garden.service.dto.request.GardenSessionCreateParam;
 import com.garden.back.garden.service.dto.response.GardenChatRoomsFindResults;
 import com.garden.back.garden.service.dto.response.GardenChatMessageSendResult;
@@ -18,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +29,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Transactional
 class GardenChatServiceTest extends IntegrationTestSupport {
+
+    @Autowired
+    private GardenChatRoomInfoRepository gardenChatRoomInfoRepository;
 
     @Autowired
     private GardenChatRoomService gardenChatRoomService;
@@ -220,6 +227,65 @@ class GardenChatServiceTest extends IntegrationTestSupport {
         assertThat(gardenChatRoomsFindResult.chatMessageId()).isEqualTo(secondGardenChatMessageByPart.chatMessageId());
         assertThat(gardenChatRoomsFindResult.chatRoomId()).isEqualTo(gardenChatRoomId);
         assertThat(gardenChatRoomsFindResult.partnerId()).isEqualTo(partnerId);
+    }
+
+    @DisplayName("내가 나간 채팅방은 목록에서 제외된다.")
+    @Test
+    void notFindChatMessageInRooms_exitMe() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long myId = chatRoomCreateParam.writerId();
+
+        // 상대방과 나의 세션 생성
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
+
+        // 내 메세지 전송
+        GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe = ChatRoomFixture.gardenChatMessageSendParamSecondByMe(gardenChatRoomId);
+        gardenChatService.saveMessage(gardenChatMessageSendParamFirstByMe);
+        gardenChatService.saveMessage(gardenChatMessageSendParamSecondByMe);
+
+        // When
+        gardenChatRoomService.deleteChatRoom(new GardenChatRoomDeleteParam(gardenChatRoomId, myId));
+        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
+
+        // Then
+        assertThat(chatMessagesInRooms.gardenChatRoomsFindResults()).isEmpty();
+    }
+
+    @DisplayName("내가 나간 채팅방은 목록에서 제외된다.")
+    @Test
+    void findChatMessageInRooms_exitPartner() {
+        // Given
+        GardenChatRoomCreateParam chatRoomCreateParam = ChatRoomFixture.chatRoomCreateParam();
+        Long gardenChatRoomId = gardenChatRoomService.createGardenChatRoom(chatRoomCreateParam);
+        Long myId = chatRoomCreateParam.writerId();
+        Long partnerId = chatRoomCreateParam.viewerId();
+
+        // 상대방과 나의 세션 생성
+        GardenSessionCreateParam gardenSessionCreateParamAboutMe = ChatRoomFixture.gardenSessionCreateParamAboutMe(gardenChatRoomId);
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutMe);
+        GardenSessionCreateParam gardenSessionCreateParamAboutPartner = ChatRoomFixture.gardenSessionCreateParamAboutPartner(gardenChatRoomId);
+        gardenChatRoomService.createSessionInfo(gardenSessionCreateParamAboutPartner);
+
+        // 내 메세지 전송
+        GardenChatMessageSendParam gardenChatMessageSendParamFirstByMe = ChatRoomFixture.gardenChatMessageSendParamFirstByMe(gardenChatRoomId);
+        GardenChatMessageSendParam gardenChatMessageSendParamSecondByMe = ChatRoomFixture.gardenChatMessageSendParamSecondByMe(gardenChatRoomId);
+        gardenChatService.saveMessage(gardenChatMessageSendParamFirstByMe);
+        gardenChatService.saveMessage(gardenChatMessageSendParamSecondByMe);
+
+        // When
+        gardenChatRoomService.deleteChatRoom(new GardenChatRoomDeleteParam(gardenChatRoomId, partnerId));
+        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(ChatRoomFixture.gardenChatMessageFindParam(myId));
+
+
+        // Then
+        List<GardenChatRoomInfo> all = gardenChatRoomInfoRepository.findAll();
+        assertThat(chatMessagesInRooms.gardenChatRoomsFindResults().size()).isEqualTo(1);
     }
 
     @DisplayName("내가 생성한 채팅방 목록을 확인할 수 있다. 각 채팅방 목록에는 상대방의 아이디, 최근에 보낸 메세지, 읽지 않은 메세지 개수, 최근에 보낸 시간를 확인할 수 있다. " +
