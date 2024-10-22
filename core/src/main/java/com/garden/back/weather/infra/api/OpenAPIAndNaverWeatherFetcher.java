@@ -12,8 +12,13 @@ import com.garden.back.weather.infra.api.open.response.WeekWeatherResponse;
 import com.garden.back.weather.infra.response.AllRegionsWeatherInfo;
 import com.garden.back.weather.infra.response.WeatherPerHourAndTomorrowInfo;
 import com.garden.back.weather.infra.response.WeekWeatherInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.util.Pair;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -57,6 +62,7 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
      워밍업 고려 어플리케이션 처음 켰을 때 많이 느림
      */
     @Override
+    @Cacheable(value = "allRegionsWeatherInfo")
     public List<AllRegionsWeatherInfo> getAllRegionsWeatherInfo() {
         String forecastDateTime = super.getNearestForecastDateTime(ZonedDateTime.now(ZoneId.of("Asia/Seoul")).toLocalDateTime());
 
@@ -124,4 +130,21 @@ public non-sealed class OpenAPIAndNaverWeatherFetcher extends NaverAndOpenAPISup
         return WeatherPerHourAndTomorrowInfo.from(selectedItems, regionName);
     }
 
+    @CacheEvict(value = "allRegionsWeatherInfo", allEntries = true)
+    public void evictAllRegionsWeatherInfo() {
+    }
+
+    @Slf4j
+    @Component
+    @RequiredArgsConstructor
+    static class Scheduler {
+        public static final String EVERY_1_HOUR = "0 0 * * * *";
+        private final OpenAPIAndNaverWeatherFetcher openAPIAndNaverWeatherFetcher;
+
+        @Scheduled(cron = EVERY_1_HOUR)
+        public void evictAllRegionsWeatherInfo() {
+            log.info("전국 날씨정보 불러오는 캐시 삭제: {}", openAPIAndNaverWeatherFetcher.getAllRegionsWeatherInfo());
+            openAPIAndNaverWeatherFetcher.evictAllRegionsWeatherInfo();
+        }
+    }
 }
