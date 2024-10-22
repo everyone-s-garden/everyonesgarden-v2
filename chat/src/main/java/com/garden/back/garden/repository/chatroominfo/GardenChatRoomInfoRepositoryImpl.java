@@ -3,6 +3,8 @@ package com.garden.back.garden.repository.chatroominfo;
 import com.garden.back.garden.domain.GardenChatRoomInfo;
 import com.garden.back.garden.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
 import com.garden.back.garden.repository.chatroominfo.dto.GardenChatRoomEnterRepositoryResponse;
+import com.garden.back.global.exception.EntityNotFoundException;
+import com.garden.back.global.exception.ErrorCode;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -53,6 +55,14 @@ public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepos
     public Long getChatRoomId(Long memberId, Long postId) {
         return gardenChatRoomInfoJpaRepository.findChatRoomId(memberId, postId)
             .orElse(NOT_EXISTED_ROOM_ID);
+    }
+
+    @Override
+    public int getExitedChatRoomMember(Long chatRoomId) {
+        if(findByRoomId(chatRoomId).isEmpty()) {
+            throw new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY);
+        }
+        return gardenChatRoomInfoJpaRepository.getSizeExitedChatRoomMember(chatRoomId);
     }
 
 }

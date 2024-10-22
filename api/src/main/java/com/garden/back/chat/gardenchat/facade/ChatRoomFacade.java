@@ -45,7 +45,7 @@ public class ChatRoomFacade {
 
     @Transactional
     public GardenChatRoomsFindFacadeResponses findChatRoomsInMember(GardenChatRoomsFindFacadeRequest param) {
-        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(param.to());
+        GardenChatRoomsFindResults chatMessagesInRooms = gardenChatService.findChatMessagesInRooms(param.toGardenChatRoomsFindParam());
 
         Map<Long, List<String>> imageUrlsById = new HashMap<>();
         Map<Long, MemberMyPageResult> memberInfoById = new HashMap<>();

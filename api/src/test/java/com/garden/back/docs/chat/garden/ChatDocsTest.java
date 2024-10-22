@@ -150,4 +150,23 @@ class ChatDocsTest extends RestDocsSupport {
                 )));
     }
 
+    @DisplayName("텃밭 분양 채팅방에 상대방이 퇴장했는지 여부를 확인한다.")
+    @Test
+    void isExitedPartner() throws Exception {
+        Long roomId = 1L;
+        given(gardenChatRoomService.isExitedPartner(any())).willReturn(true);
+
+        mockMvc.perform(get("/garden-chats/{roomId}/members", roomId))
+            .andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("check-partner-exited",
+                pathParameters(
+                    parameterWithName("roomId").description("채팅방 id")
+                ),
+                responseFields(
+                    fieldWithPath("isExitedPartner").type(JsonFieldType.BOOLEAN).description("상대방 퇴장 여부")
+                )));
+    }
+
+
 }
