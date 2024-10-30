@@ -16,112 +16,93 @@ public class MyManagedGarden {
 
     private static final String DEFAULT_DESCRIPTION = "";
 
+    private String myManagedGardenName;
     private Long myManagedGardenId;
-    private LocalDate useStartDate;
-    private LocalDate useEndDate;
+    private LocalDate createdAt;
     private Long memberId;
     private String imageUrl;
-    private Long gardenId;
     private String description;
 
     protected MyManagedGarden(
         Long myManagedGardenId,
-        LocalDate useStartDate,
-        LocalDate useEndDate,
+        String myManagedGardenName,
+        LocalDate createdAt,
         Long memberId,
         String imageUrl,
-        Long gardenId,
         String description
     ) {
+        Assert.isTrue(!myManagedGardenName.isEmpty(), "텃밭 이름은 공백일 수 없습니다.");
         Assert.isTrue(myManagedGardenId > 0, "myManagedGarden Id는 0보다 커야 합니다.");
         Assert.isTrue(memberId > 0, "member Id는 0보다 커야 합니다.");
-        Assert.isTrue(gardenId > 0, "garden Id는 0보다 커야 합니다.");
 
-        validateDate(useStartDate, useEndDate);
-
+        this.myManagedGardenName = myManagedGardenName;
         this.myManagedGardenId = myManagedGardenId;
-        this.useStartDate = useStartDate;
-        this.useEndDate = useEndDate;
+        this.createdAt = createdAt;
         this.memberId = memberId;
         this.imageUrl = imageUrl;
-        this.gardenId = gardenId;
         this.description = description;
     }
 
     public static MyManagedGarden of(
         Long myManagedGardenId,
-        LocalDate useStartDate,
-        LocalDate useEndDate,
+        String myManagedGardenName,
+        LocalDate createdAt,
         Long memberId,
         String imageUrl,
-        Long gardenId,
         String description
     ) {
         return new MyManagedGarden(
             myManagedGardenId,
-            useStartDate,
-            useEndDate,
+            myManagedGardenName,
+            createdAt,
             memberId,
             imageUrl,
-            gardenId,
             description
         );
     }
 
     protected MyManagedGarden(
-        LocalDate useStartDate,
-        LocalDate useEndDate,
+        String myManagedGardenName,
+        LocalDate createdAt,
         Long memberId,
-        String imageUrl,
-        Long gardenId
+        String imageUrl
     ) {
         Assert.isTrue(memberId > 0, "member Id는 0보다 커야 합니다.");
-        Assert.isTrue(gardenId > 0, "garden Id는 0보다 커야 합니다.");
 
-        validateDate(useStartDate, useEndDate);
-
-        this.useStartDate = useStartDate;
-        this.useEndDate = useEndDate;
+        this.myManagedGardenName = myManagedGardenName;
+        this.createdAt = createdAt;
         this.memberId = memberId;
         this.imageUrl = imageUrl;
-        this.gardenId = gardenId;
         this.description = DEFAULT_DESCRIPTION;
     }
 
     protected MyManagedGarden(
-        LocalDate useStartDate,
-        LocalDate useEndDate,
+        String myManagedGardenName,
+        LocalDate createdAt,
         Long memberId,
         String imageUrl,
-        Long gardenId,
         String description
     ) {
         Assert.isTrue(memberId > 0, "member Id는 0보다 커야 합니다.");
-        Assert.isTrue(gardenId > 0, "garden Id는 0보다 커야 합니다.");
 
-        validateDate(useStartDate, useEndDate);
-
-        this.useStartDate = useStartDate;
-        this.useEndDate = useEndDate;
+        this.myManagedGardenName = myManagedGardenName;
+        this.createdAt = createdAt;
         this.memberId = memberId;
         this.imageUrl = imageUrl;
-        this.gardenId = gardenId;
         this.description = description.isBlank() ? DEFAULT_DESCRIPTION : description;
     }
 
     public static MyManagedGarden of(
-        LocalDate useStartDate,
-        LocalDate useEndDate,
+        String myManagedGardenName,
+        LocalDate createdAt,
         Long memberId,
-        String imageUrl,
-        Long gardenId
+        String imageUrl
     ) {
         return new MyManagedGarden(
-            useStartDate,
-            useEndDate,
+            myManagedGardenName,
+            createdAt,
             memberId,
-            imageUrl,
-            gardenId
+            imageUrl
         );
     }
 
@@ -129,25 +110,22 @@ public class MyManagedGarden {
         MyManagedGardenCreateDomainRequest request
     ) {
         return new MyManagedGarden(
-            request.useStartDate(),
-            request.useEndDate(),
+            request.myManagedGardenName(),
+            request.createdAt(),
             request.memberId(),
             request.myManagedGardenImageUrl(),
-            request.memberId(),
             request.description()
         );
     }
 
     public void update(MyManagedGardenUpdateDomainRequest request) {
-        Assert.isTrue(request.gardenId() > 0, "garden id는 0보다 커야 한다.");
         validWriterId(request.memberId());
-        validateDate(request.useStartDate(), request.useEndDate());
-
+        validGardenName(request.myManagedGardenName());
         updateImageIfPresent(request.myManagedGardenImageUrl());
 
-        useStartDate = request.useStartDate();
-        useEndDate = request.useEndDate();
-        gardenId = request.gardenId();
+
+        myManagedGardenName = request.myManagedGardenName();
+        createdAt = request.createdAt();
         description = request.description();
     }
 
@@ -157,9 +135,9 @@ public class MyManagedGarden {
         }
     }
 
-    private void validateDate(LocalDate startDate, LocalDate endDate) {
-        if (endDate.isBefore(startDate)) {
-            throw new IllegalArgumentException("종료일은 시작일보다 이전일 수 없습니다.");
+    private void validGardenName(String myManagedGardenName) {
+        if (!Objects.nonNull(myManagedGardenName)) {
+            throw new IllegalArgumentException("텃밭 이름은 빈값일 수 없습니다.");
         }
     }
 

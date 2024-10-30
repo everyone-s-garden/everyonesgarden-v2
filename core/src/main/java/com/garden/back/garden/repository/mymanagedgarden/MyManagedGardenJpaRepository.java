@@ -14,16 +14,14 @@ import java.util.List;
 public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGardenEntity, Long> {
 
     @Query(
-            """ 
+            """
                     select
+                     mmg.myManagedGardenName as myManagedGardenName,
                      mmg.myManagedGardenId as myManagedGardenId,
                      mmg.imageUrl as imageUrl,
-                     mmg.useStartDate as useStartDate,
-                     mmg.useEndDate as useEndDate,
-                     mmg.description as description,
-                     g.gardenName as gardenName
+                     mmg.createdAt as createdAt,
+                     mmg.description as description
                     from MyManagedGardenEntity as mmg
-                    inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.memberId =:memberId
                     and mmg.myManagedGardenId >:nextManagedGardenId
                     order by mmg.myManagedGardenId
@@ -36,24 +34,21 @@ public interface MyManagedGardenJpaRepository extends JpaRepository<MyManagedGar
 
     @Modifying(clearAutomatically = true)
     @Query(
-            """ 
+            """
                     delete from MyManagedGardenEntity as mmg where mmg.myManagedGardenId =:myManagedGardenId and mmg.memberId =:memberId
                     """
     )
     void delete(@Param("myManagedGardenId") Long myManagedGardenId, @Param("memberId") Long memberId);
 
     @Query(
-            """ 
+            """
                     select
+                     mmg.myManagedGardenName as myManagedGardenName,
                      mmg.myManagedGardenId as myManagedGardenId,
                      mmg.imageUrl as imageUrl,
-                     mmg.useStartDate as useStartDate,
-                     mmg.useEndDate as useEndDate,
-                     mmg.description as description,
-                     g.gardenName as gardenName,
-                     g.address as address
+                     mmg.createdAt as createdAt,
+                     mmg.description as description
                     from MyManagedGardenEntity as mmg
-                    inner join GardenEntity as g on mmg.gardenId = g.gardenId
                     where mmg.myManagedGardenId =:myManagedGardenId
                     """
     )

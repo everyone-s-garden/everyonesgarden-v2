@@ -18,9 +18,8 @@ public record OtherManagedGardenGetResults(
 
     public record OtherManagedGardenGetResult(
         Long myManagedGardenId,
-        String gardenName,
-        String useStartDate,
-        String useEndDate,
+        String myManagedGardenName,
+        String createdAt,
         List<String> images,
         String description
     ) {
@@ -29,9 +28,8 @@ public record OtherManagedGardenGetResults(
             MyManagedGardenGetResults.MyManagedGardenGetResult response) {
             return new OtherManagedGardenGetResult(
                 response.myManagedGardenId(),
-                response.gardenName(),
-                response.useStartDate(),
-                response.useEndDate(),
+                response.myManagedGardenName(),
+                response.createdAt(),
                 response.images(),
                 response.description()
             );

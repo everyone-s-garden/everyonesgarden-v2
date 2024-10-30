@@ -300,9 +300,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("myManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("내가 가꾸는 텃밭 목록"),
                     fieldWithPath("myManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
-                    fieldWithPath("myManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
-                    fieldWithPath("myManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
-                    fieldWithPath("myManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                    fieldWithPath("myManagedGardenGetResponses[].myManagedGardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
+                    fieldWithPath("myManagedGardenGetResponses[].createdAt").type(JsonFieldType.STRING).description("텃밭 일기 등록일"),
                     fieldWithPath("myManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
                     fieldWithPath("myManagedGardenGetResponses[].description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록"),
                     fieldWithPath("nextMyManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 넥스트 키"),
@@ -326,10 +325,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                 ),
                 responseFields(
                     fieldWithPath("myManagedGardenId").type(JsonFieldType.NUMBER).description("내가 가꾸는 텃밭 아이디"),
-                    fieldWithPath("gardenName").type(JsonFieldType.STRING).description("분양받은 텃밭의 이름"),
-                    fieldWithPath("address").type(JsonFieldType.STRING).description("분양받은 텃밭의 주소"),
-                    fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
-                    fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                    fieldWithPath("myManagedGardenName").type(JsonFieldType.STRING).description("분양받은 텃밭의 이름"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
                     fieldWithPath("images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
                     fieldWithPath("description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 )));
@@ -403,9 +400,8 @@ class GardenRestDocsTest extends RestDocsSupport {
                 responseFields(
                     fieldWithPath("otherManagedGardenGetResponses").type(JsonFieldType.ARRAY).description("상대방이 가꾸는 텃밭 목록"),
                     fieldWithPath("otherManagedGardenGetResponses[].myManagedGardenId").type(JsonFieldType.NUMBER).description("상대방의 가꾸는 텃밭 아이디"),
-                    fieldWithPath("otherManagedGardenGetResponses[].gardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
-                    fieldWithPath("otherManagedGardenGetResponses[].useStartDate").type(JsonFieldType.STRING).description("텃밭 사용 시작일"),
-                    fieldWithPath("otherManagedGardenGetResponses[].useEndDate").type(JsonFieldType.STRING).description("텃밭 사용 종료일"),
+                    fieldWithPath("otherManagedGardenGetResponses[].myManagedGardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭의 농장 이름"),
+                    fieldWithPath("otherManagedGardenGetResponses[].createdAt").type(JsonFieldType.STRING).description("텃밭 일기 작성일"),
                     fieldWithPath("otherManagedGardenGetResponses[].images").type(JsonFieldType.ARRAY).description("가꾸는 텃밭 대표 이미지 url"),
                     fieldWithPath("otherManagedGardenGetResponses[].description").type(JsonFieldType.STRING).description("상대방이 가꾸는 텃밭 자랑할 만한 내용 또는 기록"),
                     fieldWithPath("nextManagedGardenId").type(JsonFieldType.NUMBER).description("상대방이 가꾸는 텃밭 넥스트 키"),

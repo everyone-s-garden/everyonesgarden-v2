@@ -204,10 +204,9 @@ public class GardenFixture {
         return new MyManagedGardenGetResults(
             List.of(
                 new MyManagedGardenGetResults.MyManagedGardenGetResult(
-                    1L,
                     "별이네 주말농장",
+                    1L,
                     "2023.12.01",
-                    "2023.12.31",
                     List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
                     "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )
@@ -219,18 +218,16 @@ public class GardenFixture {
 
     public static MyManagedGardenCreateRequest myManagedGardenCreateRequest() {
         return new MyManagedGardenCreateRequest(
-            1L,
+            "양평텃밭",
             "2023.12.01",
-            "2023.12.31",
             "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
     }
 
     public static MyManagedGardenUpdateRequest myManagedGardenUpdateRequest() {
         return new MyManagedGardenUpdateRequest(
-            1L,
+            "김별텃밭",
             "2023.12.01",
-            "2023.12.31",
             "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
     }
@@ -239,9 +236,7 @@ public class GardenFixture {
         return new MyManagedGardenDetailResult(
             1L,
             "금쪽이네 텃밭",
-            "인천 계양구 계산동 22",
             "2023.12.01",
-            "2023.12.31",
             "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
             "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
         );
@@ -280,7 +275,6 @@ public class GardenFixture {
                     1L,
                     "별이네 주말농장",
                     "2023.12.01",
-                    "2023.12.31",
                     List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
                     "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )

@@ -3,10 +3,9 @@ package com.garden.back.garden.domain.dto;
 import java.time.LocalDate;
 
 public record MyManagedGardenCreateDomainRequest(
+    String myManagedGardenName,
     String myManagedGardenImageUrl,
-    Long gardenId,
-    LocalDate useStartDate,
-    LocalDate useEndDate,
+    LocalDate createdAt,
     Long memberId,
     String description
 ) {

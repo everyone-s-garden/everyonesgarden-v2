@@ -432,21 +432,18 @@ class GardenControllerTest extends ControllerTestSupport {
     private static Stream<MyManagedGardenCreateRequest> provideInvalidMyManagedGardenCreateRequest() {
         return Stream.of(
             new MyManagedGardenCreateRequest(
-                -1L,
+                "",
                 "2023.12.01",
-                "2023.12.31",
                 "토마토를 키워요"
             ),
             new MyManagedGardenCreateRequest(
-                1L,
+                null,
                 "2023.12.01",
-                "2023.11.23",
                 "토마토를 키워요"
             ),
             new MyManagedGardenCreateRequest(
-                1L,
-                "2023-12-01",
-                "2023-12-31",
+                "양평텃밭",
+                "2023-1201",
                 "토마토를 키워요"
             )
         );
@@ -454,9 +451,8 @@ class GardenControllerTest extends ControllerTestSupport {
 
     private static MyManagedGardenUpdateRequest myManagedGardenUpdateRequest() {
         return new MyManagedGardenUpdateRequest(
-            1L,
+            "양평텃밭",
             "2023.12.01",
-            "2023.12.31",
             "토마토를 키워요"
         );
     }
@@ -464,21 +460,18 @@ class GardenControllerTest extends ControllerTestSupport {
     private static Stream<MyManagedGardenUpdateRequest> provideInvalidMyManagedGardenUpdateRequest() {
         return Stream.of(
             new MyManagedGardenUpdateRequest(
-                -1L,
+                "",
                 "2023.12.01",
-                "2023.12.31",
                 "토마토를 키워요"
             ),
             new MyManagedGardenUpdateRequest(
-                1L,
+                null,
                 "2023-12-01",
-                "2023-12-31",
                 "토마토를 키워요"
             ),
             new MyManagedGardenUpdateRequest(
-                1L,
+                "양평텃밭",
                 "2023.12.01",
-                "2023.11-30",
                 "토마토를 키워요"
             )
         );

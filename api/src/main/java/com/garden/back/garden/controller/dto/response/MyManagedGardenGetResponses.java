@@ -20,19 +20,17 @@ public record MyManagedGardenGetResponses(
     }
 
     public record MyManagedGardenGetResponse(
+        String myManagedGardenName,
         Long myManagedGardenId,
-        String gardenName,
-        String useStartDate,
-        String useEndDate,
+        String createdAt,
         List<String> images,
         String description
     ) {
         public static MyManagedGardenGetResponse to(MyManagedGardenGetResults.MyManagedGardenGetResult result) {
             return new MyManagedGardenGetResponse(
+                result.myManagedGardenName(),
                 result.myManagedGardenId(),
-                result.gardenName(),
-                result.useStartDate(),
-                result.useEndDate(),
+                result.createdAt(),
                 result.images(),
                 result.description()
             );

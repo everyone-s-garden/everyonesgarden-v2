@@ -19,11 +19,11 @@ public class MyManagedGardenEntity {
     @Column(name = "my_managed_garden_id")
     private Long myManagedGardenId;
 
-    @Column(name = "use_start_date")
-    private LocalDate useStartDate;
+    @Column(name = "my_managed_garden_name", nullable = false)
+    private String myManagedGardenName;
 
-    @Column(name = "use_end_date")
-    private LocalDate useEndDate;
+    @Column(name = "created_at")
+    private LocalDate createdAt;
 
     @Column(name = "member_id")
     private Long memberId;
@@ -31,20 +31,16 @@ public class MyManagedGardenEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "garden_id")
-    private Long gardenId;
-
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     public MyManagedGarden toModel() {
         return MyManagedGarden.of(
             myManagedGardenId,
-            useStartDate,
-            useEndDate,
+            myManagedGardenName,
+            createdAt,
             memberId,
             imageUrl,
-            gardenId,
             description
         );
     }
@@ -54,11 +50,10 @@ public class MyManagedGardenEntity {
     ) {
         MyManagedGardenEntity myManagedGardenEntity = new MyManagedGardenEntity();
         myManagedGardenEntity.myManagedGardenId = myManagedGarden.getMyManagedGardenId();
-        myManagedGardenEntity.useStartDate = myManagedGarden.getUseStartDate();
-        myManagedGardenEntity.useEndDate = myManagedGarden.getUseEndDate();
+        myManagedGardenEntity.myManagedGardenName = myManagedGarden.getMyManagedGardenName();
+        myManagedGardenEntity.createdAt = myManagedGarden.getCreatedAt();
         myManagedGardenEntity.memberId = myManagedGarden.getMemberId();
         myManagedGardenEntity.imageUrl = myManagedGarden.getImageUrl();
-        myManagedGardenEntity.gardenId = myManagedGarden.getGardenId();
         myManagedGardenEntity.description = myManagedGarden.getDescription();
 
         return myManagedGardenEntity;

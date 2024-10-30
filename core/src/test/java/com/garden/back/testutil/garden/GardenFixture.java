@@ -305,10 +305,9 @@ public class GardenFixture {
         MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
 
         return new MyManagedGardenCreateParam(
+            "김벼루텃밭",
             multipartFile,
-            1L,
             USE_START_DATE,
-            USE_END_DATE,
             1L,
             "배추를 심었어요"
         );
@@ -316,10 +315,9 @@ public class GardenFixture {
 
     public static MyManagedGardenCreateParam myManagedGardenCreateParamWithoutImage() {
         return new MyManagedGardenCreateParam(
+            "김벼루텃밭",
             null,
-            1L,
             USE_START_DATE,
-            USE_END_DATE,
             1L,
             "배추를 심었어요"
         );
@@ -327,42 +325,37 @@ public class GardenFixture {
 
     public static MyManagedGardenUpdateParam myManagedGardenUpdateParam(
         String expectedUrl,
-        Long gardenId,
         Long myManagedGardenId) {
         MultipartFile multipartFile = new MockMultipartFile("test", expectedUrl.getBytes());
 
         return new MyManagedGardenUpdateParam(
+            "김별텃밭",
             multipartFile,
             myManagedGardenId,
-            gardenId,
             USE_START_DATE,
-            USE_END_DATE,
             1L,
             "배추를 심었어요"
         );
     }
 
     public static MyManagedGardenUpdateParam myManagedGardenUpdateParamWithoutImage(
-        Long gardenId,
         Long myManagedGardenId) {
         return new MyManagedGardenUpdateParam(
+            "김별텃밭",
             null,
             myManagedGardenId,
-            gardenId,
             USE_START_DATE,
-            USE_END_DATE,
             1L,
             "배추를 심었어요"
         );
     }
 
-    public static MyManagedGarden myManagedGarden(Long gardenId) {
+    public static MyManagedGarden myManagedGarden() {
         return MyManagedGarden.of(
+            "김벼루텃밭",
             USE_START_DATE,
-            USE_END_DATE,
             1L,
-            "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
-            gardenId
+            "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"
         );
     }
 

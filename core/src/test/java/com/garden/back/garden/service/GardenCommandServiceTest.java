@@ -249,7 +249,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     @Test
     void deleteMyManagedGarden() {
         // Given
-        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenDeleteParam myManagedGardenDeleteParam
             = new MyManagedGardenDeleteParam(
@@ -277,11 +277,11 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden savedMyManagedGarden = myManagedGarden.get();
 
         // Then
-        assertThat(savedMyManagedGarden.getGardenId()).isEqualTo(myManagedGardenCreateParam.gardenId());
+        assertThat(savedMyManagedGarden.getMyManagedGardenName())
+            .isEqualTo(myManagedGardenCreateParam.myManagedGardenName());
         assertThat(savedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
         assertThat(savedMyManagedGarden.getMemberId()).isEqualTo(myManagedGardenCreateParam.memberId());
-        assertThat(savedMyManagedGarden.getUseStartDate()).isEqualTo(myManagedGardenCreateParam.useStartDate());
-        assertThat(savedMyManagedGarden.getUseEndDate()).isEqualTo(myManagedGardenCreateParam.useEndDate());
+        assertThat(savedMyManagedGarden.getCreatedAt()).isEqualTo(myManagedGardenCreateParam.createdAt());
     }
 
     @DisplayName("내가 가꾸는 텃밭을 등록할 때 null 값이면 저장되지 않고 url로 빈값이 저장된다.")
@@ -305,17 +305,13 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     @Test
     void updateMyManagedGarden() {
         // Given
-        Garden garden = GardenFixture.publicGarden();
-        Garden savedPublicGarden = gardenRepository.save(garden);
-
         String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
-        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
             expectedUrl,
-            savedPublicGarden.getGardenId(),
             savedMyManagedGarden.getMyManagedGardenId()
         );
 
@@ -324,9 +320,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden updatedMyManagedGarden = myManagedGardenRepository.getById(updateMyManagedGardenId);
 
         // Then
-        assertThat(updatedMyManagedGarden.getUseEndDate()).isEqualTo(myManagedGardenUpdateParam.useEndDate());
-        assertThat(updatedMyManagedGarden.getUseStartDate()).isEqualTo(myManagedGardenUpdateParam.useStartDate());
-        assertThat(updatedMyManagedGarden.getGardenId()).isEqualTo(myManagedGardenUpdateParam.gardenId());
+        assertThat(updatedMyManagedGarden.getCreatedAt()).isEqualTo(myManagedGardenUpdateParam.createdAt());
         assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
     }
 
@@ -335,16 +329,14 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     void updateMyManagedGarden_nullImage() {
         // Given
         Garden garden = GardenFixture.publicGarden();
-        Garden savedPublicGarden = gardenRepository.save(garden);
 
-        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden(savedPrivateGarden.getGardenId());
+        MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
 
         String expectedUrl = "";
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParamWithoutImage(
-            savedPublicGarden.getGardenId(),
             savedMyManagedGarden.getMyManagedGardenId()
         );
 

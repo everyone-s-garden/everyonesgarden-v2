@@ -4,10 +4,8 @@ import java.time.LocalDate;
 
 public interface MyManagedGardenDetailRepositoryResponse {
     Long getMyManagedGardenId();
-    String getGardenName();
-    String getAddress();
-    LocalDate getUseStartDate();
-    LocalDate getUseEndDate();
+    String getMyManagedGardenName();
+    LocalDate getCreatedAt();
     String getImageUrl();
     String getDescription();
 }

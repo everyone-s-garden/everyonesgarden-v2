@@ -6,21 +6,20 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 public record MyManagedGardenUpdateParam(
+    String myManagedGardenName,
     MultipartFile myManagedGardenImage,
     Long myManagedGardenId,
-    Long gardenId,
-    LocalDate useStartDate,
-    LocalDate useEndDate,
+    LocalDate createdAt,
     Long memberId,
     String description
 ) {
+
     public MyManagedGardenUpdateDomainRequest toMyManagedGardenUpdateDomainRequest(
         String myManagedGardenImageUrl) {
         return new MyManagedGardenUpdateDomainRequest(
+            myManagedGardenName,
             myManagedGardenImageUrl,
-            gardenId,
-            useStartDate,
-            useEndDate,
+            createdAt,
             memberId,
             description
         );

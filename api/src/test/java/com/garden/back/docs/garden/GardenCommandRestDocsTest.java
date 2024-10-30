@@ -238,9 +238,8 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                         partWithName("myManagedGardenCreateRequest").description("내가 가꾸는 텃밭 생성 요청 값")
                     ),
                     requestPartFields("myManagedGardenCreateRequest",
-                        fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("분양받은 텃밭의 아이디"),
-                        fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
-                        fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd"),
+                        fieldWithPath("myManagedGardenName").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 이름"),
+                        fieldWithPath("createdAt").type(JsonFieldType.STRING).description("등록일 yyyy.MM.dd"),
                         fieldWithPath("description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                     ),
                     responseHeaders(
@@ -295,9 +294,8 @@ class GardenCommandRestDocsTest extends RestDocsSupport {
                     partWithName("myManagedGardenUpdateRequest").description("가꾸는 텃밭 수정 요청 값")
                 ),
                 requestPartFields("myManagedGardenUpdateRequest",
-                    fieldWithPath("gardenId").type(JsonFieldType.NUMBER).description("분양받은 텃밭의 아이디"),
-                    fieldWithPath("useStartDate").type(JsonFieldType.STRING).description("사용 시작일 yyyy.MM.dd"),
-                    fieldWithPath("useEndDate").type(JsonFieldType.STRING).description("사용 종료일 yyyy.MM.dd"),
+                    fieldWithPath("myManagedGardenName").type(JsonFieldType.STRING).description("가꾸는 텃밭 이름"),
+                    fieldWithPath("createdAt").type(JsonFieldType.STRING).description("등록일 yyyy.MM.dd"),
                     fieldWithPath("description").type(JsonFieldType.STRING).description("내가 가꾸는 텃밭 자랑할 만한 내용 또는 기록")
                 ),
                 responseHeaders(
