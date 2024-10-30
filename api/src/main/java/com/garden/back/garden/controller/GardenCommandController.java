@@ -139,7 +139,7 @@ public class GardenCommandController {
         @CurrentUser LoginUser loginUser
     ) {
         Long myManagedGardenId = gardenCommandService.createMyManagedGarden(
-            MyManagedGardenCreateRequest.of(newGardenImage, request, loginUser.memberId()));
+            request.of(newGardenImage,loginUser.memberId()));
         URI location = LocationBuilder.buildLocation(myManagedGardenId);
 
         return ResponseEntity.created(location).build();

@@ -3,6 +3,8 @@ package com.garden.back.garden.controller.dto.request;
 import com.garden.back.garden.controller.dto.request.validation.ValidDate;
 import com.garden.back.garden.service.dto.request.MyManagedGardenCreateParam;
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,35 +13,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 public record MyManagedGardenCreateRequest(
-    @Positive
-    Long gardenId,
 
+    @NotBlank(message = "텃밭 이름은 NULL이거나 빈값일 수 없습니다.")
+    String myManagedGardenName,
     @ValidDate
-    String useStartDate,
-
-    @ValidDate
-    String useEndDate,
+    String createdAt,
 
     String description
 ) {
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
-    public static MyManagedGardenCreateParam of(
+    public MyManagedGardenCreateParam of(
         MultipartFile gardenImage,
-        MyManagedGardenCreateRequest request,
         Long memberId
     ) {
-        if (gardenImage == null ) {
+        if (gardenImage == null) {
             gardenImage = (MultipartFile) Collections.emptyList();
         }
 
         return new MyManagedGardenCreateParam(
+            myManagedGardenName,
             gardenImage,
-            request.gardenId,
-            LocalDate.parse(request.useStartDate, DATE_FORMATTER),
-            LocalDate.parse(request.useEndDate, DATE_FORMATTER),
+            LocalDate.parse(createdAt, DATE_FORMATTER),
             memberId,
-            isNull(request.description())
+            isNull(description)
         );
     }
 

@@ -6,10 +6,8 @@ import java.time.format.DateTimeFormatter;
 
 public record MyManagedGardenDetailResult(
     Long myManagedGardenId,
-    String gardenName,
-    String address,
-    String useStartDate,
-    String useEndDate,
+    String myManagedGardenName,
+    String createdAt,
     String imageUrl,
     String description
 ) {
@@ -18,10 +16,8 @@ public record MyManagedGardenDetailResult(
     public static MyManagedGardenDetailResult to(MyManagedGardenDetailRepositoryResponse response) {
         return new MyManagedGardenDetailResult(
             response.getMyManagedGardenId(),
-            response.getGardenName(),
-            response.getAddress(),
-            response.getUseStartDate().format(DATE_FORMATTER),
-            response.getUseEndDate().format(DATE_FORMATTER),
+            response.getMyManagedGardenName(),
+            response.getCreatedAt().format(DATE_FORMATTER),
             response.getImageUrl(),
             response.getDescription()
         );

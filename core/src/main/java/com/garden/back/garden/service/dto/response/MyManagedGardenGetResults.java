@@ -23,10 +23,9 @@ public record MyManagedGardenGetResults(
     }
 
     public record MyManagedGardenGetResult(
+        String myManagedGardenName,
         Long myManagedGardenId,
-        String gardenName,
-        String useStartDate,
-        String useEndDate,
+        String createdAt,
         List<String> images,
         String description
     ) {
@@ -36,10 +35,9 @@ public record MyManagedGardenGetResults(
             MyManagedGardensGetRepositoryResponse response,
             List<String> images) {
             return new MyManagedGardenGetResult(
+                response.getMyManagedGardenName(),
                 response.getMyManagedGardenId(),
-                response.getGardenName(),
-                response.getUseStartDate().format(DATE_FORMATTER),
-                response.getUseEndDate().format(DATE_FORMATTER),
+                response.getCreatedAt().format(DATE_FORMATTER),
                 images,
                 response.getDescription()
             );

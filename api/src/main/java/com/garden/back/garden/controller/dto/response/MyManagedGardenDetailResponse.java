@@ -6,20 +6,16 @@ import java.util.List;
 
 public record MyManagedGardenDetailResponse(
     Long myManagedGardenId,
-    String gardenName,
-    String address,
-    String useStartDate,
-    String useEndDate,
+    String myManagedGardenName,
+    String createdAt,
     List<String> images,
     String description
 ) {
     public static MyManagedGardenDetailResponse to(MyManagedGardenDetailResult result) {
         return new MyManagedGardenDetailResponse(
             result.myManagedGardenId(),
-            result.gardenName(),
-            result.address(),
-            result.useStartDate(),
-            result.useEndDate(),
+            result.myManagedGardenName(),
+            result.createdAt(),
             List.of(result.imageUrl()),
             result.description()
         );

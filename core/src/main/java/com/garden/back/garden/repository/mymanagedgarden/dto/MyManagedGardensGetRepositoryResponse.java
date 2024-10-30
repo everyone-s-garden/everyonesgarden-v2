@@ -3,11 +3,9 @@ package com.garden.back.garden.repository.mymanagedgarden.dto;
 import java.time.LocalDate;
 
 public interface MyManagedGardensGetRepositoryResponse {
-
+    String getMyManagedGardenName();
     Long getMyManagedGardenId();
-    String getGardenName();
-    LocalDate getUseStartDate();
-    LocalDate getUseEndDate();
+    LocalDate getCreatedAt();
     String getImageUrl();
     String getDescription();
 

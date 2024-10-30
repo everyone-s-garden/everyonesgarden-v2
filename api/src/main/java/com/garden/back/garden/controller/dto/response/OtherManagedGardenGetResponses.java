@@ -21,18 +21,16 @@ public record OtherManagedGardenGetResponses(
 
     public record OtherManagedGardenGetResponse(
         Long myManagedGardenId,
-        String gardenName,
-        String useStartDate,
-        String useEndDate,
+        String myManagedGardenName,
+        String createdAt,
         List<String> images,
         String description
     ) {
         public static OtherManagedGardenGetResponse to(OtherManagedGardenGetResults.OtherManagedGardenGetResult result) {
             return new OtherManagedGardenGetResponse(
                 result.myManagedGardenId(),
-                result.gardenName(),
-                result.useStartDate(),
-                result.useEndDate(),
+                result.myManagedGardenName(),
+                result.createdAt(),
                 result.images(),
                 result.description()
             );

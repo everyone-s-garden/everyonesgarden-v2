@@ -6,24 +6,21 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
 public record MyManagedGardenCreateParam(
+    String myManagedGardenName,
     MultipartFile myManagedGardenImage,
-    Long gardenId,
-    LocalDate useStartDate,
-    LocalDate useEndDate,
+    LocalDate createdAt,
     Long memberId,
     String description
 ) {
-    public static MyManagedGardenCreateDomainRequest to(
-        MyManagedGardenCreateParam param,
+    public MyManagedGardenCreateDomainRequest to(
         String imageUrl
     ) {
         return new MyManagedGardenCreateDomainRequest(
+            myManagedGardenName,
             imageUrl,
-            param.gardenId,
-            param.useStartDate,
-            param.useEndDate,
-            param.memberId,
-            param.description
+            createdAt,
+            memberId,
+            description
         );
     }
 
