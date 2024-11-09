@@ -99,8 +99,10 @@ public class GardenCommandService {
     }
 
     private void saveNewGardenImages(Garden garden, List<MultipartFile> newImage) {
-        List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImage);
-        uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
+        if (!newImage.isEmpty()) {
+            List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImage);
+            uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
+        }
     }
 
     @Transactional

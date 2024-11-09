@@ -78,7 +78,7 @@ public record GardenUpdateRequest(
         Long memberId
     ) {
         if (newGardenImages == null || newGardenImages.isEmpty()) {
-            throw new IllegalArgumentException("텃밭에 등록하는 사진은 빈 값일 수 없습니다. 최소 한 장이상의 사진을 등록해주세요");
+            newGardenImages = Collections.emptyList();
         }
         return new GardenUpdateParam(
             gardenId,
