@@ -77,13 +77,11 @@ public record GardenUpdateRequest(
         GardenUpdateRequest gardenUpdateRequest,
         Long memberId
     ) {
-        if (newGardenImages == null || newGardenImages.isEmpty()) {
-            newGardenImages = Collections.emptyList();
-        }
+
         return new GardenUpdateParam(
             gardenId,
             gardenUpdateRequest.remainGardenImageUrls,
-            newGardenImages,
+            getNewImages(newGardenImages),
             gardenUpdateRequest.gardenName(),
             gardenUpdateRequest.price(),
             gardenUpdateRequest.size(),
@@ -107,5 +105,20 @@ public record GardenUpdateRequest(
 
     private static String isNull(String field) {
         return field == null ? "" : field;
+    }
+
+    private static List<MultipartFile> getNewImages(List<MultipartFile> newGardenImages) {
+        if (newGardenImages == null || newGardenImages.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        if (newGardenImages.size() == 1 && isFileEmpty(newGardenImages.get(0))) {
+            return Collections.emptyList();
+        }
+        return newGardenImages;
+    }
+
+    private static boolean isFileEmpty(MultipartFile file) {
+        return file == null || file.getOriginalFilename() == null || file.getOriginalFilename().isEmpty();
     }
 }

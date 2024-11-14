@@ -123,13 +123,15 @@ public class GardenCommandService {
     @Transactional
     public Long updateMyManagedGarden(MyManagedGardenUpdateParam param) {
         MyManagedGarden myManagedGarden = myManagedGardenRepository.getById(param.myManagedGardenId());
+        String uploadImageUrls = myManagedGarden.getImageUrl();
 
-        deleteGardenImage(myManagedGarden.getImageUrl());
-        String uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
+        if (param.myManagedGardenImage().isPresent()) {
+            deleteGardenImage(myManagedGarden.getImageUrl());
+            uploadImageUrls = uploadGardenImage(param.myManagedGardenImage().get());
+        }
 
         myManagedGarden.update(param.toMyManagedGardenUpdateDomainRequest(uploadImageUrls));
         myManagedGardenRepository.save(myManagedGarden);
-
         return myManagedGarden.getMyManagedGardenId();
     }
 

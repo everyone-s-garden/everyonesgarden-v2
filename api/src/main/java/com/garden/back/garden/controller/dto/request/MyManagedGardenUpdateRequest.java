@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public record MyManagedGardenUpdateRequest(
     @NotBlank(message = "텃밭 이름은 NULL이거나 빈값일 수 없습니다.")
@@ -27,19 +29,22 @@ public record MyManagedGardenUpdateRequest(
         MultipartFile newImage,
         Long memberId
     ) {
-        if (newImage == null ) {
-            newImage = (MultipartFile) Collections.emptyList();
-        }
-
         return new MyManagedGardenUpdateParam(
             myManagedGardenName,
-            newImage,
+            getNewFile(newImage),
             myManagedGardenId,
             LocalDate.parse(createdAt, DATE_FORMATTER),
             memberId,
             isNull(description)
         );
 
+    }
+
+    private static Optional<MultipartFile> getNewFile(MultipartFile file) {
+        if (file == null || file.getOriginalFilename() == null || file.getOriginalFilename().isEmpty()) {
+            return Optional.empty();
+        }
+        return Optional.of(file);
     }
 
     private static String isNull(String field) {

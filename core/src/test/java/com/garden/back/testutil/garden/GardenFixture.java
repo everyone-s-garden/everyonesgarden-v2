@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class GardenFixture {
     private static final String FIRST_GARDEN_IMAGE_URL = "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg";
@@ -330,7 +331,7 @@ public class GardenFixture {
 
         return new MyManagedGardenUpdateParam(
             "김별텃밭",
-            multipartFile,
+            Optional.of(multipartFile),
             myManagedGardenId,
             USE_START_DATE,
             1L,
@@ -342,7 +343,7 @@ public class GardenFixture {
         Long myManagedGardenId) {
         return new MyManagedGardenUpdateParam(
             "김별텃밭",
-            null,
+            Optional.empty(),
             myManagedGardenId,
             USE_START_DATE,
             1L,
@@ -380,7 +381,7 @@ public class GardenFixture {
     }
 
     public static OtherGardenGetParam otherGardenGetParamWithLoginUser(Long otherMemberId) {
-        return new OtherGardenGetParam(otherMemberId, 0L, otherMemberId+1);
+        return new OtherGardenGetParam(otherMemberId, 0L, otherMemberId + 1);
     }
 
 }
