@@ -333,7 +333,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
 
-        String expectedUrl = "";
+        String expectedUrl = "byeol.png";
         given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParamWithoutImage(
