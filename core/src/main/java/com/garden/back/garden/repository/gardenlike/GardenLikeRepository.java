@@ -16,4 +16,6 @@ public interface GardenLikeRepository {
 
     boolean isExisted(Long memberId, Long gardenId);
 
+    void delete(Long gardenId);
+
 }

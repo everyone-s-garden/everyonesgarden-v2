@@ -24,4 +24,11 @@ public interface GardenLikeJpaRepository extends JpaRepository<GardenLikeEntity,
     )
     Optional<Long> findGardenLikeId(@Param("memberId") Long memberId, @Param("gardenId") Long gardenId);
 
+    @Modifying(clearAutomatically = true)
+    @Query(
+        """
+        delete from GardenLikeEntity as gl where gl.garden.gardenId =:gardenId
+        """)
+    void delete(@Param("gardenId") Long gardenLId);
+
 }

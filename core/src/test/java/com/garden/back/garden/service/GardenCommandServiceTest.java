@@ -106,6 +106,36 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
     }
 
+    @DisplayName("내가 작성한 텃밭에 관련 좋아요, 이미지가 있는 경우 외래키 참조 조건에 따라 제대로 삭제되는지 확인한다.")
+    @Test
+    void deleteGarden_withImageAndLikes() {
+        // Given
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/download.jpg";
+        GardenCreateParam gardenCreateParam = GardenFixture.gardenCreateParam(expectedUrl);
+        given(parallelImageUploader.upload(any(), (List<MultipartFile>) any())).willReturn(List.of(expectedUrl));
+        Long savedGardenId = gardenCommandService.createGarden(gardenCreateParam);
+        Garden savedGarden = gardenRepository.getById(savedGardenId);
+
+        GardenLikeCreateParam gardenLikeCreateFirstParam = new GardenLikeCreateParam(2L, savedGarden.getGardenId());
+        GardenLikeCreateParam gardenLikeCreateSecondParam = new GardenLikeCreateParam(3L, savedGarden.getGardenId());
+        gardenCommandService.createGardenLike(gardenLikeCreateFirstParam);
+        gardenCommandService.createGardenLike(gardenLikeCreateSecondParam);
+
+        GardenDeleteParam gardenDeleteParam = new GardenDeleteParam(
+            savedGarden.getWriterId(),
+            savedGarden.getGardenId());
+
+        // When
+        gardenCommandService.deleteGarden(gardenDeleteParam);
+
+        // Then
+        assertThatThrownBy(() -> gardenRepository.getById(savedGarden.getGardenId()))
+            .isInstanceOf(EmptyResultDataAccessException.class);
+        assertThat(gardenImageRepository.findByGardenId(savedGarden.getGardenId()).size())
+            .isEqualTo(0);
+
+    }
+
     @DisplayName("원하는 텃밭 게시물에 대해서 좋아요를 할 수 있다.")
     @Test
     void createGardenLike() {

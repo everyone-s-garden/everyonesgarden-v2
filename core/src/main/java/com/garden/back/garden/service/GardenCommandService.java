@@ -49,6 +49,7 @@ public class GardenCommandService {
         gardenToDelete.validWriterId(param.memberId());
 
         gardenImageRepository.deleteByGardenId(param.gardenId());
+        gardenLikeRepository.delete(param.gardenId());
         gardenRepository.deleteById(param.gardenId());
     }
 
