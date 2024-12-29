@@ -359,9 +359,6 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
 
-        String expectedUrl = "byeol.png";
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
-
         MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParamWithoutImage(
             savedMyManagedGarden.getMyManagedGardenId()
         );
@@ -371,7 +368,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden updatedMyManagedGarden = myManagedGardenRepository.getById(updateMyManagedGardenId);
 
         // Then
-        assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(myManagedGarden.getImageUrl());
+        assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(null);
     }
 
     @DisplayName("내가 가꾸는 텃밭의 기존 이미지가 null인 경우 새로운 이미지를 추가해서 수정할 수 있다.")

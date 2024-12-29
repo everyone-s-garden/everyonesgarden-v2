@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GardenCommandService {
@@ -128,19 +129,20 @@ public class GardenCommandService {
     @Transactional
     public Long updateMyManagedGarden(MyManagedGardenUpdateParam param) {
         MyManagedGarden myManagedGarden = myManagedGardenRepository.getById(param.myManagedGardenId());
-        String uploadImageUrls = myManagedGarden.getImageUrl();
 
-        if (param.myManagedGardenImage() != null) {
-            if(uploadImageUrls != null) {
-                deleteGardenImage(myManagedGarden.getImageUrl());
-            }
-            uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
-        }
+        Optional.ofNullable(myManagedGarden.getImageUrl())
+            .ifPresent(this::deleteGardenImage);
+
+        String uploadImageUrls = Optional.ofNullable(param.myManagedGardenImage())
+            .map(this::uploadGardenImage)
+            .orElse(null);
 
         myManagedGarden.update(param.toMyManagedGardenUpdateDomainRequest(uploadImageUrls));
         myManagedGardenRepository.save(myManagedGarden);
+
         return myManagedGarden.getMyManagedGardenId();
     }
+
 
     private String uploadGardenImage(MultipartFile gardenImage) {
         return imageUploader.upload(GARDEN_IMAGE_DIRECTORY, gardenImage);
