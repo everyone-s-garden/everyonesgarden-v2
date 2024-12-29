@@ -27,9 +27,6 @@ public record MyManagedGardenCreateRequest(
         MultipartFile gardenImage,
         Long memberId
     ) {
-        if (gardenImage == null) {
-            gardenImage = (MultipartFile) Collections.emptyList();
-        }
 
         return new MyManagedGardenCreateParam(
             myManagedGardenName,

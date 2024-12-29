@@ -112,8 +112,12 @@ public class GardenCommandService {
 
     @Transactional
     public Long createMyManagedGarden(MyManagedGardenCreateParam param) {
-        String uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
+        String uploadImageUrls = null;
         MyManagedGardenCreateDomainRequest myManagedGardenCreateDomainRequest = param.to(uploadImageUrls);
+        if (param.myManagedGardenImage() != null) {
+            uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
+            myManagedGardenCreateDomainRequest = param.to(uploadImageUrls);
+        }
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(
             MyManagedGarden.to(myManagedGardenCreateDomainRequest));
 

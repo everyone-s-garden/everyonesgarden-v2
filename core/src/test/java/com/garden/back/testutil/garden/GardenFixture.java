@@ -360,6 +360,15 @@ public class GardenFixture {
         );
     }
 
+    public static MyManagedGarden myManagedGardenWithoutImage() {
+        return MyManagedGarden.of(
+            "김벼루텃밭",
+            USE_START_DATE,
+            1L,
+            null
+        );
+    }
+
     public static GardenLike gardenLike(Garden garden, Long memberId) {
         return GardenLike.of(memberId, garden);
     }

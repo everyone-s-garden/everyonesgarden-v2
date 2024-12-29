@@ -20,7 +20,7 @@ public record OtherManagedGardenGetResults(
         Long myManagedGardenId,
         String myManagedGardenName,
         String createdAt,
-        List<String> images,
+        String image,
         String description
     ) {
 

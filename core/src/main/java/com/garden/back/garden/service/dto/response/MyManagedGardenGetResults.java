@@ -12,10 +12,9 @@ public record MyManagedGardenGetResults(
     boolean hasNext
 ) {
     public static MyManagedGardenGetResults to(MyManagedGardensGetRepositoryResponses responses) {
-        Map<Long, List<String>> imagesPerGardenId = extractImages(responses);
         return new MyManagedGardenGetResults(
             responses.responses().stream()
-                .map(response -> MyManagedGardenGetResult.to(response, imagesPerGardenId.get(response.getMyManagedGardenId())))
+                .map(response -> MyManagedGardenGetResult.to(response, response.getImageUrl()))
                 .toList(),
             responses.nextManagedGardenId(),
             responses.hasNext()
@@ -26,14 +25,14 @@ public record MyManagedGardenGetResults(
         String myManagedGardenName,
         Long myManagedGardenId,
         String createdAt,
-        List<String> images,
+        String images,
         String description
     ) {
         private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy.MM.dd");
 
         public static MyManagedGardenGetResult to(
             MyManagedGardensGetRepositoryResponse response,
-            List<String> images) {
+            String images) {
             return new MyManagedGardenGetResult(
                 response.getMyManagedGardenName(),
                 response.getMyManagedGardenId(),
@@ -45,16 +44,4 @@ public record MyManagedGardenGetResults(
 
     }
 
-    private static Map<Long, List<String>> extractImages(MyManagedGardensGetRepositoryResponses responses) {
-        Map<Long, List<String>> imagesPerGardenId = new HashMap<>();
-
-        responses.responses().forEach(response -> {
-            Long gardenId = response.getMyManagedGardenId();
-            String imageUrl = response.getImageUrl();
-
-            imagesPerGardenId.computeIfAbsent(gardenId, k -> new ArrayList<>()).add(imageUrl);
-        });
-
-        return imagesPerGardenId;
-    }
 }
