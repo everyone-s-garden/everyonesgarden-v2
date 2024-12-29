@@ -280,7 +280,7 @@ public class GardenFixture {
         return new GardenUpdateParam(
             gardenId,
             List.of(FIRST_GARDEN_IMAGE_URL, SECOND_GARDEN_IMAGE_URL),
-            Collections.emptyList(),
+            null,
             "별이네 텃밭",
             "100",
             "200",

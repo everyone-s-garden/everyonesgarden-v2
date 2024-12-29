@@ -13,13 +13,16 @@ import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.global.image.ImageUploader;
 import com.garden.back.global.image.ParallelImageUploader;
 import com.sun.jdi.request.DuplicateRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class GardenCommandService {
     private static final String GARDEN_IMAGE_DIRECTORY = "garden/";
@@ -83,6 +86,16 @@ public class GardenCommandService {
 
     @Transactional
     public Long updateGarden(GardenUpdateParam param) {
+        log.info("service  request");
+        log.info("newGardenImages : {}", param.newGardenImages());
+        if (param.newGardenImages() != null) {
+            log.info("newGardenImages size: {}", param.newGardenImages().size());
+        }
+
+        for (String url : param.remainGardenImageUrls()) {
+            log.info("remainGardenImages: {}", url);
+        }
+
         Garden gardenToUpdate = gardenRepository.getById(param.gardenId());
         gardenToUpdate.updateGarden(param.toGardenUpdateDomainRequest());
         gardenRepository.save(gardenToUpdate);
@@ -101,9 +114,12 @@ public class GardenCommandService {
     }
 
     private void saveNewGardenImages(Garden garden, List<MultipartFile> newImage) {
-        if (!newImage.isEmpty()) {
+        if (newImage != null && !newImage.isEmpty()) {
             List<String> uploadImageUrls = parallelImageUploader.upload(GARDEN_IMAGE_DIRECTORY, newImage);
-            uploadImageUrls.forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
+            uploadImageUrls.stream()
+                .filter(Objects::nonNull)
+                .filter(uploadImageUrl -> !uploadImageUrl.isEmpty())
+                .forEach(uploadImageUrl -> gardenImageRepository.save(GardenImage.of(uploadImageUrl, garden)));
         }
     }
 
