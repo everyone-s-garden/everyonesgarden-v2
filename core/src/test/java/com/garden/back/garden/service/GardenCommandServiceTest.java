@@ -326,8 +326,6 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     @Test
     void updateMyManagedGarden_nullImage() {
         // Given
-        Garden garden = GardenFixture.publicGarden();
-
         MyManagedGarden myManagedGarden = GardenFixture.myManagedGarden();
         MyManagedGarden savedMyManagedGarden = myManagedGardenRepository.save(myManagedGarden);
 
@@ -344,6 +342,30 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(myManagedGarden.getImageUrl());
+    }
+
+    @DisplayName("내가 가꾸는 텃밭의 기존 이미지가 null인 경우 새로운 이미지를 추가해서 수정할 수 있다.")
+    @Test
+    void updateMyManagedGardenImage_beforeNoImage_() {
+        // Given
+        MyManagedGardenCreateParam myManagedGardenCreateParam = GardenFixture.myManagedGardenCreateParamWithoutImage();
+        Long myManagedGardenId = gardenCommandService.createMyManagedGarden(myManagedGardenCreateParam);
+
+        String expectedUrl = "https://kr.object.ncloudstorage.com/every-garden/images/garden/view.jpg";
+        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
+
+        MyManagedGardenUpdateParam myManagedGardenUpdateParam = GardenFixture.myManagedGardenUpdateParam(
+            expectedUrl,
+            myManagedGardenId
+        );
+
+        // When
+        Long updateMyManagedGardenId = gardenCommandService.updateMyManagedGarden(myManagedGardenUpdateParam);
+        MyManagedGarden updatedMyManagedGarden = myManagedGardenRepository.getById(updateMyManagedGardenId);
+
+        // Then
+        assertThat(updatedMyManagedGarden.getCreatedAt()).isEqualTo(myManagedGardenUpdateParam.createdAt());
+        assertThat(updatedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
     }
 
 }
