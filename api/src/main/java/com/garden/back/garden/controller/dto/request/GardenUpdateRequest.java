@@ -80,7 +80,7 @@ public record GardenUpdateRequest(
 
         return new GardenUpdateParam(
             gardenId,
-            gardenUpdateRequest.remainGardenImageUrls,
+            getRemainImages(gardenUpdateRequest.remainGardenImageUrls),
             getNewImages(newGardenImages),
             gardenUpdateRequest.gardenName(),
             gardenUpdateRequest.price(),
@@ -112,13 +112,13 @@ public record GardenUpdateRequest(
             return Collections.emptyList();
         }
 
-        if (newGardenImages.size() == 1 && isFileEmpty(newGardenImages.get(0))) {
-            return Collections.emptyList();
-        }
         return newGardenImages;
     }
 
-    private static boolean isFileEmpty(MultipartFile file) {
-        return file == null || file.getOriginalFilename() == null || file.getOriginalFilename().isEmpty();
+    private static List<String> getRemainImages(List<String> remainGardenImageUrls) {
+        if (remainGardenImageUrls == null || remainGardenImageUrls.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return remainGardenImageUrls;
     }
 }

@@ -121,12 +121,11 @@ public class MyManagedGarden {
     public void update(MyManagedGardenUpdateDomainRequest request) {
         validWriterId(request.memberId());
         validGardenName(request.myManagedGardenName());
-        updateImageIfPresent(request.myManagedGardenImageUrl());
-
 
         myManagedGardenName = request.myManagedGardenName();
         createdAt = request.createdAt();
         description = request.description();
+        imageUrl = request.myManagedGardenImageUrl();
     }
 
     private void validWriterId(Long requestMemberId) {
@@ -138,12 +137,6 @@ public class MyManagedGarden {
     private void validGardenName(String myManagedGardenName) {
         if (!Objects.nonNull(myManagedGardenName)) {
             throw new IllegalArgumentException("텃밭 이름은 빈값일 수 없습니다.");
-        }
-    }
-
-    private void updateImageIfPresent(String newImageUrl) {
-        if (newImageUrl != null) {
-            imageUrl = newImageUrl;
         }
     }
 
