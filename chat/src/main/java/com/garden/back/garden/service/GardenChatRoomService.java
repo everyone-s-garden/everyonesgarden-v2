@@ -16,6 +16,8 @@ import com.garden.back.garden.service.dto.response.GardenChatRoomEntryResult;
 import com.garden.back.global.exception.EntityNotFoundException;
 import com.garden.back.global.exception.ErrorCode;
 import com.garden.back.global.image.ParallelImageUploader;
+import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,6 +127,19 @@ public class GardenChatRoomService {
     public boolean isExitedPartner(Long chatRoomId) {
         int exitedChatRoomMember = gardenChatRoomInfoRepository.getExitedChatRoomMember(chatRoomId);
         return exitedChatRoomMember == 1;
+    }
+
+    @Async
+    @EventListener
+    @Transactional
+    public void deleteChatRoom(GardenDeleteEvent event) {
+        Long chatRoomId = gardenChatRoomInfoRepository.getChatRoomIdByPostId(event.gardenId());
+         gardenChatRoomRepository.findById(chatRoomId)
+            .orElseThrow(() -> new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY));
+
+        gardenChatRoomInfoRepository.deleteAll(chatRoomId);
+        gardenChatMessageRepository.delete(chatRoomId);
+        gardenChatRoomRepository.deleteById(chatRoomId);
     }
 
 }

@@ -58,4 +58,9 @@ public class GardenChatMessageRepositoryImpl implements GardenChatMessageReposit
     public String getContentsById(Long chatMessageId) {
         return gardenChatMessageJpaRepository.getContentsById(chatMessageId);
     }
+
+    @Override
+    public void delete(Long chatRoomId) {
+        gardenChatMessageJpaRepository.delete(chatRoomId);
+    }
 }

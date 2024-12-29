@@ -10,10 +10,12 @@ import com.garden.back.garden.repository.chatroominfo.GardenChatRoomInfoReposito
 import com.garden.back.garden.service.GardenChatRoomService;
 import com.garden.back.garden.service.dto.request.*;
 import com.garden.back.global.exception.EntityNotFoundException;
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.List;
 
