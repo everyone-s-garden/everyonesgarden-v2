@@ -288,9 +288,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
     @Test
     void createMyManagedGarden_nullImage() {
         // Given
-        String expectedUrl = "";
         MyManagedGardenCreateParam myManagedGardenCreateParam = GardenFixture.myManagedGardenCreateParamWithoutImage();
-        given(imageUploader.upload(any(), any())).willReturn(expectedUrl);
 
         // When
         Long myManagedGardenId = gardenCommandService.createMyManagedGarden(myManagedGardenCreateParam);
@@ -298,7 +296,7 @@ class GardenCommandServiceTest extends IntegrationTestSupport {
         MyManagedGarden savedMyManagedGarden = myManagedGarden.get();
 
         // Then
-        assertThat(savedMyManagedGarden.getImageUrl()).isEqualTo(expectedUrl);
+        assertThat(savedMyManagedGarden.getImageUrl()).isEqualTo(null);
     }
 
     @DisplayName("내가 가꾸는 텃밭을 수정할 수 있다.")

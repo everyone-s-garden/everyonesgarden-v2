@@ -2,6 +2,7 @@ package com.garden.back.garden.controller.dto.response;
 
 import com.garden.back.garden.service.dto.response.MyManagedGardenGetResults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public record MyManagedGardenGetResponses(
@@ -31,7 +32,7 @@ public record MyManagedGardenGetResponses(
                 result.myManagedGardenName(),
                 result.myManagedGardenId(),
                 result.createdAt(),
-                result.images(),
+                result.images() == null ? new ArrayList<>() : List.of(result.images()),
                 result.description()
             );
         }

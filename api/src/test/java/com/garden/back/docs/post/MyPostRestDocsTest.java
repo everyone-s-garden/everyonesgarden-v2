@@ -3,6 +3,7 @@ package com.garden.back.docs.post;
 import com.garden.back.docs.RestDocsSupport;
 import com.garden.back.member.MemberMannerGrade;
 import com.garden.back.post.MyPostController;
+import com.garden.back.post.domain.PostType;
 import com.garden.back.post.domain.repository.response.FindAllMyCommentPostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllMyLikePostsResponse;
 import com.garden.back.post.domain.repository.response.FindAllMyPostsResponse;
@@ -51,6 +52,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     "댓글 내용",
                     0L,
                     0L,
+                    PostType.QUESTION,
                     new UserResponse(
                         1L,
                         "이름",
@@ -84,6 +86,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].content").type(STRING).description("게시글 내용"),
                     fieldWithPath("postInfos[].likesCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("postInfos[].commentsCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].postType").type(STRING).description("글 주제"),
                     fieldWithPath("postInfos[].userInfo").type(OBJECT).description("작성자 정보"),
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
@@ -106,6 +109,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     "내용",
                     0L,
                     0L,
+                    PostType.QUESTION,
                     new UserResponse(
                         1L,
                         "이름",
@@ -139,6 +143,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].content").type(STRING).description("게시글 내용"),
                     fieldWithPath("postInfos[].likesCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("postInfos[].commentsCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].postType").type(STRING).description("글 주제"),
                     fieldWithPath("postInfos[].userInfo").type(OBJECT).description("작성자 정보"),
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),
@@ -162,6 +167,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     "내용",
                     0L,
                     0L,
+                    PostType.QUESTION,
                     new UserResponse(
                         1L,
                         "이름",
@@ -195,6 +201,7 @@ class MyPostRestDocsTest extends RestDocsSupport {
                     fieldWithPath("postInfos[].content").type(STRING).description("게시글 내용"),
                     fieldWithPath("postInfos[].likesCount").type(NUMBER).description("좋아요 수"),
                     fieldWithPath("postInfos[].commentsCount").type(NUMBER).description("댓글 수"),
+                    fieldWithPath("postInfos[].postType").type(STRING).description("글 주제"),
                     fieldWithPath("postInfos[].userInfo").type(OBJECT).description("작성자 정보"),
                     fieldWithPath("postInfos[].userInfo.userId").type(NUMBER).description("작성자 ID"),
                     fieldWithPath("postInfos[].userInfo.name").type(STRING).description("작성자 닉네임"),

@@ -207,7 +207,7 @@ public class GardenFixture {
                     "별이네 주말농장",
                     1L,
                     "2023.12.01",
-                    List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                    "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
                     "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )
             ),
@@ -275,7 +275,7 @@ public class GardenFixture {
                     1L,
                     "별이네 주말농장",
                     "2023.12.01",
-                    List.of("https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg"),
+                    "https://kr.object.ncloudstorage.com/every-garden/images/garden/background.jpg",
                     "이번 겨울에 고구마를 심었더니 이렇게 많이 열렸어요!"
                 )
             ),

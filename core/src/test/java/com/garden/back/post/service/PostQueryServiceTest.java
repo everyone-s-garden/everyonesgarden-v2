@@ -576,6 +576,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                         post.getContent(),
                         post.getLikesCount(),
                         post.getCommentsCount(),
+                        post.getPostType(),
                         new UserResponse(
                             member.getId(),
                             member.getProfileImageUrl(),
@@ -612,6 +613,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     post.getContent(),
                     post.getLikesCount(),
                     post.getCommentsCount(),
+                    post.getPostType(),
                     new UserResponse(
                         member.getId(),
                         member.getProfileImageUrl(),
@@ -651,6 +653,7 @@ class PostQueryServiceTest extends IntegrationTestSupport {
                     commentContent,
                     post.getLikesCount(),
                     post.getCommentsCount(),
+                    post.getPostType(),
                     new UserResponse(
                         member.getId(),
                         member.getProfileImageUrl(),
