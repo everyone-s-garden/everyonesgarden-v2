@@ -22,7 +22,7 @@ public class GardenLikeRepositoryImpl implements GardenLikeRepository {
     @Override
     public GardenLike save(GardenLike gardenLike) {
         return gardenLikeJpaRepository.save(GardenLikeEntity.from(gardenLike,
-                gardenJpaRepository.getById(gardenLike.getGarden().getGardenId()))).toModel();
+            gardenJpaRepository.getById(gardenLike.getGarden().getGardenId()))).toModel();
     }
 
     @Override
@@ -33,8 +33,8 @@ public class GardenLikeRepositoryImpl implements GardenLikeRepository {
     @Override
     public List<GardenLike> findAll() {
         return gardenLikeJpaRepository.findAll().stream()
-                .map(GardenLikeEntity::toModel)
-                .toList();
+            .map(GardenLikeEntity::toModel)
+            .toList();
     }
 
     @Override
@@ -45,6 +45,11 @@ public class GardenLikeRepositoryImpl implements GardenLikeRepository {
     @Override
     public boolean isExisted(Long memberId, Long gardenId) {
         return findGardenLikeId(memberId, gardenId).isPresent();
+    }
+
+    @Override
+    public void delete(Long gardenId) {
+        gardenLikeJpaRepository.delete(gardenId);
     }
 
 }

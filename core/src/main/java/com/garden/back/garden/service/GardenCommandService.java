@@ -49,6 +49,7 @@ public class GardenCommandService {
         gardenToDelete.validWriterId(param.memberId());
 
         gardenImageRepository.deleteByGardenId(param.gardenId());
+        gardenLikeRepository.delete(param.gardenId());
         gardenRepository.deleteById(param.gardenId());
     }
 
@@ -130,7 +131,9 @@ public class GardenCommandService {
         String uploadImageUrls = myManagedGarden.getImageUrl();
 
         if (param.myManagedGardenImage() != null) {
-            deleteGardenImage(myManagedGarden.getImageUrl());
+            if(uploadImageUrls != null) {
+                deleteGardenImage(myManagedGarden.getImageUrl());
+            }
             uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
         }
 
