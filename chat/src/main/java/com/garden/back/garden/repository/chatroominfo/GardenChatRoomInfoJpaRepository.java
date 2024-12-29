@@ -3,6 +3,8 @@ package com.garden.back.garden.repository.chatroominfo;
 import com.garden.back.garden.domain.GardenChatRoomInfo;
 import com.garden.back.garden.repository.chatroom.dto.ChatRoomCreateRepositoryParam;
 import com.garden.back.garden.repository.chatroominfo.dto.GardenChatRoomEnterRepositoryResponse;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -69,5 +71,14 @@ public interface GardenChatRoomInfoJpaRepository extends JpaRepository<GardenCha
             """
     )
     int getSizeExitedChatRoomMember(@Param("chatRoomId") Long chatRoomId);
+
+    @Query(
+        """
+            select gri.chatRoom.chatRoomId
+            from GardenChatRoomInfo as gri
+            where gri.postId=:postId
+            """
+    )
+    List<Long> getChatRoomIdByPostId(@Param("postId") Long postId, Pageable pageable);
 
 }

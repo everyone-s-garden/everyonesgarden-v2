@@ -14,6 +14,7 @@ import com.garden.back.global.image.ImageUploader;
 import com.garden.back.global.image.ParallelImageUploader;
 import com.sun.jdi.request.DuplicateRequestException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -32,19 +33,21 @@ public class GardenCommandService {
     private final MyManagedGardenRepository myManagedGardenRepository;
     private final ParallelImageUploader parallelImageUploader;
     private final ImageUploader imageUploader;
+    private final ApplicationEventPublisher publisher;
 
     public GardenCommandService(
         GardenRepository gardenRepository,
         GardenImageRepository gardenImageRepository,
         GardenLikeRepository gardenLikeRepository,
         MyManagedGardenRepository myManagedGardenRepository,
-        ParallelImageUploader parallelImageUploader, ImageUploader imageUploader) {
+        ParallelImageUploader parallelImageUploader, ImageUploader imageUploader, ApplicationEventPublisher publisher) {
         this.gardenRepository = gardenRepository;
         this.gardenImageRepository = gardenImageRepository;
         this.gardenLikeRepository = gardenLikeRepository;
         this.myManagedGardenRepository = myManagedGardenRepository;
         this.parallelImageUploader = parallelImageUploader;
         this.imageUploader = imageUploader;
+        this.publisher = publisher;
     }
 
     @Transactional
@@ -55,6 +58,8 @@ public class GardenCommandService {
         gardenImageRepository.deleteByGardenId(param.gardenId());
         gardenLikeRepository.delete(param.gardenId());
         gardenRepository.deleteById(param.gardenId());
+
+        publisher.publishEvent(GardenDeleteEvent.of(param.gardenId()));
     }
 
     @Transactional

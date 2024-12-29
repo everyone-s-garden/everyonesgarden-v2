@@ -63,4 +63,13 @@ public interface GardenChatMessageJpaRepository extends JpaRepository<GardenChat
     )
     String getContentsById(@Param("chatMessageId") Long chatMessageId);
 
+    @Modifying(clearAutomatically = true)
+    @Query(
+        """
+                delete GardenChatMessage as cm
+                where cm.chatRoom.chatRoomId = :roomId
+                """
+    )
+    void delete(@Param("roomId") Long roomId);
+
 }

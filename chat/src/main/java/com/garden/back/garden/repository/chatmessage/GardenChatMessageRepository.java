@@ -24,4 +24,6 @@ public interface GardenChatMessageRepository {
     Slice<ChatRoomFindRepositoryResponse> findChatRooms(Long memberId, Pageable pageable);
 
     String getContentsById(Long chatMessageId);
+
+    void delete(Long chatRoomId);
 }

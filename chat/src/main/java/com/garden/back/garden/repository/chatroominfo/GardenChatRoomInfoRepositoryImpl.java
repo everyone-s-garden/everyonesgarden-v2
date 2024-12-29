@@ -5,6 +5,7 @@ import com.garden.back.garden.repository.chatroom.dto.ChatRoomCreateRepositoryPa
 import com.garden.back.garden.repository.chatroominfo.dto.GardenChatRoomEnterRepositoryResponse;
 import com.garden.back.global.exception.EntityNotFoundException;
 import com.garden.back.global.exception.ErrorCode;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
@@ -15,6 +16,8 @@ import java.util.Objects;
 public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepository {
 
     private final GardenChatRoomInfoJpaRepository gardenChatRoomInfoJpaRepository;
+    private final PageRequest LIMIT_ONE_REQUEST = PageRequest.of(0, 1);
+    private final int LIMIT_ONE_INDEX = 0;
 
     public GardenChatRoomInfoRepositoryImpl(GardenChatRoomInfoJpaRepository gardenChatRoomInfoJpaRepository) {
         this.gardenChatRoomInfoJpaRepository = gardenChatRoomInfoJpaRepository;
@@ -59,10 +62,19 @@ public class GardenChatRoomInfoRepositoryImpl implements GardenChatRoomInfoRepos
 
     @Override
     public int getExitedChatRoomMember(Long chatRoomId) {
-        if(findByRoomId(chatRoomId).isEmpty()) {
+        if (findByRoomId(chatRoomId).isEmpty()) {
             throw new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY);
         }
         return gardenChatRoomInfoJpaRepository.getSizeExitedChatRoomMember(chatRoomId);
+    }
+
+    @Override
+    public Long getChatRoomIdByPostId(Long postId) {
+        if (gardenChatRoomInfoJpaRepository.getChatRoomIdByPostId(postId, LIMIT_ONE_REQUEST).isEmpty()) {
+            throw new EntityNotFoundException(ErrorCode.NOT_FOUND_ENTITY);
+        }
+
+        return gardenChatRoomInfoJpaRepository.getChatRoomIdByPostId(postId, LIMIT_ONE_REQUEST).get(LIMIT_ONE_INDEX);
     }
 
 }
