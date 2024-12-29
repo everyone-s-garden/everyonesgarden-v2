@@ -243,6 +243,37 @@ class GardenReadServiceTest extends IntegrationTestSupport {
         assertThat(myGarden.hasNext()).isFalse();
     }
 
+    @DisplayName("내가 작성한 텃밭 게시글의 이미지가 두 개인 경우 중복되지 않는 게시글 하나를 조회할 수 있다.")
+    @Test
+    void getMyGardens_withTwoImages() {
+        //Given
+        GardenImageFixture
+            .gardenImages(savedPrivateGarden)
+            .forEach(gardenImage -> gardenImageRepository.save(gardenImage));
+        List<String> gardenImages =
+            gardenImageRepository.findByGardenId(savedPrivateGarden.getGardenId()).stream()
+                .map(GardenImage::getImageUrl)
+                .toList();
+
+        // When
+        GardenMineResults myGarden = gardenReadService.getMyGarden(GardenFixture.myGardenGetParamAboutFirst(savedPrivateGarden.getWriterId()));
+
+        // Then
+        assertThat(myGarden.gardenMineResults().size()).isEqualTo(1);
+        assertThat(myGarden.gardenMineResults())
+            .extracting(
+                "gardenId", "size", "gardenName", "price", "gardenStatus", "imageUrls")
+            .contains(
+                Tuple.tuple(
+                    savedPrivateGarden.getGardenId(),
+                    savedPrivateGarden.getSize(),
+                    savedPrivateGarden.getGardenName(),
+                    savedPrivateGarden.getPrice(),
+                    savedPrivateGarden.getGardenStatus().name(),
+                    gardenImages));
+        assertThat(myGarden.hasNext()).isFalse();
+    }
+
     @DisplayName("내가 좋아요한 텃밭 게시물을 조회할 수 있다.")
     @Test
     void getLikeGardenByMember() {
@@ -290,8 +321,30 @@ class GardenReadServiceTest extends IntegrationTestSupport {
             .contains(
                 Tuple.tuple(
                     myManagedGarden.getMyManagedGardenName(),
-                    List.of(myManagedGarden.getImageUrl())
+                    myManagedGarden.getImageUrl()
                 )
+            );
+        assertThat(myManagedGardenGetResults.hasNext()).isFalse();
+    }
+
+    @DisplayName("내가 가꾸는 텃밭에 대한 목록에 이미지가 등록되지 않는 텃밭일기를 조회할 수 있다.")
+    @Test
+    void getMyManagedGardens_withoutImage() {
+        // Given
+        MyManagedGarden myManagedGarden = myManagedGardenRepository.save(
+            GardenFixture.myManagedGardenWithoutImage());
+
+        // When
+        MyManagedGardenGetResults myManagedGardenGetResults
+            = gardenReadService.getMyManagedGardens(GardenFixture.myManagedGardenGetParamAboutFirst(myManagedGarden.getMemberId()));
+
+        // Then
+        assertThat(myManagedGardenGetResults.myManagedGardenGetResponse())
+            .extracting("myManagedGardenName", "images")
+            .contains(
+                Tuple.tuple(
+                    myManagedGarden.getMyManagedGardenName(),
+                    myManagedGarden.getImageUrl())
             );
         assertThat(myManagedGardenGetResults.hasNext()).isFalse();
     }
@@ -424,11 +477,11 @@ class GardenReadServiceTest extends IntegrationTestSupport {
 
         // Then
         assertThat(otherManagedGardenGetResults.otherManagedGardenGetResponse())
-            .extracting("myManagedGardenName", "images")
+            .extracting("myManagedGardenName", "image")
             .contains(
                 Tuple.tuple(
                     myManagedGarden.getMyManagedGardenName(),
-                    List.of(myManagedGarden.getImageUrl())
+                    myManagedGarden.getImageUrl()
                 )
             );
         assertThat(otherManagedGardenGetResults.hasNext()).isFalse();
