@@ -331,7 +331,7 @@ public class GardenFixture {
 
         return new MyManagedGardenUpdateParam(
             "김별텃밭",
-            Optional.of(multipartFile),
+            multipartFile,
             myManagedGardenId,
             USE_START_DATE,
             1L,
@@ -343,7 +343,7 @@ public class GardenFixture {
         Long myManagedGardenId) {
         return new MyManagedGardenUpdateParam(
             "김별텃밭",
-            Optional.empty(),
+            null,
             myManagedGardenId,
             USE_START_DATE,
             1L,

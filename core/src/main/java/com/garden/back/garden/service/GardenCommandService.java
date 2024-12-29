@@ -129,9 +129,9 @@ public class GardenCommandService {
         MyManagedGarden myManagedGarden = myManagedGardenRepository.getById(param.myManagedGardenId());
         String uploadImageUrls = myManagedGarden.getImageUrl();
 
-        if (param.myManagedGardenImage().isPresent()) {
+        if (param.myManagedGardenImage() != null) {
             deleteGardenImage(myManagedGarden.getImageUrl());
-            uploadImageUrls = uploadGardenImage(param.myManagedGardenImage().get());
+            uploadImageUrls = uploadGardenImage(param.myManagedGardenImage());
         }
 
         myManagedGarden.update(param.toMyManagedGardenUpdateDomainRequest(uploadImageUrls));

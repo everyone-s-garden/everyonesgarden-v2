@@ -142,7 +142,7 @@ public class MyManagedGarden {
     }
 
     private void updateImageIfPresent(String newImageUrl) {
-        if (!newImageUrl.isEmpty()) {
+        if (newImageUrl != null) {
             imageUrl = newImageUrl;
         }
     }

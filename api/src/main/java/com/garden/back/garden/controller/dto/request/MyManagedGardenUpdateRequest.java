@@ -31,20 +31,13 @@ public record MyManagedGardenUpdateRequest(
     ) {
         return new MyManagedGardenUpdateParam(
             myManagedGardenName,
-            getNewFile(newImage),
+            newImage,
             myManagedGardenId,
             LocalDate.parse(createdAt, DATE_FORMATTER),
             memberId,
             isNull(description)
         );
 
-    }
-
-    private static Optional<MultipartFile> getNewFile(MultipartFile file) {
-        if (file == null || file.getOriginalFilename() == null || file.getOriginalFilename().isEmpty()) {
-            return Optional.empty();
-        }
-        return Optional.of(file);
     }
 
     private static String isNull(String field) {

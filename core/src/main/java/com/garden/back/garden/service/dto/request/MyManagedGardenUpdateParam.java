@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public record MyManagedGardenUpdateParam(
     String myManagedGardenName,
-    Optional<MultipartFile> myManagedGardenImage,
+    MultipartFile myManagedGardenImage,
     Long myManagedGardenId,
     LocalDate createdAt,
     Long memberId,
