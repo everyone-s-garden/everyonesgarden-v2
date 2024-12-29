@@ -8,7 +8,6 @@ import com.garden.back.global.validation.EnumValue;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
-import lombok.extern.slf4j.Slf4j;
 import net.jqwik.api.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,9 +16,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
-@Slf4j
 public record GardenUpdateRequest(
     List<String> remainGardenImageUrls,
 
@@ -80,14 +77,8 @@ public record GardenUpdateRequest(
         GardenUpdateRequest gardenUpdateRequest,
         Long memberId
     ) {
-        log.info("api request");
-        log.info("newGardenImages: {}", newGardenImages);
-        if (newGardenImages != null && !newGardenImages.isEmpty()) {
-            log.info("newGardenImages size: {}", newGardenImages.size());
-        }
-
-        for (String url : gardenUpdateRequest.remainGardenImageUrls) {
-            log.info("remainGardenImages: {}", url);
+        if (gardenUpdateRequest.remainGardenImageUrls.isEmpty() && (newGardenImages==null|| newGardenImages.isEmpty())) {
+            throw new IllegalArgumentException("image는 반드시 한 장 이상이어야 합니다.");
         }
 
         return new GardenUpdateParam(
@@ -128,6 +119,9 @@ public record GardenUpdateRequest(
     }
 
     private static List<String> getRemainImages(List<String> remainGardenImageUrls) {
-        return Objects.requireNonNullElse(remainGardenImageUrls, Collections.emptyList());
+        if (remainGardenImageUrls == null || remainGardenImageUrls.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return remainGardenImageUrls;
     }
 }
