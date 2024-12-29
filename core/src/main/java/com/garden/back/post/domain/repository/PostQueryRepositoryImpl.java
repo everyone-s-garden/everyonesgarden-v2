@@ -253,6 +253,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .join(member).on(post.postAuthorId.eq(member.id))
             .offset(request.offset())
             .limit(request.limit())
+            .orderBy(post.id.desc())
             .fetch();
 
         return new FindAllMyLikePostsResponse(postInfos);
@@ -292,6 +293,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .join(member).on(post.postAuthorId.eq(member.id))
             .offset(request.offset())
             .limit(request.limit())
+            .orderBy(post.id.desc())
             .fetch();
 
         return new FindAllMyPostsResponse(postInfos);
@@ -332,6 +334,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .join(member).on(post.postAuthorId.eq(member.id))
             .offset(request.offset())
             .limit(request.limit())
+            .orderBy(post.id.desc())
             .fetch();
 
         return new FindAllMyCommentPostsResponse(postInfos);
@@ -383,6 +386,7 @@ public class PostQueryRepositoryImpl implements PostQueryRepository {
             .orderBy(post.likesCount.multiply(3).add(post.commentsCount).desc()) //좋아요 수는 3점, 댓글 수는 1점을 부과하여 인기글 선정
             .offset(request.offset())
             .limit(request.limit())
+            .orderBy(post.id.desc())
             .fetch();
 
         return new FindAllPopularPostsResponse(posts);
