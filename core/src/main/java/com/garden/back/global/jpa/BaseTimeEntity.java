@@ -24,8 +24,8 @@ public abstract class BaseTimeEntity {
     //LocalDateTime의 os 별 작동 방식이 달라 모든 곳에서 작동 가능하도록 6자리수에서 올리기
     @PrePersist
     public void onPrePersist() {
-        int nano = this.createAt.getNano();
+        /*int nano = this.createAt.getNano();
         int newNano = (int) (Math.round(nano / 1000.0) * 1000);
-        this.createAt = this.createAt.withNano(newNano);
+        this.createAt = this.createAt.withNano(newNano);*/
     }
 }
